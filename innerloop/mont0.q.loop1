@@ -1,0 +1,481 @@
+
+loop20_init:
+
+  fuv = f & ~ _m2p20
+  grs = g & ~ _m2p20
+  #fuv = f
+  #grs = g
+  #fuv <<= 44
+  #grs <<= 44
+  #(int64) fuv >>= 44
+  #(int64) grs >>= 44
+  fuv += stack_m2p41
+  grs += stack_m2p62
+
+# Rep #0
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #1
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #2
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #3
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #4
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #5
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #6
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #7
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #8
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #9
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #10
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #11
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #12
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #13
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #14
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #15
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #16
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #17
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #18
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+# Rep #19
+  z = -1
+  oldg = grs
+  h = grs + fuv
+              =? grs & 1
+
+  z = m   if !=
+  h = grs if  =
+  mnew = m + 1
+  grs -= fuv
+
+  (int64) grs >>= 1
+  (int64) h >>= 1
+  m = -m
+                 signed<? z - 0
+
+  fuv = oldg if !signed<
+  grs = h    if  signed<
+  m = mnew   if  signed<
+#  (int64) grs >>= 1
+
+
+# extract u,v,r,s; compute next f,g
+extract_init:
+
+  _2p20a2p41 = stack_2p20a2p41
+  s = grs + _2p20a2p41
+  (int64) s >>= 42
+
+  t2 = g
+  g *= s  
+  # g = gs
+
+  v = fuv + _2p20a2p41
+  (int64) v >>= 42
+
+  t2 *= v
+  # t2 = gv
+
+  _2p20 = stack_2p20
+  r = grs + _2p20
+  r <<= 22
+  (int64) r >>= 43
+
+      rax = f
+      rax *= r
+      # rax = fr
+
+  u = fuv + _2p20
+  u <<= 22
+  (int64) u >>= 43
+
+       f *= u
+       f += t2
+       g += rax
+
+  (int64) f >>= 20
+  (int64) g >>= 20
+
+  inplace stack_vvrr[0] = v
+  inplace stack_uuss[0] = u
+  inplace stack_uuss[2] = s
+  inplace stack_vvrr[2] = r
+
+#  loop = 4
+  #loop = 3
+  loop = 2
+# endswap

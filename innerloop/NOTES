@@ -1,0 +1,51 @@
+z = 0: 1 uop, p0156, latency 1
+
+h = gqr+fuv: 1 uop, p15, latency 1
+mnew = minusone: 1 uop, p0156, latency 0-1
+oldg = gqr: 1 uop, p0156, latency 0-1
+=? gqr & 1: 1 uop, p0156, latency 1
+
+h = gqr if =: 1 uop, p06, latency 1
+z = m if !=: 1 uop, p06, latency 1
+mnew ^= m: 1 uop, p0156, latency 1
+gqr -= fuv: 1 uop, p0156, latency 1
+
+(uint64) h >>= 1: 1 uop, p06, latency 1
+(uint64) gqr >>= 1: 1 uop, p06, latency 1
+m -= 1: 1 uop, p0156, latency 1
+signed<? z - 0: 1 uop, p0156, latency 1
+
+fuv = oldg if signed<: 1 uop, p06, latency 1
+gqr = h if !signed<: 1 uop, p06, latency 1
+
+m = mnew if signed<: 1 uop, p06, latency 1
+
+
+
+alternatives:
+  mnew = minusone & ~m: 1 uop, p15, latency 1
+
+
+
+15-uop loop:
+
+z = 0: 1 uop, p0156, latency 1
+
+h = grs + fuv: 1 uop, p15, latency 1
+oldg = grs: 1 uop, p0156, latency 0-1
+=? grs & 1: 1 uop, p0156, latency 1
+
+h = grs if  =: 1 uop, p06, latency 1
+z = m   if !=: 1 uop, p06, latency 1
+mnew = m - 1: 1 uop, p15, latency 1
+grs -= fuv: 1 uop, p0156, latency 1
+
+(int64) h >>= 1: 1 uop, p06, latency 1
+(int64) grs >>= 1: 1 uop, p06, latency 1
+m = ~m: 1 uop, p0156, latency 1
+signed<? z - 0: 1 uop, p0156, latency 1
+
+fuv = oldg if  signed<: 1 uop, p06, latency 1
+grs = h    if !signed<: 1 uop, p06, latency 1
+
+m = mnew   if !signed<: 1 uop, p06, latency 1

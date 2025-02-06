@@ -1,0 +1,2459 @@
+
+Breakpoint 1, 0x0000000000401b20 in innerloop60 ()
+innerloop60:
+# %rdi = 0x7fffffffdcf0
+# %rsi = 0x0
+# %rdx = 0x0
+# %rcx = 0x0
+# %r8  = 0xa
+# %r9  = 0x3
+	#! -> SP = 0x7fffffffdce8
+	mov    %rsp,%r11                                #! PC = 0x401b20
+0x0000000000401b23 in innerloop60 ()
+	and    $0x1f,%r11                               #! PC = 0x401b23
+0x0000000000401b27 in innerloop60 ()
+	add    $0x80,%r11                               #! PC = 0x401b27
+0x0000000000401b2e in innerloop60 ()
+	sub    %r11,%rsp                                #! PC = 0x401b2e
+0x0000000000401b31 in innerloop60 ()
+	mov    %rdi,(%rsp)                              #! EA = L0x7fffffffdc60; PC = 0x401b31
+0x0000000000401b35 in innerloop60 ()
+	mov    %rsi,%rdi                                #! PC = 0x401b35
+0x0000000000401b38 in innerloop60 ()
+	mov    %rdx,%rsi                                #! PC = 0x401b38
+0x0000000000401b3b in innerloop60 ()
+	mov    %rcx,%rcx                                #! PC = 0x401b3b
+0x0000000000401b3e in innerloop60 ()
+	mov    %r11,0x8(%rsp)                           #! EA = L0x7fffffffdc68; PC = 0x401b3e
+0x0000000000401b43 in innerloop60 ()
+	mov    %r12,0x10(%rsp)                          #! EA = L0x7fffffffdc70; PC = 0x401b43
+0x0000000000401b48 in innerloop60 ()
+	mov    %r13,0x18(%rsp)                          #! EA = L0x7fffffffdc78; PC = 0x401b48
+0x0000000000401b4d in innerloop60 ()
+	mov    %r14,0x20(%rsp)                          #! EA = L0x7fffffffdc80; PC = 0x401b4d
+0x0000000000401b52 in innerloop60 ()
+	mov    %r15,0x28(%rsp)                          #! EA = L0x7fffffffdc88; PC = 0x401b52
+0x0000000000401b57 in innerloop60 ()
+	mov    %rbx,0x30(%rsp)                          #! EA = L0x7fffffffdc90; PC = 0x401b57
+0x0000000000401b5c in innerloop60 ()
+	mov    %rbp,0x38(%rsp)                          #! EA = L0x7fffffffdc98; PC = 0x401b5c
+0x0000000000401b61 in innerloop60 ()
+	mov    $0xffffffffffffffff,%r8                  #! PC = 0x401b61
+0x0000000000401b68 in innerloop60 ()
+	mov    $0xffffffffffff8000,%r9                  #! PC = 0x401b68
+0x0000000000401b6f in innerloop60 ()
+	mov    %r9,0x40(%rsp)                           #! EA = L0x7fffffffdca0; PC = 0x401b6f
+0x0000000000401b74 in innerloop60 ()
+	mov    $0x10000,%rdx                            #! PC = 0x401b74
+0x0000000000401b7b in innerloop60 ()
+	mov    %rdx,0x48(%rsp)                          #! EA = L0x7fffffffdca8; PC = 0x401b7b
+0x0000000000401b80 in innerloop60 ()
+	movabs $0x80000000,%rdx                         #! PC = 0x401b80
+0x0000000000401b8a in innerloop60 ()
+	mov    %rdx,0x50(%rsp)                          #! EA = L0x7fffffffdcb0; PC = 0x401b8a
+0x0000000000401b8f in innerloop60 ()
+	movabs $0xffffffff00000000,%rdx                 #! PC = 0x401b8f
+0x0000000000401b99 in innerloop60 ()
+	mov    %rdx,0x58(%rsp)                          #! EA = L0x7fffffffdcb8; PC = 0x401b99
+0x0000000000401b9e in innerloop60 ()
+	movabs $0xffff000000000000,%rdx                 #! PC = 0x401b9e
+0x0000000000401ba8 in innerloop60 ()
+	mov    %rdx,0x60(%rsp)                          #! EA = L0x7fffffffdcc0; PC = 0x401ba8
+0x0000000000401bad in innerloop60 ()
+	movabs $0x100010000,%rdx                        #! PC = 0x401bad
+0x0000000000401bb7 in innerloop60 ()
+	mov    %rdx,0x68(%rsp)                          #! EA = L0x7fffffffdcc8; PC = 0x401bb7
+0x0000000000401bbc in innerloop60 ()
+	mov    $0x4,%r10                                #! PC = 0x401bbc
+0x0000000000401bc3 in ._loop15 ()
+	andn   %rsi,%r9,%r11                            #! PC = 0x401bc3
+0x0000000000401bc8 in ._loop15 ()
+	andn   %rcx,%r9,%r12                            #! PC = 0x401bc8
+0x0000000000401bcd in ._loop15 ()
+	or     0x58(%rsp),%r11                          #! EA = L0x7fffffffdcb8; Value = 0xffffffff00000000; PC = 0x401bcd
+0x0000000000401bd2 in ._loop15 ()
+	or     0x60(%rsp),%r12                          #! EA = L0x7fffffffdcc0; Value = 0xffff000000000000; PC = 0x401bd2
+0x0000000000401bd7 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401bd7
+0x0000000000401bda in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401bda
+0x0000000000401bde in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401bde
+0x0000000000401be1 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401be1
+0x0000000000401be4 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401be4
+0x0000000000401beb in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401beb
+0x0000000000401bef in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401bef
+0x0000000000401bf3 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401bf3
+0x0000000000401bf6 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401bf6
+0x0000000000401bf9 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401bf9
+0x0000000000401bfc in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401bfc
+0x0000000000401bff in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401bff
+0x0000000000401c02 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c02
+0x0000000000401c06 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c06
+0x0000000000401c0a in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c0a
+0x0000000000401c0e in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c0e
+0x0000000000401c12 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c12
+0x0000000000401c15 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c15
+0x0000000000401c19 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c19
+0x0000000000401c1c in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c1c
+0x0000000000401c1f in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c1f
+0x0000000000401c26 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c26
+0x0000000000401c2a in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c2a
+0x0000000000401c2e in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c2e
+0x0000000000401c31 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c31
+0x0000000000401c34 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c34
+0x0000000000401c37 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c37
+0x0000000000401c3a in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c3a
+0x0000000000401c3d in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c3d
+0x0000000000401c41 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c41
+0x0000000000401c45 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c45
+0x0000000000401c49 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c49
+0x0000000000401c4d in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c4d
+0x0000000000401c50 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c50
+0x0000000000401c54 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c54
+0x0000000000401c57 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c57
+0x0000000000401c5a in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c5a
+0x0000000000401c61 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c61
+0x0000000000401c65 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c65
+0x0000000000401c69 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c69
+0x0000000000401c6c in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c6c
+0x0000000000401c6f in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c6f
+0x0000000000401c72 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c72
+0x0000000000401c75 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c75
+0x0000000000401c78 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c78
+0x0000000000401c7c in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c7c
+0x0000000000401c80 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c80
+0x0000000000401c84 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c84
+0x0000000000401c88 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c88
+0x0000000000401c8b in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c8b
+0x0000000000401c8f in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c8f
+0x0000000000401c92 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c92
+0x0000000000401c95 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c95
+0x0000000000401c9c in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c9c
+0x0000000000401ca0 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401ca0
+0x0000000000401ca4 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ca4
+0x0000000000401ca7 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ca7
+0x0000000000401caa in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401caa
+0x0000000000401cad in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401cad
+0x0000000000401cb0 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401cb0
+0x0000000000401cb3 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cb3
+0x0000000000401cb7 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cb7
+0x0000000000401cbb in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cbb
+0x0000000000401cbf in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cbf
+0x0000000000401cc3 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cc3
+0x0000000000401cc6 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401cc6
+0x0000000000401cca in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401cca
+0x0000000000401ccd in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ccd
+0x0000000000401cd0 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401cd0
+0x0000000000401cd7 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401cd7
+0x0000000000401cdb in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401cdb
+0x0000000000401cdf in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401cdf
+0x0000000000401ce2 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ce2
+0x0000000000401ce5 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ce5
+0x0000000000401ce8 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ce8
+0x0000000000401ceb in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ceb
+0x0000000000401cee in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cee
+0x0000000000401cf2 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cf2
+0x0000000000401cf6 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cf6
+0x0000000000401cfa in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cfa
+0x0000000000401cfe in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cfe
+0x0000000000401d01 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d01
+0x0000000000401d05 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d05
+0x0000000000401d08 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d08
+0x0000000000401d0b in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d0b
+0x0000000000401d12 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d12
+0x0000000000401d16 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d16
+0x0000000000401d1a in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d1a
+0x0000000000401d1d in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d1d
+0x0000000000401d20 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d20
+0x0000000000401d23 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d23
+0x0000000000401d26 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d26
+0x0000000000401d29 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d29
+0x0000000000401d2d in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d2d
+0x0000000000401d31 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d31
+0x0000000000401d35 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d35
+0x0000000000401d39 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d39
+0x0000000000401d3c in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d3c
+0x0000000000401d40 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d40
+0x0000000000401d43 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d43
+0x0000000000401d46 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d46
+0x0000000000401d4d in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d4d
+0x0000000000401d51 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d51
+0x0000000000401d55 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d55
+0x0000000000401d58 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d58
+0x0000000000401d5b in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d5b
+0x0000000000401d5e in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d5e
+0x0000000000401d61 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d61
+0x0000000000401d64 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d64
+0x0000000000401d68 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d68
+0x0000000000401d6c in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d6c
+0x0000000000401d70 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d70
+0x0000000000401d74 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d74
+0x0000000000401d77 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d77
+0x0000000000401d7b in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d7b
+0x0000000000401d7e in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d7e
+0x0000000000401d81 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d81
+0x0000000000401d88 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d88
+0x0000000000401d8c in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d8c
+0x0000000000401d90 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d90
+0x0000000000401d93 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d93
+0x0000000000401d96 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d96
+0x0000000000401d99 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d99
+0x0000000000401d9c in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d9c
+0x0000000000401d9f in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d9f
+0x0000000000401da3 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401da3
+0x0000000000401da7 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401da7
+0x0000000000401dab in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401dab
+0x0000000000401daf in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401daf
+0x0000000000401db2 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401db2
+0x0000000000401db6 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401db6
+0x0000000000401db9 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401db9
+0x0000000000401dbc in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401dbc
+0x0000000000401dc3 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dc3
+0x0000000000401dc7 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401dc7
+0x0000000000401dcb in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401dcb
+0x0000000000401dce in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401dce
+0x0000000000401dd1 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401dd1
+0x0000000000401dd4 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401dd4
+0x0000000000401dd7 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401dd7
+0x0000000000401dda in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401dda
+0x0000000000401dde in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401dde
+0x0000000000401de2 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401de2
+0x0000000000401de6 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401de6
+0x0000000000401dea in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401dea
+0x0000000000401ded in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ded
+0x0000000000401df1 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401df1
+0x0000000000401df4 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401df4
+0x0000000000401df7 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401df7
+0x0000000000401dfe in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dfe
+0x0000000000401e02 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e02
+0x0000000000401e06 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e06
+0x0000000000401e09 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e09
+0x0000000000401e0c in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e0c
+0x0000000000401e0f in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e0f
+0x0000000000401e12 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e12
+0x0000000000401e15 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e15
+0x0000000000401e19 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e19
+0x0000000000401e1d in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e1d
+0x0000000000401e21 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e21
+0x0000000000401e25 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e25
+0x0000000000401e28 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e28
+0x0000000000401e2c in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e2c
+0x0000000000401e2f in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e2f
+0x0000000000401e32 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e32
+0x0000000000401e39 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e39
+0x0000000000401e3d in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e3d
+0x0000000000401e41 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e41
+0x0000000000401e44 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e44
+0x0000000000401e47 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e47
+0x0000000000401e4a in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e4a
+0x0000000000401e4d in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e4d
+0x0000000000401e50 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e50
+0x0000000000401e54 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e54
+0x0000000000401e58 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e58
+0x0000000000401e5c in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e5c
+0x0000000000401e60 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e60
+0x0000000000401e63 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e63
+0x0000000000401e67 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e67
+0x0000000000401e6a in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e6a
+0x0000000000401e6d in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e6d
+0x0000000000401e74 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e74
+0x0000000000401e78 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e78
+0x0000000000401e7c in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e7c
+0x0000000000401e7f in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e7f
+0x0000000000401e82 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e82
+0x0000000000401e85 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e85
+0x0000000000401e88 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e88
+0x0000000000401e8b in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e8b
+0x0000000000401e8f in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e8f
+0x0000000000401e93 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e93
+0x0000000000401e97 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e97
+0x0000000000401e9b in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e9b
+0x0000000000401e9e in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e9e
+0x0000000000401ea2 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401ea2
+0x0000000000401ea5 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ea5
+0x0000000000401ea8 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ea8
+0x0000000000401eaf in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eaf
+0x0000000000401eb3 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eb3
+0x0000000000401eb7 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401eb7
+0x0000000000401eba in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401eba
+0x0000000000401ebd in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ebd
+0x0000000000401ec0 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ec0
+0x0000000000401ec3 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ec3
+0x0000000000401ec6 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401ec6
+0x0000000000401eca in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401eca
+0x0000000000401ece in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401ece
+0x0000000000401ed2 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401ed2
+0x0000000000401ed6 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401ed6
+0x0000000000401ed9 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ed9
+0x0000000000401edd in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401edd
+0x0000000000401ee0 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ee0
+0x0000000000401ee3 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ee3
+0x0000000000401eea in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eea
+0x0000000000401eee in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eee
+0x0000000000401ef2 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ef2
+0x0000000000401ef5 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ef5
+0x0000000000401ef8 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ef8
+0x0000000000401efb in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401efb
+0x0000000000401efe in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401efe
+0x0000000000401f01 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f01
+0x0000000000401f05 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f05
+0x0000000000401f09 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f09
+0x0000000000401f0d in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f0d
+0x0000000000401f11 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401f11
+0x0000000000401f14 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401f14
+0x0000000000401f18 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401f18
+0x0000000000401f1b in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401f1b
+0x0000000000401f1e in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401f1e
+0x0000000000401f25 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401f25
+0x0000000000401f29 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401f29
+0x0000000000401f2d in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401f2d
+0x0000000000401f30 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401f30
+0x0000000000401f33 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401f33
+0x0000000000401f36 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401f36
+0x0000000000401f39 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401f39
+0x0000000000401f3c in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f3c
+0x0000000000401f40 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f40
+0x0000000000401f44 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f44
+0x0000000000401f48 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f48
+0x0000000000401f4c in ._extract ()
+	mov    0x68(%rsp),%r13                          #! EA = L0x7fffffffdcc8; Value = 0x0000000100010000; PC = 0x401f4c
+0x0000000000401f51 in ._extract ()
+	lea    (%r12,%r13,1),%r14                       #! PC = 0x401f51
+0x0000000000401f55 in ._extract ()
+	sar    $0x21,%r14                               #! PC = 0x401f55
+0x0000000000401f59 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401f59
+0x0000000000401f5c in ._extract ()
+	imul   %r14                                     #! PC = 0x401f5c
+0x0000000000401f5f in ._extract ()
+	mov    %rax,%r15                                #! PC = 0x401f5f
+0x0000000000401f62 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401f62
+0x0000000000401f65 in ._extract ()
+	mov    0x48(%rsp),%rbp                          #! EA = L0x7fffffffdca8; Value = 0x0000000000010000; PC = 0x401f65
+0x0000000000401f6a in ._extract ()
+	add    %rbp,%r12                                #! PC = 0x401f6a
+0x0000000000401f6d in ._extract ()
+	sar    $0x11,%r12                               #! PC = 0x401f6d
+0x0000000000401f71 in ._extract ()
+	movswq %r12w,%r12                               #! PC = 0x401f71
+0x0000000000401f75 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f75
+0x0000000000401f78 in ._extract ()
+	imul   %r12                                     #! PC = 0x401f78
+0x0000000000401f7b in ._extract ()
+	add    %rax,%r15                                #! PC = 0x401f7b
+0x0000000000401f7e in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401f7e
+0x0000000000401f81 in ._extract ()
+	shrd   $0xf,%rbx,%r15                           #! PC = 0x401f81
+0x0000000000401f86 in ._extract ()
+	lea    (%r11,%r13,1),%r13                       #! PC = 0x401f86
+0x0000000000401f8a in ._extract ()
+	sar    $0x21,%r13                               #! PC = 0x401f8a
+0x0000000000401f8e in ._extract ()
+	add    %rbp,%r11                                #! PC = 0x401f8e
+0x0000000000401f91 in ._extract ()
+	sar    $0x11,%r11                               #! PC = 0x401f91
+0x0000000000401f95 in ._extract ()
+	movswq %r11w,%r11                               #! PC = 0x401f95
+0x0000000000401f99 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f99
+0x0000000000401f9c in ._extract ()
+	imul   %r11                                     #! PC = 0x401f9c
+0x0000000000401f9f in ._extract ()
+	mov    %rax,%rsi                                #! PC = 0x401f9f
+0x0000000000401fa2 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401fa2
+0x0000000000401fa5 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401fa5
+0x0000000000401fa8 in ._extract ()
+	imul   %r13                                     #! PC = 0x401fa8
+0x0000000000401fab in ._extract ()
+	add    %rax,%rsi                                #! PC = 0x401fab
+0x0000000000401fae in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401fae
+0x0000000000401fb1 in ._extract ()
+	shrd   $0xf,%rbx,%rsi                           #! PC = 0x401fb1
+0x0000000000401fb6 in ._extract ()
+	mov    %r15,%rcx                                #! PC = 0x401fb6
+0x0000000000401fb9 in ._extract ()
+	cmp    $0x4,%r10                                #! PC = 0x401fb9
+0x0000000000401fbd in ._extract ()
+0x0000000000402009 in ._first_loop ()
+	#je     0x402009 <._first_loop>                 #! PC = 0x401fbd
+	mov    %r11,0x70(%rsp)                          #! EA = L0x7fffffffdcd0; PC = 0x402009
+0x000000000040200e in ._first_loop ()
+	mov    %r13,0x78(%rsp)                          #! EA = L0x7fffffffdcd8; PC = 0x40200e
+0x0000000000402013 in ._first_loop ()
+	mov    %r12,0x40(%rsp)                          #! EA = L0x7fffffffdca0; PC = 0x402013
+0x0000000000402018 in ._first_loop ()
+	mov    %r14,0x50(%rsp)                          #! EA = L0x7fffffffdcb0; PC = 0x402018
+0x000000000040201d in ._first_loop ()
+	dec    %r10                                     #! PC = 0x40201d
+0x0000000000402020 in ._first_loop ()
+0x0000000000401bc3 in ._loop15 ()
+	#jne    0x401bc3 <._loop15>                     #! PC = 0x402020
+	andn   %rsi,%r9,%r11                            #! PC = 0x401bc3
+0x0000000000401bc8 in ._loop15 ()
+	andn   %rcx,%r9,%r12                            #! PC = 0x401bc8
+0x0000000000401bcd in ._loop15 ()
+	or     0x58(%rsp),%r11                          #! EA = L0x7fffffffdcb8; Value = 0xffffffff00000000; PC = 0x401bcd
+0x0000000000401bd2 in ._loop15 ()
+	or     0x60(%rsp),%r12                          #! EA = L0x7fffffffdcc0; Value = 0xffff000000000000; PC = 0x401bd2
+0x0000000000401bd7 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401bd7
+0x0000000000401bda in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401bda
+0x0000000000401bde in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401bde
+0x0000000000401be1 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401be1
+0x0000000000401be4 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401be4
+0x0000000000401beb in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401beb
+0x0000000000401bef in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401bef
+0x0000000000401bf3 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401bf3
+0x0000000000401bf6 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401bf6
+0x0000000000401bf9 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401bf9
+0x0000000000401bfc in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401bfc
+0x0000000000401bff in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401bff
+0x0000000000401c02 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c02
+0x0000000000401c06 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c06
+0x0000000000401c0a in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c0a
+0x0000000000401c0e in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c0e
+0x0000000000401c12 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c12
+0x0000000000401c15 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c15
+0x0000000000401c19 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c19
+0x0000000000401c1c in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c1c
+0x0000000000401c1f in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c1f
+0x0000000000401c26 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c26
+0x0000000000401c2a in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c2a
+0x0000000000401c2e in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c2e
+0x0000000000401c31 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c31
+0x0000000000401c34 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c34
+0x0000000000401c37 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c37
+0x0000000000401c3a in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c3a
+0x0000000000401c3d in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c3d
+0x0000000000401c41 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c41
+0x0000000000401c45 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c45
+0x0000000000401c49 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c49
+0x0000000000401c4d in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c4d
+0x0000000000401c50 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c50
+0x0000000000401c54 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c54
+0x0000000000401c57 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c57
+0x0000000000401c5a in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c5a
+0x0000000000401c61 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c61
+0x0000000000401c65 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c65
+0x0000000000401c69 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c69
+0x0000000000401c6c in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c6c
+0x0000000000401c6f in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c6f
+0x0000000000401c72 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c72
+0x0000000000401c75 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c75
+0x0000000000401c78 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c78
+0x0000000000401c7c in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c7c
+0x0000000000401c80 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c80
+0x0000000000401c84 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c84
+0x0000000000401c88 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c88
+0x0000000000401c8b in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c8b
+0x0000000000401c8f in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c8f
+0x0000000000401c92 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c92
+0x0000000000401c95 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c95
+0x0000000000401c9c in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c9c
+0x0000000000401ca0 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401ca0
+0x0000000000401ca4 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ca4
+0x0000000000401ca7 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ca7
+0x0000000000401caa in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401caa
+0x0000000000401cad in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401cad
+0x0000000000401cb0 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401cb0
+0x0000000000401cb3 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cb3
+0x0000000000401cb7 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cb7
+0x0000000000401cbb in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cbb
+0x0000000000401cbf in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cbf
+0x0000000000401cc3 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cc3
+0x0000000000401cc6 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401cc6
+0x0000000000401cca in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401cca
+0x0000000000401ccd in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ccd
+0x0000000000401cd0 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401cd0
+0x0000000000401cd7 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401cd7
+0x0000000000401cdb in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401cdb
+0x0000000000401cdf in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401cdf
+0x0000000000401ce2 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ce2
+0x0000000000401ce5 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ce5
+0x0000000000401ce8 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ce8
+0x0000000000401ceb in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ceb
+0x0000000000401cee in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cee
+0x0000000000401cf2 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cf2
+0x0000000000401cf6 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cf6
+0x0000000000401cfa in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cfa
+0x0000000000401cfe in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cfe
+0x0000000000401d01 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d01
+0x0000000000401d05 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d05
+0x0000000000401d08 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d08
+0x0000000000401d0b in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d0b
+0x0000000000401d12 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d12
+0x0000000000401d16 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d16
+0x0000000000401d1a in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d1a
+0x0000000000401d1d in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d1d
+0x0000000000401d20 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d20
+0x0000000000401d23 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d23
+0x0000000000401d26 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d26
+0x0000000000401d29 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d29
+0x0000000000401d2d in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d2d
+0x0000000000401d31 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d31
+0x0000000000401d35 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d35
+0x0000000000401d39 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d39
+0x0000000000401d3c in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d3c
+0x0000000000401d40 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d40
+0x0000000000401d43 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d43
+0x0000000000401d46 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d46
+0x0000000000401d4d in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d4d
+0x0000000000401d51 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d51
+0x0000000000401d55 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d55
+0x0000000000401d58 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d58
+0x0000000000401d5b in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d5b
+0x0000000000401d5e in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d5e
+0x0000000000401d61 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d61
+0x0000000000401d64 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d64
+0x0000000000401d68 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d68
+0x0000000000401d6c in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d6c
+0x0000000000401d70 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d70
+0x0000000000401d74 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d74
+0x0000000000401d77 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d77
+0x0000000000401d7b in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d7b
+0x0000000000401d7e in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d7e
+0x0000000000401d81 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d81
+0x0000000000401d88 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d88
+0x0000000000401d8c in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d8c
+0x0000000000401d90 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d90
+0x0000000000401d93 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d93
+0x0000000000401d96 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d96
+0x0000000000401d99 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d99
+0x0000000000401d9c in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d9c
+0x0000000000401d9f in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d9f
+0x0000000000401da3 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401da3
+0x0000000000401da7 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401da7
+0x0000000000401dab in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401dab
+0x0000000000401daf in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401daf
+0x0000000000401db2 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401db2
+0x0000000000401db6 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401db6
+0x0000000000401db9 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401db9
+0x0000000000401dbc in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401dbc
+0x0000000000401dc3 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dc3
+0x0000000000401dc7 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401dc7
+0x0000000000401dcb in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401dcb
+0x0000000000401dce in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401dce
+0x0000000000401dd1 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401dd1
+0x0000000000401dd4 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401dd4
+0x0000000000401dd7 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401dd7
+0x0000000000401dda in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401dda
+0x0000000000401dde in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401dde
+0x0000000000401de2 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401de2
+0x0000000000401de6 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401de6
+0x0000000000401dea in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401dea
+0x0000000000401ded in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ded
+0x0000000000401df1 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401df1
+0x0000000000401df4 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401df4
+0x0000000000401df7 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401df7
+0x0000000000401dfe in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dfe
+0x0000000000401e02 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e02
+0x0000000000401e06 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e06
+0x0000000000401e09 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e09
+0x0000000000401e0c in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e0c
+0x0000000000401e0f in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e0f
+0x0000000000401e12 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e12
+0x0000000000401e15 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e15
+0x0000000000401e19 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e19
+0x0000000000401e1d in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e1d
+0x0000000000401e21 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e21
+0x0000000000401e25 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e25
+0x0000000000401e28 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e28
+0x0000000000401e2c in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e2c
+0x0000000000401e2f in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e2f
+0x0000000000401e32 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e32
+0x0000000000401e39 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e39
+0x0000000000401e3d in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e3d
+0x0000000000401e41 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e41
+0x0000000000401e44 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e44
+0x0000000000401e47 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e47
+0x0000000000401e4a in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e4a
+0x0000000000401e4d in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e4d
+0x0000000000401e50 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e50
+0x0000000000401e54 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e54
+0x0000000000401e58 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e58
+0x0000000000401e5c in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e5c
+0x0000000000401e60 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e60
+0x0000000000401e63 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e63
+0x0000000000401e67 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e67
+0x0000000000401e6a in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e6a
+0x0000000000401e6d in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e6d
+0x0000000000401e74 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e74
+0x0000000000401e78 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e78
+0x0000000000401e7c in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e7c
+0x0000000000401e7f in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e7f
+0x0000000000401e82 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e82
+0x0000000000401e85 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e85
+0x0000000000401e88 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e88
+0x0000000000401e8b in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e8b
+0x0000000000401e8f in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e8f
+0x0000000000401e93 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e93
+0x0000000000401e97 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e97
+0x0000000000401e9b in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e9b
+0x0000000000401e9e in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e9e
+0x0000000000401ea2 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401ea2
+0x0000000000401ea5 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ea5
+0x0000000000401ea8 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ea8
+0x0000000000401eaf in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eaf
+0x0000000000401eb3 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eb3
+0x0000000000401eb7 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401eb7
+0x0000000000401eba in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401eba
+0x0000000000401ebd in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ebd
+0x0000000000401ec0 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ec0
+0x0000000000401ec3 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ec3
+0x0000000000401ec6 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401ec6
+0x0000000000401eca in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401eca
+0x0000000000401ece in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401ece
+0x0000000000401ed2 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401ed2
+0x0000000000401ed6 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401ed6
+0x0000000000401ed9 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ed9
+0x0000000000401edd in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401edd
+0x0000000000401ee0 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ee0
+0x0000000000401ee3 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ee3
+0x0000000000401eea in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eea
+0x0000000000401eee in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eee
+0x0000000000401ef2 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ef2
+0x0000000000401ef5 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ef5
+0x0000000000401ef8 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ef8
+0x0000000000401efb in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401efb
+0x0000000000401efe in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401efe
+0x0000000000401f01 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f01
+0x0000000000401f05 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f05
+0x0000000000401f09 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f09
+0x0000000000401f0d in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f0d
+0x0000000000401f11 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401f11
+0x0000000000401f14 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401f14
+0x0000000000401f18 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401f18
+0x0000000000401f1b in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401f1b
+0x0000000000401f1e in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401f1e
+0x0000000000401f25 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401f25
+0x0000000000401f29 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401f29
+0x0000000000401f2d in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401f2d
+0x0000000000401f30 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401f30
+0x0000000000401f33 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401f33
+0x0000000000401f36 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401f36
+0x0000000000401f39 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401f39
+0x0000000000401f3c in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f3c
+0x0000000000401f40 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f40
+0x0000000000401f44 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f44
+0x0000000000401f48 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f48
+0x0000000000401f4c in ._extract ()
+	mov    0x68(%rsp),%r13                          #! EA = L0x7fffffffdcc8; Value = 0x0000000100010000; PC = 0x401f4c
+0x0000000000401f51 in ._extract ()
+	lea    (%r12,%r13,1),%r14                       #! PC = 0x401f51
+0x0000000000401f55 in ._extract ()
+	sar    $0x21,%r14                               #! PC = 0x401f55
+0x0000000000401f59 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401f59
+0x0000000000401f5c in ._extract ()
+	imul   %r14                                     #! PC = 0x401f5c
+0x0000000000401f5f in ._extract ()
+	mov    %rax,%r15                                #! PC = 0x401f5f
+0x0000000000401f62 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401f62
+0x0000000000401f65 in ._extract ()
+	mov    0x48(%rsp),%rbp                          #! EA = L0x7fffffffdca8; Value = 0x0000000000010000; PC = 0x401f65
+0x0000000000401f6a in ._extract ()
+	add    %rbp,%r12                                #! PC = 0x401f6a
+0x0000000000401f6d in ._extract ()
+	sar    $0x11,%r12                               #! PC = 0x401f6d
+0x0000000000401f71 in ._extract ()
+	movswq %r12w,%r12                               #! PC = 0x401f71
+0x0000000000401f75 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f75
+0x0000000000401f78 in ._extract ()
+	imul   %r12                                     #! PC = 0x401f78
+0x0000000000401f7b in ._extract ()
+	add    %rax,%r15                                #! PC = 0x401f7b
+0x0000000000401f7e in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401f7e
+0x0000000000401f81 in ._extract ()
+	shrd   $0xf,%rbx,%r15                           #! PC = 0x401f81
+0x0000000000401f86 in ._extract ()
+	lea    (%r11,%r13,1),%r13                       #! PC = 0x401f86
+0x0000000000401f8a in ._extract ()
+	sar    $0x21,%r13                               #! PC = 0x401f8a
+0x0000000000401f8e in ._extract ()
+	add    %rbp,%r11                                #! PC = 0x401f8e
+0x0000000000401f91 in ._extract ()
+	sar    $0x11,%r11                               #! PC = 0x401f91
+0x0000000000401f95 in ._extract ()
+	movswq %r11w,%r11                               #! PC = 0x401f95
+0x0000000000401f99 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f99
+0x0000000000401f9c in ._extract ()
+	imul   %r11                                     #! PC = 0x401f9c
+0x0000000000401f9f in ._extract ()
+	mov    %rax,%rsi                                #! PC = 0x401f9f
+0x0000000000401fa2 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401fa2
+0x0000000000401fa5 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401fa5
+0x0000000000401fa8 in ._extract ()
+	imul   %r13                                     #! PC = 0x401fa8
+0x0000000000401fab in ._extract ()
+	add    %rax,%rsi                                #! PC = 0x401fab
+0x0000000000401fae in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401fae
+0x0000000000401fb1 in ._extract ()
+	shrd   $0xf,%rbx,%rsi                           #! PC = 0x401fb1
+0x0000000000401fb6 in ._extract ()
+	mov    %r15,%rcx                                #! PC = 0x401fb6
+0x0000000000401fb9 in ._extract ()
+	cmp    $0x4,%r10                                #! PC = 0x401fb9
+0x0000000000401fbd in ._extract ()
+0x0000000000401fbf in ._extract ()
+	#je     0x402009 <._first_loop>                 #! PC = 0x401fbd
+	mov    %r11,%rdx                                #! PC = 0x401fbf
+0x0000000000401fc2 in ._extract ()
+	imul   0x70(%rsp),%rdx                          #! EA = L0x7fffffffdcd0; Value = 0xffffffffffff8000; PC = 0x401fc2
+0x0000000000401fc8 in ._extract ()
+	mov    %r13,%rax                                #! PC = 0x401fc8
+0x0000000000401fcb in ._extract ()
+	imul   0x40(%rsp),%rax                          #! EA = L0x7fffffffdca0; Value = 0x0000000000000000; PC = 0x401fcb
+0x0000000000401fd1 in ._extract ()
+	imul   0x78(%rsp),%r11                          #! EA = L0x7fffffffdcd8; Value = 0x0000000000000000; PC = 0x401fd1
+0x0000000000401fd7 in ._extract ()
+	imul   0x50(%rsp),%r13                          #! EA = L0x7fffffffdcb0; Value = 0xffffffffffffffff; PC = 0x401fd7
+0x0000000000401fdd in ._extract ()
+	add    %r11,%r13                                #! PC = 0x401fdd
+0x0000000000401fe0 in ._extract ()
+	lea    (%rdx,%rax,1),%r11                       #! PC = 0x401fe0
+0x0000000000401fe4 in ._extract ()
+	mov    %r12,%rdx                                #! PC = 0x401fe4
+0x0000000000401fe7 in ._extract ()
+	imul   0x70(%rsp),%rdx                          #! EA = L0x7fffffffdcd0; Value = 0xffffffffffff8000; PC = 0x401fe7
+0x0000000000401fed in ._extract ()
+	mov    %r14,%rax                                #! PC = 0x401fed
+0x0000000000401ff0 in ._extract ()
+	imul   0x40(%rsp),%rax                          #! EA = L0x7fffffffdca0; Value = 0x0000000000000000; PC = 0x401ff0
+0x0000000000401ff6 in ._extract ()
+	imul   0x78(%rsp),%r12                          #! EA = L0x7fffffffdcd8; Value = 0x0000000000000000; PC = 0x401ff6
+0x0000000000401ffc in ._extract ()
+	imul   0x50(%rsp),%r14                          #! EA = L0x7fffffffdcb0; Value = 0xffffffffffffffff; PC = 0x401ffc
+0x0000000000402002 in ._extract ()
+	add    %r12,%r14                                #! PC = 0x402002
+0x0000000000402005 in ._extract ()
+	lea    (%rdx,%rax,1),%r12                       #! PC = 0x402005
+0x0000000000402009 in ._first_loop ()
+	mov    %r11,0x70(%rsp)                          #! EA = L0x7fffffffdcd0; PC = 0x402009
+0x000000000040200e in ._first_loop ()
+	mov    %r13,0x78(%rsp)                          #! EA = L0x7fffffffdcd8; PC = 0x40200e
+0x0000000000402013 in ._first_loop ()
+	mov    %r12,0x40(%rsp)                          #! EA = L0x7fffffffdca0; PC = 0x402013
+0x0000000000402018 in ._first_loop ()
+	mov    %r14,0x50(%rsp)                          #! EA = L0x7fffffffdcb0; PC = 0x402018
+0x000000000040201d in ._first_loop ()
+	dec    %r10                                     #! PC = 0x40201d
+0x0000000000402020 in ._first_loop ()
+0x0000000000401bc3 in ._loop15 ()
+	#jne    0x401bc3 <._loop15>                     #! PC = 0x402020
+	andn   %rsi,%r9,%r11                            #! PC = 0x401bc3
+0x0000000000401bc8 in ._loop15 ()
+	andn   %rcx,%r9,%r12                            #! PC = 0x401bc8
+0x0000000000401bcd in ._loop15 ()
+	or     0x58(%rsp),%r11                          #! EA = L0x7fffffffdcb8; Value = 0xffffffff00000000; PC = 0x401bcd
+0x0000000000401bd2 in ._loop15 ()
+	or     0x60(%rsp),%r12                          #! EA = L0x7fffffffdcc0; Value = 0xffff000000000000; PC = 0x401bd2
+0x0000000000401bd7 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401bd7
+0x0000000000401bda in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401bda
+0x0000000000401bde in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401bde
+0x0000000000401be1 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401be1
+0x0000000000401be4 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401be4
+0x0000000000401beb in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401beb
+0x0000000000401bef in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401bef
+0x0000000000401bf3 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401bf3
+0x0000000000401bf6 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401bf6
+0x0000000000401bf9 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401bf9
+0x0000000000401bfc in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401bfc
+0x0000000000401bff in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401bff
+0x0000000000401c02 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c02
+0x0000000000401c06 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c06
+0x0000000000401c0a in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c0a
+0x0000000000401c0e in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c0e
+0x0000000000401c12 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c12
+0x0000000000401c15 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c15
+0x0000000000401c19 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c19
+0x0000000000401c1c in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c1c
+0x0000000000401c1f in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c1f
+0x0000000000401c26 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c26
+0x0000000000401c2a in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c2a
+0x0000000000401c2e in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c2e
+0x0000000000401c31 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c31
+0x0000000000401c34 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c34
+0x0000000000401c37 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c37
+0x0000000000401c3a in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c3a
+0x0000000000401c3d in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c3d
+0x0000000000401c41 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c41
+0x0000000000401c45 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c45
+0x0000000000401c49 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c49
+0x0000000000401c4d in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c4d
+0x0000000000401c50 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c50
+0x0000000000401c54 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c54
+0x0000000000401c57 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c57
+0x0000000000401c5a in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c5a
+0x0000000000401c61 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c61
+0x0000000000401c65 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c65
+0x0000000000401c69 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c69
+0x0000000000401c6c in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c6c
+0x0000000000401c6f in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c6f
+0x0000000000401c72 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c72
+0x0000000000401c75 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c75
+0x0000000000401c78 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c78
+0x0000000000401c7c in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c7c
+0x0000000000401c80 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c80
+0x0000000000401c84 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c84
+0x0000000000401c88 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c88
+0x0000000000401c8b in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c8b
+0x0000000000401c8f in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c8f
+0x0000000000401c92 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c92
+0x0000000000401c95 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c95
+0x0000000000401c9c in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c9c
+0x0000000000401ca0 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401ca0
+0x0000000000401ca4 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ca4
+0x0000000000401ca7 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ca7
+0x0000000000401caa in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401caa
+0x0000000000401cad in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401cad
+0x0000000000401cb0 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401cb0
+0x0000000000401cb3 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cb3
+0x0000000000401cb7 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cb7
+0x0000000000401cbb in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cbb
+0x0000000000401cbf in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cbf
+0x0000000000401cc3 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cc3
+0x0000000000401cc6 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401cc6
+0x0000000000401cca in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401cca
+0x0000000000401ccd in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ccd
+0x0000000000401cd0 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401cd0
+0x0000000000401cd7 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401cd7
+0x0000000000401cdb in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401cdb
+0x0000000000401cdf in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401cdf
+0x0000000000401ce2 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ce2
+0x0000000000401ce5 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ce5
+0x0000000000401ce8 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ce8
+0x0000000000401ceb in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ceb
+0x0000000000401cee in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cee
+0x0000000000401cf2 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cf2
+0x0000000000401cf6 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cf6
+0x0000000000401cfa in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cfa
+0x0000000000401cfe in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cfe
+0x0000000000401d01 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d01
+0x0000000000401d05 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d05
+0x0000000000401d08 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d08
+0x0000000000401d0b in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d0b
+0x0000000000401d12 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d12
+0x0000000000401d16 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d16
+0x0000000000401d1a in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d1a
+0x0000000000401d1d in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d1d
+0x0000000000401d20 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d20
+0x0000000000401d23 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d23
+0x0000000000401d26 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d26
+0x0000000000401d29 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d29
+0x0000000000401d2d in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d2d
+0x0000000000401d31 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d31
+0x0000000000401d35 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d35
+0x0000000000401d39 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d39
+0x0000000000401d3c in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d3c
+0x0000000000401d40 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d40
+0x0000000000401d43 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d43
+0x0000000000401d46 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d46
+0x0000000000401d4d in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d4d
+0x0000000000401d51 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d51
+0x0000000000401d55 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d55
+0x0000000000401d58 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d58
+0x0000000000401d5b in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d5b
+0x0000000000401d5e in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d5e
+0x0000000000401d61 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d61
+0x0000000000401d64 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d64
+0x0000000000401d68 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d68
+0x0000000000401d6c in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d6c
+0x0000000000401d70 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d70
+0x0000000000401d74 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d74
+0x0000000000401d77 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d77
+0x0000000000401d7b in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d7b
+0x0000000000401d7e in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d7e
+0x0000000000401d81 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d81
+0x0000000000401d88 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d88
+0x0000000000401d8c in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d8c
+0x0000000000401d90 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d90
+0x0000000000401d93 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d93
+0x0000000000401d96 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d96
+0x0000000000401d99 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d99
+0x0000000000401d9c in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d9c
+0x0000000000401d9f in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d9f
+0x0000000000401da3 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401da3
+0x0000000000401da7 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401da7
+0x0000000000401dab in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401dab
+0x0000000000401daf in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401daf
+0x0000000000401db2 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401db2
+0x0000000000401db6 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401db6
+0x0000000000401db9 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401db9
+0x0000000000401dbc in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401dbc
+0x0000000000401dc3 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dc3
+0x0000000000401dc7 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401dc7
+0x0000000000401dcb in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401dcb
+0x0000000000401dce in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401dce
+0x0000000000401dd1 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401dd1
+0x0000000000401dd4 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401dd4
+0x0000000000401dd7 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401dd7
+0x0000000000401dda in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401dda
+0x0000000000401dde in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401dde
+0x0000000000401de2 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401de2
+0x0000000000401de6 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401de6
+0x0000000000401dea in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401dea
+0x0000000000401ded in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ded
+0x0000000000401df1 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401df1
+0x0000000000401df4 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401df4
+0x0000000000401df7 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401df7
+0x0000000000401dfe in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dfe
+0x0000000000401e02 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e02
+0x0000000000401e06 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e06
+0x0000000000401e09 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e09
+0x0000000000401e0c in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e0c
+0x0000000000401e0f in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e0f
+0x0000000000401e12 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e12
+0x0000000000401e15 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e15
+0x0000000000401e19 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e19
+0x0000000000401e1d in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e1d
+0x0000000000401e21 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e21
+0x0000000000401e25 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e25
+0x0000000000401e28 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e28
+0x0000000000401e2c in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e2c
+0x0000000000401e2f in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e2f
+0x0000000000401e32 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e32
+0x0000000000401e39 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e39
+0x0000000000401e3d in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e3d
+0x0000000000401e41 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e41
+0x0000000000401e44 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e44
+0x0000000000401e47 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e47
+0x0000000000401e4a in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e4a
+0x0000000000401e4d in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e4d
+0x0000000000401e50 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e50
+0x0000000000401e54 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e54
+0x0000000000401e58 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e58
+0x0000000000401e5c in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e5c
+0x0000000000401e60 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e60
+0x0000000000401e63 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e63
+0x0000000000401e67 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e67
+0x0000000000401e6a in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e6a
+0x0000000000401e6d in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e6d
+0x0000000000401e74 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e74
+0x0000000000401e78 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e78
+0x0000000000401e7c in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e7c
+0x0000000000401e7f in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e7f
+0x0000000000401e82 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e82
+0x0000000000401e85 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e85
+0x0000000000401e88 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e88
+0x0000000000401e8b in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e8b
+0x0000000000401e8f in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e8f
+0x0000000000401e93 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e93
+0x0000000000401e97 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e97
+0x0000000000401e9b in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e9b
+0x0000000000401e9e in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e9e
+0x0000000000401ea2 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401ea2
+0x0000000000401ea5 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ea5
+0x0000000000401ea8 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ea8
+0x0000000000401eaf in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eaf
+0x0000000000401eb3 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eb3
+0x0000000000401eb7 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401eb7
+0x0000000000401eba in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401eba
+0x0000000000401ebd in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ebd
+0x0000000000401ec0 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ec0
+0x0000000000401ec3 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ec3
+0x0000000000401ec6 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401ec6
+0x0000000000401eca in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401eca
+0x0000000000401ece in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401ece
+0x0000000000401ed2 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401ed2
+0x0000000000401ed6 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401ed6
+0x0000000000401ed9 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ed9
+0x0000000000401edd in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401edd
+0x0000000000401ee0 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ee0
+0x0000000000401ee3 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ee3
+0x0000000000401eea in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eea
+0x0000000000401eee in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eee
+0x0000000000401ef2 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ef2
+0x0000000000401ef5 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ef5
+0x0000000000401ef8 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ef8
+0x0000000000401efb in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401efb
+0x0000000000401efe in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401efe
+0x0000000000401f01 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f01
+0x0000000000401f05 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f05
+0x0000000000401f09 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f09
+0x0000000000401f0d in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f0d
+0x0000000000401f11 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401f11
+0x0000000000401f14 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401f14
+0x0000000000401f18 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401f18
+0x0000000000401f1b in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401f1b
+0x0000000000401f1e in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401f1e
+0x0000000000401f25 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401f25
+0x0000000000401f29 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401f29
+0x0000000000401f2d in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401f2d
+0x0000000000401f30 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401f30
+0x0000000000401f33 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401f33
+0x0000000000401f36 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401f36
+0x0000000000401f39 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401f39
+0x0000000000401f3c in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f3c
+0x0000000000401f40 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f40
+0x0000000000401f44 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f44
+0x0000000000401f48 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f48
+0x0000000000401f4c in ._extract ()
+	mov    0x68(%rsp),%r13                          #! EA = L0x7fffffffdcc8; Value = 0x0000000100010000; PC = 0x401f4c
+0x0000000000401f51 in ._extract ()
+	lea    (%r12,%r13,1),%r14                       #! PC = 0x401f51
+0x0000000000401f55 in ._extract ()
+	sar    $0x21,%r14                               #! PC = 0x401f55
+0x0000000000401f59 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401f59
+0x0000000000401f5c in ._extract ()
+	imul   %r14                                     #! PC = 0x401f5c
+0x0000000000401f5f in ._extract ()
+	mov    %rax,%r15                                #! PC = 0x401f5f
+0x0000000000401f62 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401f62
+0x0000000000401f65 in ._extract ()
+	mov    0x48(%rsp),%rbp                          #! EA = L0x7fffffffdca8; Value = 0x0000000000010000; PC = 0x401f65
+0x0000000000401f6a in ._extract ()
+	add    %rbp,%r12                                #! PC = 0x401f6a
+0x0000000000401f6d in ._extract ()
+	sar    $0x11,%r12                               #! PC = 0x401f6d
+0x0000000000401f71 in ._extract ()
+	movswq %r12w,%r12                               #! PC = 0x401f71
+0x0000000000401f75 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f75
+0x0000000000401f78 in ._extract ()
+	imul   %r12                                     #! PC = 0x401f78
+0x0000000000401f7b in ._extract ()
+	add    %rax,%r15                                #! PC = 0x401f7b
+0x0000000000401f7e in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401f7e
+0x0000000000401f81 in ._extract ()
+	shrd   $0xf,%rbx,%r15                           #! PC = 0x401f81
+0x0000000000401f86 in ._extract ()
+	lea    (%r11,%r13,1),%r13                       #! PC = 0x401f86
+0x0000000000401f8a in ._extract ()
+	sar    $0x21,%r13                               #! PC = 0x401f8a
+0x0000000000401f8e in ._extract ()
+	add    %rbp,%r11                                #! PC = 0x401f8e
+0x0000000000401f91 in ._extract ()
+	sar    $0x11,%r11                               #! PC = 0x401f91
+0x0000000000401f95 in ._extract ()
+	movswq %r11w,%r11                               #! PC = 0x401f95
+0x0000000000401f99 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f99
+0x0000000000401f9c in ._extract ()
+	imul   %r11                                     #! PC = 0x401f9c
+0x0000000000401f9f in ._extract ()
+	mov    %rax,%rsi                                #! PC = 0x401f9f
+0x0000000000401fa2 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401fa2
+0x0000000000401fa5 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401fa5
+0x0000000000401fa8 in ._extract ()
+	imul   %r13                                     #! PC = 0x401fa8
+0x0000000000401fab in ._extract ()
+	add    %rax,%rsi                                #! PC = 0x401fab
+0x0000000000401fae in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401fae
+0x0000000000401fb1 in ._extract ()
+	shrd   $0xf,%rbx,%rsi                           #! PC = 0x401fb1
+0x0000000000401fb6 in ._extract ()
+	mov    %r15,%rcx                                #! PC = 0x401fb6
+0x0000000000401fb9 in ._extract ()
+	cmp    $0x4,%r10                                #! PC = 0x401fb9
+0x0000000000401fbd in ._extract ()
+0x0000000000401fbf in ._extract ()
+	#je     0x402009 <._first_loop>                 #! PC = 0x401fbd
+	mov    %r11,%rdx                                #! PC = 0x401fbf
+0x0000000000401fc2 in ._extract ()
+	imul   0x70(%rsp),%rdx                          #! EA = L0x7fffffffdcd0; Value = 0x0000000040000000; PC = 0x401fc2
+0x0000000000401fc8 in ._extract ()
+	mov    %r13,%rax                                #! PC = 0x401fc8
+0x0000000000401fcb in ._extract ()
+	imul   0x40(%rsp),%rax                          #! EA = L0x7fffffffdca0; Value = 0x0000000000000000; PC = 0x401fcb
+0x0000000000401fd1 in ._extract ()
+	imul   0x78(%rsp),%r11                          #! EA = L0x7fffffffdcd8; Value = 0x0000000000000000; PC = 0x401fd1
+0x0000000000401fd7 in ._extract ()
+	imul   0x50(%rsp),%r13                          #! EA = L0x7fffffffdcb0; Value = 0x0000000000000001; PC = 0x401fd7
+0x0000000000401fdd in ._extract ()
+	add    %r11,%r13                                #! PC = 0x401fdd
+0x0000000000401fe0 in ._extract ()
+	lea    (%rdx,%rax,1),%r11                       #! PC = 0x401fe0
+0x0000000000401fe4 in ._extract ()
+	mov    %r12,%rdx                                #! PC = 0x401fe4
+0x0000000000401fe7 in ._extract ()
+	imul   0x70(%rsp),%rdx                          #! EA = L0x7fffffffdcd0; Value = 0x0000000040000000; PC = 0x401fe7
+0x0000000000401fed in ._extract ()
+	mov    %r14,%rax                                #! PC = 0x401fed
+0x0000000000401ff0 in ._extract ()
+	imul   0x40(%rsp),%rax                          #! EA = L0x7fffffffdca0; Value = 0x0000000000000000; PC = 0x401ff0
+0x0000000000401ff6 in ._extract ()
+	imul   0x78(%rsp),%r12                          #! EA = L0x7fffffffdcd8; Value = 0x0000000000000000; PC = 0x401ff6
+0x0000000000401ffc in ._extract ()
+	imul   0x50(%rsp),%r14                          #! EA = L0x7fffffffdcb0; Value = 0x0000000000000001; PC = 0x401ffc
+0x0000000000402002 in ._extract ()
+	add    %r12,%r14                                #! PC = 0x402002
+0x0000000000402005 in ._extract ()
+	lea    (%rdx,%rax,1),%r12                       #! PC = 0x402005
+0x0000000000402009 in ._first_loop ()
+	mov    %r11,0x70(%rsp)                          #! EA = L0x7fffffffdcd0; PC = 0x402009
+0x000000000040200e in ._first_loop ()
+	mov    %r13,0x78(%rsp)                          #! EA = L0x7fffffffdcd8; PC = 0x40200e
+0x0000000000402013 in ._first_loop ()
+	mov    %r12,0x40(%rsp)                          #! EA = L0x7fffffffdca0; PC = 0x402013
+0x0000000000402018 in ._first_loop ()
+	mov    %r14,0x50(%rsp)                          #! EA = L0x7fffffffdcb0; PC = 0x402018
+0x000000000040201d in ._first_loop ()
+	dec    %r10                                     #! PC = 0x40201d
+0x0000000000402020 in ._first_loop ()
+0x0000000000401bc3 in ._loop15 ()
+	#jne    0x401bc3 <._loop15>                     #! PC = 0x402020
+	andn   %rsi,%r9,%r11                            #! PC = 0x401bc3
+0x0000000000401bc8 in ._loop15 ()
+	andn   %rcx,%r9,%r12                            #! PC = 0x401bc8
+0x0000000000401bcd in ._loop15 ()
+	or     0x58(%rsp),%r11                          #! EA = L0x7fffffffdcb8; Value = 0xffffffff00000000; PC = 0x401bcd
+0x0000000000401bd2 in ._loop15 ()
+	or     0x60(%rsp),%r12                          #! EA = L0x7fffffffdcc0; Value = 0xffff000000000000; PC = 0x401bd2
+0x0000000000401bd7 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401bd7
+0x0000000000401bda in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401bda
+0x0000000000401bde in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401bde
+0x0000000000401be1 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401be1
+0x0000000000401be4 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401be4
+0x0000000000401beb in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401beb
+0x0000000000401bef in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401bef
+0x0000000000401bf3 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401bf3
+0x0000000000401bf6 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401bf6
+0x0000000000401bf9 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401bf9
+0x0000000000401bfc in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401bfc
+0x0000000000401bff in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401bff
+0x0000000000401c02 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c02
+0x0000000000401c06 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c06
+0x0000000000401c0a in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c0a
+0x0000000000401c0e in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c0e
+0x0000000000401c12 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c12
+0x0000000000401c15 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c15
+0x0000000000401c19 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c19
+0x0000000000401c1c in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c1c
+0x0000000000401c1f in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c1f
+0x0000000000401c26 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c26
+0x0000000000401c2a in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c2a
+0x0000000000401c2e in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c2e
+0x0000000000401c31 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c31
+0x0000000000401c34 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c34
+0x0000000000401c37 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c37
+0x0000000000401c3a in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c3a
+0x0000000000401c3d in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c3d
+0x0000000000401c41 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c41
+0x0000000000401c45 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c45
+0x0000000000401c49 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c49
+0x0000000000401c4d in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c4d
+0x0000000000401c50 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c50
+0x0000000000401c54 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c54
+0x0000000000401c57 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c57
+0x0000000000401c5a in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c5a
+0x0000000000401c61 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c61
+0x0000000000401c65 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401c65
+0x0000000000401c69 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401c69
+0x0000000000401c6c in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401c6c
+0x0000000000401c6f in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401c6f
+0x0000000000401c72 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401c72
+0x0000000000401c75 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401c75
+0x0000000000401c78 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401c78
+0x0000000000401c7c in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401c7c
+0x0000000000401c80 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401c80
+0x0000000000401c84 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401c84
+0x0000000000401c88 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401c88
+0x0000000000401c8b in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401c8b
+0x0000000000401c8f in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401c8f
+0x0000000000401c92 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401c92
+0x0000000000401c95 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401c95
+0x0000000000401c9c in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401c9c
+0x0000000000401ca0 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401ca0
+0x0000000000401ca4 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ca4
+0x0000000000401ca7 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ca7
+0x0000000000401caa in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401caa
+0x0000000000401cad in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401cad
+0x0000000000401cb0 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401cb0
+0x0000000000401cb3 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cb3
+0x0000000000401cb7 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cb7
+0x0000000000401cbb in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cbb
+0x0000000000401cbf in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cbf
+0x0000000000401cc3 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cc3
+0x0000000000401cc6 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401cc6
+0x0000000000401cca in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401cca
+0x0000000000401ccd in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ccd
+0x0000000000401cd0 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401cd0
+0x0000000000401cd7 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401cd7
+0x0000000000401cdb in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401cdb
+0x0000000000401cdf in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401cdf
+0x0000000000401ce2 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ce2
+0x0000000000401ce5 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ce5
+0x0000000000401ce8 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ce8
+0x0000000000401ceb in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ceb
+0x0000000000401cee in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401cee
+0x0000000000401cf2 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401cf2
+0x0000000000401cf6 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401cf6
+0x0000000000401cfa in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401cfa
+0x0000000000401cfe in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401cfe
+0x0000000000401d01 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d01
+0x0000000000401d05 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d05
+0x0000000000401d08 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d08
+0x0000000000401d0b in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d0b
+0x0000000000401d12 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d12
+0x0000000000401d16 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d16
+0x0000000000401d1a in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d1a
+0x0000000000401d1d in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d1d
+0x0000000000401d20 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d20
+0x0000000000401d23 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d23
+0x0000000000401d26 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d26
+0x0000000000401d29 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d29
+0x0000000000401d2d in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d2d
+0x0000000000401d31 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d31
+0x0000000000401d35 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d35
+0x0000000000401d39 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d39
+0x0000000000401d3c in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d3c
+0x0000000000401d40 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d40
+0x0000000000401d43 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d43
+0x0000000000401d46 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d46
+0x0000000000401d4d in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d4d
+0x0000000000401d51 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d51
+0x0000000000401d55 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d55
+0x0000000000401d58 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d58
+0x0000000000401d5b in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d5b
+0x0000000000401d5e in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d5e
+0x0000000000401d61 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d61
+0x0000000000401d64 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d64
+0x0000000000401d68 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401d68
+0x0000000000401d6c in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401d6c
+0x0000000000401d70 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401d70
+0x0000000000401d74 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401d74
+0x0000000000401d77 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401d77
+0x0000000000401d7b in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401d7b
+0x0000000000401d7e in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401d7e
+0x0000000000401d81 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401d81
+0x0000000000401d88 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401d88
+0x0000000000401d8c in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401d8c
+0x0000000000401d90 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401d90
+0x0000000000401d93 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401d93
+0x0000000000401d96 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401d96
+0x0000000000401d99 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401d99
+0x0000000000401d9c in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401d9c
+0x0000000000401d9f in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401d9f
+0x0000000000401da3 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401da3
+0x0000000000401da7 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401da7
+0x0000000000401dab in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401dab
+0x0000000000401daf in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401daf
+0x0000000000401db2 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401db2
+0x0000000000401db6 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401db6
+0x0000000000401db9 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401db9
+0x0000000000401dbc in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401dbc
+0x0000000000401dc3 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dc3
+0x0000000000401dc7 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401dc7
+0x0000000000401dcb in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401dcb
+0x0000000000401dce in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401dce
+0x0000000000401dd1 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401dd1
+0x0000000000401dd4 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401dd4
+0x0000000000401dd7 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401dd7
+0x0000000000401dda in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401dda
+0x0000000000401dde in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401dde
+0x0000000000401de2 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401de2
+0x0000000000401de6 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401de6
+0x0000000000401dea in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401dea
+0x0000000000401ded in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ded
+0x0000000000401df1 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401df1
+0x0000000000401df4 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401df4
+0x0000000000401df7 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401df7
+0x0000000000401dfe in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401dfe
+0x0000000000401e02 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e02
+0x0000000000401e06 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e06
+0x0000000000401e09 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e09
+0x0000000000401e0c in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e0c
+0x0000000000401e0f in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e0f
+0x0000000000401e12 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e12
+0x0000000000401e15 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e15
+0x0000000000401e19 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e19
+0x0000000000401e1d in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e1d
+0x0000000000401e21 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e21
+0x0000000000401e25 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e25
+0x0000000000401e28 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e28
+0x0000000000401e2c in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e2c
+0x0000000000401e2f in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e2f
+0x0000000000401e32 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e32
+0x0000000000401e39 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e39
+0x0000000000401e3d in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e3d
+0x0000000000401e41 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e41
+0x0000000000401e44 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e44
+0x0000000000401e47 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e47
+0x0000000000401e4a in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e4a
+0x0000000000401e4d in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e4d
+0x0000000000401e50 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e50
+0x0000000000401e54 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e54
+0x0000000000401e58 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e58
+0x0000000000401e5c in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e5c
+0x0000000000401e60 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e60
+0x0000000000401e63 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e63
+0x0000000000401e67 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401e67
+0x0000000000401e6a in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401e6a
+0x0000000000401e6d in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401e6d
+0x0000000000401e74 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401e74
+0x0000000000401e78 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401e78
+0x0000000000401e7c in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401e7c
+0x0000000000401e7f in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401e7f
+0x0000000000401e82 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401e82
+0x0000000000401e85 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401e85
+0x0000000000401e88 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401e88
+0x0000000000401e8b in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401e8b
+0x0000000000401e8f in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401e8f
+0x0000000000401e93 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401e93
+0x0000000000401e97 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401e97
+0x0000000000401e9b in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401e9b
+0x0000000000401e9e in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401e9e
+0x0000000000401ea2 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401ea2
+0x0000000000401ea5 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ea5
+0x0000000000401ea8 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ea8
+0x0000000000401eaf in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eaf
+0x0000000000401eb3 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eb3
+0x0000000000401eb7 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401eb7
+0x0000000000401eba in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401eba
+0x0000000000401ebd in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ebd
+0x0000000000401ec0 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401ec0
+0x0000000000401ec3 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401ec3
+0x0000000000401ec6 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401ec6
+0x0000000000401eca in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401eca
+0x0000000000401ece in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401ece
+0x0000000000401ed2 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401ed2
+0x0000000000401ed6 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401ed6
+0x0000000000401ed9 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401ed9
+0x0000000000401edd in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401edd
+0x0000000000401ee0 in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401ee0
+0x0000000000401ee3 in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401ee3
+0x0000000000401eea in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401eea
+0x0000000000401eee in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401eee
+0x0000000000401ef2 in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401ef2
+0x0000000000401ef5 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401ef5
+0x0000000000401ef8 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401ef8
+0x0000000000401efb in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401efb
+0x0000000000401efe in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401efe
+0x0000000000401f01 in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f01
+0x0000000000401f05 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f05
+0x0000000000401f09 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f09
+0x0000000000401f0d in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f0d
+0x0000000000401f11 in ._loop15 ()
+	xor    %rdx,%rdx                                #! PC = 0x401f11
+0x0000000000401f14 in ._loop15 ()
+	lea    (%r12,%r11,1),%rax                       #! PC = 0x401f14
+0x0000000000401f18 in ._loop15 ()
+	mov    %r8,%r13                                 #! PC = 0x401f18
+0x0000000000401f1b in ._loop15 ()
+	mov    %r12,%r14                                #! PC = 0x401f1b
+0x0000000000401f1e in ._loop15 ()
+	test   $0x1,%r12                                #! PC = 0x401f1e
+0x0000000000401f25 in ._loop15 ()
+	cmove  %r12,%rax                                #! PC = 0x401f25
+0x0000000000401f29 in ._loop15 ()
+	cmovne %rdi,%rdx                                #! PC = 0x401f29
+0x0000000000401f2d in ._loop15 ()
+	xor    %rdi,%r13                                #! PC = 0x401f2d
+0x0000000000401f30 in ._loop15 ()
+	sub    %r11,%r12                                #! PC = 0x401f30
+0x0000000000401f33 in ._loop15 ()
+	sar    %rax                                     #! PC = 0x401f33
+0x0000000000401f36 in ._loop15 ()
+	sar    %r12                                     #! PC = 0x401f36
+0x0000000000401f39 in ._loop15 ()
+	dec    %rdi                                     #! PC = 0x401f39
+0x0000000000401f3c in ._loop15 ()
+	cmp    $0x0,%rdx                                #! PC = 0x401f3c
+0x0000000000401f40 in ._loop15 ()
+	cmovl  %r14,%r11                                #! PC = 0x401f40
+0x0000000000401f44 in ._loop15 ()
+	cmovge %rax,%r12                                #! PC = 0x401f44
+0x0000000000401f48 in ._loop15 ()
+	cmovl  %r13,%rdi                                #! PC = 0x401f48
+0x0000000000401f4c in ._extract ()
+	mov    0x68(%rsp),%r13                          #! EA = L0x7fffffffdcc8; Value = 0x0000000100010000; PC = 0x401f4c
+0x0000000000401f51 in ._extract ()
+	lea    (%r12,%r13,1),%r14                       #! PC = 0x401f51
+0x0000000000401f55 in ._extract ()
+	sar    $0x21,%r14                               #! PC = 0x401f55
+0x0000000000401f59 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401f59
+0x0000000000401f5c in ._extract ()
+	imul   %r14                                     #! PC = 0x401f5c
+0x0000000000401f5f in ._extract ()
+	mov    %rax,%r15                                #! PC = 0x401f5f
+0x0000000000401f62 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401f62
+0x0000000000401f65 in ._extract ()
+	mov    0x48(%rsp),%rbp                          #! EA = L0x7fffffffdca8; Value = 0x0000000000010000; PC = 0x401f65
+0x0000000000401f6a in ._extract ()
+	add    %rbp,%r12                                #! PC = 0x401f6a
+0x0000000000401f6d in ._extract ()
+	sar    $0x11,%r12                               #! PC = 0x401f6d
+0x0000000000401f71 in ._extract ()
+	movswq %r12w,%r12                               #! PC = 0x401f71
+0x0000000000401f75 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f75
+0x0000000000401f78 in ._extract ()
+	imul   %r12                                     #! PC = 0x401f78
+0x0000000000401f7b in ._extract ()
+	add    %rax,%r15                                #! PC = 0x401f7b
+0x0000000000401f7e in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401f7e
+0x0000000000401f81 in ._extract ()
+	shrd   $0xf,%rbx,%r15                           #! PC = 0x401f81
+0x0000000000401f86 in ._extract ()
+	lea    (%r11,%r13,1),%r13                       #! PC = 0x401f86
+0x0000000000401f8a in ._extract ()
+	sar    $0x21,%r13                               #! PC = 0x401f8a
+0x0000000000401f8e in ._extract ()
+	add    %rbp,%r11                                #! PC = 0x401f8e
+0x0000000000401f91 in ._extract ()
+	sar    $0x11,%r11                               #! PC = 0x401f91
+0x0000000000401f95 in ._extract ()
+	movswq %r11w,%r11                               #! PC = 0x401f95
+0x0000000000401f99 in ._extract ()
+	mov    %rsi,%rax                                #! PC = 0x401f99
+0x0000000000401f9c in ._extract ()
+	imul   %r11                                     #! PC = 0x401f9c
+0x0000000000401f9f in ._extract ()
+	mov    %rax,%rsi                                #! PC = 0x401f9f
+0x0000000000401fa2 in ._extract ()
+	mov    %rdx,%rbx                                #! PC = 0x401fa2
+0x0000000000401fa5 in ._extract ()
+	mov    %rcx,%rax                                #! PC = 0x401fa5
+0x0000000000401fa8 in ._extract ()
+	imul   %r13                                     #! PC = 0x401fa8
+0x0000000000401fab in ._extract ()
+	add    %rax,%rsi                                #! PC = 0x401fab
+0x0000000000401fae in ._extract ()
+	adc    %rdx,%rbx                                #! PC = 0x401fae
+0x0000000000401fb1 in ._extract ()
+	shrd   $0xf,%rbx,%rsi                           #! PC = 0x401fb1
+0x0000000000401fb6 in ._extract ()
+	mov    %r15,%rcx                                #! PC = 0x401fb6
+0x0000000000401fb9 in ._extract ()
+	cmp    $0x4,%r10                                #! PC = 0x401fb9
+0x0000000000401fbd in ._extract ()
+0x0000000000401fbf in ._extract ()
+	#je     0x402009 <._first_loop>                 #! PC = 0x401fbd
+	mov    %r11,%rdx                                #! PC = 0x401fbf
+0x0000000000401fc2 in ._extract ()
+	imul   0x70(%rsp),%rdx                          #! EA = L0x7fffffffdcd0; Value = 0xffffe00000000000; PC = 0x401fc2
+0x0000000000401fc8 in ._extract ()
+	mov    %r13,%rax                                #! PC = 0x401fc8
+0x0000000000401fcb in ._extract ()
+	imul   0x40(%rsp),%rax                          #! EA = L0x7fffffffdca0; Value = 0x0000000000000000; PC = 0x401fcb
+0x0000000000401fd1 in ._extract ()
+	imul   0x78(%rsp),%r11                          #! EA = L0x7fffffffdcd8; Value = 0x0000000000000000; PC = 0x401fd1
+0x0000000000401fd7 in ._extract ()
+	imul   0x50(%rsp),%r13                          #! EA = L0x7fffffffdcb0; Value = 0xffffffffffffffff; PC = 0x401fd7
+0x0000000000401fdd in ._extract ()
+	add    %r11,%r13                                #! PC = 0x401fdd
+0x0000000000401fe0 in ._extract ()
+	lea    (%rdx,%rax,1),%r11                       #! PC = 0x401fe0
+0x0000000000401fe4 in ._extract ()
+	mov    %r12,%rdx                                #! PC = 0x401fe4
+0x0000000000401fe7 in ._extract ()
+	imul   0x70(%rsp),%rdx                          #! EA = L0x7fffffffdcd0; Value = 0xffffe00000000000; PC = 0x401fe7
+0x0000000000401fed in ._extract ()
+	mov    %r14,%rax                                #! PC = 0x401fed
+0x0000000000401ff0 in ._extract ()
+	imul   0x40(%rsp),%rax                          #! EA = L0x7fffffffdca0; Value = 0x0000000000000000; PC = 0x401ff0
+0x0000000000401ff6 in ._extract ()
+	imul   0x78(%rsp),%r12                          #! EA = L0x7fffffffdcd8; Value = 0x0000000000000000; PC = 0x401ff6
+0x0000000000401ffc in ._extract ()
+	imul   0x50(%rsp),%r14                          #! EA = L0x7fffffffdcb0; Value = 0xffffffffffffffff; PC = 0x401ffc
+0x0000000000402002 in ._extract ()
+	add    %r12,%r14                                #! PC = 0x402002
+0x0000000000402005 in ._extract ()
+	lea    (%rdx,%rax,1),%r12                       #! PC = 0x402005
+0x0000000000402009 in ._first_loop ()
+	mov    %r11,0x70(%rsp)                          #! EA = L0x7fffffffdcd0; PC = 0x402009
+0x000000000040200e in ._first_loop ()
+	mov    %r13,0x78(%rsp)                          #! EA = L0x7fffffffdcd8; PC = 0x40200e
+0x0000000000402013 in ._first_loop ()
+	mov    %r12,0x40(%rsp)                          #! EA = L0x7fffffffdca0; PC = 0x402013
+0x0000000000402018 in ._first_loop ()
+	mov    %r14,0x50(%rsp)                          #! EA = L0x7fffffffdcb0; PC = 0x402018
+0x000000000040201d in ._first_loop ()
+	dec    %r10                                     #! PC = 0x40201d
+0x0000000000402020 in ._first_loop ()
+0x0000000000402026 in ._first_loop ()
+	#jne    0x401bc3 <._loop15>                     #! PC = 0x402020
+	mov    (%rsp),%rsi                              #! EA = L0x7fffffffdc60; Value = 0x00007fffffffdcf0; PC = 0x402026
+0x000000000040202a in ._first_loop ()
+	mov    %rdi,%rax                                #! PC = 0x40202a
+0x000000000040202d in ._first_loop ()
+	mov    %r11,(%rsi)                              #! EA = L0x7fffffffdcf0; PC = 0x40202d
+0x0000000000402030 in ._first_loop ()
+	mov    %r13,0x8(%rsi)                           #! EA = L0x7fffffffdcf8; PC = 0x402030
+0x0000000000402034 in ._first_loop ()
+	mov    %r12,0x10(%rsi)                          #! EA = L0x7fffffffdd00; PC = 0x402034
+0x0000000000402038 in ._first_loop ()
+	mov    %r14,0x18(%rsi)                          #! EA = L0x7fffffffdd08; PC = 0x402038
+0x000000000040203c in ._first_loop ()
+	mov    0x8(%rsp),%r11                           #! EA = L0x7fffffffdc68; Value = 0x0000000000000088; PC = 0x40203c
+0x0000000000402041 in ._first_loop ()
+	mov    0x10(%rsp),%r12                          #! EA = L0x7fffffffdc70; Value = 0x00007fffffffdcf0; PC = 0x402041
+0x0000000000402046 in ._first_loop ()
+	mov    0x18(%rsp),%r13                          #! EA = L0x7fffffffdc78; Value = 0x00007fffffffdd10; PC = 0x402046
+0x000000000040204b in ._first_loop ()
+	mov    0x20(%rsp),%r14                          #! EA = L0x7fffffffdc80; Value = 0x00007fffffffdf70; PC = 0x40204b
+0x0000000000402050 in ._first_loop ()
+	mov    0x28(%rsp),%r15                          #! EA = L0x7fffffffdc88; Value = 0x0000000000000000; PC = 0x402050
+0x0000000000402055 in ._first_loop ()
+	mov    0x30(%rsp),%rbx                          #! EA = L0x7fffffffdc90; Value = 0x00007fffffffdf08; PC = 0x402055
+0x000000000040205a in ._first_loop ()
+	mov    0x38(%rsp),%rbp                          #! EA = L0x7fffffffdc98; Value = 0x00007fffffffdd18; PC = 0x40205a
+0x000000000040205f in ._first_loop ()
+	add    %r11,%rsp                                #! PC = 0x40205f
+0x0000000000402062 in ._first_loop ()
+	#! <- SP = 0x7fffffffdce8
+0x0000000000400f2b in time_innerloop60 ()
+	#retq                                           #! PC = 0x402062

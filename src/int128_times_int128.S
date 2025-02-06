@@ -139,12 +139,12 @@
 
 # qhasm: int64 temp
 
-# qhasm: enter int128_times_int128
+# qhasm: enter int128_mul
 .align 4
-.global _int128_times_int128
-.global int128_times_int128
-_int128_times_int128:
-int128_times_int128:
+.global _int128_mul
+.global int128_mul
+_int128_mul:
+int128_mul:
 
 # qhasm: A_lo = mem64[pointer_A]
 # asm 1: ldr >A_lo=int64#4,[<pointer_A=int64#1]

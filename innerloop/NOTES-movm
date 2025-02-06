@@ -1,0 +1,28 @@
+z = 0: 1 uop, p0156, latency 1
+
+(m = mnew if !signed<: 1 uop, p06, latency 1, from last loop)
+h = grs+fuv: 1 uop, p15, latency 1
+oldg = grs: 1 uop, p0156, latency 0-1
+=? grs & 1: 1 uop, p0156, latency 1
+
+h = grs if =: 1 uop, p06, latency 1
+z = m if !=: 1 uop, p06, latency 1
+mnew = m + m1: 1 uop, p15, latency 1
+grs -= fuv: 1 uop, p0156, latency 1
+
+(uint64) h >>= 1: 1 uop, p06, latency 1
+(uint64) grs >>= 1: 1 uop, p06, latency 1
+m = ~m: 1 uop, p0156, latency 1
+signed<? z - 0: 1 uop, p0156, latency 1
+
+fuv = oldg if signed<: 1 uop, p06, latency 1
+grs = h if !signed<: 1 uop, p06, latency 1
+(z = 0: 1 uop, p0156, latency 1, in the next loop
+
+
+m = mnew if !signed<: 1 uop, p06, latency 1
+
+
+
+alternatives:
+  mnew = minusone & ~m: 1 uop, p15, latency 1
