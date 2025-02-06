@@ -2,60 +2,88 @@
 CC      = gcc
 CFLAGS  = -Wall -Wextra -Iinclude
 
-# === 主要程式檔案 (只有 .c) ===
+# === 主要程式 (可選) ===
 MAIN_SRC   = src/main.c
 
-# === 核心程式的 .c 與 .S 分開列出 ===
+# === 核心程式的 .c 與 .S ===
 CORE_C_SRCS = src/int128_adds_int128.c
 CORE_S_SRCS = src/int128_times_int128.S \
               src/int64_times_int256.S \
               src/int64_times_int64.S
 
-# === 測試程式 (只有 .c) ===
-TEST_SRCS  = test/int64_times_int64_test.c
-
-# === 根據檔案類型分別生成 .o 清單 ===
-MAIN_OBJS  = $(MAIN_SRC:.c=.o)
+MAIN_OBJS   = $(MAIN_SRC:.c=.o)
 CORE_C_OBJS = $(CORE_C_SRCS:.c=.o)
 CORE_S_OBJS = $(CORE_S_SRCS:.S=.o)
-TEST_OBJS  = $(TEST_SRCS:.c=.o)
+CORE_OBJS   = $(CORE_C_OBJS) $(CORE_S_OBJS)
 
-CORE_OBJS  = $(CORE_C_OBJS) $(CORE_S_OBJS)
+# === Python 測試檔 (.py) 與對應的 C 檔 (.c) ===
+TEST_PY = test/int64_times_int64_test.py \
+          test/int64_times_int256_test.py \
+		  test/int128_times_int128_test.py
 
-# === 可執行檔 (正式 / 測試) ===
-TARGET      = ed25519_app        # 正式程式
-TEST_TARGET = test_runner        # 測試程式
+TEST_C  = $(TEST_PY:.py=.c)
+
+# === 對應的 .o
+TEST_OBJS = $(TEST_C:.c=.o)
+
+# === 執行檔清單 (一個測試檔對應一個 runner)
+TEST_RUNNERS = int64_times_int64_test_runner \
+               int64_times_int256_test_runner \
+			   int128_times_int128_test_runner
+
+# === 正式程式 (可有可無)
+TARGET = ed25519_app
+
 
 # -------------------------
 #     Build Rules
 # -------------------------
 
-# (1) 預設目標: 建置正式應用
+# (A) 預設目標: 建置正式應用
 all: $(TARGET)
 
-# (2) 連結: 正式應用程式 (含 main + 核心 .o)
+# (B) 連結: 正式應用程式 (含 main + 核心 .o)
 $(TARGET): $(MAIN_OBJS) $(CORE_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# (3) 測試目標: 連結測試 + 核心，不包含 main.o
-test: $(TEST_TARGET)
-	@echo "=== Running Tests ==="
-	./$(TEST_TARGET)
+# (C) test: 先執行 Python → .c，再編譯所有 runner，依序執行
+test: $(TEST_C) $(TEST_RUNNERS)
+	@echo "=== Running All Tests ==="
+	@for runner in $(TEST_RUNNERS); do \
+	    echo ">> $$runner"; \
+	    ./$$runner || exit 1; \
+	done
 
-$(TEST_TARGET): $(TEST_OBJS) $(CORE_OBJS)
+# --- 每個測試檔各自有專屬的連結規則 ---
+
+# (C1) int64_times_int64_test_runner
+int64_times_int64_test_runner: test/int64_times_int64_test.o $(CORE_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# (4) 編譯 .c -> .o
+# (C2) int64_times_int256_test_runner
+int64_times_int256_test_runner: test/int64_times_int256_test.o $(CORE_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+# (C3) int64_times_int256_test_runner
+int128_times_int128_test_runner: test/int128_times_int128_test.o $(CORE_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+# (D) 編譯 Python → C
+test/%.c: test/%.py
+	python3 $<
+
+# (E) 編譯 .c → .o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# (5) 編譯 .S -> .o (組合語言)
+# (F) 編譯 .S → .o
 %.o: %.S
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# (6) clean: 只刪除 .o、執行檔與測試檔
+# (G) clean
 clean:
 	rm -f $(MAIN_OBJS) $(CORE_OBJS) $(TEST_OBJS) \
-	      $(TARGET) $(TEST_TARGET)
+	      $(TARGET) $(TEST_RUNNERS)
+	rm -f $(TEST_C)  
 
 .PHONY: all test clean

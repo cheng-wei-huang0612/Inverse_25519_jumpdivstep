@@ -86,7 +86,7 @@ for (A, B) in corner_cases:
 # 產生 .c 檔
 # --------------------------------
 
-filename = "int64_times_int64_test.c"
+filename = "test/int64_times_int64_test.c"
 with open(filename, "w") as f:
     # 先寫檔頭 (include、結構定義等)
     f.write('#include "cint_arith.h"\n')
@@ -130,11 +130,11 @@ with open(filename, "w") as f:
     f.write('            result.v[1] != test_vectors[i].R.v[1]) {\n')
     f.write('            errors++;\n')
     f.write('            printf("Test #%d FAILED!\\n", i);\n')
-    f.write('            printf("  A=%%lld, B=%%lld\\n", (long long)test_vectors[i].A, (long long)test_vectors[i].B);\n')
-    f.write('            printf("  Expected R: [%%016llX, %%016llX]\\n",\n')
+    f.write('            printf("  A=%lld, B=%lld\\n", (long long)test_vectors[i].A, (long long)test_vectors[i].B);\n')
+    f.write('            printf("  Expected R: [%016llX, %016llX]\\n",\n')
     f.write('                   (long long)test_vectors[i].R.v[1],\n')
     f.write('                   (long long)test_vectors[i].R.v[0]);\n')
-    f.write('            printf("  Got R:      [%%016llX, %%016llX]\\n",\n')
+    f.write('            printf("  Got R:      [%016llX, %016llX]\\n",\n')
     f.write('                   (long long)result.v[1],\n')
     f.write('                   (long long)result.v[0]);\n')
     f.write('        }\n')
@@ -142,7 +142,7 @@ with open(filename, "w") as f:
     f.write('    if (errors == 0) {\n')
     f.write('        printf("All tests PASSED!\\n");\n')
     f.write('    } else {\n')
-    f.write('        printf("%%d tests FAILED.\\n", errors);\n')
+    f.write('        printf("%d tests FAILED.\\n", errors);\n')
     f.write('    }\n\n')
     f.write('    return errors ? 1 : 0;\n')
     f.write('}\n')
