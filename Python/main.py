@@ -248,6 +248,14 @@ def jump62(delta, f0, g0):
         g0_and_1 = g0 & 1
         cond = int(delta > 0) & g0_and_1
         if cond:
+            # 
+            #     [[ 1-cond,   cond ]   * [[ f0 ]
+            #      [  -cond, 1-cond ]]     [ g0 ]]
+            #
+            # if cond == 1
+            # then the result is [[ g0, -f0 ]]^T
+            # if cond == 0
+            # then the result is [[ f0, g0 ]]^T
             temp = f0
             f0 = g0
             g0 = - temp

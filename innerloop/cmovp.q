@@ -202,9 +202,15 @@ carry? a2 -= 0 - carry
        a3 -= 0 - carry
 
 # a0 a1 a2 a3 between 0 and 2^255-19-1
+# Normalization Complete
 
-t0 = -1152921504606846976
+
+
+t0 = -1152921504606846976 
+# - 2**60 == 11110...0
 g = a0 & ~ t0
+# g is the small 60 bits of a0
+
 #g0 = a1
 #g0 = (g0.a0) << 4
 #g0 = g0 & ~ t0
