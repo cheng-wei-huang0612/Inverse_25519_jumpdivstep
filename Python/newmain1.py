@@ -1,7 +1,7 @@
 P = 2**255 - 19; 
-inv588 = 13378806053444100433471352356166658344066565117701345005840324140343132455543
+#inv588 = 13378806053444100433471352356166658344066565117701345005840324140343132455543
 inv600 = 30944292108470708005745096299893818799743179878335277999558634282422183477374
-assert(inv588 * (2**588) % P == 1)
+#assert(inv588 * (2**588) % P == 1)
 assert(inv600 * (2**600) % P == 1)
 
 
@@ -13,8 +13,8 @@ def cpt_inv(x):
     f = P
     g = x
     delta = 1
-    print("f = ", f)
-    print("g = ", g)
+    # print("f = ", f)
+    # print("g = ", g)
     
     # entries of master T
     U = 1
@@ -68,8 +68,13 @@ def cpt_inv(x):
             s = s_new
             f0 = f0_new
             g0 = g0_new
+            
+
+                
 
             delta =  delta + 2
+        if j == 0:
+            print(u)
 
         f_new = (u * f + v * g) >> 20
         g_new = (r * f + s * g) >> 20
@@ -77,8 +82,6 @@ def cpt_inv(x):
         f = f_new
         g = g_new
 
-        print("f = ", f)
-        print("g = ", g)
 
 
         U_new = u * U + v * R
@@ -91,9 +94,7 @@ def cpt_inv(x):
         V = V_new
         S = S_new
 
-
-
-    result = (V * sign(f) * inv600) % P
+    result = (V * f * inv600) % P
 
     return result
 
@@ -101,7 +102,8 @@ def cpt_inv(x):
 from random import randint
 for i in range(1):
     x = randint(1, P)
-    x = 43895893321060092368428052079847824837551928386645187925587889757743967812524
+    x = 29898550999291309230350269358275533761860962274120382721550840808703900785706
+
     v = cpt_inv(x)
     print("x is", x)
     print("and its inverse in Ed25519 is")

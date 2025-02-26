@@ -73,7 +73,7 @@ def cpt_inv(x):
 
 from random import randint
 
-for i in range(100000):
+for i in range(1000):
     x = randint(1, P)
     v = cpt_inv(x)
     print("x is", x)

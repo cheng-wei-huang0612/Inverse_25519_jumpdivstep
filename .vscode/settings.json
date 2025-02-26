@@ -3,6 +3,7 @@
         "stdio.h": "c",
         "stdint.h": "c",
         "stdlib.h": "c",
-        "cint_arith.h": "c"
+        "cint_arith.h": "c",
+        "string.h": "c"
     }
 }
