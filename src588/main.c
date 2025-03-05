@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include "mybig30.h"
 
@@ -92,12 +93,19 @@ static inline void update_fg(
 
 
 uint256_t cpt_inv(uint256_t *x){
-    big30_9 f = P;
-    big30_9 g;
-    uint256_to_big30_9(&g, x);
+
+    // Python: F = P
+    big30_9 F = P;
+
+    // Python: G = x
+    big30_9 G;
+    uint256_to_big30_9(&G, x);
+
+
+    // print check:
     printf("g: ");
     for (size_t i = 0; i < 9; i++) {
-        printf("%u ", g.limb[i]);  // 注意這裡改用 "%u" ！
+        printf("%u ", G.limb[i]);  
     }
     printf("\nx: ");
     for (size_t i = 0; i < 4; i++) {
@@ -105,127 +113,114 @@ uint256_t cpt_inv(uint256_t *x){
     }
     printf("\n");
 
-    int32_t delta = 1;
+    // Python: delta = 1
+    int64_t delta = 1;
     
-    // initialize tha master matrix
-    // [[ F, V ]  
-    //  [ G, S ]] 
-    big30_9 F = {1,0,0,0,0,0,0,0,0};
+    // Python: V = 0
     big30_9 V = {0};
-    big30_9 G = {0};
+    
+    // Python: S = 1
     big30_9 S = {1,0,0,0,0,0,0,0,0};
 
-
-    int32_t f0;
-    int32_t g0;
-    int32_t u;
-    int32_t v;
-    int32_t r;
-    int32_t s;
-
+    // Python: fuv = 0
     int64_t fuv;
+    // Python: grs = 0
     int64_t grs;
 
-    for (size_t i = 0; i < 30; i++)
-    {
-        printf("Jump %zu", i);
-        // f0 = f[0:20]
-        f0 = f.limb[0] & 0xFFFFF; // 20 bits mask
+    // Python: f = 0 
+    int64_t f;
 
-        // g0 = g[0:20]
-        g0 = g.limb[0] & 0xFFFFF; // 20 bits mask
+    // Python: g = 0 
+    int64_t g;
+
+    // Python: uu, vv, rr, ss = 0, 0, 0, 0
+    int64_t uu, vv, rr, ss;
+
+    // Python: u, v, r, s = 0, 0, 0, 0 
+    int64_t u, v, r, s;
+
+    // Python: g0_and_1 = 0 
+    int64_t g0_and_1;
+
+    // Python: cond = 0 
+    int64_t cond;
+
+    // Python: fuv_new = 0
+    int64_t fuv_new;
+
+    // Python: grs_new = 0
+    int64_t grs_new;
+
+    // Python: for i in range(10):
+    for (size_t i = 0; i < 10; i++){
         
-        // u = - 2 ** 20
-        u = - 1048576;
+        // Python: F % (2 ** 60)
+        f = F.limb[0] + (F.limb[1] << 30);
 
-        v = 0;
+        // Python: G % (2 ** 60)
+        g = G.limb[0] + (G.limb[1] << 30);
 
-        r = 0;
+        // Python: uu = 1
+        uu = 1;
 
-        s = - 1048576;
+        // Python: vv = 0
+        vv = 0;
 
-        fuv = ((int64_t) u << 42) + ((int64_t) v << 21) + (int64_t) f0;
-        grs = ((int64_t) r << 42) + ((int64_t) s << 21) + (int64_t) g0;
+        // Python: rr = 0
+        rr = 0;
 
+        // Python: ss = 1
+        ss = 1;
 
-        int64_t extracted_u = (fuv + ((int64_t)1 << 20) + ((int64_t)1 << 41));
-        extracted_u = extracted_u >> 42;
-        
-        int64_t extracted_v = (fuv + ((int64_t)1 << 20));
-        extracted_v = (uint64_t) extracted_v << 22;
-        extracted_v = extracted_v >> 43;
+        // Python: for j in range(3):
+        for (size_t j = 0; j < 3; j++){
 
+            // Python: fuv = (f % 2**20) - (1 << 41)
+            fuv = (f & 0xFFFFF) - ((int64_t)1<<41);
 
-        int64_t extracted_r = (grs + ((int64_t)1 << 20) + ((int64_t)1 << 41));
-        extracted_r = extracted_r >> 42;
-        
-        int64_t extracted_s = (grs + ((int64_t)1 << 20));
-        extracted_s = (uint64_t) extracted_s << 22;
-        extracted_s = extracted_s >> 43;
-
-
-        
+            // Python: grs = (g % 2**20) - (1 << 62)
+            grs = (g & 0xFFFFF) - ((int64_t)1<<62);
 
 
-        for (size_t j = 0; j < 20; j++)
-        {
+            // Python: for k in range(20):
+            for (size_t k = 0; k < 20; k++){
+                g0_and_1 = grs & (int64_t)1;
+                cond = (delta > 0) & (g0_and_1 == 1);
 
-            // Conditional swap
-            int64_t g0_and_1 = grs & 1;
-            int64_t cond = (delta > 0) & (g0_and_1 == 1);
-            if (cond)
-            {
-                int64_t temp_fuv = fuv;
-                fuv = grs;
-                grs = -temp_fuv;
+                fuv_new = (1-cond) * fuv +     cond * grs;
+                grs_new = ( -cond) * fuv + (1-cond) * grs;
 
-                int64_t temp_f0 = f0;
-                f0 = g0;
-                g0 = -temp_f0;
+                fuv = fuv_new;
+                grs = grs_new;
 
-                int64_t temp_u = u;
-                u = r;
-                r = -temp_u;
+                if (cond) {delta = -delta;}
 
-                int64_t temp_v = v;
-                v = s;
-                s = -temp_v;
+                grs = (g0_and_1 * fuv + grs) >> 1;
 
-                delta = - delta;
+                delta = delta + 2;
+
+
+                u = (fuv + ((int64_t)1 << 20) + ((int64_t)1 << 41));
+                u = u >> 42;
+
+                v = (fuv + ((int64_t)1 << 20));
+                v = (uint64_t) v << 22;
+                v = v >> 43;
+
+                r = (grs + ((int64_t)1 << 20) + ((int64_t)1 << 41));
+                r = r >> 42;
+            
+                s = (grs + ((int64_t)1 << 20));
+                s = (uint64_t) s << 22;
+                s = s >> 43;
+
             }
 
-            // Elimination
-            grs = ((g0_and_1 * fuv + 1 * grs)) >> 1;
-            r = (g0_and_1 * u + 1 * r) >> 1;
-            s = (g0_and_1 * v + 1 * s) >> 1;
-            g0 = (g0_and_1 * f0 + 1 * g0) >> 1;
-            delta += 2;
-
-            extracted_u = (fuv + ((int64_t)1 << 20) + ((int64_t)1 << 41));
-            extracted_u = extracted_u >> 42;
-            
-            extracted_v = (fuv + ((int64_t)1 << 20));
-            extracted_v = (uint64_t) extracted_v << 22;
-            extracted_v = extracted_v >> 43;
-
-
-            extracted_r = (grs + ((int64_t)1 << 20) + ((int64_t)1 << 41));
-            extracted_r = extracted_r >> 42;
-            
-            extracted_s = (grs + ((int64_t)1 << 20));
-            extracted_s = (uint64_t) extracted_s << 22;
-            extracted_s = extracted_s >> 43;
 
 
 
         }
-        printf("\n--- Extracted from fuv ---\n");
-        compare_print("u", extracted_u, u);
-        compare_print("v", extracted_v, v);
 
-        printf("\n--- Extracted from grs ---\n");
-        compare_print("r", extracted_r, r);
-        compare_print("s", extracted_s, s);
 
         // inline update [F,V; G,S]
         update_FVGS(&F, &V, &G, &S, u, v, r, s);
