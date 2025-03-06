@@ -77,8 +77,8 @@ int main() {
     print_int64("Corner(2^63-1, -2^63): a == b", (int64_t)((a_pair2 == b_pair2) ? 1 : 0));
     print_int64("Corner(2^63-1, -2^63): a > b", (int64_t)((a_pair2 > b_pair2) ? 1 : 0));
 
-    int64_t a_pair3 = 4140236192665459408LL;
-    int64_t b_pair3 = 5972668353286718932LL;
+    int64_t a_pair3 = -7779703188203563842LL;
+    int64_t b_pair3 = -2588244367775054272LL;
     print_int64("Random#0: a + b", (int64_t)(a_pair3 + b_pair3));
     print_int64("Random#0: a - b", (int64_t)(a_pair3 - b_pair3));
     print_int64("Random#0: a * b", (int64_t)(a_pair3 * b_pair3));
@@ -100,8 +100,8 @@ int main() {
     print_int64("Random#0: a == b", (int64_t)((a_pair3 == b_pair3) ? 1 : 0));
     print_int64("Random#0: a > b", (int64_t)((a_pair3 > b_pair3) ? 1 : 0));
 
-    int64_t a_pair4 = -7002968828446620577LL;
-    int64_t b_pair4 = 1266484305317446924LL;
+    int64_t a_pair4 = 4375511890177971141LL;
+    int64_t b_pair4 = -5407866555006645889LL;
     print_int64("Random#1: a + b", (int64_t)(a_pair4 + b_pair4));
     print_int64("Random#1: a - b", (int64_t)(a_pair4 - b_pair4));
     print_int64("Random#1: a * b", (int64_t)(a_pair4 * b_pair4));
@@ -123,8 +123,8 @@ int main() {
     print_int64("Random#1: a == b", (int64_t)((a_pair4 == b_pair4) ? 1 : 0));
     print_int64("Random#1: a > b", (int64_t)((a_pair4 > b_pair4) ? 1 : 0));
 
-    int64_t a_pair5 = -6187305127155290121LL;
-    int64_t b_pair5 = 2295513426140683961LL;
+    int64_t a_pair5 = -153872741092403775LL;
+    int64_t b_pair5 = 1407002309207396013LL;
     print_int64("Random#2: a + b", (int64_t)(a_pair5 + b_pair5));
     print_int64("Random#2: a - b", (int64_t)(a_pair5 - b_pair5));
     print_int64("Random#2: a * b", (int64_t)(a_pair5 * b_pair5));
@@ -146,8 +146,8 @@ int main() {
     print_int64("Random#2: a == b", (int64_t)((a_pair5 == b_pair5) ? 1 : 0));
     print_int64("Random#2: a > b", (int64_t)((a_pair5 > b_pair5) ? 1 : 0));
 
-    int64_t a_pair6 = 8020512748218051016LL;
-    int64_t b_pair6 = -9010120525883048688LL;
+    int64_t a_pair6 = 1217425005569801744LL;
+    int64_t b_pair6 = 8646325050794014441LL;
     print_int64("Random#3: a + b", (int64_t)(a_pair6 + b_pair6));
     print_int64("Random#3: a - b", (int64_t)(a_pair6 - b_pair6));
     print_int64("Random#3: a * b", (int64_t)(a_pair6 * b_pair6));
@@ -169,8 +169,8 @@ int main() {
     print_int64("Random#3: a == b", (int64_t)((a_pair6 == b_pair6) ? 1 : 0));
     print_int64("Random#3: a > b", (int64_t)((a_pair6 > b_pair6) ? 1 : 0));
 
-    int64_t a_pair7 = 4984381738870862588LL;
-    int64_t b_pair7 = 8119800267679520989LL;
+    int64_t a_pair7 = 7031378519973166749LL;
+    int64_t b_pair7 = -7119774148462100452LL;
     print_int64("Random#4: a + b", (int64_t)(a_pair7 + b_pair7));
     print_int64("Random#4: a - b", (int64_t)(a_pair7 - b_pair7));
     print_int64("Random#4: a * b", (int64_t)(a_pair7 * b_pair7));
@@ -192,8 +192,8 @@ int main() {
     print_int64("Random#4: a == b", (int64_t)((a_pair7 == b_pair7) ? 1 : 0));
     print_int64("Random#4: a > b", (int64_t)((a_pair7 > b_pair7) ? 1 : 0));
 
-    int64_t a_pair8 = 6528998685476938818LL;
-    int64_t b_pair8 = 7546555296479387405LL;
+    int64_t a_pair8 = -6117179964587403348LL;
+    int64_t b_pair8 = -7354811173428092532LL;
     print_int64("Random#5: a + b", (int64_t)(a_pair8 + b_pair8));
     print_int64("Random#5: a - b", (int64_t)(a_pair8 - b_pair8));
     print_int64("Random#5: a * b", (int64_t)(a_pair8 * b_pair8));
@@ -215,8 +215,8 @@ int main() {
     print_int64("Random#5: a == b", (int64_t)((a_pair8 == b_pair8) ? 1 : 0));
     print_int64("Random#5: a > b", (int64_t)((a_pair8 > b_pair8) ? 1 : 0));
 
-    int64_t a_pair9 = -8465400218400227292LL;
-    int64_t b_pair9 = -3105698994908208377LL;
+    int64_t a_pair9 = 6941839062852892049LL;
+    int64_t b_pair9 = -3817348042895210346LL;
     print_int64("Random#6: a + b", (int64_t)(a_pair9 + b_pair9));
     print_int64("Random#6: a - b", (int64_t)(a_pair9 - b_pair9));
     print_int64("Random#6: a * b", (int64_t)(a_pair9 * b_pair9));
@@ -238,8 +238,8 @@ int main() {
     print_int64("Random#6: a == b", (int64_t)((a_pair9 == b_pair9) ? 1 : 0));
     print_int64("Random#6: a > b", (int64_t)((a_pair9 > b_pair9) ? 1 : 0));
 
-    int64_t a_pair10 = 4316873573747473666LL;
-    int64_t b_pair10 = 9068832644592042163LL;
+    int64_t a_pair10 = 7295291985857013998LL;
+    int64_t b_pair10 = 8686123803331393767LL;
     print_int64("Random#7: a + b", (int64_t)(a_pair10 + b_pair10));
     print_int64("Random#7: a - b", (int64_t)(a_pair10 - b_pair10));
     print_int64("Random#7: a * b", (int64_t)(a_pair10 * b_pair10));
@@ -261,8 +261,8 @@ int main() {
     print_int64("Random#7: a == b", (int64_t)((a_pair10 == b_pair10) ? 1 : 0));
     print_int64("Random#7: a > b", (int64_t)((a_pair10 > b_pair10) ? 1 : 0));
 
-    int64_t a_pair11 = 5836666655356323069LL;
-    int64_t b_pair11 = -5302030314619049172LL;
+    int64_t a_pair11 = 1774104762537744677LL;
+    int64_t b_pair11 = -2734823019207448145LL;
     print_int64("Random#8: a + b", (int64_t)(a_pair11 + b_pair11));
     print_int64("Random#8: a - b", (int64_t)(a_pair11 - b_pair11));
     print_int64("Random#8: a * b", (int64_t)(a_pair11 * b_pair11));
@@ -284,8 +284,8 @@ int main() {
     print_int64("Random#8: a == b", (int64_t)((a_pair11 == b_pair11) ? 1 : 0));
     print_int64("Random#8: a > b", (int64_t)((a_pair11 > b_pair11) ? 1 : 0));
 
-    int64_t a_pair12 = 581552495826273917LL;
-    int64_t b_pair12 = 8024255138906985704LL;
+    int64_t a_pair12 = 6395155426789764715LL;
+    int64_t b_pair12 = 1549732866027707964LL;
     print_int64("Random#9: a + b", (int64_t)(a_pair12 + b_pair12));
     print_int64("Random#9: a - b", (int64_t)(a_pair12 - b_pair12));
     print_int64("Random#9: a * b", (int64_t)(a_pair12 * b_pair12));
@@ -307,8 +307,8 @@ int main() {
     print_int64("Random#9: a == b", (int64_t)((a_pair12 == b_pair12) ? 1 : 0));
     print_int64("Random#9: a > b", (int64_t)((a_pair12 > b_pair12) ? 1 : 0));
 
-    int64_t a_pair13 = 7803411094026439360LL;
-    int64_t b_pair13 = -5039520857056755LL;
+    int64_t a_pair13 = -8010534729851573372LL;
+    int64_t b_pair13 = -7812477589508807449LL;
     print_int64("Random#10: a + b", (int64_t)(a_pair13 + b_pair13));
     print_int64("Random#10: a - b", (int64_t)(a_pair13 - b_pair13));
     print_int64("Random#10: a * b", (int64_t)(a_pair13 * b_pair13));
@@ -330,8 +330,8 @@ int main() {
     print_int64("Random#10: a == b", (int64_t)((a_pair13 == b_pair13) ? 1 : 0));
     print_int64("Random#10: a > b", (int64_t)((a_pair13 > b_pair13) ? 1 : 0));
 
-    int64_t a_pair14 = 6942335607783572163LL;
-    int64_t b_pair14 = -410840520030725031LL;
+    int64_t a_pair14 = 7658653371327374554LL;
+    int64_t b_pair14 = -7037505518317373051LL;
     print_int64("Random#11: a + b", (int64_t)(a_pair14 + b_pair14));
     print_int64("Random#11: a - b", (int64_t)(a_pair14 - b_pair14));
     print_int64("Random#11: a * b", (int64_t)(a_pair14 * b_pair14));
@@ -353,8 +353,8 @@ int main() {
     print_int64("Random#11: a == b", (int64_t)((a_pair14 == b_pair14) ? 1 : 0));
     print_int64("Random#11: a > b", (int64_t)((a_pair14 > b_pair14) ? 1 : 0));
 
-    int64_t a_pair15 = 1350100963625139756LL;
-    int64_t b_pair15 = 5029302341944652678LL;
+    int64_t a_pair15 = -8461999792490160003LL;
+    int64_t b_pair15 = -720819591328038859LL;
     print_int64("Random#12: a + b", (int64_t)(a_pair15 + b_pair15));
     print_int64("Random#12: a - b", (int64_t)(a_pair15 - b_pair15));
     print_int64("Random#12: a * b", (int64_t)(a_pair15 * b_pair15));
@@ -376,8 +376,8 @@ int main() {
     print_int64("Random#12: a == b", (int64_t)((a_pair15 == b_pair15) ? 1 : 0));
     print_int64("Random#12: a > b", (int64_t)((a_pair15 > b_pair15) ? 1 : 0));
 
-    int64_t a_pair16 = 8777151852681209204LL;
-    int64_t b_pair16 = -4941558423374783696LL;
+    int64_t a_pair16 = 8158015144794971372LL;
+    int64_t b_pair16 = 9188298652083754995LL;
     print_int64("Random#13: a + b", (int64_t)(a_pair16 + b_pair16));
     print_int64("Random#13: a - b", (int64_t)(a_pair16 - b_pair16));
     print_int64("Random#13: a * b", (int64_t)(a_pair16 * b_pair16));
@@ -399,8 +399,8 @@ int main() {
     print_int64("Random#13: a == b", (int64_t)((a_pair16 == b_pair16) ? 1 : 0));
     print_int64("Random#13: a > b", (int64_t)((a_pair16 > b_pair16) ? 1 : 0));
 
-    int64_t a_pair17 = 6244871197886812981LL;
-    int64_t b_pair17 = -8398482546412897559LL;
+    int64_t a_pair17 = -384156007025438292LL;
+    int64_t b_pair17 = 7186631134413040968LL;
     print_int64("Random#14: a + b", (int64_t)(a_pair17 + b_pair17));
     print_int64("Random#14: a - b", (int64_t)(a_pair17 - b_pair17));
     print_int64("Random#14: a * b", (int64_t)(a_pair17 * b_pair17));
@@ -422,8 +422,8 @@ int main() {
     print_int64("Random#14: a == b", (int64_t)((a_pair17 == b_pair17) ? 1 : 0));
     print_int64("Random#14: a > b", (int64_t)((a_pair17 > b_pair17) ? 1 : 0));
 
-    int64_t a_pair18 = 6476637731441887773LL;
-    int64_t b_pair18 = -6417918713882441568LL;
+    int64_t a_pair18 = -7829828077983893151LL;
+    int64_t b_pair18 = -7569177828692320495LL;
     print_int64("Random#15: a + b", (int64_t)(a_pair18 + b_pair18));
     print_int64("Random#15: a - b", (int64_t)(a_pair18 - b_pair18));
     print_int64("Random#15: a * b", (int64_t)(a_pair18 * b_pair18));
@@ -445,8 +445,8 @@ int main() {
     print_int64("Random#15: a == b", (int64_t)((a_pair18 == b_pair18) ? 1 : 0));
     print_int64("Random#15: a > b", (int64_t)((a_pair18 > b_pair18) ? 1 : 0));
 
-    int64_t a_pair19 = -6345445880858244413LL;
-    int64_t b_pair19 = -6460168117271865803LL;
+    int64_t a_pair19 = 1781656033260597860LL;
+    int64_t b_pair19 = -2090007545230495161LL;
     print_int64("Random#16: a + b", (int64_t)(a_pair19 + b_pair19));
     print_int64("Random#16: a - b", (int64_t)(a_pair19 - b_pair19));
     print_int64("Random#16: a * b", (int64_t)(a_pair19 * b_pair19));
@@ -468,8 +468,8 @@ int main() {
     print_int64("Random#16: a == b", (int64_t)((a_pair19 == b_pair19) ? 1 : 0));
     print_int64("Random#16: a > b", (int64_t)((a_pair19 > b_pair19) ? 1 : 0));
 
-    int64_t a_pair20 = 605650294755950853LL;
-    int64_t b_pair20 = 7865586056045106278LL;
+    int64_t a_pair20 = -7239033688367934258LL;
+    int64_t b_pair20 = -222369814133048197LL;
     print_int64("Random#17: a + b", (int64_t)(a_pair20 + b_pair20));
     print_int64("Random#17: a - b", (int64_t)(a_pair20 - b_pair20));
     print_int64("Random#17: a * b", (int64_t)(a_pair20 * b_pair20));
@@ -491,8 +491,8 @@ int main() {
     print_int64("Random#17: a == b", (int64_t)((a_pair20 == b_pair20) ? 1 : 0));
     print_int64("Random#17: a > b", (int64_t)((a_pair20 > b_pair20) ? 1 : 0));
 
-    int64_t a_pair21 = 1935448935066741612LL;
-    int64_t b_pair21 = -5721081994806817113LL;
+    int64_t a_pair21 = -2225020180232631719LL;
+    int64_t b_pair21 = -8558984024072335966LL;
     print_int64("Random#18: a + b", (int64_t)(a_pair21 + b_pair21));
     print_int64("Random#18: a - b", (int64_t)(a_pair21 - b_pair21));
     print_int64("Random#18: a * b", (int64_t)(a_pair21 * b_pair21));
@@ -514,8 +514,8 @@ int main() {
     print_int64("Random#18: a == b", (int64_t)((a_pair21 == b_pair21) ? 1 : 0));
     print_int64("Random#18: a > b", (int64_t)((a_pair21 > b_pair21) ? 1 : 0));
 
-    int64_t a_pair22 = -5469608583454157321LL;
-    int64_t b_pair22 = -3703529890368128818LL;
+    int64_t a_pair22 = 898004405814587860LL;
+    int64_t b_pair22 = 7870021600321593779LL;
     print_int64("Random#19: a + b", (int64_t)(a_pair22 + b_pair22));
     print_int64("Random#19: a - b", (int64_t)(a_pair22 - b_pair22));
     print_int64("Random#19: a * b", (int64_t)(a_pair22 * b_pair22));
@@ -537,8 +537,8 @@ int main() {
     print_int64("Random#19: a == b", (int64_t)((a_pair22 == b_pair22) ? 1 : 0));
     print_int64("Random#19: a > b", (int64_t)((a_pair22 > b_pair22) ? 1 : 0));
 
-    int64_t a_pair23 = 4044927982624947939LL;
-    int64_t b_pair23 = -2236152078388824197LL;
+    int64_t a_pair23 = -336124019768599776LL;
+    int64_t b_pair23 = 5910435671221457181LL;
     print_int64("Random#20: a + b", (int64_t)(a_pair23 + b_pair23));
     print_int64("Random#20: a - b", (int64_t)(a_pair23 - b_pair23));
     print_int64("Random#20: a * b", (int64_t)(a_pair23 * b_pair23));
@@ -560,8 +560,8 @@ int main() {
     print_int64("Random#20: a == b", (int64_t)((a_pair23 == b_pair23) ? 1 : 0));
     print_int64("Random#20: a > b", (int64_t)((a_pair23 > b_pair23) ? 1 : 0));
 
-    int64_t a_pair24 = 7491109111153733766LL;
-    int64_t b_pair24 = 6969405171552973924LL;
+    int64_t a_pair24 = -8731031056043251455LL;
+    int64_t b_pair24 = -4514529053328805919LL;
     print_int64("Random#21: a + b", (int64_t)(a_pair24 + b_pair24));
     print_int64("Random#21: a - b", (int64_t)(a_pair24 - b_pair24));
     print_int64("Random#21: a * b", (int64_t)(a_pair24 * b_pair24));
@@ -583,8 +583,8 @@ int main() {
     print_int64("Random#21: a == b", (int64_t)((a_pair24 == b_pair24) ? 1 : 0));
     print_int64("Random#21: a > b", (int64_t)((a_pair24 > b_pair24) ? 1 : 0));
 
-    int64_t a_pair25 = -3575203094810684041LL;
-    int64_t b_pair25 = -2759335629823970612LL;
+    int64_t a_pair25 = 2410660600498376998LL;
+    int64_t b_pair25 = 3016752573462055210LL;
     print_int64("Random#22: a + b", (int64_t)(a_pair25 + b_pair25));
     print_int64("Random#22: a - b", (int64_t)(a_pair25 - b_pair25));
     print_int64("Random#22: a * b", (int64_t)(a_pair25 * b_pair25));
@@ -606,8 +606,8 @@ int main() {
     print_int64("Random#22: a == b", (int64_t)((a_pair25 == b_pair25) ? 1 : 0));
     print_int64("Random#22: a > b", (int64_t)((a_pair25 > b_pair25) ? 1 : 0));
 
-    int64_t a_pair26 = 757756977228820979LL;
-    int64_t b_pair26 = 5941695327676160528LL;
+    int64_t a_pair26 = -1557058248829663912LL;
+    int64_t b_pair26 = 526709200206564621LL;
     print_int64("Random#23: a + b", (int64_t)(a_pair26 + b_pair26));
     print_int64("Random#23: a - b", (int64_t)(a_pair26 - b_pair26));
     print_int64("Random#23: a * b", (int64_t)(a_pair26 * b_pair26));
@@ -629,8 +629,8 @@ int main() {
     print_int64("Random#23: a == b", (int64_t)((a_pair26 == b_pair26) ? 1 : 0));
     print_int64("Random#23: a > b", (int64_t)((a_pair26 > b_pair26) ? 1 : 0));
 
-    int64_t a_pair27 = 463498473957461795LL;
-    int64_t b_pair27 = -506503308605573367LL;
+    int64_t a_pair27 = 2892022644649750130LL;
+    int64_t b_pair27 = -4486156122816718973LL;
     print_int64("Random#24: a + b", (int64_t)(a_pair27 + b_pair27));
     print_int64("Random#24: a - b", (int64_t)(a_pair27 - b_pair27));
     print_int64("Random#24: a * b", (int64_t)(a_pair27 * b_pair27));
@@ -652,8 +652,8 @@ int main() {
     print_int64("Random#24: a == b", (int64_t)((a_pair27 == b_pair27) ? 1 : 0));
     print_int64("Random#24: a > b", (int64_t)((a_pair27 > b_pair27) ? 1 : 0));
 
-    int64_t a_pair28 = -2210607948427256194LL;
-    int64_t b_pair28 = -6091337989165210907LL;
+    int64_t a_pair28 = -1951506130247287117LL;
+    int64_t b_pair28 = 2262940358750959245LL;
     print_int64("Random#25: a + b", (int64_t)(a_pair28 + b_pair28));
     print_int64("Random#25: a - b", (int64_t)(a_pair28 - b_pair28));
     print_int64("Random#25: a * b", (int64_t)(a_pair28 * b_pair28));
@@ -675,8 +675,8 @@ int main() {
     print_int64("Random#25: a == b", (int64_t)((a_pair28 == b_pair28) ? 1 : 0));
     print_int64("Random#25: a > b", (int64_t)((a_pair28 > b_pair28) ? 1 : 0));
 
-    int64_t a_pair29 = 7967205212347061101LL;
-    int64_t b_pair29 = 2389318841290793345LL;
+    int64_t a_pair29 = 8110423355477582312LL;
+    int64_t b_pair29 = -8671815994509175789LL;
     print_int64("Random#26: a + b", (int64_t)(a_pair29 + b_pair29));
     print_int64("Random#26: a - b", (int64_t)(a_pair29 - b_pair29));
     print_int64("Random#26: a * b", (int64_t)(a_pair29 * b_pair29));
@@ -698,8 +698,8 @@ int main() {
     print_int64("Random#26: a == b", (int64_t)((a_pair29 == b_pair29) ? 1 : 0));
     print_int64("Random#26: a > b", (int64_t)((a_pair29 > b_pair29) ? 1 : 0));
 
-    int64_t a_pair30 = 8894930492501132875LL;
-    int64_t b_pair30 = -6286857414701248097LL;
+    int64_t a_pair30 = 8023424004959692393LL;
+    int64_t b_pair30 = 8908003204531218057LL;
     print_int64("Random#27: a + b", (int64_t)(a_pair30 + b_pair30));
     print_int64("Random#27: a - b", (int64_t)(a_pair30 - b_pair30));
     print_int64("Random#27: a * b", (int64_t)(a_pair30 * b_pair30));
@@ -721,8 +721,8 @@ int main() {
     print_int64("Random#27: a == b", (int64_t)((a_pair30 == b_pair30) ? 1 : 0));
     print_int64("Random#27: a > b", (int64_t)((a_pair30 > b_pair30) ? 1 : 0));
 
-    int64_t a_pair31 = 3389276339463341974LL;
-    int64_t b_pair31 = 6900934773412975726LL;
+    int64_t a_pair31 = 7672864785622999458LL;
+    int64_t b_pair31 = 2053471058550860937LL;
     print_int64("Random#28: a + b", (int64_t)(a_pair31 + b_pair31));
     print_int64("Random#28: a - b", (int64_t)(a_pair31 - b_pair31));
     print_int64("Random#28: a * b", (int64_t)(a_pair31 * b_pair31));
@@ -744,8 +744,8 @@ int main() {
     print_int64("Random#28: a == b", (int64_t)((a_pair31 == b_pair31) ? 1 : 0));
     print_int64("Random#28: a > b", (int64_t)((a_pair31 > b_pair31) ? 1 : 0));
 
-    int64_t a_pair32 = 5238496128258557111LL;
-    int64_t b_pair32 = 42021003634836037LL;
+    int64_t a_pair32 = 6942893651532594693LL;
+    int64_t b_pair32 = 1562922432081213711LL;
     print_int64("Random#29: a + b", (int64_t)(a_pair32 + b_pair32));
     print_int64("Random#29: a - b", (int64_t)(a_pair32 - b_pair32));
     print_int64("Random#29: a * b", (int64_t)(a_pair32 * b_pair32));

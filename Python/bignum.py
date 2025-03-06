@@ -1,6 +1,7 @@
 
 from math import trunc 
 P = 2**255 - 19
+
 P_low60 = P & ((1 << 60) - 1)  
 
 class uint32_t:
@@ -130,26 +131,21 @@ class big30_9:
     """ A big integer type composed of 9 uint32_t segments, each holding up to 30 bits. """
     RADIX = 1 << 30
     MASK = RADIX - 1
-    OFFSET = P  # 在類別內定義你的 Montgomery 模數 P 作為 OFFSET
 
-    def __init__(self, value=0, offset=True):
-        if offset:
-            value += self.OFFSET
+    def __init__(self, value=0):
         self.limb = [uint32_t(0)] * 9
         for i in range(9):
             self.limb[i] = uint32_t(value & self.MASK)
             value >>= 30
 
-    def to_int(self, offset=True):
+    def to_int(self):
         total = 0
         for i in reversed(range(9)):
             total = (total << 30) + int(self.limb[i])
-        if offset:
-            total -= self.OFFSET
         return total
 
     def __int__(self):
-        return self.to_int(offset=True)
+        return self.to_int()
 
     def __str__(self) -> str:
         return str(int(self))

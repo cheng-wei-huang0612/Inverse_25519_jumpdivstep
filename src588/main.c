@@ -119,8 +119,10 @@ uint256_t cpt_inv(uint256_t *x){
     // Python: V = 0
     big30_9 V = {0};
     
-    // Python: S = 1
-    big30_9 S = {1,0,0,0,0,0,0,0,0};
+    // Python: S = inv590
+    big30_9 S = {0};
+
+
 
     // Python: fuv = 0
     int64_t fuv;
