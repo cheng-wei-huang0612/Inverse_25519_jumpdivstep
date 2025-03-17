@@ -30,7 +30,7 @@ def cpt_inv(x):
     delta = 1
     
     V = 0
-    S = 1
+    S = inv600
 
     print(F)
 
@@ -53,8 +53,7 @@ def cpt_inv(x):
             fuv = (f % 2**20) - 2**41 
             grs = (g % 2**20) - 2**62
 
-            print(f"fuv at j = {j} and i = {i} is {fuv}") 
-            print(f"grs at j = {j} and i = {i} is {grs}") 
+            #print(f"fuv at j = {j} and before entering k loop is {fuv}") 
 
 
  
@@ -77,7 +76,7 @@ def cpt_inv(x):
                 delta =  delta + 2
 
                 print(f"fuv at i = {i}, j = {j} and k = {k} is {fuv}")
-                print(f"cond at i = {i}, j = {j} and k = {k} is {int(cond)}")
+                print(f"cond at i = {i}, j = {j} and k = {k} is {cond}")
                 print(f"delta at i = {i}, j = {j} and k = {k} is {delta}")
 
                 
@@ -109,8 +108,6 @@ def cpt_inv(x):
             ss = ss_new
             #print("uu, vv =", uu, vv)
             #print("rr, ss =", rr, ss)
-            print(f"uu, vv at i = {i} and j = {j} is {uu}, {vv}")
-            print(f"rr, ss at i = {i} and j = {j} is {rr}, {ss}")
 
 
         print(f"uu, vv at i = {i} is {uu}, {vv}")
@@ -120,7 +117,6 @@ def cpt_inv(x):
         # Update_FG
 
         F_new = (uu * F + vv * G) >> 60
-        print(f"uu * F is performed as \n{uu} * {F} = {uu * F}")
         G_new = (rr * F + ss * G) >> 60
 
         F = F_new
@@ -129,21 +125,14 @@ def cpt_inv(x):
         print(f"F at i = {i} is {F}")
         print(f"G at i = {i} is {G}")
 
-        V_new = (((uu * V) % P) + (vv * S) % P) % P
-        S_new = (((rr * V) % P) + (ss * S) % P) % P
+        V_new = ((uu * V) % P) + (vv * S) % P
+        S_new = ((rr * V) % P) + (ss * S) % P
 
         V = V_new
         S = S_new
 
-        print(f"V at i = {i} is {V}")
-        print(f"S at i = {i} is {S}")
-
-
     #assert(F == 1 or F == -1)
-    # Final process
-    
-    result = V * inv600 % P
-    result = result * F 
+    result = V * F % P
     if result < 0:
         result += P
 
@@ -155,7 +144,6 @@ def cpt_inv(x):
 from random import randint
 for i in range(1):
     x = randint(1, P)
-    #x = 57472449998110699364985007571685915400328355374839494442684727944836358126243
 
     v = cpt_inv(x)
     print("-"*20)

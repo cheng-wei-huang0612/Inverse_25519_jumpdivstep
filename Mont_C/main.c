@@ -141,6 +141,13 @@ int main(void){
     init_P();
     init_Rs();
 
+    // Print bigR2 
+    for (int i=0; i<NLIMBS_30; i++){
+        printf("limb[%d] = %d\n", i, bigR2.limb[i]);
+    }
+
+
+
     int num_tests = 10000;
     printf("Start testing MontMul with GMP-based naive_mul_mod in %d random tests...\n", num_tests);
 

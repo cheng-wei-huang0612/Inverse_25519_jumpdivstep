@@ -2,7 +2,6 @@
 from math import trunc 
 P = 2**255 - 19
 
-P_low60 = P & ((1 << 60) - 1)  
 
 class uint32_t:
     """ A class to simulate uint32_t in Python with bitwise operations. """
@@ -152,7 +151,7 @@ class big30_9:
 
     def low_60_bit(self):
         raw_low60 = (int(self.limb[1]) << 30) | int(self.limb[0])
-        return (raw_low60 - P_low60) & ((1 << 60) - 1)
+        return (raw_low60) & ((1 << 60) - 1)
 
 
 
