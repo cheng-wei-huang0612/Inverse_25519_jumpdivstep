@@ -217,7 +217,7 @@ int main(){
     printf("\n===== Random Tests for big60_mul =====\n");
 
     srand((unsigned)time(NULL));
-    int NUM_RANDOM_TESTS = 10; // 你想多一點就改大
+    int NUM_RANDOM_TESTS = 1000; // 你想多一點就改大
 
     for(int i = 0; i < NUM_RANDOM_TESTS; i++){
         // 產生隨機 60-bit
@@ -249,13 +249,15 @@ int main(){
 
         // 比對
         if(mpz_cmp(mpProd, mpR) == 0){
-            printf("Random Test #%d: [a=%lld, b=%lld] OK\n", i, (long long)aa, (long long)bb);
+            //printf("Random Test #%d: [a=%lld, b=%lld] OK\n", i, (long long)aa, (long long)bb);
         } else {
             printf("Random Test #%d: [a=%lld, b=%lld] MISMATCH!\n", i, (long long)aa, (long long)bb);
             gmp_printf("   GMP product = %Zd\n", mpProd);
             gmp_printf("   big60_mul   = %Zd\n", mpR);
         }
+
     }
+    printf("If in random tests, no any output, then all tests are passed\n");
 
     // ---------------------------
     // Specific 測試
