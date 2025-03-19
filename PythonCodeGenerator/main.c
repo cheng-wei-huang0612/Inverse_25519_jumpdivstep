@@ -1,7 +1,11 @@
 #include<stdint.h>
 #include<stdio.h>
+#include"mybig30.h"
 #include<gmp.h>
-#include"cpt_inv_debug.h"
+
+
+extern void cpt_inv(uint256_t *x, uint256_t *inv);
+
 
 
 int main(void) {

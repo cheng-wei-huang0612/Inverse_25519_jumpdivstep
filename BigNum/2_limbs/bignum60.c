@@ -119,142 +119,33 @@ void mpz_from_big120(const big120_t *a, mpz_t rop){
 
     mpz_clear(tmp);
 }
-
-void big60_mul(const big60_t *a, const big60_t *b, big120_t *r) {
-    int32_t limb0 = 0;
-    int32_t limb1 = 0;
-    int32_t limb2 = 0;
-    int32_t limb3 = 0;
-
-    uint64_t temp, temp_low;
-
-    int32_t a0, a1, b0, b1, a_hat, b_hat;
-    a0 = a->limb[0];
-    a1 = a->limb[1];
-    a_hat = -((uint32_t)a->limb[1] >> 31);
-    b0 = b->limb[0];
-    b1 = b->limb[1];
-    b_hat = -((uint32_t)b->limb[1] >> 31);
-
-    temp = (uint64_t)(uint32_t)a0 * (uint64_t)(uint32_t)b0;
-    printf("Sage: %u * %u == %llu\n", a0, b0, temp);
-    temp_low = temp & (((uint64_t)1<<30) - 1);
-    limb0 += temp_low;
-    temp >>= 30; 
-    limb1 += temp;
-    printf("limb0 = %d\n", limb0);
-    printf("limb1 = %d\n", limb1);
-    printf("limb2 = %d\n", limb2);
-    printf("limb3 = %d\n", limb3);
-    printf("-------------------------- behaves as expected\n\n");
-
-    temp = (uint64_t)(uint32_t)a0 * (uint64_t)(uint32_t)b1;
-    printf("Sage: %u * %u == %llu\n", a0, b1, temp);
-    temp_low = temp & (((uint64_t)1<<30) - 1);
-    limb1 += temp_low;
-    temp >>= 30; 
-    limb2 += temp;
-    printf("limb0 = %d\n", limb0);
-    printf("limb1 = %d\n", limb1);
-    printf("limb2 = %d\n", limb2);
-    printf("limb3 = %d\n", limb3);
-
-    temp = (uint64_t)(uint32_t)a1 * (uint64_t)(uint32_t)b0;
-    printf("Sage: %u * %u == %llu\n", a1, b0, temp);
-    temp_low = temp & (((uint64_t)1<<30) - 1);
-    limb1 += temp_low;
-    temp >>= 30; 
-    limb2 += temp;
-
-    temp = (uint64_t)(uint32_t)a1 * (uint64_t)(uint32_t)b1;
-    printf("Sage: %u * %u == %llu\n", a1, b1, temp);
-    temp_low = temp & (((uint64_t)1<<30) - 1);
-    limb2 += temp_low;
-    temp >>= 30;
-    limb3 += temp;
+#define BIG30_SHIFT  30
 
 
-    // Carry propagation
-    limb1 += ((uint32_t)limb0>>30);
-    limb0 &= ((int32_t) 1 << 30) - 1;
+void big120_from_mpz(const mpz_t op, big120_t *rop){
+    mpz_t tmp, rem;
+    mpz_init_set(tmp, op);
+    mpz_init(rem);
 
-    limb2 += ((uint32_t)limb1>>30);
-    limb1 &= ((int32_t) 1 << 30) - 1;
+    // Extract 8 lower limbs, each 30 bits
+    for (int i = 0; i < 3; i++) {
+        mpz_mod_2exp(rem, tmp, BIG30_SHIFT);
+        rop->limb[i] = (int32_t)mpz_get_ui(rem);
+        mpz_fdiv_q_2exp(tmp, tmp, BIG30_SHIFT);
+    }
 
-    limb3 += ((uint32_t)limb2>>30);
-    limb2 &= ((int32_t) 1 << 30) - 1;
+    // The final signed part goes to limb[8]
+    rop->limb[3] = (int32_t)mpz_get_si(tmp);
 
-    big120_t temp_big;
-    temp_big.limb[0] = limb0;
-    temp_big.limb[1] = limb1;
-    temp_big.limb[2] = limb2;
-    temp_big.limb[3] = limb3;
-
-
-    mpz_t mptemp;
-    mpz_init(mptemp);
-
-    //mpz_from_big120(&temp_big, mptemp);
-
-    mpz_set_ui(mptemp, 0);
-    mpz_t tmp; 
-    mpz_init(tmp);
-
-    mpz_set_ui(tmp, (uint32_t)a->limb[3]);
-    mpz_mul_2exp(tmp, tmp, 90);
-    mpz_add(mptemp, mptemp, tmp);
-
-    mpz_set_ui(tmp, (uint32_t)a->limb[2]);
-    mpz_mul_2exp(tmp, tmp, 60);
-    mpz_add(mptemp, mptemp, tmp);
-
-    mpz_set_ui(tmp, (uint32_t)a->limb[1]);
-    mpz_mul_2exp(tmp, tmp, 30);
-    mpz_add(mptemp, mptemp, tmp);
-
-    mpz_set_ui(tmp, (uint32_t)a->limb[0]);
-    mpz_add(mptemp, mptemp, tmp);
-
+    mpz_clear(rem);
     mpz_clear(tmp);
-
-    uint64_t aint = ((uint64_t)(uint32_t)a->limb[0]) + ((uint64_t)(uint32_t)a->limb[1] << 30);
-    uint64_t bint = ((uint64_t)(uint32_t)b->limb[0]) + ((uint64_t)(uint32_t)b->limb[1] << 30);
-    //printf("a(unsigned) = %llu\n", aint);
-    //printf("b(unsigned) = %llu\n", bint);
-    gmp_printf("Sage: ((%llu * %llu) - %Zd)", aint, bint,mptemp);
-    
-
-
-    // Minus a_hat & b(unsigned)
-    int32_t bx4_0, bx4_1;
-    bx4_0 = (b0 << 2) & (((int32_t)1 << 30) - 1);
-    bx4_1 = ((uint32_t)b0 >> 28) + (b1<<2);
-
-    limb2 = limb2 - (a_hat & bx4_0);
-    limb3 = limb3 - (a_hat & bx4_1);
-
-    limb3 -= ((limb2 >> 31) & ((int32_t)1));
-    limb2 += ((limb2 >> 31) & ((int32_t)1 << 30));
-
-
-    // Minus b_hat & a(unsigned)
-    int32_t ax4_0, ax4_1;
-    ax4_0 = (a0 << 2) & (((int32_t)1 << 30) - 1);
-    ax4_1 = ((uint32_t)a0 >> 28) + (a1<<2);
-
-    limb2 = limb2 - (b_hat & ax4_0);
-    limb3 = limb3 - (b_hat & ax4_1);
-
-    limb3 -= ((limb2 >> 31) & ((int32_t)1));
-    limb2 += ((limb2 >> 31) & ((int32_t)1 << 30));
-
-
-    r->limb[0] = limb0;
-    r->limb[1] = limb1;
-    r->limb[2] = limb2;
-    r->limb[3] = limb3;
-
 }
+
+
+
+
+extern void big60_mul(const big60_t *a, const big60_t *b, big120_t *r);
+
 
 
 
@@ -373,20 +264,33 @@ int main(){
     int64_t a = -410274133133804733;
     int64_t b = -521455377973507695;
 
+
     a = -1;
     b = -1;
+    //a = 410274133133804733;
+    //b = 521455377973507695;
     big60_t a_big, b_big;
     big120_t r_big;
 
     big60_from_int64(a, &a_big);
     big60_from_int64(b, &b_big);
+
+    printf("a_big = [ limb0 = %d , limb1 = %d ]\n", a_big.limb[0], a_big.limb[1] );
+    printf("b_big = [ limb0 = %d , limb1 = %d ]\n", b_big.limb[0], b_big.limb[1] );
     
     big60_mul(&a_big, &b_big, &r_big);
+    printf("r_big = [ limb0 = %d , limb1 = %d , limb2 = %d , limb3 = %d ]\n",r_big.limb[0], r_big.limb[1], r_big.limb[2], r_big.limb[3]);
 
     // GMP 正確乘法
     mpz_set_si(mpA, a);
     mpz_set_si(mpB, b);
     mpz_mul(mpProd, mpA, mpB);
+    big120_t correct_big;
+    big120_from_mpz(mpProd, &correct_big);
+    printf("corct = [ limb0 = %d , limb1 = %d , limb2 = %d , limb3 = %d ]\n",correct_big.limb[0], correct_big.limb[1], correct_big.limb[2], correct_big.limb[3]);
+
+
+
 
     // big120 -> mpz
     mpz_from_big120(&r_big, mpR);

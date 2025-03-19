@@ -3,9 +3,10 @@
 #include <time.h>
 #include <stdio.h>
 #include "mybig30.h"
-#include "cpt_inv.h"
 #include <gmp.h>
 
+
+extern void cpt_inv(uint256_t *x, uint256_t *inv);
 
 
 // A small helper to generate a random 256-bit number in uint256_t
