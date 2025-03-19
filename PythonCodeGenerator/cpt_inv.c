@@ -448,6 +448,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
     n_mask = ~c_mask;
 
 
+
     neg_fuv = -fuv;
     fuv_new =     (n_mask & fuv) ^ (c_mask & grs);
     grs_new = (c_mask & neg_fuv) ^ (n_mask & grs);
