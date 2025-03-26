@@ -1,0 +1,19 @@
+
+int64 program_1_MASK
+int64 program_1_tmp0
+int64 program_1_tmp1
+
+enter {block_name}
+2x program_1_tmp1 = program_1_tmp0 + program_1_MASK
+2x program_1_tmp1 = program_1_tmp0 + program_1_MASK
+2x program_1_tmp1 = program_1_tmp0 + program_1_MASK
+2x program_1_tmp1 = program_1_tmp0 + program_1_MASK
+2x program_1_tmp1 = program_1_tmp0 + program_1_MASK
+
+
+int64 program_2_MASK
+int64 program_2_tmp0
+int64 program_2_tmp1
+
+enter {block_name}
+2x program_2_tmp1 = program_2_tmp0 + program_2_MASK
