@@ -9,6 +9,7 @@
 #define LIMBS 4          // 先用 2 個 limb，總計 2*30 = 60 bits
 #define BIG30_SHIFT  30
 
+
 typedef struct {
     uint32_t limb[LIMBS]; // 最多9 limbs（F, G）
 } big30_t;
@@ -234,13 +235,13 @@ int main(){
     random_gmp_in_range(mpr, rstate, 61);
     random_gmp_in_range(mps, rstate, 61);
 
-    mpz_set_str(mpF, "1", 10);
-    mpz_set_str(mpG, "0", 10);
-    mpz_set_str(mpu, "-1", 10);
-    mpz_mul_2exp(mpu, mpu, 61);
-    mpz_set_str(mpv, "0", 10);
-    mpz_set_str(mpr, "0", 10);
-    mpz_set_str(mps, "0", 10);
+    mpz_set_str(mpF, "-1909170671966816274958804570106612566", 10);
+    mpz_set_str(mpG, "-2553126723145237962503599023929624582", 10);
+    mpz_set_str(mpu, "-685498195466894834", 10);
+    mpz_set_str(mpv, "-682692460663655927", 10);
+    mpz_set_str(mpr, "-684196370423833798", 10);
+    mpz_set_str(mps, "2143746906747658530", 10);
+
 
     big30_from_mpz(mpF, &F);
     big30_from_mpz(mpG, &G);
@@ -248,18 +249,30 @@ int main(){
     int64_from_mpz(mpv, &v);
     int64_from_mpz(mpr, &r);
     int64_from_mpz(mps, &s);
-    gmp_printf("mpF = %Zd\n", mpF);
-    gmp_printf("mpG = %Zd\n", mpG);
-    gmp_printf("mpu = %Zd\n", mpu);
-    gmp_printf("mpv = %Zd\n", mpv);
-    gmp_printf("mpr = %Zd\n", mpr);
-    gmp_printf("mps = %Zd\n", mps);
+    // gmp_printf("mpF = %Zd\n", mpF);
+    // gmp_printf("mpG = %Zd\n", mpG);
+    // gmp_printf("mpu = %Zd\n", mpu);
+    // gmp_printf("mpv = %Zd\n", mpv);
+    // gmp_printf("mpr = %Zd\n", mpr);
+    // gmp_printf("mps = %Zd\n", mps);
     
+    mpz_t mp2p62, mp2p122,mptmp;
+    mpz_inits(mp2p122,mp2p62,mptmp,NULL);
+    mpz_set_si(mp2p62, 1);
+    mpz_mul_2exp(mp2p62,mp2p62, 62);
+    mpz_set_si(mp2p122, 1);
+    mpz_mul_2exp(mp2p122,mp2p122, 122);
 
     printf("    Given    F = [limb0 = %d, limb1 = %d, limb2 = %d, limb3 = %d]\n", F.limb[0], F.limb[1], F.limb[2], F.limb[3]);
     gmp_printf("               = %Zd\n",mpF);
+    mpz_add(mptmp,mpF,mp2p122);
+    mpz_mod(mptmp, mptmp, mp2p122);
+    gmp_printf("    unsigned F = %Zd\n\n",mptmp);
     printf("    Given    G = [limb0 = %d, limb1 = %d, limb2 = %d, limb3 = %d]\n", G.limb[0], G.limb[1], G.limb[2], G.limb[3]);
     gmp_printf("               = %Zd\n",mpG);
+    mpz_add(mptmp,mpG,mp2p122);
+    mpz_mod(mptmp, mptmp, mp2p122);
+    gmp_printf("    unsigned G = %Zd\n\n",mptmp);
     small30_t small30u;
     small30_t small30v;
     small30_t small30r;
@@ -268,18 +281,29 @@ int main(){
     printf("    Given    u = [limb0 = %d, limb1 = %d]\n", small30u.limb[0], small30u.limb[1]);
     gmp_printf("               = %Zd\n",mpu);
     gmp_printf("(Sage: %Zd == %d + (2**30) * %d)\n",mpu, small30u.limb[0], small30u.limb[1]);
-    
+    mpz_add(mptmp,mpu,mp2p62);
+    mpz_mod(mptmp, mptmp, mp2p62);
+    gmp_printf("    unsigned u = %Zd\n\n",mptmp);
     small30_from_mpz(mpv, &small30v);
     printf("    Given    v = [limb0 = %d, limb1 = %d]\n", small30v.limb[0], small30v.limb[1]);
     gmp_printf("               = %Zd\n",mpv);
+    mpz_add(mptmp,mpv,mp2p62);
+    mpz_mod(mptmp, mptmp, mp2p62);
+    gmp_printf("    unsigned v = %Zd\n\n",mptmp);
 
     small30_from_mpz(mpr, &small30r);
     printf("    Given    r = [limb0 = %d, limb1 = %d]\n", small30r.limb[0], small30r.limb[1]);
     gmp_printf("               = %Zd\n",mpr);
+    mpz_add(mptmp,mpr,mp2p62);
+    mpz_mod(mptmp, mptmp, mp2p62);
+    gmp_printf("    unsigned r = %Zd\n\n",mptmp);
 
     small30_from_mpz(mps, &small30s);
     printf("    Given    s = [limb0 = %d, limb1 = %d]\n", small30s.limb[0], small30s.limb[1]);
     gmp_printf("               = %Zd\n",mps);
+    mpz_add(mptmp,mps,mp2p62);
+    mpz_mod(mptmp, mptmp, mp2p62);
+    gmp_printf("    unsigned s = %Zd\n\n",mptmp);
     printf("\n");
 
     printf("before asm\n");
@@ -310,6 +334,10 @@ int main(){
     printf("correct_result_g = [limb0 = %d, limb1 = %d, limb2 = %d, limb3 = %d,\n"
            "                    limb4 = %d, limb5 = %d]\n\n", resultG.limb[0], resultG.limb[1], resultG.limb[2], resultG.limb[3], resultG.limb[4], resultG.limb[5]);
     gmp_printf("                 = %Zd\n\n", mpS);
+
+    gmp_printf("\nsage: (%Zd) == (%Zd)\n ", mpR, mpASMR);
+    gmp_printf("\nsage: (%Zd) == (%Zd)\n ", mpS, mpASMS);
+
 
     gmp_printf("\nsage: (((%Zd) * (%Zd)) + ((%Zd) * (%Zd)) - (%Zd)) %% (2^122) == 0\n", mpu, mpF, mpv, mpG, mpR);
     gmp_printf("\nsage: (((%Zd) * (%Zd)) + ((%Zd) * (%Zd)) - (%Zd)) %% (2^122) == 0\n", mpr, mpF, mps, mpG, mpS);

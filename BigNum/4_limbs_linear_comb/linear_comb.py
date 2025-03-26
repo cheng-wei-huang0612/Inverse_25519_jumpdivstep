@@ -156,11 +156,13 @@ mask = ""
 
 mask_var += """
 int64 carry1
+int64 ONE
 
 reg128 vec_MASKcarry1
 reg128 vec_MASKcarry2
 reg128 vec_MASKcarry
 reg128 vec_MASKeffect
+reg128 vec_ONE
 """
 
 mask += "carry1 = 3221225472\n"
@@ -168,6 +170,8 @@ mask += "2x vec_MASKcarry1 = carry1\n"
 mask += "2x vec_MASKcarry2 = vec_MASKcarry1 << 32\n"
 mask += "vec_MASKcarry = vec_MASKcarry1 | vec_MASKcarry2\n"
 mask += "vec_MASKeffect = ~vec_MASKcarry\n"
+mask += "ONE = 1\n"
+mask += "2x vec_ONE = ONE\n"
 
 
 
@@ -177,10 +181,6 @@ minus1_var = ""
 minus1 = ""
 
 minus1_var += """
-reg128 vec_F0_F1_F0_F1
-reg128 vec_F2_F3_F2_F3
-reg128 vec_G0_G1_G0_G1
-reg128 vec_G2_G3_G2_G3
 
 reg128 vec_uhat_rhat_vhat_shat
 reg128 vec_uhat_rhat
@@ -192,89 +192,102 @@ reg128 vec_carry1
 reg128 vec_carry2
 """
 
+minus1 += "# Get the hats\n"
 minus1 += "4x vec_uhat_rhat_vhat_shat = vec_u1_r1_v1_s1 >> 31\n"
 minus1 += "4x vec_uhat_rhat = vec_uhat_rhat_vhat_shat[0/4] vec_uhat_rhat_vhat_shat[0/4] vec_uhat_rhat_vhat_shat[1/4] vec_uhat_rhat_vhat_shat[1/4]\n"
 minus1 += "4x vec_vhat_shat = vec_uhat_rhat_vhat_shat[2/4] vec_uhat_rhat_vhat_shat[2/4] vec_uhat_rhat_vhat_shat[3/4] vec_uhat_rhat_vhat_shat[3/4]\n"
 
-
-minus1 += "2x vec_F0_F1_F0_F1 = vec_F0_F1_G0_G1[0/2]\n"
-minus1 += "2x vec_G0_G1_G0_G1 = vec_F0_F1_G0_G1[1/2]\n"
-minus1 += "2x vec_F2_F3_F2_F3 = vec_F2_F3_G2_G3[0/2]\n"
-minus1 += "2x vec_G2_G3_G2_G3 = vec_F2_F3_G2_G3[1/2]\n"
-
-minus1 += "vec_tmp1 = vec_uhat_rhat & vec_F0_F1_F0_F1\n"
-minus1 += "vec_tmp1 = vec_tmp1 ^ vec_MASKcarry\n"
-minus1 += "vec_tmp1 = ~vec_tmp1\n"
-
-
-minus1 += "vec_tmp2 = vec_uhat_rhat & vec_F2_F3_F2_F3\n"
-minus1 += "vec_tmp2 = vec_tmp2 ^ vec_MASKcarry1\n"
-minus1 += "vec_tmp2 = ~vec_tmp2\n"
-
-minus1 += "2x vec_uhat_rhat unsigned>>= 63\n"
-minus1 += "2x vec_tmp1 = vec_tmp1 + vec_uhat_rhat\n"
-
+minus1 += "# Minus [ uhat & 4F , rhat & 4F ]\n"
+minus1 += "2x vec_tmp1 = vec_F0_F1_G0_G1[0/2]\n"
+minus1 += "2x vec_tmp2 = vec_F2_F3_G2_G3[0/2]\n"
 
 minus1 += "2x vec_tmp1 <<= 2\n"
+minus1 += "2x vec_tmp2 <<= 2\n"
+
 minus1 += "vec_carry1 = vec_tmp1 & vec_MASKcarry1\n"
 minus1 += "vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1\n"
 
 minus1 += "2x vec_carry1 <<= 2\n"
 minus1 += "vec_tmp1 |= vec_carry1\n"
+
 minus1 += "vec_carry2 = vec_tmp1 & vec_MASKcarry2\n"
 minus1 += "vec_tmp1 = vec_tmp1 & ~vec_MASKcarry2\n"
-
 minus1 += "2x vec_carry2 unsigned>>= 62\n"
-minus1 += "2x vec_tmp2 <<= 2\n"
+
 minus1 += "vec_tmp2 |= vec_carry2\n"
+
 minus1 += "vec_carry1 = vec_tmp2 & vec_MASKcarry1\n"
 minus1 += "vec_tmp2 = vec_tmp2 & ~vec_MASKcarry1\n"
+
 minus1 += "2x vec_carry1 <<= 2\n"
 minus1 += "vec_tmp2 |= vec_carry1\n"
+
+minus1 += "\n# So far, 4F is stored in tmp1 and tmp2\n#Negation starts\n\n"
+
+minus1 += "vec_tmp1 = vec_tmp1 ^ vec_MASKcarry\n"
+minus1 += "vec_tmp1 = ~vec_tmp1\n"
+minus1 += "vec_tmp2 = vec_tmp2 ^ vec_MASKcarry1\n"
+minus1 += "vec_tmp2 = ~vec_tmp2\n"
+minus1 += "2x vec_tmp1 += vec_ONE\n"
+
+minus1 += "\n#So far, we have stored F' = -4F into tmp1 and tmp2\n\n"
+
+minus1 += "vec_tmp1 &= vec_uhat_rhat\n"
+minus1 += "vec_tmp2 &= vec_uhat_rhat\n"
 
 minus1 += "2x vec_R2_R3_S2_S3 += vec_tmp1\n"
 minus1 += "2x vec_R4_R5_S4_S5 += vec_tmp2\n"
 
 
+minus1 += "# Minus [ vhat & 4G , shat & 4G ]\n"
 
-minus1 += "vec_tmp1 = vec_vhat_shat & vec_G0_G1_G0_G1\n"
-minus1 += "vec_tmp1 = vec_tmp1 ^ vec_MASKcarry\n"
-minus1 += "vec_tmp1 = ~vec_tmp1\n"
-
-
-minus1 += "vec_tmp2 = vec_vhat_shat & vec_G2_G3_G2_G3\n"
-minus1 += "vec_tmp2 = vec_tmp2 ^ vec_MASKcarry1\n"
-minus1 += "vec_tmp2 = ~vec_tmp2\n"
-
-minus1 += "2x vec_vhat_shat unsigned>>= 63\n"
-minus1 += "2x vec_tmp1 = vec_tmp1 + vec_vhat_shat\n"
-
+minus1 += "2x vec_tmp1 = vec_F0_F1_G0_G1[1/2]\n"
+minus1 += "2x vec_tmp2 = vec_F2_F3_G2_G3[1/2]\n"
 
 minus1 += "2x vec_tmp1 <<= 2\n"
+minus1 += "2x vec_tmp2 <<= 2\n"
+
 minus1 += "vec_carry1 = vec_tmp1 & vec_MASKcarry1\n"
 minus1 += "vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1\n"
 
 minus1 += "2x vec_carry1 <<= 2\n"
 minus1 += "vec_tmp1 |= vec_carry1\n"
+
 minus1 += "vec_carry2 = vec_tmp1 & vec_MASKcarry2\n"
 minus1 += "vec_tmp1 = vec_tmp1 & ~vec_MASKcarry2\n"
-
 minus1 += "2x vec_carry2 unsigned>>= 62\n"
-minus1 += "2x vec_tmp2 <<= 2\n"
+
 minus1 += "vec_tmp2 |= vec_carry2\n"
+
 minus1 += "vec_carry1 = vec_tmp2 & vec_MASKcarry1\n"
 minus1 += "vec_tmp2 = vec_tmp2 & ~vec_MASKcarry1\n"
+
 minus1 += "2x vec_carry1 <<= 2\n"
 minus1 += "vec_tmp2 |= vec_carry1\n"
 
+minus1 += "\n# So far, 4G is stored in tmp1 and tmp2\n#Negation starts\n\n"
+
+minus1 += "vec_tmp1 = vec_tmp1 ^ vec_MASKcarry\n"
+minus1 += "vec_tmp1 = ~vec_tmp1\n"
+minus1 += "vec_tmp2 = vec_tmp2 ^ vec_MASKcarry1\n"
+minus1 += "vec_tmp2 = ~vec_tmp2\n"
+minus1 += "2x vec_tmp1 += vec_ONE\n"
+
+minus1 += "\n#So far, we have stored G' = -4G into tmp1 and tmp2\n\n"
+
+minus1 += "vec_tmp1 &= vec_vhat_shat\n"
+minus1 += "vec_tmp2 &= vec_vhat_shat\n"
+
 minus1 += "2x vec_R2_R3_S2_S3 += vec_tmp1\n"
 minus1 += "2x vec_R4_R5_S4_S5 += vec_tmp2\n"
+
 
 
 # Carry propagation
 carry_propagation_var = ""
 carry_propagation = ""
 
+carry_propagation += "\n# Now we do carry propagation\n\n"
 carry_propagation += "vec_carry1 = vec_R2_R3_S2_S3 & vec_MASKcarry1\n"
 carry_propagation += "vec_R2_R3_S2_S3 = vec_R2_R3_S2_S3 & ~vec_MASKcarry1\n"
 carry_propagation += "2x vec_carry1 <<= 2\n"
@@ -289,8 +302,73 @@ carry_propagation += "vec_R4_R5_S4_S5 = vec_R4_R5_S4_S5 & ~vec_MASKcarry1\n"
 carry_propagation += "2x vec_carry1 <<= 2\n"
 carry_propagation += "2x vec_R4_R5_S4_S5 += vec_carry1\n"
 
+# Minus the [ Fhat & u , Fhat & r ] and [ Ghat & v , Ghat & s ]
+
+minus2_var = ""
+minus2 = ""
+
+minus2_var += """
+
+reg128 vec_Fhat_Ghat
+reg128 vec_Fhat
+reg128 vec_Ghat
 
 
+"""
+
+minus2 += """
+2x vec_Fhat_Ghat = vec_F2_F3_G2_G3 >> 63
+2x vec_Fhat = vec_Fhat_Ghat[0/2]
+2x vec_Ghat = vec_Fhat_Ghat[1/2]
+
+4x vec_tmp1 = vec_u0_r0_v0_s0[0/4] vec_u1_r1_v1_s1[0/4] vec_u0_r0_v0_s0[1/4] vec_u1_r1_v1_s1[1/4]
+
+2x vec_tmp1 <<= 2
+vec_carry1 = vec_tmp1 & vec_MASKcarry1
+vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1
+
+2x vec_carry1 <<= 2
+vec_tmp1 |= vec_carry1
+
+vec_tmp1 ^= vec_MASKcarry1
+vec_tmp1 = ~vec_tmp1
+
+2x vec_tmp1 += vec_ONE
+
+vec_tmp1 &= vec_Fhat
+2x vec_R4_R5_S4_S5 += vec_tmp1
+
+
+
+
+4x vec_tmp1 = vec_u0_r0_v0_s0[2/4] vec_u1_r1_v1_s1[2/4] vec_u0_r0_v0_s0[3/4] vec_u1_r1_v1_s1[3/4]
+
+2x vec_tmp1 <<= 2
+vec_carry1 = vec_tmp1 & vec_MASKcarry1
+vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1
+
+2x vec_carry1 <<= 2
+vec_tmp1 |= vec_carry1
+
+vec_tmp1 ^= vec_MASKcarry1
+vec_tmp1 = ~vec_tmp1
+
+2x vec_tmp1 += vec_ONE
+
+vec_tmp1 &= vec_Ghat
+2x vec_R4_R5_S4_S5 += vec_tmp1
+
+"""
+
+# Carry propagation2
+carry_propagation2_var = ""
+carry_propagation2 = ""
+
+carry_propagation2 += "\n# Now we do carry propagation2\n\n"
+carry_propagation2 += "vec_carry1 = vec_R4_R5_S4_S5 & vec_MASKcarry1\n"
+carry_propagation2 += "vec_R4_R5_S4_S5 = vec_R4_R5_S4_S5 & ~vec_MASKcarry1\n"
+carry_propagation2 += "2x vec_carry1 <<= 2\n"
+carry_propagation2 += "2x vec_R4_R5_S4_S5 += vec_carry1\n"
 
 # Store the result
 store_result_var = ""
@@ -322,6 +400,8 @@ code += mask_var
 
 code += minus1_var
 
+code += minus2_var
+
 code += """
 int64 debug0
 int64 debug1
@@ -349,11 +429,16 @@ code += "\n\n#DEBUG: The unsigned product behaves as expected\n\n"
 
 code += store_result
 
-code += "\n\n#Producint the masks\n\n"
+code += "\n\n#Producing the masks\n\n"
 code += mask
 code += "\n\n#Minus the [ uhat & F , rhat & F ] and [ vhat & G , shat & G ]\n\n"
 code += minus1
 code += carry_propagation
+
+code += minus2
+code += carry_propagation2
+
+code += store_result
 
 
 code += """
