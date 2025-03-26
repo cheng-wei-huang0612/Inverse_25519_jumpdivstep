@@ -6,9 +6,9 @@
 #include <gmp.h>
    
 
-#define LIMBS 4          // 先用 2 個 limb，總計 2*30 = 60 bits
+#define LIMBS 9          // 先用 2 個 limb，總計 2*30 = 60 bits
 #define BIG30_SHIFT  30
-#define NUM_RANDOM_TEST 10000
+#define NUM_RANDOM_TEST 100000
 
 typedef struct {
     uint32_t limb[LIMBS]; // 最多9 limbs（F, G）
@@ -217,6 +217,9 @@ int run_test(
     const mpz_t mpr,
     const mpz_t mps
 ) {
+
+    //printf("testing on numbers:\n");
+    //gmp_printf("F = %Zd\n",mpF);
     // 1. 先把資料轉成 big30_t / int64_t 等
     big30_t F, G;
     big30long_t resultF, resultG;
@@ -240,18 +243,20 @@ int run_test(
 
     // 2. 呼叫組合語言版本
     linear_comb(&asm_resultF, &asm_resultG, &F, &G, &u, &v, &r, &s);
-
+    
     // 3. 呼叫 GMP 版本
     gmp_linear_comb(&resultF, &resultG, &F, &G, &u, &v, &r, &s);
-
+    
     // 4. 轉回 mpz 比較
     mpz_t mpASMF, mpASMG, mpCorrectF, mpCorrectG;
     mpz_inits(mpASMF, mpASMG, mpCorrectF, mpCorrectG, NULL);
-
+    
     mpz_from_big30long(mpASMF, &asm_resultF);
     mpz_from_big30long(mpASMG, &asm_resultG);
     mpz_from_big30long(mpCorrectF, &resultF);
     mpz_from_big30long(mpCorrectG, &resultG);
+    //gmp_printf("mpASMF = %Zd\n",mpASMF);
+    //gmp_printf("mpCorrectF = %Zd\n",mpCorrectF);
 
     // 因為是 mod 2^122 運算，可將結果帶回 [-2^121, 2^121) 來比較
     // 或直接比對 mpASMF == mpCorrectF (mod 2^122)
@@ -350,12 +355,14 @@ int main(){
         mpz_t mpF, mpG, mpu, mpv, mpr, mps;
         mpz_inits(mpF, mpG, mpu, mpv, mpr, mps, NULL);
 
-        random_gmp_in_range(mpF, rstate, 121);
-        random_gmp_in_range(mpG, rstate, 121);
+        random_gmp_in_range(mpF, rstate, 271);
+        random_gmp_in_range(mpG, rstate, 271);
         random_gmp_in_range(mpu, rstate, 61);
         random_gmp_in_range(mpv, rstate, 61);
         random_gmp_in_range(mpr, rstate, 61);
         random_gmp_in_range(mps, rstate, 61);
+
+        
 
         int fail_flag = run_test(mpF, mpG, mpu, mpv, mpr, mps);
         total_test_count++;

@@ -127,7 +127,8 @@ unsigned_product += "2x vec_tmp0 += vec_u1_r1_v1_s1[1] unsigned* vec_F2_F3_G2_G3
 
 unsigned_product += "vec_R4_0_S4_0 = vec_tmp0 & vec_MASK2p30m1\n"
 unsigned_product += "2x vec_tmp0 unsigned>>= 30 \n"
-unsigned_product += "vec_R5_0_S5_0 = vec_tmp0 & vec_MASK2p32m1\n"
+#unsigned_product += "vec_R5_0_S5_0 = vec_tmp0 & vec_MASK2p32m1\n"
+unsigned_product += "vec_R5_0_S5_0 = vec_tmp0 \n"
 
 
 

@@ -175,7 +175,7 @@ vec_R3_0_S3_0 = vec_tmp0 & vec_MASK2p30m1
 2x vec_tmp0 += vec_u1_r1_v1_s1[1] unsigned* vec_F2_F3_G2_G3[3/4]
 vec_R4_0_S4_0 = vec_tmp0 & vec_MASK2p30m1
 2x vec_tmp0 unsigned>>= 30 
-vec_R5_0_S5_0 = vec_tmp0 & vec_MASK2p32m1
+vec_R5_0_S5_0 = vec_tmp0 
 
 
 #Collect the unsigned_product

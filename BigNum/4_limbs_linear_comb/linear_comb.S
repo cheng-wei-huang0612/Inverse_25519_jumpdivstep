@@ -425,9 +425,9 @@ eor v4.16b,v4.16b,v4.16b
 movi v5.2d, #0xFFFFFFFF
 
 # qhasm: 2x vec_MASK2p30m1 = vec_MASK2p32m1 unsigned>> 2
-# asm 1: ushr >vec_MASK2p30m1=reg128#7.2d,<vec_MASK2p32m1=reg128#6.2d,#2
-# asm 2: ushr >vec_MASK2p30m1=v6.2d,<vec_MASK2p32m1=v5.2d,#2
-ushr v6.2d,v5.2d,#2
+# asm 1: ushr >vec_MASK2p30m1=reg128#6.2d,<vec_MASK2p32m1=reg128#6.2d,#2
+# asm 2: ushr >vec_MASK2p30m1=v5.2d,<vec_MASK2p32m1=v5.2d,#2
+ushr v5.2d,v5.2d,#2
 
 # qhasm: 2x vec_tmp0 += vec_u0_r0_v0_s0[0] unsigned* vec_F0_F1_G0_G1[0/4]
 # asm 1: umlal <vec_tmp0=reg128#5.2d,<vec_u0_r0_v0_s0=reg128#3.2s,<vec_F0_F1_G0_G1=reg128#1.s[0]
@@ -440,9 +440,9 @@ umlal v4.2d,v2.2s,v0.s[0]
 umlal2 v4.2d,v2.4s,v0.s[2]
 
 # qhasm: vec_R0_0_S0_0 = vec_tmp0 & vec_MASK2p30m1
-# asm 1: and >vec_R0_0_S0_0=reg128#8.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#7.16b
-# asm 2: and >vec_R0_0_S0_0=v7.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v6.16b
-and v7.16b,v4.16b,v6.16b
+# asm 1: and >vec_R0_0_S0_0=reg128#7.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#6.16b
+# asm 2: and >vec_R0_0_S0_0=v6.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v5.16b
+and v6.16b,v4.16b,v5.16b
 
 # qhasm: 2x vec_tmp0 unsigned>>= 30 
 # asm 1: ushr >vec_tmp0=reg128#5.2d,<vec_tmp0=reg128#5.2d,#30
@@ -470,9 +470,9 @@ umlal v4.2d,v3.2s,v0.s[0]
 umlal2 v4.2d,v3.4s,v0.s[2]
 
 # qhasm: vec_R1_0_S1_0 = vec_tmp0 & vec_MASK2p30m1
-# asm 1: and >vec_R1_0_S1_0=reg128#9.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#7.16b
-# asm 2: and >vec_R1_0_S1_0=v8.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v6.16b
-and v8.16b,v4.16b,v6.16b
+# asm 1: and >vec_R1_0_S1_0=reg128#8.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#6.16b
+# asm 2: and >vec_R1_0_S1_0=v7.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v5.16b
+and v7.16b,v4.16b,v5.16b
 
 # qhasm: 2x vec_tmp0 unsigned>>= 30 
 # asm 1: ushr >vec_tmp0=reg128#5.2d,<vec_tmp0=reg128#5.2d,#30
@@ -500,9 +500,9 @@ umlal v4.2d,v3.2s,v0.s[1]
 umlal2 v4.2d,v3.4s,v0.s[3]
 
 # qhasm: vec_R2_0_S2_0 = vec_tmp0 & vec_MASK2p30m1
-# asm 1: and >vec_R2_0_S2_0=reg128#10.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#7.16b
-# asm 2: and >vec_R2_0_S2_0=v9.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v6.16b
-and v9.16b,v4.16b,v6.16b
+# asm 1: and >vec_R2_0_S2_0=reg128#9.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#6.16b
+# asm 2: and >vec_R2_0_S2_0=v8.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v5.16b
+and v8.16b,v4.16b,v5.16b
 
 # qhasm: 2x vec_tmp0 unsigned>>= 30 
 # asm 1: ushr >vec_tmp0=reg128#5.2d,<vec_tmp0=reg128#5.2d,#30
@@ -530,9 +530,9 @@ umlal v4.2d,v3.2s,v1.s[0]
 umlal2 v4.2d,v3.4s,v1.s[2]
 
 # qhasm: vec_R3_0_S3_0 = vec_tmp0 & vec_MASK2p30m1
-# asm 1: and >vec_R3_0_S3_0=reg128#11.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#7.16b
-# asm 2: and >vec_R3_0_S3_0=v10.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v6.16b
-and v10.16b,v4.16b,v6.16b
+# asm 1: and >vec_R3_0_S3_0=reg128#10.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#6.16b
+# asm 2: and >vec_R3_0_S3_0=v9.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v5.16b
+and v9.16b,v4.16b,v5.16b
 
 # qhasm: 2x vec_tmp0 unsigned>>= 30 
 # asm 1: ushr >vec_tmp0=reg128#5.2d,<vec_tmp0=reg128#5.2d,#30
@@ -550,39 +550,39 @@ umlal v4.2d,v3.2s,v1.s[1]
 umlal2 v4.2d,v3.4s,v1.s[3]
 
 # qhasm: vec_R4_0_S4_0 = vec_tmp0 & vec_MASK2p30m1
-# asm 1: and >vec_R4_0_S4_0=reg128#7.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#7.16b
-# asm 2: and >vec_R4_0_S4_0=v6.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v6.16b
-and v6.16b,v4.16b,v6.16b
+# asm 1: and >vec_R4_0_S4_0=reg128#6.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p30m1=reg128#6.16b
+# asm 2: and >vec_R4_0_S4_0=v5.16b,<vec_tmp0=v4.16b,<vec_MASK2p30m1=v5.16b
+and v5.16b,v4.16b,v5.16b
 
 # qhasm: 2x vec_tmp0 unsigned>>= 30 
 # asm 1: ushr >vec_tmp0=reg128#5.2d,<vec_tmp0=reg128#5.2d,#30
 # asm 2: ushr >vec_tmp0=v4.2d,<vec_tmp0=v4.2d,#30
 ushr v4.2d,v4.2d,#30
 
-# qhasm: vec_R5_0_S5_0 = vec_tmp0 & vec_MASK2p32m1
-# asm 1: and >vec_R5_0_S5_0=reg128#5.16b,<vec_tmp0=reg128#5.16b,<vec_MASK2p32m1=reg128#6.16b
-# asm 2: and >vec_R5_0_S5_0=v4.16b,<vec_tmp0=v4.16b,<vec_MASK2p32m1=v5.16b
-and v4.16b,v4.16b,v5.16b
+# qhasm: vec_R5_0_S5_0 = vec_tmp0 
+# asm 1: mov >vec_R5_0_S5_0=reg128#5.16b,<vec_tmp0=reg128#5.16b
+# asm 2: mov >vec_R5_0_S5_0=v4.16b,<vec_tmp0=v4.16b
+mov v4.16b,v4.16b
 
 # qhasm: 2x vec_R1_0_S1_0 <<= 32
-# asm 1: shl >vec_R1_0_S1_0=reg128#6.2d,<vec_R1_0_S1_0=reg128#9.2d,#32
-# asm 2: shl >vec_R1_0_S1_0=v5.2d,<vec_R1_0_S1_0=v8.2d,#32
-shl v5.2d,v8.2d,#32
+# asm 1: shl >vec_R1_0_S1_0=reg128#8.2d,<vec_R1_0_S1_0=reg128#8.2d,#32
+# asm 2: shl >vec_R1_0_S1_0=v7.2d,<vec_R1_0_S1_0=v7.2d,#32
+shl v7.2d,v7.2d,#32
 
 # qhasm: vec_R0_R1_S0_S1 = vec_R0_0_S0_0 | vec_R1_0_S1_0
-# asm 1: orr >vec_R0_R1_S0_S1=reg128#6.16b,<vec_R0_0_S0_0=reg128#8.16b,<vec_R1_0_S1_0=reg128#6.16b
-# asm 2: orr >vec_R0_R1_S0_S1=v5.16b,<vec_R0_0_S0_0=v7.16b,<vec_R1_0_S1_0=v5.16b
-orr v5.16b,v7.16b,v5.16b
+# asm 1: orr >vec_R0_R1_S0_S1=reg128#7.16b,<vec_R0_0_S0_0=reg128#7.16b,<vec_R1_0_S1_0=reg128#8.16b
+# asm 2: orr >vec_R0_R1_S0_S1=v6.16b,<vec_R0_0_S0_0=v6.16b,<vec_R1_0_S1_0=v7.16b
+orr v6.16b,v6.16b,v7.16b
 
 # qhasm: 2x vec_R3_0_S3_0 <<= 32
-# asm 1: shl >vec_R3_0_S3_0=reg128#8.2d,<vec_R3_0_S3_0=reg128#11.2d,#32
-# asm 2: shl >vec_R3_0_S3_0=v7.2d,<vec_R3_0_S3_0=v10.2d,#32
-shl v7.2d,v10.2d,#32
+# asm 1: shl >vec_R3_0_S3_0=reg128#8.2d,<vec_R3_0_S3_0=reg128#10.2d,#32
+# asm 2: shl >vec_R3_0_S3_0=v7.2d,<vec_R3_0_S3_0=v9.2d,#32
+shl v7.2d,v9.2d,#32
 
 # qhasm: vec_R2_R3_S2_S3 = vec_R2_0_S2_0 | vec_R3_0_S3_0
-# asm 1: orr >vec_R2_R3_S2_S3=reg128#8.16b,<vec_R2_0_S2_0=reg128#10.16b,<vec_R3_0_S3_0=reg128#8.16b
-# asm 2: orr >vec_R2_R3_S2_S3=v7.16b,<vec_R2_0_S2_0=v9.16b,<vec_R3_0_S3_0=v7.16b
-orr v7.16b,v9.16b,v7.16b
+# asm 1: orr >vec_R2_R3_S2_S3=reg128#8.16b,<vec_R2_0_S2_0=reg128#9.16b,<vec_R3_0_S3_0=reg128#8.16b
+# asm 2: orr >vec_R2_R3_S2_S3=v7.16b,<vec_R2_0_S2_0=v8.16b,<vec_R3_0_S3_0=v7.16b
+orr v7.16b,v8.16b,v7.16b
 
 # qhasm: 2x vec_R5_0_S5_0 <<= 32
 # asm 1: shl >vec_R5_0_S5_0=reg128#5.2d,<vec_R5_0_S5_0=reg128#5.2d,#32
@@ -590,19 +590,19 @@ orr v7.16b,v9.16b,v7.16b
 shl v4.2d,v4.2d,#32
 
 # qhasm: vec_R4_R5_S4_S5 = vec_R4_0_S4_0 | vec_R5_0_S5_0
-# asm 1: orr >vec_R4_R5_S4_S5=reg128#5.16b,<vec_R4_0_S4_0=reg128#7.16b,<vec_R5_0_S5_0=reg128#5.16b
-# asm 2: orr >vec_R4_R5_S4_S5=v4.16b,<vec_R4_0_S4_0=v6.16b,<vec_R5_0_S5_0=v4.16b
-orr v4.16b,v6.16b,v4.16b
+# asm 1: orr >vec_R4_R5_S4_S5=reg128#5.16b,<vec_R4_0_S4_0=reg128#6.16b,<vec_R5_0_S5_0=reg128#5.16b
+# asm 2: orr >vec_R4_R5_S4_S5=v4.16b,<vec_R4_0_S4_0=v5.16b,<vec_R5_0_S5_0=v4.16b
+orr v4.16b,v5.16b,v4.16b
 
 # qhasm: R0R1 = vec_R0_R1_S0_S1[0/2]
-# asm 1: umov >R0R1=int64#3,<vec_R0_R1_S0_S1=reg128#6.d[0]
-# asm 2: umov >R0R1=x2,<vec_R0_R1_S0_S1=v5.d[0]
-umov x2,v5.d[0]
+# asm 1: umov >R0R1=int64#3,<vec_R0_R1_S0_S1=reg128#7.d[0]
+# asm 2: umov >R0R1=x2,<vec_R0_R1_S0_S1=v6.d[0]
+umov x2,v6.d[0]
 
 # qhasm: S0S1 = vec_R0_R1_S0_S1[1/2]
-# asm 1: umov >S0S1=int64#4,<vec_R0_R1_S0_S1=reg128#6.d[1]
-# asm 2: umov >S0S1=x3,<vec_R0_R1_S0_S1=v5.d[1]
-umov x3,v5.d[1]
+# asm 1: umov >S0S1=int64#4,<vec_R0_R1_S0_S1=reg128#7.d[1]
+# asm 2: umov >S0S1=x3,<vec_R0_R1_S0_S1=v6.d[1]
+umov x3,v6.d[1]
 
 # qhasm: mem64[pointerR+0] = R0R1
 # asm 1: str <R0R1=int64#3,[<pointerR=int64#1,#0]
@@ -660,19 +660,19 @@ str x3,[x1,#16]
 mov x2, #3221225472
 
 # qhasm: 2x vec_MASKcarry1 = carry1
-# asm 1: dup <vec_MASKcarry1=reg128#7.2d,<carry1=int64#3
-# asm 2: dup <vec_MASKcarry1=v6.2d,<carry1=x2
-dup v6.2d,x2
+# asm 1: dup <vec_MASKcarry1=reg128#6.2d,<carry1=int64#3
+# asm 2: dup <vec_MASKcarry1=v5.2d,<carry1=x2
+dup v5.2d,x2
 
 # qhasm: 2x vec_MASKcarry2 = vec_MASKcarry1 << 32
-# asm 1: shl >vec_MASKcarry2=reg128#9.2d,<vec_MASKcarry1=reg128#7.2d,#32
-# asm 2: shl >vec_MASKcarry2=v8.2d,<vec_MASKcarry1=v6.2d,#32
-shl v8.2d,v6.2d,#32
+# asm 1: shl >vec_MASKcarry2=reg128#9.2d,<vec_MASKcarry1=reg128#6.2d,#32
+# asm 2: shl >vec_MASKcarry2=v8.2d,<vec_MASKcarry1=v5.2d,#32
+shl v8.2d,v5.2d,#32
 
 # qhasm: vec_MASKcarry = vec_MASKcarry1 | vec_MASKcarry2
-# asm 1: orr >vec_MASKcarry=reg128#10.16b,<vec_MASKcarry1=reg128#7.16b,<vec_MASKcarry2=reg128#9.16b
-# asm 2: orr >vec_MASKcarry=v9.16b,<vec_MASKcarry1=v6.16b,<vec_MASKcarry2=v8.16b
-orr v9.16b,v6.16b,v8.16b
+# asm 1: orr >vec_MASKcarry=reg128#10.16b,<vec_MASKcarry1=reg128#6.16b,<vec_MASKcarry2=reg128#9.16b
+# asm 2: orr >vec_MASKcarry=v9.16b,<vec_MASKcarry1=v5.16b,<vec_MASKcarry2=v8.16b
+orr v9.16b,v5.16b,v8.16b
 
 # qhasm: vec_MASKeffect = ~vec_MASKcarry
 # asm 1: mvn  >vec_MASKeffect=reg128#11.16b,<vec_MASKcarry=reg128#10.16b
@@ -725,14 +725,14 @@ shl v14.2d,v14.2d,#2
 shl v15.2d,v15.2d,#2
 
 # qhasm: vec_carry1 = vec_tmp1 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#17.16b,<vec_tmp1=reg128#15.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v16.16b,<vec_tmp1=v14.16b,<vec_MASKcarry1=v6.16b
-and v16.16b,v14.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#17.16b,<vec_tmp1=reg128#15.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v16.16b,<vec_tmp1=v14.16b,<vec_MASKcarry1=v5.16b
+and v16.16b,v14.16b,v5.16b
 
 # qhasm: vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1
-# asm 1: bic >vec_tmp1=reg128#15.16b,<vec_tmp1=reg128#15.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_tmp1=v14.16b,<vec_tmp1=v14.16b,<vec_MASKcarry1=v6.16b
-bic v14.16b,v14.16b,v6.16b
+# asm 1: bic >vec_tmp1=reg128#15.16b,<vec_tmp1=reg128#15.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_tmp1=v14.16b,<vec_tmp1=v14.16b,<vec_MASKcarry1=v5.16b
+bic v14.16b,v14.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#17.2d,<vec_carry1=reg128#17.2d,#2
@@ -765,14 +765,14 @@ ushr v16.2d,v16.2d,#62
 orr v15.16b,v15.16b,v16.16b
 
 # qhasm: vec_carry1 = vec_tmp2 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#17.16b,<vec_tmp2=reg128#16.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v16.16b,<vec_tmp2=v15.16b,<vec_MASKcarry1=v6.16b
-and v16.16b,v15.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#17.16b,<vec_tmp2=reg128#16.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v16.16b,<vec_tmp2=v15.16b,<vec_MASKcarry1=v5.16b
+and v16.16b,v15.16b,v5.16b
 
 # qhasm: vec_tmp2 = vec_tmp2 & ~vec_MASKcarry1
-# asm 1: bic >vec_tmp2=reg128#16.16b,<vec_tmp2=reg128#16.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_tmp2=v15.16b,<vec_tmp2=v15.16b,<vec_MASKcarry1=v6.16b
-bic v15.16b,v15.16b,v6.16b
+# asm 1: bic >vec_tmp2=reg128#16.16b,<vec_tmp2=reg128#16.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_tmp2=v15.16b,<vec_tmp2=v15.16b,<vec_MASKcarry1=v5.16b
+bic v15.16b,v15.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#17.2d,<vec_carry1=reg128#17.2d,#2
@@ -795,9 +795,9 @@ eor v14.16b,v14.16b,v9.16b
 mvn  v14.16b,v14.16b
 
 # qhasm: vec_tmp2 = vec_tmp2 ^ vec_MASKcarry1
-# asm 1: eor >vec_tmp2=reg128#16.16b,<vec_tmp2=reg128#16.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: eor >vec_tmp2=v15.16b,<vec_tmp2=v15.16b,<vec_MASKcarry1=v6.16b
-eor v15.16b,v15.16b,v6.16b
+# asm 1: eor >vec_tmp2=reg128#16.16b,<vec_tmp2=reg128#16.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: eor >vec_tmp2=v15.16b,<vec_tmp2=v15.16b,<vec_MASKcarry1=v5.16b
+eor v15.16b,v15.16b,v5.16b
 
 # qhasm: vec_tmp2 = ~vec_tmp2
 # asm 1: mvn  >vec_tmp2=reg128#16.16b,<vec_tmp2=reg128#16.16b
@@ -850,14 +850,14 @@ shl v0.2d,v14.2d,#2
 shl v13.2d,v13.2d,#2
 
 # qhasm: vec_carry1 = vec_tmp1 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#15.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v14.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-and v14.16b,v0.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#15.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v14.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+and v14.16b,v0.16b,v5.16b
 
 # qhasm: vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1
-# asm 1: bic >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-bic v0.16b,v0.16b,v6.16b
+# asm 1: bic >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+bic v0.16b,v0.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#15.2d,<vec_carry1=reg128#15.2d,#2
@@ -890,14 +890,14 @@ ushr v14.2d,v14.2d,#62
 orr v13.16b,v13.16b,v14.16b
 
 # qhasm: vec_carry1 = vec_tmp2 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#15.16b,<vec_tmp2=reg128#14.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v14.16b,<vec_tmp2=v13.16b,<vec_MASKcarry1=v6.16b
-and v14.16b,v13.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#15.16b,<vec_tmp2=reg128#14.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v14.16b,<vec_tmp2=v13.16b,<vec_MASKcarry1=v5.16b
+and v14.16b,v13.16b,v5.16b
 
 # qhasm: vec_tmp2 = vec_tmp2 & ~vec_MASKcarry1
-# asm 1: bic >vec_tmp2=reg128#14.16b,<vec_tmp2=reg128#14.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_tmp2=v13.16b,<vec_tmp2=v13.16b,<vec_MASKcarry1=v6.16b
-bic v13.16b,v13.16b,v6.16b
+# asm 1: bic >vec_tmp2=reg128#14.16b,<vec_tmp2=reg128#14.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_tmp2=v13.16b,<vec_tmp2=v13.16b,<vec_MASKcarry1=v5.16b
+bic v13.16b,v13.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#15.2d,<vec_carry1=reg128#15.2d,#2
@@ -920,9 +920,9 @@ eor v0.16b,v0.16b,v9.16b
 mvn  v0.16b,v0.16b
 
 # qhasm: vec_tmp2 = vec_tmp2 ^ vec_MASKcarry1
-# asm 1: eor >vec_tmp2=reg128#10.16b,<vec_tmp2=reg128#14.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: eor >vec_tmp2=v9.16b,<vec_tmp2=v13.16b,<vec_MASKcarry1=v6.16b
-eor v9.16b,v13.16b,v6.16b
+# asm 1: eor >vec_tmp2=reg128#10.16b,<vec_tmp2=reg128#14.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: eor >vec_tmp2=v9.16b,<vec_tmp2=v13.16b,<vec_MASKcarry1=v5.16b
+eor v9.16b,v13.16b,v5.16b
 
 # qhasm: vec_tmp2 = ~vec_tmp2
 # asm 1: mvn  >vec_tmp2=reg128#10.16b,<vec_tmp2=reg128#10.16b
@@ -955,14 +955,14 @@ add v7.2d,v7.2d,v0.2d
 add v4.2d,v4.2d,v9.2d
 
 # qhasm: vec_carry1 = vec_R2_R3_S2_S3 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#1.16b,<vec_R2_R3_S2_S3=reg128#8.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v0.16b,<vec_R2_R3_S2_S3=v7.16b,<vec_MASKcarry1=v6.16b
-and v0.16b,v7.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#1.16b,<vec_R2_R3_S2_S3=reg128#8.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v0.16b,<vec_R2_R3_S2_S3=v7.16b,<vec_MASKcarry1=v5.16b
+and v0.16b,v7.16b,v5.16b
 
 # qhasm: vec_R2_R3_S2_S3 = vec_R2_R3_S2_S3 & ~vec_MASKcarry1
-# asm 1: bic >vec_R2_R3_S2_S3=reg128#8.16b,<vec_R2_R3_S2_S3=reg128#8.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_R2_R3_S2_S3=v7.16b,<vec_R2_R3_S2_S3=v7.16b,<vec_MASKcarry1=v6.16b
-bic v7.16b,v7.16b,v6.16b
+# asm 1: bic >vec_R2_R3_S2_S3=reg128#8.16b,<vec_R2_R3_S2_S3=reg128#8.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_R2_R3_S2_S3=v7.16b,<vec_R2_R3_S2_S3=v7.16b,<vec_MASKcarry1=v5.16b
+bic v7.16b,v7.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#1.2d,<vec_carry1=reg128#1.2d,#2
@@ -995,14 +995,14 @@ ushr v0.2d,v0.2d,#62
 add v4.2d,v4.2d,v0.2d
 
 # qhasm: vec_carry1 = vec_R4_R5_S4_S5 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#1.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v0.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v6.16b
-and v0.16b,v4.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#1.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v0.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v5.16b
+and v0.16b,v4.16b,v5.16b
 
 # qhasm: vec_R4_R5_S4_S5 = vec_R4_R5_S4_S5 & ~vec_MASKcarry1
-# asm 1: bic >vec_R4_R5_S4_S5=reg128#5.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_R4_R5_S4_S5=v4.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v6.16b
-bic v4.16b,v4.16b,v6.16b
+# asm 1: bic >vec_R4_R5_S4_S5=reg128#5.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_R4_R5_S4_S5=v4.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v5.16b
+bic v4.16b,v4.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#1.2d,<vec_carry1=reg128#1.2d,#2
@@ -1040,14 +1040,14 @@ zip1 v0.4s,v2.4s,v3.4s
 shl v0.2d,v0.2d,#2
 
 # qhasm: vec_carry1 = vec_tmp1 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#10.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v9.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-and v9.16b,v0.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#10.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v9.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+and v9.16b,v0.16b,v5.16b
 
 # qhasm: vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1
-# asm 1: bic >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-bic v0.16b,v0.16b,v6.16b
+# asm 1: bic >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+bic v0.16b,v0.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#10.2d,<vec_carry1=reg128#10.2d,#2
@@ -1060,9 +1060,9 @@ shl v9.2d,v9.2d,#2
 orr v0.16b,v0.16b,v9.16b
 
 # qhasm: vec_tmp1 ^= vec_MASKcarry1
-# asm 1: eor >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: eor >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-eor v0.16b,v0.16b,v6.16b
+# asm 1: eor >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: eor >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+eor v0.16b,v0.16b,v5.16b
 
 # qhasm: vec_tmp1 = ~vec_tmp1
 # asm 1: mvn  >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b
@@ -1095,14 +1095,14 @@ zip2 v0.4s,v2.4s,v3.4s
 shl v0.2d,v0.2d,#2
 
 # qhasm: vec_carry1 = vec_tmp1 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#2.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v1.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-and v1.16b,v0.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#2.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v1.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+and v1.16b,v0.16b,v5.16b
 
 # qhasm: vec_tmp1 = vec_tmp1 & ~vec_MASKcarry1
-# asm 1: bic >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-bic v0.16b,v0.16b,v6.16b
+# asm 1: bic >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+bic v0.16b,v0.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#2.2d,<vec_carry1=reg128#2.2d,#2
@@ -1115,9 +1115,9 @@ shl v1.2d,v1.2d,#2
 orr v0.16b,v0.16b,v1.16b
 
 # qhasm: vec_tmp1 ^= vec_MASKcarry1
-# asm 1: eor >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: eor >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v6.16b
-eor v0.16b,v0.16b,v6.16b
+# asm 1: eor >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: eor >vec_tmp1=v0.16b,<vec_tmp1=v0.16b,<vec_MASKcarry1=v5.16b
+eor v0.16b,v0.16b,v5.16b
 
 # qhasm: vec_tmp1 = ~vec_tmp1
 # asm 1: mvn  >vec_tmp1=reg128#1.16b,<vec_tmp1=reg128#1.16b
@@ -1140,14 +1140,14 @@ and v0.16b,v0.16b,v8.16b
 add v4.2d,v4.2d,v0.2d
 
 # qhasm: vec_carry1 = vec_R4_R5_S4_S5 & vec_MASKcarry1
-# asm 1: and >vec_carry1=reg128#1.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: and >vec_carry1=v0.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v6.16b
-and v0.16b,v4.16b,v6.16b
+# asm 1: and >vec_carry1=reg128#1.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: and >vec_carry1=v0.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v5.16b
+and v0.16b,v4.16b,v5.16b
 
 # qhasm: vec_R4_R5_S4_S5 = vec_R4_R5_S4_S5 & ~vec_MASKcarry1
-# asm 1: bic >vec_R4_R5_S4_S5=reg128#2.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#7.16b
-# asm 2: bic >vec_R4_R5_S4_S5=v1.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v6.16b
-bic v1.16b,v4.16b,v6.16b
+# asm 1: bic >vec_R4_R5_S4_S5=reg128#2.16b,<vec_R4_R5_S4_S5=reg128#5.16b,<vec_MASKcarry1=reg128#6.16b
+# asm 2: bic >vec_R4_R5_S4_S5=v1.16b,<vec_R4_R5_S4_S5=v4.16b,<vec_MASKcarry1=v5.16b
+bic v1.16b,v4.16b,v5.16b
 
 # qhasm: 2x vec_carry1 <<= 2
 # asm 1: shl >vec_carry1=reg128#1.2d,<vec_carry1=reg128#1.2d,#2
@@ -1160,14 +1160,14 @@ shl v0.2d,v0.2d,#2
 add v1.2d,v1.2d,v0.2d
 
 # qhasm: R0R1 = vec_R0_R1_S0_S1[0/2]
-# asm 1: umov >R0R1=int64#3,<vec_R0_R1_S0_S1=reg128#6.d[0]
-# asm 2: umov >R0R1=x2,<vec_R0_R1_S0_S1=v5.d[0]
-umov x2,v5.d[0]
+# asm 1: umov >R0R1=int64#3,<vec_R0_R1_S0_S1=reg128#7.d[0]
+# asm 2: umov >R0R1=x2,<vec_R0_R1_S0_S1=v6.d[0]
+umov x2,v6.d[0]
 
 # qhasm: S0S1 = vec_R0_R1_S0_S1[1/2]
-# asm 1: umov >S0S1=int64#4,<vec_R0_R1_S0_S1=reg128#6.d[1]
-# asm 2: umov >S0S1=x3,<vec_R0_R1_S0_S1=v5.d[1]
-umov x3,v5.d[1]
+# asm 1: umov >S0S1=int64#4,<vec_R0_R1_S0_S1=reg128#7.d[1]
+# asm 2: umov >S0S1=x3,<vec_R0_R1_S0_S1=v6.d[1]
+umov x3,v6.d[1]
 
 # qhasm: mem64[pointerR+0] = R0R1
 # asm 1: str <R0R1=int64#3,[<pointerR=int64#1,#0]
