@@ -1,28 +1,29 @@
-# Makefile for bignum30_18 + main.c that uses GMP in naive_mul_mod()
-
 CC = gcc
-CFLAGS = -Wall -Wextra -O2
+CFLAGS = -Wall -O2
 
-# 若要使用 GMP，就加上 -DUSE_GMP 以及對應的 include 路徑
-TEST_CFLAGS = $(CFLAGS) -DUSE_GMP -I/opt/homebrew/include
-TEST_LDFLAGS = -L/opt/homebrew/lib -lgmp
+all: main test
 
-# 最終只要生成一個執行檔: main
-all: main
+big30.o: big30.c big30.h
+	$(CC) $(CFLAGS) -c big30.c
 
-# 編譯並連結
-main: main.o bignum30_18.o
-	$(CC) $(TEST_CFLAGS) main.o bignum30_18.o -o main $(TEST_LDFLAGS)
+modPmul_pureC.o: modPmul_pureC.c big30.h
+	$(CC) $(CFLAGS) -c modPmul_pureC.c
 
-# 生成 main.o
-main.o: main.c bignum30_18.h
-	$(CC) $(TEST_CFLAGS) -c main.c
+modPmul_ref.o: modPmul_ref.c big30.h
+	$(CC) $(CFLAGS) -c modPmul_ref.c
 
-# 生成 bignum30_18.o
-bignum30_18.o: bignum30_18.c bignum30_18.h
-	$(CC) $(TEST_CFLAGS) -c bignum30_18.c
+main.o: main.c big30.h
+	$(CC) $(CFLAGS) -c main.c
 
-# 清理
+test.o: test.c big30.h
+	$(CC) $(CFLAGS) -c test.c
+
+main: main.o big30.o modPmul_pureC.o modPmul_ref.o
+	$(CC) $(CFLAGS) -o main main.o big30.o modPmul_pureC.o modPmul_ref.o -lgmp
+
+test: test.o big30.o modPmul_pureC.o modPmul_ref.o
+	$(CC) $(CFLAGS) -o test test.o big30.o modPmul_pureC.o modPmul_ref.o -lgmp
+
 clean:
-	rm -f *.o main
+	rm -f *.o main test
 

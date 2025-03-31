@@ -568,7 +568,7 @@ code += unsigned_product
 code += read_out
 # code += "\n\n#DEBUG: The unsigned product behaves as expected\n\n"
 
-code += store_result
+#code += store_result
 
 code += "\n\n#Producing the masks\n\n"
 code += mask

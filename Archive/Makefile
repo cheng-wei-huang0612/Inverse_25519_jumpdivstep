@@ -1,89 +1,28 @@
-# === 編譯器與旗標設定 ===
-CC      = gcc
-CFLAGS  = -Wall -Wextra -Iinclude
+# Makefile for bignum30_18 + main.c that uses GMP in naive_mul_mod()
 
-# === 主要程式 (可選) ===
-MAIN_SRC   = src/main.c
+CC = gcc
+CFLAGS = -Wall -Wextra -O2
 
-# === 核心程式的 .c 與 .S ===
-CORE_C_SRCS = src/int128_adds_int128.c
-CORE_S_SRCS = src/int128_times_int128.S \
-              src/int64_times_int256.S \
-              src/int64_times_int64.S
+# 若要使用 GMP，就加上 -DUSE_GMP 以及對應的 include 路徑
+TEST_CFLAGS = $(CFLAGS) -DUSE_GMP -I/opt/homebrew/include
+TEST_LDFLAGS = -L/opt/homebrew/lib -lgmp
 
-MAIN_OBJS   = $(MAIN_SRC:.c=.o)
-CORE_C_OBJS = $(CORE_C_SRCS:.c=.o)
-CORE_S_OBJS = $(CORE_S_SRCS:.S=.o)
-CORE_OBJS   = $(CORE_C_OBJS) $(CORE_S_OBJS)
+# 最終只要生成一個執行檔: main
+all: main
 
-# === Python 測試檔 (.py) 與對應的 C 檔 (.c) ===
-TEST_PY = test/int64_times_int64_test.py \
-          test/int64_times_int256_test.py \
-		  test/int128_times_int128_test.py
+# 編譯並連結
+main: main.o bignum30_18.o
+	$(CC) $(TEST_CFLAGS) main.o bignum30_18.o -o main $(TEST_LDFLAGS)
 
-TEST_C  = $(TEST_PY:.py=.c)
+# 生成 main.o
+main.o: main.c bignum30_18.h
+	$(CC) $(TEST_CFLAGS) -c main.c
 
-# === 對應的 .o
-TEST_OBJS = $(TEST_C:.c=.o)
+# 生成 bignum30_18.o
+bignum30_18.o: bignum30_18.c bignum30_18.h
+	$(CC) $(TEST_CFLAGS) -c bignum30_18.c
 
-# === 執行檔清單 (一個測試檔對應一個 runner)
-TEST_RUNNERS = int64_times_int64_test_runner \
-               int64_times_int256_test_runner \
-			   int128_times_int128_test_runner
-
-# === 正式程式 (可有可無)
-TARGET = ed25519_app
-
-
-# -------------------------
-#     Build Rules
-# -------------------------
-
-# (A) 預設目標: 建置正式應用
-all: $(TARGET)
-
-# (B) 連結: 正式應用程式 (含 main + 核心 .o)
-$(TARGET): $(MAIN_OBJS) $(CORE_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-# (C) test: 先執行 Python → .c，再編譯所有 runner，依序執行
-test: $(TEST_C) $(TEST_RUNNERS)
-	@echo "=== Running All Tests ==="
-	@for runner in $(TEST_RUNNERS); do \
-	    echo ">> $$runner"; \
-	    ./$$runner || exit 1; \
-	done
-
-# --- 每個測試檔各自有專屬的連結規則 ---
-
-# (C1) int64_times_int64_test_runner
-int64_times_int64_test_runner: test/int64_times_int64_test.o $(CORE_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-# (C2) int64_times_int256_test_runner
-int64_times_int256_test_runner: test/int64_times_int256_test.o $(CORE_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-# (C3) int64_times_int256_test_runner
-int128_times_int128_test_runner: test/int128_times_int128_test.o $(CORE_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-# (D) 編譯 Python → C
-test/%.c: test/%.py
-	python3 $<
-
-# (E) 編譯 .c → .o
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# (F) 編譯 .S → .o
-%.o: %.S
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# (G) clean
+# 清理
 clean:
-	rm -f $(MAIN_OBJS) $(CORE_OBJS) $(TEST_OBJS) \
-	      $(TARGET) $(TEST_RUNNERS)
-	rm -f $(TEST_C)  
+	rm -f *.o main
 
-.PHONY: all test clean

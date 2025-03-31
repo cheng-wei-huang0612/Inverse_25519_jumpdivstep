@@ -1,5 +1,5 @@
 
-# Given A a positive 11 limb 30bits number
+# Given A a positive 9 limb 30bits number
 # Given u a positive 2 limb 30bits number
 # Compute A * u mod P by Multi-limb Montgomery Multiplication
 

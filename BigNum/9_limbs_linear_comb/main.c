@@ -192,7 +192,6 @@ void gmp_linear_comb(
  * 1) 先在 [0, 2^(bits+1)) 中產生一個隨機整數。
  * 2) 再減去 2^bits，讓結果落在 [ -2^bits, 2^bits ).
  */
-
 void random_gmp_in_range(mpz_t rop, gmp_randstate_t rstate, int bits) {
     // 1) 在 [0, 2^(bits+1)) 產生隨機整數
     mpz_urandomb(rop, rstate, bits + 1);

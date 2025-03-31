@@ -298,31 +298,6 @@ vec_R8_R9_S8_S9 = vec_R8_0_S8_0 | vec_R9_0_S9_0
 #these stores our unsigned product
 
 
-R0R1 = vec_R0_R1_S0_S1[0/2]
-S0S1 = vec_R0_R1_S0_S1[1/2]
-mem64[pointerR+0] = R0R1
-mem64[pointerS+0] = S0S1
-R2R3 = vec_R2_R3_S2_S3[0/2]
-S2S3 = vec_R2_R3_S2_S3[1/2]
-mem64[pointerR+8] = R2R3
-mem64[pointerS+8] = S2S3
-R4R5 = vec_R4_R5_S4_S5[0/2]
-S4S5 = vec_R4_R5_S4_S5[1/2]
-mem64[pointerR+16] = R4R5
-mem64[pointerS+16] = S4S5
-R6R7 = vec_R6_R7_S6_S7[0/2]
-S6S7 = vec_R6_R7_S6_S7[1/2]
-mem64[pointerR+24] = R6R7
-mem64[pointerS+24] = S6S7
-R8R9 = vec_R8_R9_S8_S9[0/2]
-S8S9 = vec_R8_R9_S8_S9[1/2]
-mem64[pointerR+32] = R8R9
-mem64[pointerS+32] = S8S9
-
-R10 = vec_R10_0_S10_0[0/2]
-mem32[pointerR+40] = R10
-S10 = vec_R10_0_S10_0[1/2]
-mem32[pointerS+40] = S10
 
 
 #Producing the masks
