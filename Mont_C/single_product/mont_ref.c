@@ -465,14 +465,9 @@ int main() {
     random_gmp_in_range(mpu, rstate, 60);
     random_gmp_in_range(mpA, rstate, 257);
     mpz_abs(mpA, mpA);
-    mpz_set_str(mpu, "-106707533201646541", 10);
-    mpz_set_str(mpu, "4504978485225741363", 10);
-    mpz_set_str(mpA, "51178770404172878683386712266976715829481408390447341802855558207484146389314", 10);
-    //mpz_set_str(mpu, "1", 10);
-    //mpz_mul_2exp(mpu, mpu, 60);
-    //mpz_neg(mpu,mpu);
+    mpz_set_str(mpu, "-784924700720898820", 10);
+    mpz_set_str(mpA, "649706749237016359310912293812451764790252070619261955642710670344462641741", 10);
 
-    //mpz_set_str(mpA, "1", 10);
 
 
     int64_t u; 

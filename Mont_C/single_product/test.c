@@ -40,16 +40,40 @@ static int compareResults(int64_t u, big30_t *A)
     mpz_from_big30(mpR_ref, &R_ref);
     mpz_from_big30(mpR_test, &R_test);
 
+    int canonical;
+    if (mpz_cmp_ui(mpR_test, 0) >= 0 && mpz_cmp(mpR_test, mpP) <= 0) {
+        // mpR_test 介於 0 和 mpP 之間 (含邊界)
+        canonical = 1;
+    } else {
+        canonical = 0;
+    }
+
     // Montgomery 最後要乘 2^60 mod P
     mpz_mul_2exp(mpR_test, mpR_test, 60);
     mpz_mod(mpR_test, mpR_test, mpP);
 
-    // 比較
-    int eq = (mpz_cmp(mpR_ref, mpR_test) == 0);
+    // result:
+    // ret = 0: wront equivalent class
+    // ret = 1: correct equivalent class but not canonical
+    // ret = 2: correct equivalent class and canonical
+
+    int ret = (mpz_cmp(mpR_ref, mpR_test) == 0);
+
+    if (ret == 1)
+    {
+        if (canonical == 0) {
+            ret = 1;
+        }
+
+        else if (canonical == 1) {
+            ret = 2;   
+        }
+    }
+
 
     mpz_clears(mpR_ref, mpR_test, mpA, mpP, NULL);
 
-    return eq;
+    return ret;
 }
 
 int main()
@@ -122,7 +146,7 @@ int main()
     // -----------------------------------------------------
     printf("\n[Random Tests]\n");
 
-    int N = 200000; // 例如做 20 組隨機測試
+    int N = 100000000;
     for(int t = 0; t < N; t++){
         mpz_t mpu_rand, mpA_rand, mpP;
         mpz_inits(mpu_rand, mpA_rand, mpP, NULL);
@@ -148,21 +172,29 @@ int main()
 
         small30_t u_rand_30;
         small30_from_mpz(mpu_rand, &u_rand_30);
-
-
+        
+        
         // 比對
         int pass = compareResults(u_rand, &A_rand);
-        if(!pass){
+        if(pass == 0){
             printf("  Random Test %d: FAIL\n", t);
-            //gmp_printf(" mpA = %Zd\n", mpA_rand);
-            //gmp_printf(" mpu = %Zd\n", mpu_rand);
-        } else {
+            printf("Wrong with equivalence class\n");
+            gmp_printf(" mpA = %Zd\n", mpA_rand);
+            gmp_printf(" mpu = %Zd\n", mpu_rand);
+        } else if (pass == 1) {
+            printf("  Random Test %d: FAIL\n", t);
+            printf("Correct equivalence class but not canonical return\n");
+            gmp_printf(" mpA = %Zd\n", mpA_rand);
+            gmp_printf(" mpu = %Zd\n", mpu_rand);
+
             // if (mpz_cmp_d(mpu_rand, ((uint64_t)1<<60)) > 0){
             //     printf("working with u = [limb0 = %d, limb1 = %d]\n", u_rand_30.limb[0], u_rand_30.limb[1] );
             //     gmp_printf("               = %Zd\n", mpu_rand);
             // }
+        } else if (pass == 2) {
             //printf("  Random Test %d: PASS\n", t);
         }
+        
 
 
         mpz_clears(mpu_rand, mpA_rand, NULL);
