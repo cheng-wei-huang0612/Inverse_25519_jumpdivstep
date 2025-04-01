@@ -36,26 +36,26 @@ extern big30_t P;
 /* 函式原型宣告 */
 
 // mpz ↔ big30
-void mpz_from_big30(mpz_t rop, const big30_t *x);
-void big30_from_mpz(const mpz_t op, big30_t *rop);
+void mpz_from_big30(mpz_t rop, const big30_t *op);
+void big30_from_mpz(big30_t *rop, const mpz_t op);
 
 // 如果需要 big30long
 void mpz_from_big30long(mpz_t rop, const big30long_t *x);
-void big30long_from_mpz(const mpz_t op, big30long_t *rop);
+void big30long_from_mpz(big30long_t *rop, const mpz_t op);
 
 // mpz ↔ small30
-void small30_from_mpz(const mpz_t op, small30_t *rop);
+void small30_from_mpz(small30_t *rop, const mpz_t op);
 void int64_from_small30(int64_t *rop, small30_t *op);
-void int64_from_mpz(const mpz_t op, int64_t *rop);
+void int64_from_mpz(int64_t *rop, const mpz_t op);
 
 // GMP 協助產生亂數
 void random_gmp_in_range(mpz_t rop, gmp_randstate_t rstate, int bits);
 
 /* modPmul（Montgomery 版，純 C） */
-void modPmul(big30_t *rop, int64_t *u, big30_t *A);
+//void modPmul(big30_t *rop, int64_t *u, big30_t *A);
 
 /* gmp 參考版本 modPmul */
-void gmp_modPmul(big30_t *rop, int64_t *u, big30_t *A);
+//void gmp_modPmul(big30_t *rop, int64_t *u, big30_t *A);
 
 #endif
 

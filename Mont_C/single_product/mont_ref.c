@@ -220,23 +220,11 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
     u0 = *u & (((int64_t)1<<30)-1);
     u1 = (*u >> 30) & (((int64_t)1<<32)-1);
     uhat = - (u1 >> 31); // -1 if u < 0;
-    
-    // u <- sign(u) x u 
-    // u ^ maskEffect + 1 
-
-    u0 = u0 ^ ((((uint64_t)1 << 30) - 1) & (uhat));
-    u0 += 1 & (uhat);
-    u1 = u1 ^ ((((uint64_t)1 << 32) - 1) & (uhat));
-
-    uint64_t carry = 0;
-    carry = u0 >> 30;
-    u0 &= (((uint64_t)1 << 30)-1);
-    u1 += carry;
-    u1 &= (((uint64_t)1 << 32)-1);
 
     
-
+    
     // M = -P^-1 mod B (B = 2^30)
+    uint64_t carry = 0;
     uint64_t M = 678152731;
     uint32_t tmp[11]; 
     for (int i = 0; i < 11; i++){
@@ -262,12 +250,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
 
     tmp[9] += prod & (((uint64_t)1<<32)-1);
 
-    
 
-
-
-    
-    
 
     // l0
     uint64_t l0 = (uint64_t)(tmp[0]) * (uint64_t)M;
@@ -414,45 +397,45 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
 
     
 
-    // result <- sign(u) x result 
-    //
-    // tmp = \pm tmp
+    // // result <- sign(u) x result 
+    // //
+    // // tmp = \pm tmp
     
-    tmp_printf(tmp);
-    tmp_print_to_mpz(tmp);
-
-    
-    uint32_t MASK_effect = ((1<<30) - 1);
-
-    for (int i = 0; i < 8; i++) {
-        tmp[i] = tmp[i] ^ ((uint32_t)uhat & MASK_effect);
-    }
-    printf("uhat = %u\n",(uint32_t)uhat);
-    tmp[8] = tmp[8] ^ ( (uint32_t)uhat );
-
-    tmp[0] = tmp[0] + (uhat >> 63);
-
-    tmp_printf(tmp);
-    tmp_print_to_mpz(tmp);
-    // tmp += P
-
-    for (int i = 0; i < 9; i++) {
-        tmp[i] = tmp[i] + ((uint32_t)uhat & P.limb[i]);
-    }
-    tmp_printf(tmp);
-    tmp_print_to_mpz(tmp);
-    
-    // carry propogation
-    carry = 0;
-    for (int i = 0; i<8; i++){
-        carry = tmp[i] >> 30;
-        tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
-
-        tmp[i+1] += carry; 
-    }
+    // tmp_printf(tmp);
+    // tmp_print_to_mpz(tmp);
 
     
-    tmp_printf(tmp);
+    // uint32_t MASK_effect = ((1<<30) - 1);
+
+    // for (int i = 0; i < 8; i++) {
+    //     tmp[i] = tmp[i] ^ ((uint32_t)uhat & MASK_effect);
+    // }
+    // printf("uhat = %u\n",(uint32_t)uhat);
+    // tmp[8] = tmp[8] ^ ( (uint32_t)uhat );
+
+    // tmp[0] = tmp[0] + (uhat >> 63);
+
+    // tmp_printf(tmp);
+    // tmp_print_to_mpz(tmp);
+    // // tmp += P
+
+    // for (int i = 0; i < 9; i++) {
+    //     tmp[i] = tmp[i] + ((uint32_t)uhat & P.limb[i]);
+    // }
+    // tmp_printf(tmp);
+    // tmp_print_to_mpz(tmp);
+    
+    // // carry propogation
+    // carry = 0;
+    // for (int i = 0; i<8; i++){
+    //     carry = tmp[i] >> 30;
+    //     tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
+
+    //     tmp[i+1] += carry; 
+    // }
+
+    
+    // tmp_printf(tmp);
 
     for (int i = 0; i<9; i++){
         rop->limb[i] = tmp[i];
@@ -472,9 +455,9 @@ int main() {
     mpz_init(mpP);
     mpz_from_big30(mpP, &P);
 
-    for (int i = 0; i<9; i++){
-        printf("P.limb[%d] = %d\n", i, P.limb[i]);
-    }
+    // for (int i = 0; i<9; i++){
+    //     printf("P.limb[%d] = %d\n", i, P.limb[i]);
+    // }
 
 
     mpz_t mpu, mpA, mpR, mpcorrectR; 
@@ -483,6 +466,7 @@ int main() {
     random_gmp_in_range(mpA, rstate, 257);
     mpz_abs(mpA, mpA);
     mpz_set_str(mpu, "-106707533201646541", 10);
+    mpz_set_str(mpu, "4504978485225741363", 10);
     mpz_set_str(mpA, "51178770404172878683386712266976715829481408390447341802855558207484146389314", 10);
     //mpz_set_str(mpu, "1", 10);
     //mpz_mul_2exp(mpu, mpu, 60);

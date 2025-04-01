@@ -3,60 +3,68 @@
 #include <stdint.h>
 
 
+void tmp_printf(uint32_t *tmp){
+    printf("\n\n");
+    for (int i=0; i<4; i++){
+        printf("tmp[%d] = %d  ",i,tmp[i]); 
+    }
+    printf("\n");
+    for (int i=4; i<8; i++){
+        printf("tmp[%d] = %d  ",i,tmp[i]); 
+    }
+    printf("\n");
+    for (int i=8; i<11; i++){
+        printf("tmp[%d] = %d  ",i,tmp[i]); 
+    }
+    printf("\n");
+    
+
+    printf("\n");
+}
+
+void tmp_print_to_mpz(uint32_t *tmp){
+    big30long_t num;
+
+    for (int i = 0; i<11;i++){
+        num.limb[i] = tmp[i];
+    }
+
+    mpz_t mpnum;
+    mpz_init(mpnum);
+    mpz_from_big30long(mpnum, &num);
+    gmp_printf("tmp = %Zd\n", mpnum);
+}
+
 void modPmul(big30_t *rop, int64_t *u, big30_t *A){
-    // Parse the number u into small30_t
-    uint64_t u0, u1, uhat;
+
+    // u = u_tuda(u0 and u1) + uhat * (-2^60)
+    uint64_t u0, u1;
+    uint32_t uhat;
     u0 = *u & (((int64_t)1<<30)-1);
-    u1 = (*u >> 30) & (((int64_t)1<<32)-1);
-    uhat = - (u1 >> 31); // -1 if u < 0;
+    u1 = (*u >> 30) & (((int64_t)1<<30)-1);
+    uhat =  (*u >> 63); // -1 if u < 0;
+
+    //printf("uhat = %d\n",uhat);
     
-    // u <- sign(u) x u 
-    // u ^ maskEffect + 1 
-
-    u0 = u0 ^ ((((uint64_t)1 << 30) - 1) & (uhat));
-    u0 += 1 & (uhat);
-    u1 = u1 ^ ((((uint64_t)1 << 32) - 1) & (uhat));
-
-    uint64_t carry = 0;
-    carry = u0 >> 30;
-    u0 &= (((uint64_t)1 << 30)-1);
-    u1 += carry;
-    u1 &= (((uint64_t)1 << 32)-1);
-
-    
-
     // M = -P^-1 mod B (B = 2^30)
     uint64_t M = 678152731;
     uint32_t tmp[11]; 
     for (int i = 0; i < 11; i++){
         tmp[i] = 0;
     }
-
-
-    // Debug:
-    //printf("u0 = %llu\n",u0);
-    //printf("u1 = %llu\n",u1);
-    //printf("uhat = %lld\n", uhat);
-
-    // u0 * A 
+    uint64_t carry = 0;
     uint64_t prod = 0;
 
+
+    // u0 * A 
     for (int i = 0; i < 9; i++){
-
-    prod += (uint64_t)(A->limb[i]) * u0;
-    tmp[i] += prod & ((1<<30)-1);
-    prod >>= 30;
-
+        prod += (uint64_t)(A->limb[i]) * u0;
+        tmp[i] += prod & ((1<<30)-1);
+        prod >>= 30;
     }
-
     tmp[9] += prod & (((uint64_t)1<<32)-1);
 
-    
 
-
-
-    
-    
 
     // l0
     uint64_t l0 = (uint64_t)(tmp[0]) * (uint64_t)M;
@@ -65,11 +73,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
 
     // tmp = (tmp + l0*P) / B 
     
-
-    
     tmp[0] = tmp[0] + ((l0 * (uint64_t)P.limb[0]) & ((1<<30)-1));
-
-    //printf("%u\n",tmp[0]);
     
     for (int i=1;i<9;i++){
         tmp[i] +=  ((l0 * (uint64_t)P.limb[i]) & (((uint64_t)1<<30)-1)) ;
@@ -115,8 +119,6 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
 
         tmp[i+1] += carry; 
     }
-
-
 
 
     // l1 
@@ -182,35 +184,52 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
     tmp[0] += ((uint32_t)reductionhat) & 19;
     carry = 0;
     for (int i = 0; i<10; i++){
-        carry = tmp2[i] >> 30;
-        tmp2[i] = tmp2[i] & (((uint64_t)1<<30) -1);
+        carry = tmp[i] >> 30;
+        tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
 
-        tmp2[i+1] += carry; 
+        tmp[i+1] += carry; 
     }
 
     tmp[8] -= ((uint32_t)reductionhat) & 32768;
 
-    
+    // result += uhat(P-A)
 
-    // result <- sign(u) x result 
-    //
-    // tmp = \pm tmp
-    
-    uint32_t MASK_effect = ((1<<30) - 1);
-
-    for (int i = 0; i < 8; i++) {
-        tmp[i] = tmp[i] ^ ((uint32_t)uhat & MASK_effect);
+    // Compute P - A , store them in tmp3
+    uint32_t tmp3[11] = {0};
+    for (int i = 0; i < 9; i++)
+    {
+        tmp3[i] = P.limb[i] - A->limb[i];
     }
-    tmp[8] = tmp[8] ^ ( (uint32_t)uhat );
 
-    tmp[0] = tmp[0] + (uhat >> 63);
+    // for (int i = 0; i < 9; i++)
+    // {
+    //     printf("tmp3[%d] = %d\n",i,tmp3[i]);
+    // }
 
-    // tmp += P
-
-    for (int i = 0; i < 9; i++) {
-        tmp[i] = tmp[i] + ((uint32_t)uhat & P.limb[i]);
+    // Borrow propagation
+    uint32_t borrow = 0;
+    for (int i = 0; i < 8; i++)
+    {   
+        borrow = tmp3[i] >> 31;
+        tmp3[i+1] = tmp3[i+1] - borrow;
+        tmp3[i+0] = tmp3[i+0] + (borrow << 30);
     }
+
+    // for (int i = 0; i < 9; i++)
+    // {
+    //     printf("tmp3[%d] = %d\n",i,tmp3[i]);
+    // }
+    //tmp_print_to_mpz(tmp3);
     
+
+    // result += uhat(P-A)
+    // tmp += uhat & tmp3
+
+    for (int i = 0; i < 9; i++)
+    {
+        tmp[i] += ((uint32_t)uhat & tmp3[i]);
+    }
+
     // carry propogation
     carry = 0;
     for (int i = 0; i<8; i++){

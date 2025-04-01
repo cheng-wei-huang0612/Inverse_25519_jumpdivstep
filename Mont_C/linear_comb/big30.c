@@ -28,21 +28,21 @@ big30_t P = {
 // ----------------------------------------------------------
 // mpz <-> big30 轉換
 // ----------------------------------------------------------
-void mpz_from_big30(mpz_t rop, const big30_t *x) {
+void mpz_from_big30(mpz_t rop, const big30_t *op) {
     mpz_set_ui(rop, 0);
     mpz_t tmp;
     mpz_init(tmp);
 
     // 從 x->limb[LIMBS-1] (最高位) 開始，往下處理
     for(int i = LIMBS - 1; i >= 0; i--) {
-        mpz_set_si(tmp, (int32_t)x->limb[i]);
+        mpz_set_si(tmp, (int32_t)op->limb[i]);
         mpz_mul_2exp(rop, rop, BIG30_SHIFT);
         mpz_add(rop, rop, tmp);
     }
     mpz_clear(tmp);
 }
 
-void big30_from_mpz(const mpz_t op, big30_t *rop) {
+void big30_from_mpz(big30_t *rop, const mpz_t op) {
     mpz_t tmp, rem;
     mpz_init_set(tmp, op);
     mpz_init(rem);
@@ -63,20 +63,20 @@ void big30_from_mpz(const mpz_t op, big30_t *rop) {
 // ----------------------------------------------------------
 // mpz <-> big30long (若無需求可自行刪除)
 // ----------------------------------------------------------
-void mpz_from_big30long(mpz_t rop, const big30long_t *x) {
+void mpz_from_big30long(mpz_t rop, const big30long_t *op) {
     mpz_set_ui(rop, 0);
     mpz_t tmp;
     mpz_init(tmp);
 
     for(int i = (LIMBS + 1); i >= 0; i--) {
-        mpz_set_si(tmp, (int32_t)x->limb[i]);
+        mpz_set_si(tmp, (int32_t)op->limb[i]);
         mpz_mul_2exp(rop, rop, BIG30_SHIFT);
         mpz_add(rop, rop, tmp);
     }
     mpz_clear(tmp);
 }
 
-void big30long_from_mpz(const mpz_t op, big30long_t *rop) {
+void big30long_from_mpz(big30long_t *rop, const mpz_t op) {
     mpz_t tmp, rem;
     mpz_init_set(tmp, op);
     mpz_init(rem);
@@ -95,7 +95,7 @@ void big30long_from_mpz(const mpz_t op, big30long_t *rop) {
 // ----------------------------------------------------------
 // mpz <-> small30
 // ----------------------------------------------------------
-void small30_from_mpz(const mpz_t op, small30_t *rop) {
+void small30_from_mpz(small30_t *rop, const mpz_t op) {
     mpz_t tmp, rem;
     mpz_init_set(tmp, op);
     mpz_init(rem);
@@ -120,9 +120,9 @@ void int64_from_small30(int64_t *rop, small30_t *op) {
     *rop += op->limb[0];                     // 加入低位
 }
 
-void int64_from_mpz(const mpz_t op, int64_t *rop) {
+void int64_from_mpz(int64_t *rop, const mpz_t op) {
     small30_t tmp30;
-    small30_from_mpz(op, &tmp30);
+    small30_from_mpz(&tmp30, op);
     int64_from_small30(rop, &tmp30);
 }
 

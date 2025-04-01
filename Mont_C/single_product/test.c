@@ -122,17 +122,16 @@ int main()
     // -----------------------------------------------------
     printf("\n[Random Tests]\n");
 
-    int N = 20000000; // 例如做 20 組隨機測試
+    int N = 200000; // 例如做 20 組隨機測試
     for(int t = 0; t < N; t++){
         mpz_t mpu_rand, mpA_rand, mpP;
         mpz_inits(mpu_rand, mpA_rand, mpP, NULL);
         mpz_from_big30(mpP, &P);
 
         // 亂數 bits 可自行調整；例如 u 最多 60 bits，A 最多 257 bits
-        random_gmp_in_range(mpu_rand, rstate, 60);
-        random_gmp_in_range(mpA_rand, rstate, 257);
-        // A 取絕對值(若您不想要負值也進行測試的話)
-        mpz_abs(mpA_rand, mpA_rand);
+        random_gmp_in_range(mpu_rand, rstate, 60); // mpu_rand \in [-2^60, 2^60)
+        pos_random_gmp_in_range(mpA_rand, rstate, 255);
+
         // 若 A >= P，先做一次 mod P，確保 A ∈ [0, P-1]
         if (mpz_cmp(mpA_rand, mpP) >= 0) {
             mpz_mod(mpA_rand, mpA_rand, mpP);
@@ -146,13 +145,22 @@ int main()
         int64_from_mpz(mpu_rand, &u_rand);
         big30_from_mpz(mpA_rand, &A_rand);
 
+
+        small30_t u_rand_30;
+        small30_from_mpz(mpu_rand, &u_rand_30);
+
+
         // 比對
         int pass = compareResults(u_rand, &A_rand);
         if(!pass){
             printf("  Random Test %d: FAIL\n", t);
-            gmp_printf(" mpA = %Zd\n", mpA_rand);
-            gmp_printf(" mpu = %Zd\n", mpu_rand);
+            //gmp_printf(" mpA = %Zd\n", mpA_rand);
+            //gmp_printf(" mpu = %Zd\n", mpu_rand);
         } else {
+            // if (mpz_cmp_d(mpu_rand, ((uint64_t)1<<60)) > 0){
+            //     printf("working with u = [limb0 = %d, limb1 = %d]\n", u_rand_30.limb[0], u_rand_30.limb[1] );
+            //     gmp_printf("               = %Zd\n", mpu_rand);
+            // }
             //printf("  Random Test %d: PASS\n", t);
         }
 
