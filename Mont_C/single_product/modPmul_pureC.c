@@ -51,9 +51,9 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
     uint64_t M = 678152731;
     uint32_t tmp[11] = {0}; 
     uint64_t carry = 0;
+    uint64_t borrow = 0;
     uint64_t prod = 0;
     uint64_t reductionhat;
-    uint32_t borrow = 0;
 
 
 
@@ -64,7 +64,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         tmp[i] += prod & ((1<<30)-1);
         prod >>= 30;
     }
-    tmp[9] += prod & (((uint64_t)1<<32)-1);
+    tmp[9] += prod & (((uint64_t)1<<30)-1);
 
 
 
@@ -81,11 +81,11 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         tmp[i] += prod & ((1<<30)-1);
         prod >>= 30;
     }
-    tmp[9] += prod & (((uint64_t)1<<32)-1);
+    tmp[9] += prod & (((uint64_t)1<<30)-1);
 
     // carry propogation
     carry = 0;
-    for (int i = 0; i<10; i++){
+    for (int i = 0; i<9; i++){
         carry = tmp[i] >> 30;
         tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
 
@@ -107,7 +107,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         tmp[i] += prod & ((1<<30)-1);
         prod >>= 30;
     }
-    tmp[9] += prod & (((uint64_t)1<<32)-1);
+    tmp[9] += prod & (((uint64_t)1<<30)-1);
 
     carry = 0;
     for (int i = 0; i<10; i++){
@@ -130,7 +130,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         tmp[i] += prod & ((1<<30)-1);
         prod >>= 30;
     }
-    tmp[9] += prod & (((uint64_t)1<<32)-1);
+    tmp[9] += prod & (((uint64_t)1<<30)-1);
 
     // carry propagation
     carry = 0;

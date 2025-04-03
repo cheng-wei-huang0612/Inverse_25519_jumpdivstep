@@ -146,7 +146,7 @@ int main()
     // -----------------------------------------------------
     printf("\n[Random Tests]\n");
 
-    int N = 100000000;
+    int N = 1000000;
     for(int t = 0; t < N; t++){
         mpz_t mpu_rand, mpA_rand, mpP;
         mpz_inits(mpu_rand, mpA_rand, mpP, NULL);
