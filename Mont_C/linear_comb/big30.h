@@ -50,6 +50,8 @@ void int64_from_mpz(int64_t *rop, const mpz_t op);
 
 // GMP 協助產生亂數
 void random_gmp_in_range(mpz_t rop, gmp_randstate_t rstate, int bits);
+void pos_random_gmp_in_range(mpz_t rop, gmp_randstate_t rstate, int bits);
+
 
 /* modPmul（Montgomery 版，純 C） */
 //void modPmul(big30_t *rop, int64_t *u, big30_t *A);

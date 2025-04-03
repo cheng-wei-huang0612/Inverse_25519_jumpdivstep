@@ -2,52 +2,16 @@
 #include <stdio.h>
 #include <gmp.h>
 
-extern void double_product(
+extern void double_mont(
     big30_t *resultV, big30_t *resultS,
     const big30_t *V,
     const int64_t *u, const int64_t *r
 );
 
-/**
- * gmp_double_mont():
- *   resultV = (u * V) * 2^{-60} mod P
- *   resultS = (r * V) * 2^{-60} mod P
- * 透過 GMP 先計算 u * V 與 r * V，再乘上 2^{-60} mod P。
- */
-void gmp_double_mont(big30_t *resultV, big30_t *resultS,
-                        const big30_t *V,
-                        const int64_t *u, const int64_t *r) {
-    mpz_t mpP, mpu, mpr, mpV, mpinv2Pow60;
-    mpz_inits(mpP, mpu, mpr, mpV, mpinv2Pow60, NULL);
+extern void gmp_double_mont(big30_t *resultV, big30_t *resultS,
+    const big30_t *V,
+    const int64_t *u, const int64_t *r);
 
-    mpz_from_big30(mpP, &P);
-    mpz_set_ui(mpinv2Pow60, 1);
-    mpz_mul_2exp(mpinv2Pow60,mpinv2Pow60, 60);
-    mpz_invert(mpinv2Pow60, mpinv2Pow60, mpP);
-
-
-    mpz_from_big30(mpV, V);
-
-    mpz_set_si(mpu, *u);
-    mpz_set_si(mpr, *r);
-
-
-    mpz_mul(mpu, mpu, mpV);     // u * V
-    mpz_mul(mpr, mpr, mpV);     // r * V
-
-    mpz_mul(mpu, mpu, mpinv2Pow60);
-    mpz_mul(mpr, mpr, mpinv2Pow60);
-
-    mpz_mod(mpu, mpu, mpP);     // mod P
-    mpz_mod(mpr, mpr, mpP);
-
-    // 把得到的結果轉 big30_t 回傳
-    big30_from_mpz(resultV, mpu);
-    big30_from_mpz(resultS, mpr);
-
-    mpz_clears(mpP, mpu, mpr, mpV, mpinv2Pow60, NULL);
-
-}
 
 //----------------------------------------------------------------------------
 // 主程式：一次測試 u*V*R^{-1} mod P / r*V*R^{-1} mod P
@@ -72,11 +36,11 @@ int main()
     mpz_inits(mpV, mpu, mpr, NULL);
 
     // mpV = 123456...
-    mpz_set_str(mpV, "42", 10);  
+    mpz_set_str(mpV, "1990722789690322711207917334797004654545030125479463068579830179208085763260", 10);  
     // u = 100
-    mpz_set_str(mpu, "100", 10);
+    mpz_set_str(mpu, "-10902621393230986", 10);
     // r = 9999
-    mpz_set_str(mpr, "9999", 10);
+    mpz_set_str(mpr, "1090262139323098679", 10);
 
     // 3) 轉 big30 / int64
     big30_t V_big30;
@@ -103,7 +67,7 @@ int main()
     }
 
     // 假設你已寫好這個函式
-    double_product(&Ru_NEON, &Rr_NEON, &V_big30, &u_64, &r_64);
+    double_mont(&Ru_NEON, &Rr_NEON, &V_big30, &u_64, &r_64);
 
     //--------------------------------------------------------------------------
     // 5) 先檢查 NEON 結果是否為 canonical representative (0 <= x < P)

@@ -48,12 +48,12 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
 
     // Constants and buffer initialization
     // M = -P^-1 mod B (B = 2^30)
-    uint64_t M = 678152731;
+    uint32_t M = 678152731;
     uint32_t tmp[11] = {0}; 
-    uint64_t carry = 0;
-    uint64_t borrow = 0;
+    uint32_t carry = 0;
+    uint32_t borrow = 0;
     uint64_t prod = 0;
-    uint64_t reductionhat;
+    uint32_t reductionhat;
 
 
 
@@ -85,7 +85,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
 
     // carry propogation
     carry = 0;
-    for (int i = 0; i<9; i++){
+    for (int i = 0; i < 9; i++){
         carry = tmp[i] >> 30;
         tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
 
@@ -109,6 +109,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
     }
     tmp[9] += prod & (((uint64_t)1<<30)-1);
 
+    
     carry = 0;
     for (int i = 0; i<10; i++){
         carry = tmp[i] >> 30;
@@ -117,11 +118,14 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         tmp[i+1] += carry; 
     }
 
-
+    
+    
+    
     // l1 = tmp[0] * M mod 2^30
     uint64_t l1 = (uint64_t)(tmp[0]) * (uint64_t)M;
     l1 = l1 & ((1<<30) - 1);
-
+    
+    
     // tmp = (tmp + l1*P) / B 
     // tmp = tmp + l1*P
     prod = 0;
@@ -131,28 +135,33 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         prod >>= 30;
     }
     tmp[9] += prod & (((uint64_t)1<<30)-1);
-
+    
     // carry propagation
     carry = 0;
     for (int i = 0; i<10; i++){
         carry = tmp[i] >> 30;
         tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
-
+        
         tmp[i+1] += carry; 
     }
-
+    
+    
+    
     // tmp = tmp / B
     for (int i = 0; i<9; i++){
         tmp[i] = tmp[i+1];
     }
     tmp[9] = 0;
-
-
-
+    
+    
+    
+    
+    
+    
     // Reduction P once:
     // See if tmp[0:9] >= P;
     // tmp >= P iff tmp + 19 >= 2^255;
-
+    
     uint32_t small_tmp = 19;
     for (int i = 0; i < 8; i++)
     {
@@ -160,24 +169,41 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         small_tmp >>= 30;
     }
     small_tmp += tmp[8];
-
+    
+    
+    
+    
     reductionhat =  - ((32767 - small_tmp) >> 31);
     
-
+    
+    printf("reductionhat = %u\n", reductionhat);
+    
+    
     tmp[0] += (reductionhat) & 19;
     tmp[8] -= (reductionhat) & 32768;
+
+
+    
+    
     carry = 0;
     for (int i = 0; i<10; i++){
         carry = tmp[i] >> 30;
         tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
-
+        
         tmp[i+1] += carry; 
     }
-
+    
+    
+    
+    
+    
+    
+    
 
 
 
     // result += uhat & (P-A)
+
 
     for (int i = 0; i < 9; i++)
     {
@@ -192,6 +218,7 @@ void modPmul(big30_t *rop, int64_t *u, big30_t *A){
         tmp[i+1] = tmp[i+1] - borrow;
         tmp[i+0] = tmp[i+0] + (borrow << 30);
     }
+
 
 
 

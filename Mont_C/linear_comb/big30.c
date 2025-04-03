@@ -144,3 +144,10 @@ void random_gmp_in_range(mpz_t rop, gmp_randstate_t rstate, int bits) {
     mpz_clear(shift);
 }
 
+
+void pos_random_gmp_in_range(mpz_t rop, gmp_randstate_t rstate, int bits) {
+    // 1) rop ∈ [0, 2^(bits))
+    mpz_urandomb(rop, rstate, bits);
+
+}
+
