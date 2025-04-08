@@ -2,6 +2,8 @@
 #include <arm_neon.h>
 #include "big30.h"
 
+/*#define DEBUGPRINT*/
+
 
 void print_u64x2(uint64x2_t vec) {
     uint64_t values[2];
@@ -48,7 +50,6 @@ void linear_mont_neon_intrinsics(
         const big30_t *V, const big30_t *S,
         const int64_t *u, const int64_t *v, const int64_t *r, const int64_t *s
 ){
-    printf("the linear_comb function is executed!\n");
 
     // Step [1]: Initialization 
     // vec_P[0..8] = broadcast each limb of P to 2 lanes
@@ -599,7 +600,7 @@ void linear_mont_neon_intrinsics(
 
 
 
-    printf("the linear_comb function is over!\n");
+    /*printf("the linear_comb function is over!\n");*/
     
 
 }
