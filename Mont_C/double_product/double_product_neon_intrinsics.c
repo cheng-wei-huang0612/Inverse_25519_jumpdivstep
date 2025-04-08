@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "big30.h"
 #include <arm_neon.h>
+#include "big30.h"
 
 
 void print_u64x2(uint64x2_t vec) {
@@ -22,43 +22,33 @@ void double_mont(
         const big30_t *V,
         const int64_t *u, const int64_t *r
 ){
-    // P in neon
+    // Step [1]: Initialization 
+    // vec_P[0..8] = broadcast each limb of P to 2 lanes
     uint32x2_t vec_P[9];
     for (int i = 0; i < 9; i++)
     {
         vec_P[i] =  vdup_n_u32(P.limb[i]);
     }
 
+    // vec_V[0..8] = broadcast each limb of V to 2 lanes
     uint32x2_t vec_V[9];
     for (int i = 0; i < 9; i++)
     {
         vec_V[i] =  vdup_n_u32(V->limb[i]);
     }
 
+    // vec_tmp[0..10] = initialize to zero
+    uint32x2_t vec_tmp[11] = {0}; 
+    for (int i = 0; i < 11; i++) {
+        vec_tmp[i] = vdup_n_u32(0);
+    }
 
-
-    // Put the data into neon registers
-    int64_t UU = *u;
-    int64_t RR = *r;
-
-    uint32_t u0 = (uint32_t)(UU & ((1ULL << 30) - 1));
-    uint32_t r0 = (uint32_t)(RR & ((1ULL << 30) - 1));
-
-    uint32_t u1 = (uint32_t)((UU >> 30) & ((1ULL << 30) - 1));
-    uint32_t r1 = (uint32_t)((RR >> 30) & ((1ULL << 30) - 1));
-
-    uint32_t uhat = (UU >> 63);
-    uint32_t rhat = (RR >> 63);
-
-    uint32x2_t vec_uhat_rhat = (uint32x2_t){uhat, rhat};
-    uint32x2_t vec_u0_r0 = (uint32x2_t){u0, r0};
-    uint32x2_t vec_u1_r1 = (uint32x2_t){u1, r1};
-
-
-    // Constants and buffer initialization
+    // vec_M = [M, M]
     // M = -P^-1 mod B (B = 2^30)
     uint32x2_t vec_M = {678152731,678152731};
-    uint32x2_t vec_tmp[11] = {0}; 
+
+
+    // Constants, buffer, and mask
     uint32x2_t vec_carry = {0};
     uint32x2_t vec_borrow = {0};
     uint64x2_t vec_prod = {0};
@@ -66,73 +56,49 @@ void double_mont(
     uint64x2_t vec_2p30m1 = {1073741823, 1073741823};
     uint32x2_t vec_u32_2p30m1 = {1073741823, 1073741823};
 
-    for (int i = 0; i < 11; i++) {
-        vec_tmp[i] = vdup_n_u32(0);
-    }
 
 
+    // Step [2]: Decompose inputs (u, r) into limb formers
+    uint32x2_t vec_u0_r0 = {(*u) & ((1ULL << 30)-1), (*r) & ((1ULL << 30)-1)};
+    uint32x2_t vec_u1_r1 = {((*u) >> 30) & ((1ULL << 30)-1), ((*r) >> 30) & ((1ULL << 30)-1)};
+    uint32x2_t vec_uhat_rhat = {(*u) >> 63, (*r) >> 63};
+    
 
-    // Step 2: tmp = u0 * V
+    // Step [3]: tmp += u0 * V
     vec_prod = vdupq_n_u64(0);
     for (int i = 0; i < 9; i++){
-        // prod += (uint64_t)(A->limb[i]) * u0;
         vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u0_r0 );
-        // tmp[i] += prod & ((1<<30)-1);
         vec_tmp[i] = vadd_u32(vec_tmp[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        //prod >>= 30;
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
-    // tmp[9] += prod & (((uint64_t)1<<30)-1);
     vec_tmp[9] = vadd_u32(vec_tmp[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
     
-    //  l0 = tmp[0] * M mod 2^30
+    // Step [4]: l0 = tmp[0] * M mod 2^30
+    //            and tmp += l0 * P
     uint32x2_t vec_l0 = vmul_u32(vec_tmp[0], vec_M);
     vec_l0 = vand_u32(vec_l0 ,vec_u32_2p30m1);
-    
 
-    // debug: vec_l0 = [ 678152731, 0 ]
-
-
-
-    // tmp = (tmp + l0*P) / B 
-    // tmp = tmp + l0*P
     vec_prod = vdupq_n_u64(0);
     for (int i = 0; i < 9; i++){
-        // prod += (uint64_t)(P.limb[i]) * l0;
         vec_prod = vmlal_u32(vec_prod, vec_P[i], vec_l0 );
-        // tmp[i] += prod & ((1<<30)-1);
         vec_tmp[i] = vadd_u32(vec_tmp[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        // prod >>= 30;
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
-    // tmp[9] += prod & (((uint64_t)1<<30)-1);
     vec_tmp[9] = vadd_u32(vec_tmp[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
 
-
-    // debug: vec_tmp[0] = [ 1073741824, 0 ]
-
-
-
-
-
-    // carry propogation
+    // Step [5]: carry propogation
     vec_carry = vdup_n_u32(0);
-    for (int i = 0; i<9; i++){
-        // carry = tmp[i] >> 30;
+    for (int i = 0; i < 9; i++){
         vec_carry = vshr_n_u32(vec_tmp[i], 30);
-        // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
         vec_tmp[i] = vand_u32(vec_tmp[i], vec_u32_2p30m1);
-        // tmp[i+1] += carry; 
         vec_tmp[i+1] = vadd_u32(vec_tmp[i+1], vec_carry);
     }
 
 
-    // debug: vec_tmp[0] = [ 0, 0 ]
 
-
-    // tmp = tmp / B
+    // Step [6]: tmp = tmp / B
     for (int i = 0; i<9; i++){
         vec_tmp[i] = vec_tmp[i+1];
     }
@@ -143,26 +109,19 @@ void double_mont(
     
     
     
-    // tmp += u1 * A 
+    // Step [7]: tmp += u1 * V 
     vec_prod = vdupq_n_u64(0);
     for (int i = 0; i < 9; i++){
-        // prod += (uint64_t)(A->limb[i]) * u1;
         vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u1_r1 );
-        // tmp[i] += prod & ((1<<30)-1);
         vec_tmp[i] = vadd_u32(vec_tmp[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        //prod >>= 30;
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
-    // tmp[9] += prod & (((uint64_t)1<<30)-1);
     vec_tmp[9] = vadd_u32(vec_tmp[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
     
 
 
-    
 
-
-
-    // carry propogation
+    // Step [8]: carry propogation
     vec_carry = vdup_n_u32(0);
     for (int i = 0; i<9; i++){
         // carry = tmp[i] >> 30;
@@ -176,31 +135,22 @@ void double_mont(
 
 
 
-    //  l1 = tmp[0] * M mod 2^30
+    // Step [9]: l1 = tmp[0] * M mod 2^30
+    //            and tmp += l0 * P
     uint32x2_t vec_l1 = vmul_u32(vec_tmp[0], vec_M);
     vec_l1 = vand_u32(vec_l1 ,vec_u32_2p30m1);
 
-    
-
-    
-    
-    // tmp = (tmp + l1*P) / B 
-    // tmp = tmp + l1*P
     vec_prod = vdupq_n_u64(0);
     for (int i = 0; i < 9; i++){
-        // prod += (uint64_t)(P.limb[i]) * l1;
         vec_prod = vmlal_u32(vec_prod, vec_P[i], vec_l1 );
-        // tmp[i] += prod & ((1<<30)-1);
         vec_tmp[i] = vadd_u32(vec_tmp[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        // prod >>= 30;
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
-    // tmp[9] += prod & (((uint64_t)1<<30)-1);
     vec_tmp[9] = vadd_u32(vec_tmp[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
     
     
     
-    // carry propogation
+    // Step [10]: carry propogation
     vec_carry = vdup_n_u32(0);
     for (int i = 0; i<9; i++){
         // carry = tmp[i] >> 30;
@@ -213,20 +163,15 @@ void double_mont(
     
     
     
-    // tmp = tmp / B
+    // Step [11]: tmp = tmp / B
     for (int i = 0; i<9; i++){
         vec_tmp[i] = vec_tmp[i+1];
     }
     vec_tmp[9] = vdup_n_u32(0);
     
-    
-    
-    
-    
 
+    // Step [12]: Reduction P once:
 
-
-    // Reduction P once:
     // See if tmp[0:9] >= P;
     // tmp >= P iff tmp + 19 >= 2^255;
 
@@ -234,18 +179,11 @@ void double_mont(
     vec_small_tmp = vdup_n_u32(19);
     for (int i = 0; i < 8; i++)
     {
-        // small_tmp += tmp[i];
         vec_small_tmp = vadd_u32(vec_small_tmp, vec_tmp[i]);
-        // small_tmp >>= 30;
         vec_small_tmp = vshr_n_u32(vec_small_tmp, 30);
     }
     vec_small_tmp = vadd_u32(vec_small_tmp, vec_tmp[8]);
 
-
-
-
-
-    // reductionhat =  - ((32767 - small_tmp) >> 31);
     vec_reductionhat = (uint32x2_t)vshr_n_s32(
         (int32x2_t)vsub_u32(
             vdup_n_u32(32767),
@@ -254,9 +192,6 @@ void double_mont(
         31
     );
 
-
-
-
     vec_tmp[0] = vadd_u32(vec_tmp[0], vand_u32(vec_reductionhat, vdup_n_u32(19)));
     vec_tmp[8] = vsub_u32(vec_tmp[8], vand_u32(vec_reductionhat, vdup_n_u32(32768)));
 
@@ -264,39 +199,25 @@ void double_mont(
 
     
 
-    // carry propogation
+    // Step [13]: carry propogation
     vec_carry = vdup_n_u32(0);
     for (int i = 0; i<9; i++){
-        // carry = tmp[i] >> 30;
         vec_carry = vshr_n_u32(vec_tmp[i], 30);
-        // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
         vec_tmp[i] = vand_u32(vec_tmp[i], vec_u32_2p30m1);
-        // tmp[i+1] += carry; 
         vec_tmp[i+1] = vadd_u32(vec_tmp[i+1], vec_carry);
     }
 
 
 
-
-
-    
-    // result += uhat & (P-A)
-
-
-    
-
+    // Step [14]: tmp += 2x vec_uhat_rhat & (P-A)
     for (int i = 0; i < 9; i++)
     {
-        // tmp[i] += (uhat & P.limb[i]);
         vec_tmp[i] = vadd_u32(vec_tmp[i] , vand_u32(vec_uhat_rhat, vec_P[i]));
-        // tmp[i] -= (uhat & (A->limb[i]));
         vec_tmp[i] = vsub_u32(vec_tmp[i] , vand_u32(vec_uhat_rhat, vec_V[i]));
     }
 
 
-
-
-
+    // Step [15]: borrow propogation
     for (int i = 0; i < 8; i++)
     {   
         // borrow = tmp[i] >> 31;
@@ -310,22 +231,19 @@ void double_mont(
 
     
     
-    // Reduction P once:
+    // Step [16]: Reduction P once:
+
     // See if tmp[0:9] >= P;
     // tmp >= P iff tmp + 19 >= 2^255;
 
-    // uint32x2_t vec_small_tmp = {0};
     vec_small_tmp = vdup_n_u32(19ULL);
     for (int i = 0; i < 8; i++)
     {
-        // small_tmp += tmp[i];
         vec_small_tmp = vadd_u32(vec_small_tmp, vec_tmp[i]);
-        // small_tmp >>= 30;
         vec_small_tmp = vshr_n_u32(vec_small_tmp, 30);
     }
     vec_small_tmp = vadd_u32(vec_small_tmp, vec_tmp[8]);
 
-    // reductionhat =  - ((32767 - small_tmp) >> 31);
     vec_reductionhat = (uint32x2_t)vshr_n_s32(
         (int32x2_t)vsub_u32(
             vdup_n_u32(32767),
@@ -334,11 +252,11 @@ void double_mont(
         31
     );
 
-
     vec_tmp[0] = vadd_u32(vec_tmp[0], vand_u32(vec_reductionhat, vdup_n_u32(19)));
     vec_tmp[8] = vsub_u32(vec_tmp[8], vand_u32(vec_reductionhat, vdup_n_u32(32768)));
 
-    // carry propogation
+
+    // Step [17]: carry propogation
     vec_carry = vdup_n_u32(0);
     for (int i = 0; i<9; i++){
         // carry = tmp[i] >> 30;
@@ -351,9 +269,7 @@ void double_mont(
 
 
 
-
-
-    
+    // Step [18]: store the result
     for (int i = 0; i < 9; i++) {
         resultV->limb[i] = (uint32_t)vget_lane_u32(vec_tmp[i], 0);  // lane 0
         resultS->limb[i] = (uint32_t)vget_lane_u32(vec_tmp[i], 1);  // lane 1

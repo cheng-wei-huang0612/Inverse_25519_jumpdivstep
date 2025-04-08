@@ -3,17 +3,19 @@
 #include <gmp.h>
 #include <time.h>
 
-extern void gmp_linear_comb(
+extern void gmp_linear_mont(
         big30_t *resultV, big30_t *resultS,
         const big30_t *V, const big30_t *S,
         const int64_t *u, const int64_t *v, const int64_t *r, const int64_t *s
 );
 
-extern void linear_comb(
+extern void linear_mont_neon_intrinsics(
         big30_t *resultV, big30_t *resultS,
         const big30_t *V, const big30_t *S,
         const int64_t *u, const int64_t *v, const int64_t *r, const int64_t *s
 );
+
+#define DEBUGPRINT
 
 
 int main(){
@@ -51,13 +53,12 @@ int main(){
         mpz_mod(mpS, mpS, mpP);
     }
 
-    mpz_set_str(mpV, "1", 10);
-    mpz_set_str(mpS, "1", 10);
-
-    mpz_set_str(mpu, "1", 10);
-    mpz_set_str(mpv, "1", 10);
-    mpz_set_str(mpr, "1", 10);
-    mpz_set_str(mps, "1", 10);
+    /*mpz_set_str(mpV, "32880663437793641896168526531324048719254777211729430939983870973880301585069", 10);*/
+    /*mpz_set_str(mpS, "28528660168795731007820525958396044287421201532896029329124984686062095530959", 10);*/
+    /*mpz_set_str(mpu, "463870521374159772", 10);*/
+    /*mpz_set_str(mpv, "1094041632627450413", 10);*/
+    /*mpz_set_str(mpr, "1104299394352196143", 10);*/
+    /*mpz_set_str(mps, "3480254169237374898", 10);*/
 
 
 
@@ -110,7 +111,7 @@ int main(){
     gmp_printf("               = %Zd\n",mpS);
     mpz_add(mptmp,mpS,mp2p272);
     mpz_mod(mptmp, mptmp, mp2p272);
-    gmp_printf("    unsigned V = %Zd\n\n",mptmp);
+    gmp_printf("    unsigned S = %Zd\n\n",mptmp);
 
 
 
@@ -123,7 +124,7 @@ int main(){
     small30_from_mpz(&small30u, mpu);
     printf("    Given    u = [limb0 = %d, limb1 = %d]\n", small30u.limb[0], small30u.limb[1]);
     gmp_printf("               = %Zd\n",mpu);
-    gmp_printf("(Sage: %Zd == %d + (2**30) * %d)\n",mpu, small30u.limb[0], small30u.limb[1]);
+    gmp_printf("(sage: %Zd == %d + (2**30) * %d)\n",mpu, small30u.limb[0], small30u.limb[1]);
     mpz_add(mptmp,mpu,mp2p62);
     mpz_mod(mptmp, mptmp, mp2p62);
     gmp_printf("    unsigned u = %Zd\n\n",mptmp);
@@ -150,12 +151,7 @@ int main(){
     gmp_printf("    unsigned s = %Zd\n\n",mptmp);
     printf("\n");
 
-
-    
-    //printf("Address of asm_resultF: %p\n", (void*)&asm_resultF);
-    //printf("Address of asm_resultG: %p\n", (void*)&asm_resultG);
-
-    linear_comb(&asm_resultV, &asm_resultS, &V, &S, &u, &v, &r, &s);
+    linear_mont_neon_intrinsics(&asm_resultV, &asm_resultS, &V, &S, &u, &v, &r, &s);
     
     
     printf("asm complete\n");
@@ -203,10 +199,12 @@ int main(){
     // gmp_printf("                 = %Zd\n\n", mpASMV);
     
 
-    gmp_linear_comb(&resultV, &resultS, &V, &S, &u, &v, &r, &s);
+    gmp_linear_mont(&resultV, &resultS, &V, &S, &u, &v, &r, &s);
     mpz_from_big30(mpGMPV, &resultV);
     mpz_from_big30(mpGMPS, &resultS);
+    gmp_printf(" V = %Zd\n", mpGMPV);
 
+#ifdef DEBUGPRINT
     printf("GMP result of V = [");
     for (int i = 0; i < LIMBS; i++) {
         printf("limb%d = %d", i, resultV.limb[i]);
@@ -215,8 +213,11 @@ int main(){
         }
     }
     printf("]\n");
-    gmp_printf("                 = %Zd\n\n", mpGMPV);
+#endif
 
+
+    gmp_printf(" S = %Zd\n", mpGMPS);
+#ifdef DEBUGPRINT
     printf("GMP result of S = [");
     for (int i = 0; i < LIMBS; i++) {
         printf("limb%d = %d", i, resultS.limb[i]);
@@ -225,15 +226,11 @@ int main(){
         }
     }
     printf("]\n");
-    gmp_printf("                 = %Zd\n\n", mpGMPS);
+#endif
 
+    gmp_printf("sage: (%Zd) == (%Zd)\n", mpASMV, mpGMPV);
+    gmp_printf("sage: (%Zd) == (%Zd)\n", mpASMS, mpGMPS);
 
-    //gmp_printf("\nsage: (%Zd) == (%Zd)\n ", mpR, mpASMR);
-    //gmp_printf("\nsage: (%Zd) == (%Zd)\n ", mpS, mpASMS);
-
-
-    gmp_printf("\nsage: (((%Zd) * (%Zd)) + ((%Zd) * (%Zd))) %% (%Zd) == %Zd\n", mpu, mpV, mpv, mpS, mpP, mpGMPV);
-    gmp_printf("\nsage: (((%Zd) * (%Zd)) + ((%Zd) * (%Zd))) %% (%Zd) == %Zd\n", mpr, mpV, mps, mpS, mpP, mpGMPS);
 
 
     mpz_clears(mpP, mpV, mpS, mpu, mpv, mpr, mps, mpGMPV, mpGMPS, mpASMV, mpASMS, NULL);

@@ -76,7 +76,6 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
                 grs = (((-g0_and_1) & fuv) + grs )>>1;
                 delta = delta + 2;
 
-
             }
 
             // u, v, r, s extraction
@@ -95,6 +94,8 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             r = (uint64_t) r << 22;
             r = r >> 43;
 
+            // update_fg_uuvvrrss
+            {
             mpz_t mpf, mpf_new, mpg, mpg_new, mpu, mpv, mpr, mps, tmp;
             mpz_init(mpf_new);
             mpz_init(mpg_new);
@@ -119,6 +120,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             g = mpz_get_si(mpg_new);
 
             mpz_clears(mpf, mpg, mpf_new, mpg_new, tmp, mpu, mpv ,mpr ,mps, NULL);
+            }
             
             uu_new = u * uu + v * rr;         
             rr_new = r * uu + s * rr;
@@ -191,7 +193,6 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
         mpz_mod(mpV_new, tmp1, mpP);
 
 
-
         mpz_mul(tmp1, mprr, mpV);
         mpz_mod(tmp1, tmp1, mpP);
 
@@ -242,7 +243,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
     
 
     
-    uint256_t_from_mpz_t( inv, mpinv);
+    uint256_t_from_mpz_t(inv, mpinv);
 
 }
 

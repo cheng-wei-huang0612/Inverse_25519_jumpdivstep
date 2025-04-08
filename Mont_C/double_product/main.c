@@ -26,7 +26,7 @@ int main()
     mpz_inits(mpP, mp2P, NULL);
 
     mpz_from_big30(mpP, &P);
-    gmp_printf("P = %Zd\n\n", mpP);
+    // gmp_printf("P = %Zd\n\n", mpP);
 
     mpz_mul_2exp(mp2P, mpP, 1);  // 2P, 用來檢查代表元
 
