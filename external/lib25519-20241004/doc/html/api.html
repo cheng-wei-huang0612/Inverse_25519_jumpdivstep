@@ -1,0 +1,199 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+html{overflow-y:scroll}
+body{font-family:"Noto Sans","Droid Sans","DejaVu Sans","Arial",sans-serif;line-height:1.5}
+tt,code{background-color:#f0f0f0;font-family:"Noto Sans Mono","Droid Sans Mono","DejaVu Sans Mono","Courier New",monospace,sans-serif;font-size:1em;}
+pre{margin-left:3em}
+p,ul,ol,blockquote,pre{font-size:1.0em;line-height:1.6}
+li p{font-size:1.0em}
+blockquote p{font-size:1.0em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.0em}
+h1 a{text-decoration:none}
+table{border-collapse:collapse}
+th,td{border:1px solid black}
+table a{text-decoration:none}
+table tr{font-size:1.0em;line-height:1.5}
+tbody tr:nth-child(12n+1){background-color:#f0ffff}
+tbody tr:nth-child(12n+2){background-color:#f0ffff}
+tbody tr:nth-child(12n+3){background-color:#f0ffff}
+tbody tr:nth-child(12n+4){background-color:#f0ffff}
+tbody tr:nth-child(12n+5){background-color:#f0ffff}
+tbody tr:nth-child(12n+6){background-color:#f0ffff}
+tbody tr:nth-child(12n+7){background-color:#fffff0}
+tbody tr:nth-child(12n+8){background-color:#fffff0}
+tbody tr:nth-child(12n+9){background-color:#fffff0}
+tbody tr:nth-child(12n+10){background-color:#fffff0}
+tbody tr:nth-child(12n+11){background-color:#fffff0}
+tbody tr:nth-child(12n+12){background-color:#fffff0}
+.links a:hover{text-decoration:underline}
+.links a:active{text-decoration:underline}
+.links img{width:200px;padding-left:1em}
+.links td{border:0px;padding-top:0.5em;padding-bottom:0.5em}
+.openssl{color:#004040}
+.s2n{color:#400040}
+.lib25519{color:#c25519}
+.headline{padding:0;font-weight:bold;font-size:1.5em;vertical-align:top;padding-bottom:0.5em;color:#c25519}
+.navt{display:inline-block;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
+min-width:16%;margin:0;padding:0;padding-left:0.5em;padding-right:0.5em;vertical-align:center;
+font-weight:bold;font-size:1.1em;text-align:center;border:1px solid black}
+.here{border-bottom:0px;background-color:#ffffff}
+.away{background-color:#c25519;}
+.away a{text-decoration:none;display:block;color:#ffffff}
+.away a:hover,.away a:active{text-decoration:underline}
+.main{margin:0;padding-top:0em;padding-bottom:1%;clear:both}
+</style>
+<title>
+lib25519: API</title>
+</head>
+<body>
+<div class=headline>
+lib25519</div>
+<div class=nav>
+<div class="navt away"><a href=index.html>Intro</a>
+</div><div class="navt away"><a href=download.html>Download</a>
+</div><div class="navt away"><a href=install.html>Install</a>
+</div><div class="navt away"><a href=test.html>Test</a>
+</div><div class="navt away"><a href=x25519-cli.html>X CLI</a>
+</div><div class="navt away"><a href=ed25519-cli.html>Ed CLI</a>
+</div><div class="navt here">API
+</div><div class="navt away"><a href=security.html>Security</a>
+</div><div class="navt away"><a href=speed.html>Speed</a>
+</div><div class="navt away"><a href=internals.html>Internals</a>
+</div><div class="navt away"><a href=people.html>People</a>
+</div><div class="navt away"><a href=license.html>License</a>
+</div></div>
+<div class=main>
+<h3>NAME</h3>
+<p>lib25519 - C API for the lib25519 implementation of the X25519 and Ed25519 cryptosystems</p>
+<h3>SYNOPSIS</h3>
+<p>Using lib25519:</p>
+<pre><code>#include &lt;lib25519.h&gt;
+</code></pre>
+<p>Link with <code>-l25519</code>.</p>
+<p>X25519 key generation:</p>
+<pre><code>unsigned char pk[lib25519_dh_PUBLICKEYBYTES];
+unsigned char sk[lib25519_dh_SECRETKEYBYTES];
+
+lib25519_dh_keypair(pk,sk);
+</code></pre>
+<p>X25519 shared-secret generation:</p>
+<pre><code>unsigned char k[lib25519_dh_BYTES];
+const unsigned char pk[lib25519_dh_PUBLICKEYBYTES];
+const unsigned char sk[lib25519_dh_SECRETKEYBYTES];
+
+lib25519_dh(k,pk,sk);
+</code></pre>
+<p>Ed25519 key generation:</p>
+<pre><code>unsigned char pk[lib25519_sign_PUBLICKEYBYTES];
+unsigned char sk[lib25519_sign_SECRETKEYBYTES];
+
+lib25519_sign_keypair(pk,sk);
+</code></pre>
+<p>Ed25519 signature generation:</p>
+<pre><code>const unsigned char sk[lib25519_sign_SECRETKEYBYTES];
+const unsigned char m[...]; long long mlen;
+unsigned char sm[...]; long long smlen;
+
+lib25519_sign(sm,&amp;smlen,m,mlen,sk);
+</code></pre>
+<p>Ed25519 signature verification and message recovery:</p>
+<pre><code>const unsigned char pk[lib25519_sign_PUBLICKEYBYTES];
+const unsigned char sm[...]; long long smlen;
+unsigned char m[...]; long long mlen;
+int result;
+
+result = lib25519_sign_open(m,&amp;mlen,sm,smlen,pk);
+</code></pre>
+<h3>DESCRIPTION</h3>
+<p>lib25519 is an implementation
+of the X25519 encryption system
+and the Ed25519 signature system.
+The stable C API for lib25519
+consists of the five functions listed above.</p>
+<p>All of these functions
+follow the SUPERCOP/NaCl APIs for
+<a href="https://bench.cr.yp.to/call-dh.html">DH</a>
+and
+<a href="https://bench.cr.yp.to/call-sign.html">signatures</a>
+except that</p>
+<ul>
+<li>the function names are lib25519-specific instead of <code>crypto_*</code>,</li>
+<li>message lengths are <code>long long</code> instead of <code>unsigned long long</code>, and</li>
+<li>all functions except signature verification return <code>void</code> instead of <code>int</code>.</li>
+</ul>
+<h3>X25519 KEY GENERATION</h3>
+<p><code>lib25519_dh_keypair(pk,sk)</code> randomly generates
+Alice's secret key
+<code>sk[0], sk[1], ..., sk[lib25519_dh_SECRETKEYBYTES-1]</code>
+and Alice's corresponding public key
+<code>pk[0], pk[1], ..., pk[lib25519_dh_PUBLICKEYBYTES-1]</code>.</p>
+<p><code>lib25519_dh_PUBLICKEYBYTES</code> and <code>lib25519_dh_SECRETKEYBYTES</code> are
+guaranteed to be 32, but callers wishing to allow easy substitution of
+other DH systems should not rely on this guarantee.</p>
+<h3>X25519 SHARED-SECRET GENERATION</h3>
+<p><code>lib25519_dh(k,pk,sk)</code> computes the X25519 secret
+<code>k[0], k[1], ..., k[lib25519_dh_BYTES-1]</code>
+shared between Alice and Bob, given Bob's public key
+<code>pk[0], pk[1], ..., pk[lib25519_dh_PUBLICKEYBYTES-1]</code>
+and Alice's secret key
+<code>sk[0], sk[1], ..., sk[lib25519_dh_SECRETKEYBYTES-1]</code>.</p>
+<p><code>lib25519_dh_PUBLICKEYBYTES</code>, <code>lib25519_dh_SECRETKEYBYTES</code>, and
+<code>lib25519_dh_BYTES</code> are guaranteed to be 32, but callers wishing to
+allow easy substitution of other DH systems should not rely on this
+guarantee.</p>
+<h3>ED25519 KEY GENERATION</h3>
+<p><code>lib25519_sign_keypair(pk,sk)</code> randomly generates a secret key
+<code>sk[0], sk[1], ..., sk[lib25519_sign_SECRETKEYBYTES-1]</code>
+and a corresponding public key
+<code>pk[0], pk[1], ..., pk[lib25519_sign_PUBLICKEYBYTES-1]</code>.</p>
+<p><code>lib25519_sign_PUBLICKEYBYTES</code> is guaranteed to be 32, and
+<code>lib25519_sign_SECRETKEYBYTES</code> is guaranteed to be 64, but callers
+wishing to allow easy substitution of other signature systems should not
+rely on these guarantees.</p>
+<h3>ED25519 SIGNATURE GENERATION</h3>
+<p><code>lib25519_sign(sm,&amp;smlen,m,mlen,sk)</code> signs a message
+<code>m[0], ..., m[mlen-1]</code>
+using the signer's secret key
+<code>sk[0], sk[1], ..., sk[lib25519_sign_SECRETKEYBYTES-1]</code>,
+puts the length of the signed message into <code>smlen</code>,
+and puts the signed message into
+<code>sm[0], sm[1], ..., sm[smlen-1]</code>.</p>
+<p>The maximum possible length <code>smlen</code> is <code>mlen+lib25519_sign_BYTES</code>.
+The caller must allocate at least <code>mlen+lib25519_sign_BYTES</code> for <code>sm</code>.</p>
+<p><code>lib25519_sign_SECRETKEYBYTES</code> is guaranteed to be 64,
+<code>lib25519_sign_BYTES</code> is guaranteed to be 64, and signed messages are
+always exactly 64 bytes longer than messages, but callers wishing to
+allow easy substitution of other signature systems should not rely on
+these guarantees.</p>
+<h3>ED25519 SIGNATURE VERIFICATION AND MESSAGE RECOVERY</h3>
+<p><code>lib25519_sign_open(m,&amp;mlen,sm,smlen,pk)</code> verifies the signed message in
+<code>sm[0], ..., sm[smlen-1]</code>
+using the signer's public key
+<code>pk[0], pk[1], ..., pk[lib25519_sign_PUBLICKEYBYTES-1]</code>.
+This function puts the length of the message into <code>mlen</code>
+and puts the message into
+<code>m[0], m[1], ..., m[mlen-1]</code>.
+It then returns <code>0</code>.</p>
+<p>The maximum possible length <code>mlen</code> is <code>smlen</code>. The caller must allocate
+at least <code>smlen</code> bytes for <code>m</code> (not just some guess for the number of
+bytes expected in <code>m</code>).</p>
+<p>If the signature fails verification, <code>lib25519_sign_open</code> instead
+returns <code>-1</code>. It also sets <code>mlen</code> to <code>-1</code> and clears
+<code>m[0], m[1], ..., m[smlen-1]</code>,
+but callers should note that other signature software does not
+necessarily do this; callers should always check the return value.</p>
+<p><code>lib25519_sign_PUBLICKEYBYTES</code> is guaranteed to be 32, but callers
+wishing to allow easy substitution of other signature systems should not
+rely on this guarantee.</p>
+<h3>SEE ALSO</h3>
+<p><strong>x25519-cli</strong>(1), <strong>ed25519-cli</strong>(1), <strong>randombytes</strong>(3)</p><hr><font size=1><b>Version:</b>
+This is version 2024.02.18 of the "API" web page.
+</font>
+</div>
+</body>
+</html>

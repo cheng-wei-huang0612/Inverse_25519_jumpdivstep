@@ -1,0 +1,31 @@
+#!/bin/sh
+
+mkdir -p doc/man
+
+pandoc --standalone --to man --metadata title=lib25519 --metadata section=3 < doc/api.md | sed 's/^    //' > doc/man/lib25519.3
+touch -r doc/api.md doc/man/lib25519.3
+for link in lib25519_dh_keypair lib25519_dh lib25519_sign_keypair lib25519_sign lib25519_sign_open
+do
+  rm -f doc/man/"$link".3
+  ln -s lib25519.3 doc/man/"$link".3
+done
+
+pandoc --standalone --to man --metadata title=x25519-cli --metadata section=1 < doc/x25519-cli.md | sed 's/^    //' > doc/man/x25519-cli.1
+touch -r doc/x25519-cli.md doc/man/x25519-cli.1
+for link in x25519-keypair x25519-dh x25519
+do
+  rm -f doc/man/"$link".1
+  ln -s x25519-cli.1 doc/man/"$link".1
+done
+
+pandoc --standalone --to man --metadata title=ed25519-cli --metadata section=1 < doc/ed25519-cli.md | sed 's/^    //' > doc/man/ed25519-cli.1
+touch -r doc/ed25519-cli.md doc/man/ed25519-cli.1
+for link in ed25519-keypair ed25519-sign ed25519-open ed25519
+do
+  rm -f doc/man/"$link".1
+  ln -s ed25519-cli.1 doc/man/"$link".1
+done
+
+pandoc --standalone --to man --metadata title=lib25519-test --metadata section=1 < doc/lib25519-test.md | sed 's/^    //' > doc/man/lib25519-test.1
+pandoc --standalone --to man --metadata title=lib25519-fulltest --metadata section=1 < doc/lib25519-fulltest.md | sed 's/^    //' > doc/man/lib25519-fulltest.1
+pandoc --standalone --to man --metadata title=lib25519-speed --metadata section=1 < doc/lib25519-speed.md | sed 's/^    //' > doc/man/lib25519-speed.1

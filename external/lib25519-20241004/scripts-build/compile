@@ -1,0 +1,42 @@
+#!/bin/sh
+
+opic="$1"; shift
+base="$1"; shift
+ext="$1"; shift
+projectnamespace="$1"; shift
+
+cd "$opic" || exit 1
+compiler=`cat compiler`
+opi=`dirname $opic`
+op=`dirname $opi`
+o=`dirname $op`
+p=`basename $op`
+iunder=`basename $opi | tr -d _-`
+c=`basename $opic`
+namespace=${projectnamespace}_${o}_${p}_${iunder}_${c}
+shared_namespace=${projectnamespace}_${o}_${p}_${iunder}_shared
+
+if $compiler \
+  -I ../../../../include-build \
+  -fvisibility=hidden \
+  -D"CRYPTO_NAMESPACE(name)=${namespace}_##name" \
+  -D"_CRYPTO_NAMESPACE(name)=_${namespace}_##name" \
+  -D"CRYPTO_SHARED_NAMESPACE(name)=${shared_namespace}_##name" \
+  -D"_CRYPTO_SHARED_NAMESPACE(name)=_${shared_namespace}_##name" \
+  -D"CRYPTO_ALIGN(n)=__attribute__((aligned(n)))" \
+  -c "$base.$ext" \
+  > "result-compile-$base" 2>&1 
+then
+  cat "result-compile-$base"
+else
+  cat "result-compile-$base"
+  case "$?" in
+    111)
+      # maybe someday compilers can be convinced
+      # to use exit code 111 for temporary failures
+      exit 111
+      ;;
+    *)
+      : > "$base.o"
+  esac
+fi

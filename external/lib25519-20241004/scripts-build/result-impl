@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+boldfaced = False
+
+for line in sys.stdin:
+  d = line.strip()
+  if len(d) == 0: continue
+  announced = False
+  with open(d+'/result') as f:
+    for fline in f:
+      if not boldfaced:
+        print('[31;1m----- Compilation notes')
+        boldfaced = True
+      if not announced:
+        print(d+':')
+        announced = True
+      sys.stdout.write('  '+fline)
+
+if boldfaced:
+  print('-----[0m')

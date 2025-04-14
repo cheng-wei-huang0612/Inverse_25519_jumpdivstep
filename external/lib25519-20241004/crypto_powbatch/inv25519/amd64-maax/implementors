@@ -1,0 +1,3 @@
+api.c: Daniel J. Bernstein
+fe25519_mul.S: Kaushik Nath
+other code: see amd64-64

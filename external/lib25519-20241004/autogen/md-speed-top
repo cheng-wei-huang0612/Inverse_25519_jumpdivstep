@@ -1,0 +1,16 @@
+In the following speed table, smaller numbers are better.
+The numbers are median single-core cycle counts on various microarchitectures.
+Overclocking is disabled.
+
+The table reports cycle counts from lib25519 and, for comparison,
+OpenSSL and s2n-bignum.
+For comparability to OpenSSL's speed-testing utility,
+the OpenSSL cycle counts omit various OpenSSL overheads; see below for details.
+The s2n-bignum and lib25519 cycle counts include all overheads.
+There is also a lib25519+s2n line showing separate measurements of lib25519
+after an optional pre-configuration `./use-s2n-bignum` step
+(which is a supported option for lib25519);
+a lib25519+exp line showing separate measurements of lib25519
+after an experimental pre-configuration `mv skipcompilers/* compilers` step
+(which is unsupported: it uses instructions not supported by `valgrind`);
+and a lib25519+s2n+exp line.

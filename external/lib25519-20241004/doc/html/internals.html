@@ -1,0 +1,505 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+html{overflow-y:scroll}
+body{font-family:"Noto Sans","Droid Sans","DejaVu Sans","Arial",sans-serif;line-height:1.5}
+tt,code{background-color:#f0f0f0;font-family:"Noto Sans Mono","Droid Sans Mono","DejaVu Sans Mono","Courier New",monospace,sans-serif;font-size:1em;}
+pre{margin-left:3em}
+p,ul,ol,blockquote,pre{font-size:1.0em;line-height:1.6}
+li p{font-size:1.0em}
+blockquote p{font-size:1.0em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.0em}
+h1 a{text-decoration:none}
+table{border-collapse:collapse}
+th,td{border:1px solid black}
+table a{text-decoration:none}
+table tr{font-size:1.0em;line-height:1.5}
+tbody tr:nth-child(12n+1){background-color:#f0ffff}
+tbody tr:nth-child(12n+2){background-color:#f0ffff}
+tbody tr:nth-child(12n+3){background-color:#f0ffff}
+tbody tr:nth-child(12n+4){background-color:#f0ffff}
+tbody tr:nth-child(12n+5){background-color:#f0ffff}
+tbody tr:nth-child(12n+6){background-color:#f0ffff}
+tbody tr:nth-child(12n+7){background-color:#fffff0}
+tbody tr:nth-child(12n+8){background-color:#fffff0}
+tbody tr:nth-child(12n+9){background-color:#fffff0}
+tbody tr:nth-child(12n+10){background-color:#fffff0}
+tbody tr:nth-child(12n+11){background-color:#fffff0}
+tbody tr:nth-child(12n+12){background-color:#fffff0}
+.links a:hover{text-decoration:underline}
+.links a:active{text-decoration:underline}
+.links img{width:200px;padding-left:1em}
+.links td{border:0px;padding-top:0.5em;padding-bottom:0.5em}
+.openssl{color:#004040}
+.s2n{color:#400040}
+.lib25519{color:#c25519}
+.headline{padding:0;font-weight:bold;font-size:1.5em;vertical-align:top;padding-bottom:0.5em;color:#c25519}
+.navt{display:inline-block;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
+min-width:16%;margin:0;padding:0;padding-left:0.5em;padding-right:0.5em;vertical-align:center;
+font-weight:bold;font-size:1.1em;text-align:center;border:1px solid black}
+.here{border-bottom:0px;background-color:#ffffff}
+.away{background-color:#c25519;}
+.away a{text-decoration:none;display:block;color:#ffffff}
+.away a:hover,.away a:active{text-decoration:underline}
+.main{margin:0;padding-top:0em;padding-bottom:1%;clear:both}
+</style>
+<title>
+lib25519: Internals</title>
+</head>
+<body>
+<div class=headline>
+lib25519</div>
+<div class=nav>
+<div class="navt away"><a href=index.html>Intro</a>
+</div><div class="navt away"><a href=download.html>Download</a>
+</div><div class="navt away"><a href=install.html>Install</a>
+</div><div class="navt away"><a href=test.html>Test</a>
+</div><div class="navt away"><a href=x25519-cli.html>X CLI</a>
+</div><div class="navt away"><a href=ed25519-cli.html>Ed CLI</a>
+</div><div class="navt away"><a href=api.html>API</a>
+</div><div class="navt away"><a href=security.html>Security</a>
+</div><div class="navt away"><a href=speed.html>Speed</a>
+</div><div class="navt here">Internals
+</div><div class="navt away"><a href=people.html>People</a>
+</div><div class="navt away"><a href=license.html>License</a>
+</div></div>
+<div class=main>
+<p>This document explains the internal structure of lib25519, and explains how
+to add new instruction sets and new implementations.</p>
+<h2>Primitives</h2>
+<p>The directories <code>crypto_*/*</code> inside lib25519 define the following
+primitives (see also <code>autogen/test</code> for Python versions of the
+mathematical primitives):</p>
+<ul>
+<li>
+<p><code>crypto_verify/32</code>: <code>crypto_verify_32(s,t)</code> returns 0 when the 32-byte
+  arrays <code>s</code> and <code>t</code> are equal, otherwise <code>-1</code>. This function takes
+  constant time.</p>
+</li>
+<li>
+<p><code>crypto_hashblocks/sha512</code>: <code>crypto_hashblocks_sha512(h,x,xlen)</code>
+  updates an intermediate SHA-512 hash <code>h</code> using all of the full
+  128-byte blocks at the beginning of the <code>xlen</code>-byte array <code>x</code>, and
+  returns the number of bytes left over, namely <code>xlen</code> mod 128. This
+  function takes time that depends on <code>xlen</code> but not on the contents of
+  <code>h</code> or <code>x</code>.</p>
+</li>
+<li>
+<p><code>crypto_hash/sha512</code>: <code>crypto_hash_sha512(h,x,xlen)</code> computes the
+  SHA-512 hash <code>h</code> of the <code>xlen</code>-byte array <code>x</code>. This function takes
+  time that depends on <code>xlen</code> but not on the contents of <code>x</code>.</p>
+</li>
+<li>
+<p><code>crypto_pow/inv25519</code>: <code>crypto_pow_inv25519(y,x)</code> computes the
+  2<sup>255</sup>−21 power <code>y</code> of an integer <code>x</code> modulo 2<sup>255</sup>−19. This is the
+  same as the inverse of <code>x</code> modulo 2<sup>255</sup>−19 if <code>x</code> is not divisible by
+  2<sup>255</sup>−19. Each of the integers <code>x</code> and <code>y</code> is represented as a 32-byte
+  array in little-endian form. This function takes constant time.</p>
+<p>This function guarantees that the output <code>y</code> is frozen modulo
+  2<sup>255</sup>−19, i.e., completely reduced to the range 0,1,...,2<sup>255</sup>−20. The
+  caller is expected to freeze <code>x</code> before calling this function. The
+  function accepts <code>x</code> in the range {0,1,...,2<sup>256</sup>−1} while ignoring the
+  top bit (the coefficient of 2<sup>255</sup> in binary): i.e., the function
+  reduces <code>x</code> modulo 2<sup>255</sup> and then modulo 2<sup>255</sup>−19.</p>
+</li>
+<li>
+<p><code>crypto_powbatch/inv25519</code>:
+  <code>crypto_powbatch_inv25519(y,x,batch)</code>
+  is equivalent to (but can be faster than) <code>batch</code> separate calls to
+  <code>crypto_pow_inv25519</code>.
+  Each of <code>y</code> and <code>x</code> is an array containing <code>32*batch</code> bytes, with the
+  first 32 bytes of <code>y</code> computed from the first 32 bytes of <code>x</code>, the
+  next 32 bytes of <code>y</code> computed from the next 32 bytes of <code>x</code>, etc. This
+  function takes time that depends on <code>batch</code> but not on the other
+  inputs.</p>
+</li>
+<li>
+<p><code>crypto_nP/montgomery25519</code>: <code>crypto_nP_montgomery25519(nP,n,P)</code>
+  computes the X25519 function: in short, if a Curve25519 point has
+  x-coordinate <code>P</code> then the <code>n</code>th multiple of the point has x-coordinate
+  <code>nP</code>. The inputs and outputs are represented as 32-byte arrays in
+  little-endian form. This function takes constant time.</p>
+<p>X25519 is defined for <code>n</code> in the range 2<sup>254</sup> + 8{0,1,2,3,...,2<sup>251</sup>−1}.
+  <code>crypto_nP_montgomery25519</code> allows <code>n</code> in the wider range
+  {0,1,...,2<sup>256</sup>−1}, and in all cases computes <code>m</code>th multiples where <code>m</code>
+  is defined as follows: make a copy of <code>n</code>, clear the top bit, set the
+  next bit, and clear the bottom three bits.</p>
+<p>X25519 guarantees that the output <code>nP</code> is frozen. It does not require
+  the input to be frozen; also, it allows the input to be on the twist,
+  and to have small order.</p>
+<p><code>crypto_nP_montgomery25519</code> clears the top bit of <code>P</code> before applying
+  the X25519 function. Callers that want the X25519 function on <code>P</code> with
+  the top bit set have to reduce modulo 2<sup>255</sup>−19 for themselves.</p>
+</li>
+<li>
+<p><code>crypto_nPbatch/montgomery25519</code>:
+  <code>crypto_nPbatch_montgomery25519(nP,n,P,batch)</code>
+  is equivalent to (but can be faster than) <code>batch</code> separate calls to
+  <code>crypto_nP_montgomery25519</code>.
+  Each of <code>nP</code>, <code>n</code>, and <code>P</code> is an array containing <code>32*batch</code> bytes,
+  with the first 32 bytes of <code>nP</code> computed from the first 32 bytes of
+  <code>n</code> and the first 32 bytes of <code>P</code>, the next 32 bytes of <code>nP</code> computed
+  from the next 32 bytes of <code>n</code> and the next 32 bytes of <code>P</code>, etc. This
+  function takes time that depends on <code>batch</code> but not on the other
+  inputs.</p>
+</li>
+<li>
+<p><code>crypto_nG/merged25519</code>: <code>crypto_nG_merged25519(nG,n)</code> reads an
+  integer <code>n</code> in the range {0,1,...,2<sup>256</sup>−1} and outputs a frozen
+  integer <code>nG</code> modulo 2<sup>255</sup>−19, possibly with the top bit set (i.e.,
+  adding 2<sup>255</sup>) as described below. Both <code>n</code> and <code>nG</code> are represented
+  as 32-byte arrays in little-endian form. This function takes constant
+  time.</p>
+<p>If the top bit of <code>n</code> is clear then <code>nG</code> is the Edwards y-coordinate
+  of the <code>n</code>th multiple of G, and the top bit is set exactly when the
+  Edwards x-coordinate is odd. Otherwise <code>nG</code> is the Montgomery
+  x-coordinate of the (<code>n</code>−2<sup>255</sup>)th multiple of G, and the top bit is
+  clear. Here G is the standard Curve25519 base point, which has
+  Montgomery x-coordinate 9, Edwards y-coordinate 4/5, and even Edwards
+  x-coordinate.</p>
+</li>
+<li>
+<p><code>crypto_nG/montgomery25519</code>: <code>crypto_nG_montgomery25519(nG,n)</code> is
+  the same as <code>crypto_nP_montgomery(nG,n,G)</code> where <code>G</code> is the array
+  {9,0,0,...,0}. This function takes constant time.</p>
+<p>The point of <code>crypto_nG</code> is to save time (using a small table
+  precomputed from <code>G</code>) compared to the more general <code>crypto_nP</code>. This
+  has the disadvantage of being more complicated, which is particularly
+  important given that lib25519 has not yet been verified, and in any
+  case increases code size noticeably for X25519. There is a <code>ref</code>
+  implementation of <code>crypto_nG</code> that simply calls <code>crypto_nP</code>, and
+  setting sticky bits on the other implementation directories
+  (<code>chmod +t crypto_nG/montgomery25519/*; chmod -t crypto_nG/montgomery25519/ref</code>)
+  will force lib25519 to use <code>ref</code>.</p>
+</li>
+<li>
+<p><code>crypto_mGnP/ed25519</code>: <code>crypto_mGnP_ed25519(mGnP,m,n,P)</code> computes
+  <code>(m mod L)G−(n mod L)P</code> in Edwards coordinates, where <code>L</code> is the prime
+  number 2<sup>252</sup>+27742317777372353535851937790883648493 and <code>G</code> is the
+  same standard base point. This function takes time that depends on the
+  inputs.</p>
+<p>The input <code>m</code> is an integer in the range {0,1,...,2<sup>256</sup>−1}
+  represented as a 32-byte array in little-endian form. Any <code>m</code> outside
+  the range {0,1,...,L−1} triggers a failure, which is reported as
+  described below.</p>
+<p>The input <code>n</code> is an integer in the range {0,1,...,2<sup>512</sup>−1}
+  represented as a 64-byte array in little-endian form.</p>
+<p>The input point <code>P</code> is represented as a 32-byte array as follows: the
+  (frozen) Edwards y-coordinate of <code>P</code> in {0,1,...,2<sup>255</sup>−20} is stored
+  in little-endian form, and then the top bit is set exactly when the
+  (frozen) Edwards x-coordinate of <code>P</code> is odd. An input 32-byte array
+  that does not have this form is instead interpreted as the negative
+  of the point <code>P</code> with Edwards coordinates (...8,26), and triggers a
+  failure, reported as described below.</p>
+<p>The output is a 33-byte array. The first 32 bytes are the output point
+  <code>(m mod L)G−(n mod L)P</code>, represented the same way as <code>P</code>. The last
+  byte is 1 on success and 0 on failure.</p>
+</li>
+<li>
+<p><code>crypto_multiscalar/ed25519</code>:
+    <code>crypto_multiscalar_ed25519(Q,n,P,len)</code> computes
+    <code>(n[0] mod L)P[0]+(n[1] mod L)P[1]+...+(n[len-1] mod L)P[len-1]</code>
+    where <code>L</code> is the same prime number as for <code>crypto_mGnP/ed25519</code>.
+    This function takes time that depends on the inputs.</p>
+<p>The input <code>n</code> is a <code>32*len</code>-byte array, viewed as a concatenation of
+<code>len</code> 32-byte arrays. The 32-byte arrays are little-endian
+representations of integers <code>n[0]</code>, <code>n[1]</code>, ..., <code>n[len-1]</code> in the
+range {0,1,...,2<sup>256</sup>−1}. Any <code>n[j]</code> outside the range {0,1,...,L−1}
+triggers a failure, which is reported as described below.</p>
+<p>The input <code>P</code> is a <code>32*len</code>-byte array, viewed as a concatenation of
+<code>len</code> 32-byte arrays. The 32-byte arrays are points
+<code>P[0]</code>, <code>P[1]</code>, ..., <code>P[len-1]</code>, each represented as follows: the
+(frozen) Edwards y-coordinate of <code>P[j]</code> in {0,1,...,2<sup>255</sup>−20} is
+stored in little-endian form, and then the top bit is set exactly
+when the (frozen) Edwards x-coordinate of <code>P[j]</code> is odd. An input
+32-byte array that does not have this form is instead interpreted as
+the point <code>P</code> with Edwards coordinates (...8,26), and triggers a
+failure, reported as described below.</p>
+<p>The output <code>Q</code> is a 33-byte array. The first 32 bytes are the output
+point <code>(n[0] mod L)P[0]+(n[1] mod L)P[1]+...+(n[len-1] mod L)P[len-1]</code>,
+represented the same way as each <code>P[j]</code>. The last byte is 1 on success
+and 0 on failure.</p>
+</li>
+<li>
+<p><code>crypto_dh/x25519</code>: <code>crypto_dh_x25519_keypair(pk,sk)</code> generates a
+  32-byte X25519 public key <code>pk</code> and the corresponding 32-byte secret
+  key <code>sk</code>. This function is the composition of <code>randombytes</code> to
+  generate <code>sk</code> and <code>crypto_nG_montgomery25519</code> to generate <code>pk</code>.</p>
+<p><code>crypto_dh_x25519(k,pk,sk)</code> generates a 32-byte shared secret <code>k</code>
+  given a public key <code>pk</code> and a secret key <code>sk</code>. This function is the
+  same as <code>crypto_nP_montgomery25519</code>.</p>
+</li>
+<li>
+<p><code>crypto_sign/ed25519</code>: <code>crypto_sign_ed25519_keypair(pk,sk)</code> generates
+  a 32-byte Ed25519 public key <code>pk</code> and the corresponding 64-byte secret
+  key <code>sk</code>. This function takes constant time.</p>
+<p><code>crypto_sign_ed25519(sm,&amp;smlen,m,mlen,sk)</code> generates an <code>smlen</code>-byte
+  signed message <code>sm</code> given an <code>mlen</code>-byte message <code>m</code> and a secret key
+  <code>sk</code>. The caller is required to allocate <code>mlen+64</code> bytes for <code>sm</code>. The
+  function always sets <code>smlen</code> to <code>mlen+64</code>. This function takes time
+  that depends on <code>mlen</code> but not on the other inputs.</p>
+<p><code>crypto_sign_ed25519_open(m,&amp;mlen,sm,smlen,pk)</code> generates an
+  <code>mlen</code>-byte message <code>m</code> given an <code>smlen</code>-byte signed message <code>sm</code> and
+  a public key <code>pk</code>, and returns 0. However, if <code>sm</code> is invalid, this
+  function returns <code>-1</code>, sets <code>mlen</code> to <code>-1</code>, and clears <code>m</code>. The caller is
+  required to allocate <code>smlen</code> (not just <code>smlen-64</code>) bytes for <code>m</code>, for
+  example using the same array for <code>sm</code> and <code>m</code>. This function takes time
+  that depends on its inputs.</p>
+</li>
+</ul>
+<p>lib25519 includes a command-line utility <code>lib25519-test</code> that runs some
+tests for each of these primitives, and another utility <code>lib25519-speed</code>
+that measures cycle counts for each of these primitives.</p>
+<p>The stable lib25519 API functions are built from the above primitives:</p>
+<ul>
+<li><code>lib25519_dh_keypair</code> is <code>crypto_dh_x25519_keypair</code>.</li>
+<li><code>lib25519_dh</code> is <code>crypto_dh_x25519</code>.</li>
+<li><code>lib25519_sign_keypair</code> is <code>crypto_sign_ed25519_keypair</code>.</li>
+<li><code>lib25519_sign</code> is <code>crypto_sign_ed25519</code>.</li>
+<li><code>lib25519_sign_open</code> is <code>crypto_sign_ed25519_open</code>.</li>
+</ul>
+<p>Some changes are anticipated in the list of primitives, but these API
+functions will remain stable.</p>
+<p>As in SUPERCOP and NaCl, message lengths intentionally use <code>long long</code>,
+not <code>size_t</code>. In lib25519, message lengths are signed.</p>
+<h2>Implementations</h2>
+<p>A single primitive can, and usually does, have multiple implementations.
+Each implementation is in its own subdirectory. The implementations are
+required to have exactly the same input-output behavior, and to some
+extent this is tested, although it is not yet formally verified.</p>
+<p>Different implementations typically offer different tradeoffs between
+portability, simplicity, and efficiency. For example,
+<code>crypto_nP/montgomery25519/ref10</code> is portable;
+<code>crypto_nP/montgomery25519/amd64-maax</code> is faster and less portable.</p>
+<p>Each unportable implementation has an <code>architectures</code> file. Each line in
+this file identifies a CPU instruction set (and ABI) where the
+implementation works. For example,
+<code>crypto_nP/montgomery25519/amd64-maax/architectures</code> has one line
+<code>amd64 bmi2 adx</code>, meaning that the implementation works on CPUs that
+have the Intel/AMD 64-bit instruction set with the BMI2 and ADX
+instruction-set extensions. The top-level <code>compilers</code> directory shows
+(among other things) the allowed instruction-set names such as <code>bmi2</code>.</p>
+<p>At run time, lib25519 checks the CPU where it is running, and selects
+an implementation where <code>architectures</code> is compatible with that CPU.
+Each primitive makes its own selection once per program startup, using
+the compiler's <code>ifunc</code> mechanism (or <code>constructor</code> on platforms that do
+not support <code>ifunc</code>). This type of run-time selection means, for
+example, that an <code>amd64</code> CPU without AVX2 can share binaries with an
+<code>amd64</code> CPU with AVX2. However, correctness requires instruction sets to
+be preserved by migration across cores via the OS kernel, VM migration,
+etc.</p>
+<p>The compiler has a <code>target</code> mechanism that makes an <code>ifunc</code> selection
+based on CPU architectures. Instead of using the <code>target</code> mechanism,
+lib25519 uses a more sophisticated mechanism that also accounts for
+benchmarks collected in advance of compilation.</p>
+<h2>Compilers</h2>
+<p>lib25519 tries different C compilers for each implementation. For
+example, <code>compilers/default</code> lists the following compilers:</p>
+<pre><code>gcc -Wall -fPIC -fwrapv -O2
+clang -Wall -fPIC -fwrapv -Qunused-arguments -O2
+</code></pre>
+<p>Sometimes <code>gcc</code> produces better code, and sometimes <code>clang</code> produces
+better code.</p>
+<p>As another example, <code>compilers/amd64+sse3+ssse3+sse41+sse42+avx</code>
+lists the following compilers:</p>
+<pre><code>gcc -Wall -fPIC -fwrapv -O2 -mmmx -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mtune=sandybridge
+clang -Wall -fPIC -fwrapv -Qunused-arguments -O2 -mmmx -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mtune=sandybridge
+</code></pre>
+<p>The <code>-mavx</code> option tells these compilers that they are free to use the
+AVX instruction-set extension.</p>
+<p>Code compiled using the compilers in
+<code>compilers/amd64+sse3+ssse3+sse41+sse42+avx</code> will be
+considered at run time by the lib25519 selection mechanism if the
+<code>supports()</code> function in
+<code>compilers/amd64+sse3+ssse3+sse41+sse42+avx.c</code> returns nonzero. This
+function checks whether the run-time CPU supports AVX (and SSE and so on,
+and OSXSAVE with XMM/YMM being saved;
+<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85100">https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85100</a>
+says that all versions of gcc until 2018 handled this incorrectly in
+<code>target</code>). Similar comments apply to other <code>compilers/*</code> files.</p>
+<p>If some compilers fail (for example, clang is not installed, or the
+compiler version is too old to support the compiler options used in
+lib25519), the lib25519 compilation process will try its best to produce
+a working library using the remaining compilers, even if this means
+lower performance.</p>
+<h2>Trimming</h2>
+<p>By default, to reduce size of the compiled library, the lib25519
+compilation process trims the library down to the implementations that
+are selected by lib25519's selection mechanism (across all CPUs; the
+library remains portable, not tied to the compilation CPU).</p>
+<p>This trimming is handled at link time rather than compile time to
+increase the chance that, even if some implementations are broken by
+compiler "upgrades", the library will continue to build successfully.</p>
+<p>To avoid this trimming, pass the <code>--no-trim</code> option to <code>./configure</code>.
+All implementations that compile are then included in the library,
+tested by <code>lib25519-test</code>, and measured by <code>lib25519-speed</code>. You'll want
+to avoid trimming if you're adding new instruction sets or new
+implementations (see below), so that you can run tests and benchmarks of
+code that isn't selected yet.</p>
+<h2>How to recompile after changes</h2>
+<p>If you make changes in the lib25519 source directory, the fully
+supported recompilation mechanism is to run <code>./configure</code> again to clean
+and repopulate the build directory, and then run <code>make</code> again to
+recompile everything.</p>
+<p>This can be on the scale of seconds if you have enough cores, but maybe
+you're developing on a slower machine. Three options are currently
+available to accelerate the edit-compile cycle:</p>
+<ul>
+<li>
+<p>There is an experimental <code>--no-clean</code> option to <code>./configure</code> that,
+     for some simple types of changes, can produce a successful build
+     without cleaning.</p>
+</li>
+<li>
+<p>Running <code>make</code> without <code>./configure</code> can work for some particularly
+     simple types of changes. However, not all dependencies are
+     currently expressed in <code>Makefile</code>, and some types of dependencies
+     that <code>./configure</code> understands would be difficult to express in the
+     <code>Makefile</code> language.</p>
+</li>
+<li>
+<p>You can disable the implementations you're not using by setting
+     sticky bits on the source directories for those implementations:
+     e.g., <code>chmod +t crypto_nG/*/*avx2*</code>.</p>
+</li>
+</ul>
+<p>Make sure to reenable all implementations and do a full clean build if
+you're collecting data to add to the source <code>benchmarks</code> directory.</p>
+<h2>How to add new instruction sets</h2>
+<p>Adding another file <code>compilers/amd64+foo</code>, along with a <code>supports()</code>
+implementation in <code>compilers/amd64+foo.c</code>, will support a new
+instruction set. Do not assume that the new <code>foo</code> instruction set
+implies support for older instruction sets (the idea of "levels" of
+instruction sets); instead make sure to include the older instruction
+sets in <code>+</code> tags, as illustrated by
+<code>compilers/amd64+sse3+ssse3+sse41+sse42+avx</code>.</p>
+<p>In the compiler options, always make sure to include <code>-fPIC</code> to support
+shared libraries, and <code>-fwrapv</code> to switch to a slightly less dangerous
+version of C.</p>
+<p>The <code>foo</code> tags don't have to be instruction sets. For example, if a CPU
+has the same instruction set but wants different optimizations because
+of differences in instruction timings, you can make a tag for those
+optimizations, using, e.g., CPU IDs or benchmarks in the corresponding
+<code>supports()</code> function to decide whether to enable those optimizations.
+Benchmarks tend to be more future-proof than a list of CPU IDs, but the
+time taken for benchmarks at program startup has to be weighed against
+the subsequent speedup from the resulting optimizations.</p>
+<p>To see how well lib25519 performs with the new compilers, run
+<code>lib25519-speed</code> on the target machine and look for the <code>foo</code> lines in
+the output. If the new performance is better than the performance shown
+on the <code>selected</code> lines:</p>
+<ul>
+<li>
+<p>Copy the <code>lib25519-speed</code> output into a file on the <code>benchmarks</code>
+     directory, typically named after the hostname of the target
+     machine.</p>
+</li>
+<li>
+<p>Run <code>./prioritize</code> in the top-level directory to create <code>priority</code>
+     files. These files tell lib25519 which implementations to select
+     for any given architecture.</p>
+</li>
+<li>
+<p>Reconfigure (again with <code>--no-trim</code>), recompile, rerun
+     <code>lib25519-test</code>, and rerun <code>lib25519-speed</code> to check that the
+     <code>selected</code> lines now use the <code>foo</code> compiler.</p>
+</li>
+</ul>
+<p>If the <code>foo</code> implementation is outperformed by other implementations,
+then these steps don't help except for documenting this fact. The same
+implementation might turn out to be useful for subsequent <code>foo</code> CPUs.</p>
+<h2>How to add new implementations</h2>
+<p>Taking full advantage of the <code>foo</code> instruction set usually requires
+writing new implementations. Sometimes there are also ideas for taking
+better advantage of existing instruction sets.</p>
+<p>Structurally, adding a new implementation of a primitive is a simple
+matter of adding a new subdirectory with the code for that
+implementation. Most of the work is optimizing the use of <code>foo</code>
+intrinsics in <code>.c</code> files or <code>foo</code> instructions in <code>.S</code> files. Make sure
+to include an <code>architectures</code> file saying, e.g., <code>amd64 avx2 foo</code>.</p>
+<p>Names of implementation directories can use letters, digits, dashes, and
+underscores. Do not use two implementation names that are the same when
+dashes and underscores are removed.</p>
+<p>All <code>.c</code> and <code>.S</code> files in the implementation directory are compiled and
+linked. There is no need to edit a separate list of these files. You can
+also use <code>.h</code> files via the C preprocessor.</p>
+<p>If an implementation is actually more restrictive than indicated in
+<code>architectures</code> then the resulting compiled library will fail on some
+machines (although perhaps that implementation will not be used by
+default). Putting unnecessary restrictions into <code>architectures</code> will not
+create such failures, but can unnecessarily limit performance.</p>
+<p>Some, but not all, mistakes in <code>architectures</code> will produce warnings
+from the <code>checkinsns</code> script that runs automatically when lib25519 is
+compiled. Running the <code>lib25519-test</code> program tries all implementations,
+but only on the CPU where <code>lib25519-test</code> is being run, and <code>lib25519-test</code>
+does not guarantee code coverage: for example, other message lengths
+being signed could involve other code paths.</p>
+<p><code>amd64</code> implies little-endian, and implies architectural support for
+unaligned loads and stores. Beware, however, that the Intel/AMD
+vectorized <code>load</code>/<code>store</code> intrinsics (and the underlying <code>movdqa</code>
+instruction) require alignment; if in doubt, use <code>loadu</code>/<code>storeu</code> (and
+<code>movdqu</code>). The <code>lib25519-test</code> program checks unaligned inputs and
+outputs, but can miss issues with unaligned stack variables.</p>
+<p>To test your implementation, compile everything, check for compiler
+warnings and errors, run <code>lib25519-test</code> (or just <code>lib25519-test nG</code> to
+test a <code>crypto_nG</code> implementation), and check for a line saying <code>all
+tests succeeded</code>. To use AddressSanitizer (for catching, at run time,
+buffer overflows in C code), add <code>-fsanitize=address</code> to the <code>gcc</code> and
+<code>clang</code> lines in <code>compilers/*</code>; you may also have to add <code>return;</code> at
+the beginning of the <code>limits()</code> function in <code>command/limits.inc</code>.</p>
+<p>To see the performance of your implementation, run <code>lib25519-speed</code>.
+If the new performance is better than the performance shown on the
+<code>selected</code> lines, follow the same steps as for a new instruction set:
+copy the <code>lib25519-speed</code> output into a file on the <code>benchmarks</code>
+directory; run <code>./prioritize</code> in the top-level directory to create
+<code>priority</code> files; reconfigure (again with <code>--no-trim</code>); recompile; rerun
+<code>lib25519-test</code>; rerun <code>lib25519-speed</code>; check that the <code>selected</code> lines
+now use the new implementation.</p>
+<h2>How to handle namespacing</h2>
+<p>As in SUPERCOP and NaCl, to call <code>crypto_hash_sha512()</code>, you have to
+include <code>crypto_hash_sha512.h</code>; but to write an implementation of
+<code>crypto_hash_sha512()</code>, you have to instead include <code>crypto_hash.h</code> and
+define <code>crypto_hash</code>. Similar comments apply to other primitives.</p>
+<p>The function name that's actually linked might end up as, e.g.,
+<code>lib25519_hash_sha512_blocksplusavx_C2_hash</code> where <code>blocksplusavx</code>
+indicates the implementation and <code>C2</code> indicates the compiler. Don't try
+to build this name into your implementation.</p>
+<p>If you have another global symbol <code>x</code> (for example, a non-<code>static</code>
+function in a <code>.c</code> file, or a non-<code>static</code> variable outside functions in
+a <code>.c</code> file), you have to replace it with <code>CRYPTO_NAMESPACE(x)</code>, for
+example with <code>#define x CRYPTO_NAMESPACE(x)</code>.</p>
+<p>For global symbols in <code>.S</code> files and <code>shared-*.c</code> files, use
+<code>CRYPTO_SHARED_NAMESPACE</code> instead of <code>CRYPTO_NAMESPACE</code>. For <code>.S</code> files
+that define both <code>x</code> and <code>_x</code> to handle platforms where <code>x</code> in C is <code>_x</code>
+in assembly, use <code>CRYPTO_SHARED_NAMESPACE(x)</code> and
+<code>_CRYPTO_SHARED_NAMESPACE(x)</code>; <code>CRYPTO_SHARED_NAMESPACE(_x)</code> is not
+sufficient.</p>
+<p>lib25519 includes a mechanism to recognize files that are copied across
+implementations (possibly of different primitives) and to unify those
+into a file compiled only once, reducing the overall size of the
+compiled library and possibly improving cache utilization. To request
+this mechanism, include a line</p>
+<pre><code>// linker define x
+</code></pre>
+<p>for any global
+symbol <code>x</code> defined in the file, and a line</p>
+<pre><code>// linker use x
+</code></pre>
+<p>for any
+global symbol <code>x</code> used in the file from the same implementation (not
+<code>crypto_*</code> subroutines that you're calling, <code>randombytes</code>, etc.). This
+mechanism tries very hard, perhaps too hard, to avoid improperly
+unifying files: for example, even a slight difference in a <code>.h</code> file
+included by a file defining a used symbol will disable the mechanism.</p>
+<p>Typical namespacing mistakes will produce either linker failures or
+warnings from the <code>checknamespace</code> script that runs automatically when
+lib25519 is compiled.</p><hr><font size=1><b>Version:</b>
+This is version 2024.09.26 of the "Internals" web page.
+</font>
+</div>
+</body>
+</html>

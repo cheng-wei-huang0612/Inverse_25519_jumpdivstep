@@ -1,0 +1,451 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+html{overflow-y:scroll}
+body{font-family:"Noto Sans","Droid Sans","DejaVu Sans","Arial",sans-serif;line-height:1.5}
+tt,code{background-color:#f0f0f0;font-family:"Noto Sans Mono","Droid Sans Mono","DejaVu Sans Mono","Courier New",monospace,sans-serif;font-size:1em;}
+pre{margin-left:3em}
+p,ul,ol,blockquote,pre{font-size:1.0em;line-height:1.6}
+li p{font-size:1.0em}
+blockquote p{font-size:1.0em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.0em}
+h1 a{text-decoration:none}
+table{border-collapse:collapse}
+th,td{border:1px solid black}
+table a{text-decoration:none}
+table tr{font-size:1.0em;line-height:1.5}
+tbody tr:nth-child(12n+1){background-color:#f0ffff}
+tbody tr:nth-child(12n+2){background-color:#f0ffff}
+tbody tr:nth-child(12n+3){background-color:#f0ffff}
+tbody tr:nth-child(12n+4){background-color:#f0ffff}
+tbody tr:nth-child(12n+5){background-color:#f0ffff}
+tbody tr:nth-child(12n+6){background-color:#f0ffff}
+tbody tr:nth-child(12n+7){background-color:#fffff0}
+tbody tr:nth-child(12n+8){background-color:#fffff0}
+tbody tr:nth-child(12n+9){background-color:#fffff0}
+tbody tr:nth-child(12n+10){background-color:#fffff0}
+tbody tr:nth-child(12n+11){background-color:#fffff0}
+tbody tr:nth-child(12n+12){background-color:#fffff0}
+.links a:hover{text-decoration:underline}
+.links a:active{text-decoration:underline}
+.links img{width:200px;padding-left:1em}
+.links td{border:0px;padding-top:0.5em;padding-bottom:0.5em}
+.openssl{color:#004040}
+.s2n{color:#400040}
+.lib25519{color:#c25519}
+.headline{padding:0;font-weight:bold;font-size:1.5em;vertical-align:top;padding-bottom:0.5em;color:#c25519}
+.navt{display:inline-block;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
+min-width:16%;margin:0;padding:0;padding-left:0.5em;padding-right:0.5em;vertical-align:center;
+font-weight:bold;font-size:1.1em;text-align:center;border:1px solid black}
+.here{border-bottom:0px;background-color:#ffffff}
+.away{background-color:#c25519;}
+.away a{text-decoration:none;display:block;color:#ffffff}
+.away a:hover,.away a:active{text-decoration:underline}
+.main{margin:0;padding-top:0em;padding-bottom:1%;clear:both}
+</style>
+<title>
+lib25519: People</title>
+</head>
+<body>
+<div class=headline>
+lib25519</div>
+<div class=nav>
+<div class="navt away"><a href=index.html>Intro</a>
+</div><div class="navt away"><a href=download.html>Download</a>
+</div><div class="navt away"><a href=install.html>Install</a>
+</div><div class="navt away"><a href=test.html>Test</a>
+</div><div class="navt away"><a href=x25519-cli.html>X CLI</a>
+</div><div class="navt away"><a href=ed25519-cli.html>Ed CLI</a>
+</div><div class="navt away"><a href=api.html>API</a>
+</div><div class="navt away"><a href=security.html>Security</a>
+</div><div class="navt away"><a href=speed.html>Speed</a>
+</div><div class="navt away"><a href=internals.html>Internals</a>
+</div><div class="navt here">People
+</div><div class="navt away"><a href=license.html>License</a>
+</div></div>
+<div class=main>
+<p>lib25519 draws on many previous implementations listed below, plus new
+speedups from Kaushik Nath and new infrastructure work and factoring
+from Daniel J. Bernstein.
+Nath's work on this project was
+<a href="https://nlnet.nl/project/lib25519">initially funded</a>
+through the
+<a href="https://nlnet.nl/internethardening">Internet Hardening Fund</a>,
+a fund established by
+<a href="https://nlnet.nl/">NLnet</a>
+with financial support from the
+<a href="https://www.rijksoverheid.nl/ministeries/ministerie-van-economische-zaken-en-klimaat">Netherlands Ministry of Economic Affairs and Climate Policy</a>,
+and received
+<a href="https://nlnet.nl/project/lib25519-ARM/">further funding</a>
+through the
+<a href="https://nlnet.nl/entrust">NGI0 Entrust Fund</a>,
+another fund from NLnet established with financial support
+from the European Commission's
+<a href="https://ngi.eu">Next Generation Internet</a> program.</p>
+<p>Some code was originally copied from public-domain code in the SUPERCOP
+benchmarking framework. See <a href="https://bench.cr.yp.to/supercop.html">https://bench.cr.yp.to/supercop.html</a>
+for SUPERCOP releases. The following small changes from code available
+in SUPERCOP are made in lib25519 without further comment:</p>
+<ul>
+<li>Returning <code>void</code> rather than <code>int</code> for functions that never fail in
+     lib25519.</li>
+<li>Message lengths <code>long long</code> rather than <code>unsigned long long</code>.</li>
+<li>Defining various constants in <code>.c</code> files (to simplify PIC handling)
+     instead of <code>.S</code> files.</li>
+<li>Moving some C files to <code>shared-*.c</code> (which in lib25519 means that
+     these files are compiled by only one compiler).</li>
+<li>Using <code>CRYPTO_SHARED_NAMESPACE</code> rather than <code>CRYPTO_NAMESPACE</code> for
+     symbols defined in <code>*.S</code> and <code>shared-*.c</code>.</li>
+<li>Adding various <code>linker define</code> and <code>linker use</code> lines.</li>
+</ul>
+<p>Larger changes from code in SUPERCOP, such as new code divisions across
+lib25519 primitives, are indicated below.</p>
+<p>Sources of Curve25519 software (this is not a comprehensive list, just
+the software that lib25519 is derived from):</p>
+<ul>
+<li>
+<p>Daniel J. Bernstein. "Curve25519: new Diffie-Hellman speed
+     records." Pages 207–228 in Public key cryptography—PKC 2006, 9th
+     international conference on theory and practice in public-key
+     cryptography, New York, NY, USA, April 24–26, 2006, proceedings,
+     edited by Moti Yung, Yevgeniy Dodis, Aggelos Kiayias, Tal Malkin,
+     Lecture Notes in Computer Science 3958, Springer, 2006, ISBN
+     3-540-33851-9.</p>
+<p>This is the source of the Curve25519 design, the X25519 design, and
+ various speedups. Most of the software from that paper is specific
+ to a variety of 32-bit platforms (radix 2<sup>25.5</sup> or radix 2<sup>21.25</sup>),
+ but the portable <code>supercop/crypto_scalarmult/curve25519/ref10</code>
+ (radix 2<sup>25.5</sup>) is derived from this.</p>
+<p><code>lib25519/crypto_nP/montgomery25519/ref10</code> starts with
+ <code>supercop/crypto_scalarmult/curve25519/ref10</code>, and tweaks the API to
+ provide <code>crypto_nP</code> instead of <code>crypto_scalarmult</code>. Inversion is
+ factored out, producing <code>crypto_pow/inv25519/ref10</code>. The trivial
+ <code>crypto_scalarmult_base</code> wrapper is factored out, producing
+ <code>crypto_nG/montgomery25519/ref/base.c</code>; lib25519 has faster <code>nG</code>
+ functions, but intentionally provides <code>ref</code> for situations where
+ speed is outweighed by simplicity, assurance, code size, etc.</p>
+</li>
+<li>
+<p><code>supercop/crypto_scalarmult/curve25519/donna_c64</code> (radix 2<sup>51</sup>) from
+     Adam Langley.</p>
+<p><code>lib25519/crypto_nP/montgomery25519/donna_c64</code> starts from this and
+ tweaks the API to provide <code>crypto_nP</code> instead of <code>crypto_scalarmult</code>
+ (and removes <code>crypto_scalarmult_base</code>).
+ <code>crypto_pow/inv25519/donna_c64</code> is factored out.</p>
+</li>
+<li>
+<p>Daniel J. Bernstein, Niels Duif, Tanja Lange, Peter Schwabe, Bo-Yin
+     Yang. "High-speed high-security signatures." Pages 124–142 in
+     Cryptographic hardware and embedded systems—CHES 2011, 13th
+     international workshop, Nara, Japan, September 28–October 1, 2011,
+     proceedings, edited by Bart Preneel, Tsuyoshi Takagi, Lecture Notes
+     in Computer Science 6917, Springer, 2011, ISBN 978-3-642-23950-2.
+     Journal version: Journal of Cryptographic Engineering 2 (2012),
+     77–89.</p>
+<p>This is the source of the Ed25519 design and various X25519/Ed25519
+ speedups for 64-bit Intel/AMD platforms, in particular producing
+ <code>supercop/crypto_{scalarmult/curve,sign/ed}25519/amd64-{51,64}*</code>
+ (radix 2<sup>51</sup> and radix 2<sup>64</sup> respectively). Peter Schwabe led the
+ implementation work.</p>
+<p><code>lib25519/crypto_nP/montgomery25519/amd64-51</code> starts from
+ <code>supercop/crypto_scalarmult/curve25519/amd64-51</code> and tweaks the API
+ to provide <code>crypto_nP</code> instead of <code>crypto_scalarmult</code> (and removes
+ <code>crypto_scalarmult_base</code>). <code>crypto_nG/merged25519/amd64-51</code> (for
+ fixed-base-point multiplication), <code>crypto_mGnP/ed25519/amd64-51</code> (for
+ double-scalar multiplication), and <code>crypto_sign/ed25519/amd64</code> (for
+ the remaining signing components) factor
+ <code>supercop/crypto_sign/ed25519/amd64-51</code> into smaller pieces.
+ <code>crypto_pow/inv25519/amd64-51</code> is also factored out. <code>SMALLTABLES</code>
+ support is removed. Support for batch verification is removed,
+ although it could reappear in a subsequent lib25519 release.</p>
+<p>Similar comments apply to <code>amd64-64</code> and <code>ref10</code>. A compiler warning
+ is eliminated (window size 64 in <code>amd64-64-24k/sc25519.h</code>).</p>
+</li>
+<li>
+<p>Tung Chou. "Sandy2x: New Curve25519 Speed Records." SAC 2015.</p>
+<p>This is the source of various X25519 speedups using 256-bit vector
+ instructions, specifically AVX vector instructions in Intel's Sandy
+ Bridge, in particular producing
+ <code>supercop/crypto_scalarmult/curve25519/sandy2x</code> (radix 2<sup>25.5</sup>).</p>
+<p><code>lib25519/crypto_{nP,nG}/montgomery25519/sandy2x</code> start from
+ <code>supercop/crypto_scalarmult/curve25519/sandy2x</code>, and tweak the API
+ to provide <code>crypto_nP</code> and <code>crypto_nG</code> instead of
+ <code>crypto_scalarmult</code> and <code>crypto_scalarmult_base</code> respectively. The
+ top bit of the incoming point is cleared.
+ <code>crypto_pow/inv25519/sandy2x</code> is factored out.</p>
+</li>
+<li>
+<p>Kaushik Nath and Palash Sarkar, "Efficient arithmetic in
+     (pseudo-)Mersenne prime order fields", Advances in Mathematics of
+     Communications 16 (2022), pages 303–348.
+     Original release:</p>
+<ul>
+<li><a href="https://github.com/kn-cs/pmp-farith/tree/master/gf-p2-255-19/SL">https://github.com/kn-cs/pmp-farith/tree/master/gf-p2-255-19/SL</a></li>
+<li><a href="https://github.com/kn-cs/pmp-farith/tree/master/gf-p2-255-19/USL1">https://github.com/kn-cs/pmp-farith/tree/master/gf-p2-255-19/USL1</a></li>
+</ul>
+<p>The <code>SL</code> software is the source of various speedups to the <code>amd64-64</code>
+ software, producing the <code>maa4</code> versions of <code>fe25519_mul.S</code>,
+ <code>fe25519_square.S</code>, and <code>fe25519_nsquare.S</code>. These <code>.S</code> files are used
+ inside the following lib25519 directories:</p>
+<ul>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-maa4</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-maa4</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-maa4</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-10l-maa4</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-9l-maa4</code></li>
+<li><code>crypto_nG/merged25519/amd64-maa4</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey10l-maa4</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey9l-maa4</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns10l-maa4</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns9l-maa4</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-maa4</code></li>
+<li><code>crypto_pow/inv25519/amd64-maa4</code></li>
+</ul>
+<p>The <code>USL</code> software is the source of various speedups to the
+ <code>amd64-51</code> software, producing the <code>maa5</code> versions of <code>fe25519_mul.S</code>
+ and <code>fe25519_nsquare.S</code>. These <code>.S</code> files are used inside the
+ following lib25519 directories:</p>
+<ul>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey10l-maa5</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey9l-maa5</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns10l-maa5</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns9l-maa5</code></li>
+<li><code>crypto_pow/inv25519/amd64-maa5</code></li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath and Palash Sarkar, "Security and efficiency trade-offs
+     for elliptic curve Diffie-Hellman at the 128-bit and 224-bit
+     security levels." J. Cryptogr. Eng. 12(1): 107-121 (2022).
+     Original release:</p>
+<ul>
+<li><a href="https://github.com/kn-cs/x25519/tree/master/intel64-mxaa-4limb">https://github.com/kn-cs/x25519/tree/master/intel64-mxaa-4limb</a></li>
+<li><a href="https://github.com/kn-cs/x25519">https://github.com/kn-cs/x25519</a></li>
+</ul>
+<p>This <code>mxaa-4limb</code> software is the source of various speedups to
+ <code>maa4</code> on CPUs supporting BMI2 instructions (e.g., Intel Haswell
+ from 2013), in particular producing the <code>mxaa</code> versions of
+ <code>fe25519_mul.S</code> and <code>fe25519_nsquare.S</code>. These <code>.S</code> files are used
+ inside the following lib25519 directories:</p>
+<ul>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-mxaa</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-mxaa</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-mxaa</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-10l-mxaa</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-9l-mxaa</code></li>
+<li><code>crypto_nG/merged25519/amd64-mxaa</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey10l-mxaa</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey9l-mxaa</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns10l-mxaa</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns9l-mxaa</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-mxaa</code></li>
+<li><code>crypto_pow/inv25519/amd64-mxaa</code></li>
+</ul>
+<p>This software is also the source of the following three different
+ Montgomery-ladder functions, where the third also builds on the
+ <code>maax</code> work listed below:</p>
+<ul>
+<li><code>crypto_nP/montgomery25519/amd64-maa4/mladder.S</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-mxaa/mladder.S</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-maax/mladder.S</code></li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath and Palash Sarkar, "Efficient arithmetic in
+     (pseudo-)Mersenne prime order fields", Advances in Mathematics of
+     Communications 16 (2022), pages 303–348. Original release:</p>
+<ul>
+<li><a href="https://github.com/kn-cs/pmp-farith/tree/master/gf-p2-255-19/SLDCC">https://github.com/kn-cs/pmp-farith/tree/master/gf-p2-255-19/SLDCC</a></li>
+</ul>
+<p>This is the source of various speedups to <code>mxaa</code> on CPUs that also
+ support ADX instructions (e.g., Intel Broadwell from 2014), in
+ particular producing the <code>maax</code> versions of <code>fe25519_mul.S</code>,
+ <code>fe25519_square.S</code>, and <code>fe25519_nsquare.S</code>. These <code>.S</code> files are used
+ inside the following lib25519 directories:</p>
+<ul>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-maax</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-maax</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx512ifma-5l-maax</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-maax</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-10l-maax</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-9l-maax</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx512ifma-5l-maax</code></li>
+<li><code>crypto_nG/merged25519/amd64-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey10l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey9l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns10l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns9l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-hey10l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-hey9l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-ns10l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-ns9l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512ifma-hey5l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512ifma-ns5l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-maax</code></li>
+<li><code>crypto_pow/inv25519/amd64-maax</code></li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath and Palash Sarkar, "Efficient 4-Way Vectorizations of
+     the Montgomery Ladder". IEEE Trans. Computers 71(3): 712-723
+     (2022). Original release:</p>
+<ul>
+<li><a href="https://github.com/kn-cs/vec-ladder/tree/master/Curve25519">https://github.com/kn-cs/vec-ladder/tree/master/Curve25519</a></li>
+</ul>
+<p>This is the source of the <code>hey10l</code> (radix 2<sup>25.5</sup>), <code>hey9l</code> (radix
+ 2<sup>29</sup>), <code>ns10l</code> (radix 2<sup>25.5</sup>), and <code>ns9l</code> (radix 2<sup>29</sup>) versions of
+ <code>mladder.S</code> for CPUs that also support 256-bit AVX2 instructions
+ (e.g., Intel Haswell from 2013). In lib25519, these four <code>.S</code> files
+ are used in 16 directories:</p>
+<ul>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey10l-{maa4,maa5,maax,mxaa}</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-hey9l-{maa4,maa5,maax,mxaa}</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns10l-{maa4,maa5,maax,mxaa}</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx2-ns9l-{maa4,maa5,maax,mxaa}</code></li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath, new Montgomery-ladder code new in lib25519 (no paper
+     yet) for CPUs supporting AVX-512 instructions (e.g., Intel
+     Skylake-X from 2017). These are seven files in lib25519:</p>
+<ul>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-hey10l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-hey9l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-ns10l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-ns9l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512ifma-hey5l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512ifma-ns5l-maax</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-avx512-8x1-ns10l-maax</code></li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath, three versions of Montgomery ladder code new in 
+     lib25519 (no paper yet) for various AMD64 architectures. These ladders are
+     optimized versions of the software available at <a href="https://github.com/kn-cs/x25519">https://github.com/kn-cs/x25519</a></p>
+<ul>
+<li><code>crypto_nP/montgomery25519/amd64-maa4/mladder.S</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-maax/mladder.S</code></li>
+<li><code>crypto_nP/montgomery25519/amd64-mxaa/mladder.S</code>     </li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath, two versions of Montgomery ladder code new in 
+     lib25519 (no paper yet) for ARM64 CPUs:</p>
+<ul>
+<li><code>crypto_nP/montgomery25519/arm64-maa4-{intmul,redmul}/mladder.S</code></li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath, twelve versions of fixed-base-point
+     scalar-multiplication code new in lib25519 (no paper yet) for
+     various platforms:</p>
+<ul>
+<li><code>crypto_nG/merged25519/amd64-avx2-10l-maa4/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-10l-maax/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-10l-mxaa/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-9l-maa4/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-9l-maax/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx2-9l-mxaa/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-avx512ifma-5l-maax/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-maa4/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-maax/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/amd64-mxaa/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/arm64-maa4-intmul/ge25519_base.S</code></li>
+<li><code>crypto_nG/merged25519/arm64-maa4-redmul/ge25519_base.S</code>     </li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath, twelve versions of double-scalar-multiplication code new
+     in lib25519 (no paper yet) for various platforms. Each version has
+     <code>precompute.S</code> and <code>process.S</code>:</p>
+<ul>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-maa4/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-maax/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-mxaa/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-maa4/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-maax/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-mxaa/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx512ifma-5l-maax/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-maa4/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-maax/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-mxaa/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-maa4/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-maax/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-10l-mxaa/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-maa4/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-maax/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx2-9l-mxaa/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-avx512ifma-5l-maax/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-maa4/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-maax/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/amd64-mxaa/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/arm64-maa4-intmul/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/arm64-maa4-intmul/ge25519_double_scalarmult_process.S</code></li>
+<li><code>crypto_mGnP/ed25519/arm64-maa4-redmul/ge25519_double_scalarmult_precompute.S</code></li>
+<li><code>crypto_mGnP/ed25519/arm64-maa4-redmul/ge25519_double_scalarmult_process.S</code>     </li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath, nine versions of batch scalar-multiplication code new in lib25519 (no
+     paper yet) for various platforms.</p>
+<ul>
+<li><code>crypto_nPbatch/montgomery25519/amd64-avx2-4x1-9l-{maa4,maa5,maax,mxaa}</code></li>
+<li><code>crypto_nPbatch/montgomery25519/amd64-avx2-4x1-10l-{maa4,maa5,maax,mxaa}</code></li>
+<li><code>crypto_nPbatch/montgomery25519/amd64-avx512ifma-8x1</code></li>
+</ul>
+</li>
+<li>
+<p>Kaushik Nath, ten versions of multi scalar-multiplication code new in lib25519 (no
+     paper yet) for various platforms. Each version has <code>precompute.S</code> and <code>process.S</code>.
+     Additionally, the <code>amd64-{maa4,maax,mxaa}</code> and <code>arm64-maa4-{intmul,redmul}</code> versions 
+     have <code>p1p1_to_p2.S</code>:</p>
+<ul>
+<li><code>crypto_multiscalar/ed25519/amd64-{maa4,maax,mxaa}</code></li>
+<li><code>crypto_multiscalar/ed25519/amd64-{maa4,maax,mxaa}-p3</code></li>
+<li><code>crypto_multiscalar/ed25519/arm64-maa4-{intmul,redmul}</code></li>
+<li><code>crypto_multiscalar/ed25519/arm64-maa4-{intmul,redmul}-p3</code></li>
+</ul>
+</li>
+</ul>
+<p>Almost all of the <code>crypto_pow/inv25519</code> implementations use
+exponentiation, but there is also a different implementation from the
+following source:</p>
+<ul>
+<li>
+<p>Daniel J. Bernstein, Bo-Yin Yang. "Fast constant-time gcd
+     computation and modular inversion." IACR Transactions on
+     Cryptographic Hardware and Embedded Systems 2019 issue 3 (2019),
+     340–398.</p>
+<p>This is the source of the "safegcd" algorithm and software. Further
+ speedups (no paper yet; ideas from Peter Dettman, Gregory Maxwell,
+ and Pieter Wuille) have produced the "inverse25519skylake" software
+ available here: <a href="https://gcd.cr.yp.to/software.html">https://gcd.cr.yp.to/software.html</a></p>
+<p><code>lib25519/crypto_pow/inv25519/amd64-safegcd</code> is inverse25519skylake,
+ tweaked to provide the <code>crypto_pow</code> API and to clear the top bit of
+ the input.</p>
+</li>
+</ul>
+<p>For lower-layer SHA-512 functions:</p>
+<ul>
+<li>Daniel J. Bernstein, <code>supercop/crypto_hash*/sha512/*</code>. In lib25519,
+     some unused variables are removed in <code>crypto_hashblocks/sha512/avx</code>
+     to eliminate compiler warnings.</li>
+</ul>
+<p>Most of the lib25519 infrastructure, such as the run-time implementation
+selector automatically guided by CPU type and previous benchmarks, is
+new in lib25519 from Daniel J. Bernstein. Portions of <code>autogen/speed</code>
+(generating <code>lib25519-speed.c</code>) and <code>autogen/test</code> (generating
+<code>lib25519-test.c</code>) are based on benchmarking software and test software in
+SUPERCOP by Daniel J. Bernstein. The symmetric-cryptography code for
+generating pseudorandom test inputs and hashing test outputs is adapted
+from TweetNaCl, a library by Daniel J. Bernstein, Wesley Janssen, Tanja
+Lange, and Peter Schwabe.</p><hr><font size=1><b>Version:</b>
+This is version 2024.09.24 of the "People" web page.
+</font>
+</div>
+</body>
+</html>

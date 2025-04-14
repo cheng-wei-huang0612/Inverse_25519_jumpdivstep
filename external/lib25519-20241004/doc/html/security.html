@@ -1,0 +1,174 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+html{overflow-y:scroll}
+body{font-family:"Noto Sans","Droid Sans","DejaVu Sans","Arial",sans-serif;line-height:1.5}
+tt,code{background-color:#f0f0f0;font-family:"Noto Sans Mono","Droid Sans Mono","DejaVu Sans Mono","Courier New",monospace,sans-serif;font-size:1em;}
+pre{margin-left:3em}
+p,ul,ol,blockquote,pre{font-size:1.0em;line-height:1.6}
+li p{font-size:1.0em}
+blockquote p{font-size:1.0em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.0em}
+h1 a{text-decoration:none}
+table{border-collapse:collapse}
+th,td{border:1px solid black}
+table a{text-decoration:none}
+table tr{font-size:1.0em;line-height:1.5}
+tbody tr:nth-child(12n+1){background-color:#f0ffff}
+tbody tr:nth-child(12n+2){background-color:#f0ffff}
+tbody tr:nth-child(12n+3){background-color:#f0ffff}
+tbody tr:nth-child(12n+4){background-color:#f0ffff}
+tbody tr:nth-child(12n+5){background-color:#f0ffff}
+tbody tr:nth-child(12n+6){background-color:#f0ffff}
+tbody tr:nth-child(12n+7){background-color:#fffff0}
+tbody tr:nth-child(12n+8){background-color:#fffff0}
+tbody tr:nth-child(12n+9){background-color:#fffff0}
+tbody tr:nth-child(12n+10){background-color:#fffff0}
+tbody tr:nth-child(12n+11){background-color:#fffff0}
+tbody tr:nth-child(12n+12){background-color:#fffff0}
+.links a:hover{text-decoration:underline}
+.links a:active{text-decoration:underline}
+.links img{width:200px;padding-left:1em}
+.links td{border:0px;padding-top:0.5em;padding-bottom:0.5em}
+.openssl{color:#004040}
+.s2n{color:#400040}
+.lib25519{color:#c25519}
+.headline{padding:0;font-weight:bold;font-size:1.5em;vertical-align:top;padding-bottom:0.5em;color:#c25519}
+.navt{display:inline-block;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
+min-width:16%;margin:0;padding:0;padding-left:0.5em;padding-right:0.5em;vertical-align:center;
+font-weight:bold;font-size:1.1em;text-align:center;border:1px solid black}
+.here{border-bottom:0px;background-color:#ffffff}
+.away{background-color:#c25519;}
+.away a{text-decoration:none;display:block;color:#ffffff}
+.away a:hover,.away a:active{text-decoration:underline}
+.main{margin:0;padding-top:0em;padding-bottom:1%;clear:both}
+</style>
+<title>
+lib25519: Security</title>
+</head>
+<body>
+<div class=headline>
+lib25519</div>
+<div class=nav>
+<div class="navt away"><a href=index.html>Intro</a>
+</div><div class="navt away"><a href=download.html>Download</a>
+</div><div class="navt away"><a href=install.html>Install</a>
+</div><div class="navt away"><a href=test.html>Test</a>
+</div><div class="navt away"><a href=x25519-cli.html>X CLI</a>
+</div><div class="navt away"><a href=ed25519-cli.html>Ed CLI</a>
+</div><div class="navt away"><a href=api.html>API</a>
+</div><div class="navt here">Security
+</div><div class="navt away"><a href=speed.html>Speed</a>
+</div><div class="navt away"><a href=internals.html>Internals</a>
+</div><div class="navt away"><a href=people.html>People</a>
+</div><div class="navt away"><a href=license.html>License</a>
+</div></div>
+<div class=main>
+<p>Security model: X25519 is designed to be strong as a component of
+various well-known "hashed DH" applications, and in particular is
+designed to make the CDH problem difficult with respect to the standard
+base. Ed25519 is designed to provide EUF-CMA, the standard notion of
+unforgeability of a signature system under chosen-message attacks.
+However, some applications need other security notions that are not
+provided by X25519 and Ed25519.</p>
+<p>Security level: X25519 and Ed25519 are more difficult to break by any
+known attacks than a typical 128-bit cipher. They have an extremely
+stable security track record, with two decades of research changing
+security levels by only a fraction of a bit. They also proactively avoid
+various potential risks. However, large quantum computers will break
+both X25519 and Ed25519.</p>
+<p>Software verification: lib25519 is intended to become a central target
+for verification of full functional correctness of implementations of
+X25519 and Ed25519. However, only certain portions have been verified so
+far, and at this point the code should be presumed to have critical
+bugs.</p>
+<p>API safety: The lib25519 API is systematically designed to simplify
+correct use and complicate incorrect use. As in the SUPERCOP/NaCl API,
+inputs and outputs are in wire format rather than requiring conversion
+to an internal format; signing a message uses simply a secret key, not
+taking the public key as a separate input; and verification recovers a
+message from a signed message, not treating the signature as a separate
+object that one can forget to verify.</p>
+<p>Timing attacks: lib25519 is designed to avoid all data flow from secret
+data to memory addresses and branch conditions. lib25519 uses operations
+that naturally avoid such data flow, and includes valgrind tests (based
+on TIMECOP from SUPERCOP) designed to catch any such data flow
+introduced by compilers. Fully protecting the user against timing
+attacks requires addressing more issues, such as the following:</p>
+<ul>
+<li>
+<p>Other common instructions used by lib25519 take variable time on
+     some CPUs. For example, there are some CPUs, especially embedded
+     CPUs, where integer multiplication takes variable time.</p>
+</li>
+<li>
+<p>Many CPUs include dynamic frequency-selection mechanisms such as
+     Turbo Boost, exposing power information via timing information.
+     Fortunately, these CPUs are normally shipped with simple options to
+     disable Turbo Boost etc., closing this leak; unfortunately, Turbo
+     Boost is enabled by default on CPUs that support it.</p>
+</li>
+<li>
+<p>Cryptographic keys are normally handled by cryptographic software,
+     but other user secrets are handled by many different pieces of
+     software.</p>
+</li>
+</ul>
+<p>See <a href="https://timing.attacks.cr.yp.to">https://timing.attacks.cr.yp.to</a>
+for a timing-attack survey and many references.</p>
+<p>Speculative-execution attacks: Some countermeasures against
+speculative-execution attacks are planned but are not included in the
+current version of lib25519. Full protection again requires addressing
+issues at other system layers.</p>
+<p>Further side-channel attacks: Even if all legitimate user sensors are
+successfully kept isolated from attackers, attackers can set up their
+own power sensors, electromagnetic sensors, acoustic sensors, etc.
+Keeping cryptographic operations physically separated from sensors tends
+to make such attacks much more expensive but is often infeasible.
+"Masking" cryptographic computations seems to help and can be
+affordable, although the security of masking is difficult to evaluate
+and there are many broken masked implementations. Currently lib25519
+does not include any masked implementations, so presumably it is easily
+breakable by power attacks in environments where attackers can see power
+consumption.</p>
+<p>Further attacks: lib25519 creates an Ed25519 signing nonce as a hash of
+the message, a long-term secret, and new randomness (specifically, the
+nonce is a keyed hash of the message, where the key is the hash of the
+long-term secret and new randomness). The literature identifies various
+advantages and disadvantages of including these hash inputs:</p>
+<ul>
+<li>
+<p>Including the message and a long-term secret protects against
+     signing-time RNG failures. This is a standard feature of Ed25519
+     signers.</p>
+</li>
+<li>
+<p>To the extent that the RNG works, including new randomness has the
+     advantage of stopping (e.g.) fault attacks that rely on a nonce
+     being reused for multiple signatures of the same message.</p>
+</li>
+<li>
+<p>Including new randomness has the disadvantage of requiring state
+     for the RNG. However, lib25519 runs within an OS that in any case
+     maintains state and provides an RNG.</p>
+</li>
+<li>
+<p>Including new randomness also has the disadvantage of interfering
+     with the use of test vectors. This disadvantage does not apply to
+     lib25519: lib25519's test vectors already handle randomness.</p>
+</li>
+</ul>
+<p>lib25519 includes a few further steps that could be useful in stopping
+fault attacks (for example, signature verification internally converts
+invalid public keys to the key (...,26), which does not have a known
+discrete logarithm), but in general lib25519 should be presumed
+breakable by fault attacks.</p><hr><font size=1><b>Version:</b>
+This is version 2024.09.26 of the "Security" web page.
+</font>
+</div>
+</body>
+</html>

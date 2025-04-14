@@ -1,0 +1,8 @@
+#!/bin/sh
+
+lib="$1"
+
+rm -f package/lib/"$lib".a
+ar cr package/lib/"$lib".a ofiles/*.o
+ranlib package/lib/"$lib".a || :
+chmod 644 package/lib/"$lib".a

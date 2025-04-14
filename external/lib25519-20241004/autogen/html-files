@@ -1,0 +1,12 @@
+readme:index:Intro
+download:download:Download
+install:install:Install
+test:test:Test
+x25519-cli:x25519-cli:X CLI
+ed25519-cli:ed25519-cli:Ed CLI
+api:api:API
+security:security:Security
+speed:speed:Speed
+internals:internals:Internals
+people:people:People
+license:license:License

@@ -1,0 +1,179 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+html{overflow-y:scroll}
+body{font-family:"Noto Sans","Droid Sans","DejaVu Sans","Arial",sans-serif;line-height:1.5}
+tt,code{background-color:#f0f0f0;font-family:"Noto Sans Mono","Droid Sans Mono","DejaVu Sans Mono","Courier New",monospace,sans-serif;font-size:1em;}
+pre{margin-left:3em}
+p,ul,ol,blockquote,pre{font-size:1.0em;line-height:1.6}
+li p{font-size:1.0em}
+blockquote p{font-size:1.0em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.0em}
+h1 a{text-decoration:none}
+table{border-collapse:collapse}
+th,td{border:1px solid black}
+table a{text-decoration:none}
+table tr{font-size:1.0em;line-height:1.5}
+tbody tr:nth-child(12n+1){background-color:#f0ffff}
+tbody tr:nth-child(12n+2){background-color:#f0ffff}
+tbody tr:nth-child(12n+3){background-color:#f0ffff}
+tbody tr:nth-child(12n+4){background-color:#f0ffff}
+tbody tr:nth-child(12n+5){background-color:#f0ffff}
+tbody tr:nth-child(12n+6){background-color:#f0ffff}
+tbody tr:nth-child(12n+7){background-color:#fffff0}
+tbody tr:nth-child(12n+8){background-color:#fffff0}
+tbody tr:nth-child(12n+9){background-color:#fffff0}
+tbody tr:nth-child(12n+10){background-color:#fffff0}
+tbody tr:nth-child(12n+11){background-color:#fffff0}
+tbody tr:nth-child(12n+12){background-color:#fffff0}
+.links a:hover{text-decoration:underline}
+.links a:active{text-decoration:underline}
+.links img{width:200px;padding-left:1em}
+.links td{border:0px;padding-top:0.5em;padding-bottom:0.5em}
+.openssl{color:#004040}
+.s2n{color:#400040}
+.lib25519{color:#c25519}
+.headline{padding:0;font-weight:bold;font-size:1.5em;vertical-align:top;padding-bottom:0.5em;color:#c25519}
+.navt{display:inline-block;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
+min-width:16%;margin:0;padding:0;padding-left:0.5em;padding-right:0.5em;vertical-align:center;
+font-weight:bold;font-size:1.1em;text-align:center;border:1px solid black}
+.here{border-bottom:0px;background-color:#ffffff}
+.away{background-color:#c25519;}
+.away a{text-decoration:none;display:block;color:#ffffff}
+.away a:hover,.away a:active{text-decoration:underline}
+.main{margin:0;padding-top:0em;padding-bottom:1%;clear:both}
+</style>
+<title>
+lib25519: Download</title>
+</head>
+<body>
+<div class=headline>
+lib25519</div>
+<div class=nav>
+<div class="navt away"><a href=index.html>Intro</a>
+</div><div class="navt here">Download
+</div><div class="navt away"><a href=install.html>Install</a>
+</div><div class="navt away"><a href=test.html>Test</a>
+</div><div class="navt away"><a href=x25519-cli.html>X CLI</a>
+</div><div class="navt away"><a href=ed25519-cli.html>Ed CLI</a>
+</div><div class="navt away"><a href=api.html>API</a>
+</div><div class="navt away"><a href=security.html>Security</a>
+</div><div class="navt away"><a href=speed.html>Speed</a>
+</div><div class="navt away"><a href=internals.html>Internals</a>
+</div><div class="navt away"><a href=people.html>People</a>
+</div><div class="navt away"><a href=license.html>License</a>
+</div></div>
+<div class=main>
+<p>To download and unpack the latest version of lib25519:</p>
+<pre><code>wget -m https://lib25519.cr.yp.to/lib25519-latest-version.txt
+version=$(cat lib25519.cr.yp.to/lib25519-latest-version.txt)
+wget -m https://lib25519.cr.yp.to/lib25519-$version.tar.gz
+tar -xzf lib25519.cr.yp.to/lib25519-$version.tar.gz
+cd lib25519-$version
+</code></pre>
+<p>Then <a href="install.html">install</a>.</p>
+<h3 id="changelog">Archives and changelog (reverse chronological)</h3>
+<p><a href="lib25519-20241004.tar.gz"><code>lib25519-20241004.tar.gz</code></a> <a href="lib25519-20241004.html">browse</a></p>
+<p>Announce latest version on front page.</p>
+<p>Upgrade to <code>cryptoint 20241003</code>.</p>
+<p>Use the <code>cryptoint</code> big-endian load/store functions in various SHA-512 functions.
+In particular, this ports <code>wflip</code> to big-endian CPUs;
+thanks to Jan Mojzis for pointing out the portability issue.</p>
+<p>Include <code>crypto_declassify.h</code> for non-<code>valgrind</code> builds,
+and include <code>crypto_asm_rodata.h</code> for default builds.
+Thanks to Jan Mojzis.</p>
+<p>Align constants in
+<code>crypto_nP/montgomery25519/amd64-avx512-8x1-ns10l-maax/shared-consts.c</code>.</p>
+<p><a href="lib25519-20240928.tar.gz"><code>lib25519-20240928.tar.gz</code></a> <a href="lib25519-20240928.html">browse</a></p>
+<p>Add <code>mGnP/ed25519/arm64-maa4-{int,red}mul</code>.</p>
+<p>Add <code>multiscalar/ed25519/amd64-{maa4,maax,mxaa}-opt</code>,
+<code>multiscalar/ed25519/amd64-{maa4,maax,mxaa}-p3-opt</code>,
+<code>multiscalar/ed25519/arm64-maa4-{int,red}mul</code>,
+<code>multiscalar/ed25519/arm64-maa4-{int,red}mul-p3</code>.</p>
+<p>Use <code>nsquare</code> more in <code>fe25519_pow2523.c</code>.</p>
+<p>Replace <code>fe25519_cmov.c</code> with <code>fe25519_cmov.S</code>.</p>
+<p>Speed up <code>double_scalarmult</code>,
+<code>arm64-maa4-{int,red}mul/mladder.S</code>,
+<code>arm64-maa4-{int,red}mul/fe25519_nsquare.S</code>,
+<code>arm64-maa4-{int,red}mul/ge25519_base.S</code>.</p>
+<p>Switch speed measurements from medians to interquartile means.</p>
+<p>Upgrade from <code>inttypes</code> to <code>cryptoint 20240806</code>, and use <code>cryptoint</code> more systematically.</p>
+<p>Support <code>valgrind</code> in <code>lib25519-test</code>, with help from <code>configure</code>.</p>
+<p>Split <code>command/lib25519-test.c</code> into multiple <code>.c</code> files.</p>
+<p>Support finer-grained command-line splits in <code>lib25519-test</code>.
+Add <code>lib25519-fulltest</code>.
+Document <code>lib25519-fulltest</code> as being required for support.</p>
+<p>Move some entries not supported by <code>valgrind</code>
+from <code>compilers</code> to <code>skipcompilers</code>.</p>
+<p>Rename <code>--no</code> as <code>--no-</code>.</p>
+<p>Rename <code>ALIGN</code> as <code>CRYPTO_ALIGN</code>.
+Systematically use <code>CRYPTO_ALIGN</code>.</p>
+<p>Use <code>hidden</code> visibility for <code>crypto_*</code> symbols.
+Use <code>ASM_HIDDEN</code> in more <code>.S</code> files.</p>
+<p>Use <code>.note.GNU-stack</code> more.</p>
+<p>Handle <code>checkinsns</code> etc. on shared directories.</p>
+<p>Move <code>cat result-impl</code> to <code>default</code> for better visibility.</p>
+<p>Recognize <code>sun4v</code> as <code>sparc64</code>.</p>
+<p>For <code>donna_c64</code>:
+Change <code>uint128_t</code> to <code>my_uint128_t</code>;
+switch from mode <code>TI</code> to <code>unsigned __int128</code>;
+import load/store fixes from upstream;
+compile only for 64-bit architectures.</p>
+<p>Handle <code>implarchreq</code> better in <code>configure</code>.</p>
+<p>Make <code>dispatch/ifunc.do</code> work with <code>configure --noclean</code>.</p>
+<p>Add <code>note.GNU-stack</code> to assembly.</p>
+<p>Sort directory order in <code>scripts-build/ofiles</code>.
+Thanks to Jan Mojzis.</p>
+<p>For <code>use-s2n-bignum</code>,
+insist locally on precomputed SHA-256 checksums.</p>
+<p><a href="lib25519-20240321.tar.gz"><code>lib25519-20240321.tar.gz</code></a> <a href="lib25519-20240321.html">browse</a></p>
+<p>Add <code>./use-s2n-bignum</code> compile-time option,
+along with lib25519+s2n benchmarks and separate s2n-bignum benchmarks.</p>
+<p>Speed up <code>amd64-{maa4,maax,mxaa}</code> for <code>nP</code>, <code>nG</code>, <code>mGnP</code>.
+Add <code>amd64-avx512-8x1-ns10l-maax</code> for <code>nP</code>.</p>
+<p>Add initial code for 64-bit ARM.</p>
+<p>MacOS X port: <code>dylib</code>; deal with <code>s</code> and <code>S</code> in <code>checknamespace</code>;
+use <code>-flat_namespace</code> so <code>lib25519-test</code> can substitute <code>randombytes</code>;
+add <code>crypto_asm_rodata.h</code> abstraction;
+expand <code>#define</code> for assembly to eliminate semicolons.</p>
+<p>Add benchmarks for more platforms.</p>
+<p>Support empty compiler lists.</p>
+<p>Improve selection for Zen 2, Zen 3, and Golden Cove.</p>
+<p>Add background colors to speed table.</p>
+<p>Improve HTML formatting for code.</p>
+<p>Add NGI0 information.</p>
+<p><a href="lib25519-20230630.tar.gz"><code>lib25519-20230630.tar.gz</code></a> <a href="lib25519-20230630.html">browse</a></p>
+<p>Add <code>powbatch</code>, <code>nPbatch</code>, and <code>multiscalar</code> APIs
+with various implementations for basic amd64, BMI, ADX, AVX2, and AVX-512,
+plus portable implementations.</p>
+<p>Include benchmarks on more microarchitectures.
+Add auto-generated table in documentation
+summarizing <a href="speed.html">speeds</a>,
+with OpenSSL speeds as a baseline for comparison.</p>
+<p>For compatibility with musl etc.,
+support <code>constructor</code> as an alternative to <code>ifunc</code> for dispatch.
+Select <code>constructor</code> automatically if an <code>ifunc</code> compile-time test fails,
+or if <code>--notryifunc</code> is passed to <code>./configure</code>.</p>
+<p>Add command-line interface for shell scripts.</p>
+<p>Rely on separate <a href="https://cpucycles.cr.yp.to">libcpucycles</a>
+to automatically use RDPMC etc.,
+and separate <a href="https://randombytes.cr.yp.to">librandombytes</a>
+to automatically use <code>getrandom</code> etc.</p>
+<p>Reorganize documentation into <code>doc/*.md</code> directory,
+with auto-generation of HTML and manual pages.</p>
+<p>Inside auto-generation of <code>command/lib25519-test.c</code>,
+automatically cache Python computations of nP etc.</p>
+<p>Reorganize precomputed tests to handle APIs with variable-length inputs and outputs.</p>
+<p>Import infrastructure improvements from libmceliece.</p>
+<p><a href="lib25519-20221222.tar.gz"><code>lib25519-20221222.tar.gz</code></a> <a href="lib25519-20221222.html">browse</a></p>
+<p><a href="lib25519-20220726.tar.gz"><code>lib25519-20220726.tar.gz</code></a> <a href="lib25519-20220726.html">browse</a></p>
+<p><a href="lib25519-20220426.tar.gz"><code>lib25519-20220426.tar.gz</code></a> <a href="lib25519-20220426.html">browse</a></p><hr><font size=1><b>Version:</b>
+This is version 2024.10.04 of the "Download" web page.
+</font>
+</div>
+</body>
+</html>

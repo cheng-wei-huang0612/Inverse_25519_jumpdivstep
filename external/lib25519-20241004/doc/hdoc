@@ -1,0 +1,7 @@
+/*
+
+The stable lib25519 API consists of the functions defined in `api.md`.
+Other functions defined in `lib25519.h` (e.g., functions used for
+internal tests and benchmarks) may change.
+
+*/

@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+
+import re
+
+# -----
+
+keypair = r'''/* WARNING: auto-generated (by autogen/cli); do not edit */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include "lib25519.h" /* -l25519 */
+#include "limits.inc"
+
+static void die_temp(const char *why,const char *why2)
+{
+  if (why2)
+    fprintf(stderr,"COMMAND: fatal: %s: %s\n",why,why2);
+  else
+    fprintf(stderr,"COMMAND: fatal: %s\n",why);
+  exit(111);
+}
+
+static unsigned char pk[PRIMITIVE_PUBLICKEYBYTES];
+static unsigned char sk[PRIMITIVE_SECRETKEYBYTES];
+
+int main()
+{
+  FILE *pkfile;
+  FILE *skfile;
+
+  limits();
+
+  pkfile = fdopen(5,"w");
+  if (!pkfile) {
+    fprintf(stderr,"COMMAND: usage: COMMAND 5>publickey 9>secretkey\n");
+    die_temp("fdopen 5 failed",strerror(errno));
+  }
+
+  skfile = fdopen(9,"w");
+  if (!skfile) {
+    fprintf(stderr,"COMMAND: usage: COMMAND 5>publickey 9>secretkey\n");
+    die_temp("fdopen 9 failed",strerror(errno));
+  }
+
+  PRIMITIVE_keypair(pk,sk);
+
+  if (fwrite(pk,1,sizeof pk,pkfile) < sizeof pk)
+    die_temp("write publickey failed",strerror(errno));
+  if (fflush(pkfile))
+    die_temp("write publickey failed",strerror(errno));
+  fclose(pkfile);
+
+  if (fwrite(sk,1,sizeof sk,skfile) < sizeof sk)
+    die_temp("write secretkey failed",strerror(errno));
+  if (fflush(skfile))
+    die_temp("write secretkey failed",strerror(errno));
+  fclose(skfile);
+
+  return 0;
+}
+'''
+
+dh = r'''/* WARNING: auto-generated (by autogen/cli); do not edit */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include "lib25519.h" /* -l25519 */
+#include "limits.inc"
+
+static void die_temp(const char *why,const char *why2)
+{
+  if (why2)
+    fprintf(stderr,"COMMAND: fatal: %s: %s\n",why,why2);
+  else
+    fprintf(stderr,"COMMAND: fatal: %s\n",why);
+  exit(111);
+}
+
+static unsigned char sharedsecret[PRIMITIVE_BYTES];
+static unsigned char bobpublic[PRIMITIVE_PUBLICKEYBYTES];
+static unsigned char alicesecret[PRIMITIVE_SECRETKEYBYTES];
+
+int main()
+{
+  FILE *bobpublicfile;
+  FILE *alicesecretfile;
+  FILE *sharedsecretfile;
+
+  limits();
+
+  bobpublicfile = fdopen(4,"r");
+  if (!bobpublicfile) {
+    fprintf(stderr,"COMMAND: usage: COMMAND 8<alicesecret 4<bobpublic 7>sharedsecret\n");
+    die_temp("fdopen 4 failed",strerror(errno));
+  }
+
+  alicesecretfile = fdopen(8,"r");
+  if (!alicesecretfile) {
+    fprintf(stderr,"COMMAND: usage: COMMAND 8<alicesecret 4<bobpublic 7>sharedsecret\n");
+    die_temp("fdopen 8 failed",strerror(errno));
+  }
+
+  sharedsecretfile = fdopen(7,"w");
+  if (!sharedsecretfile) {
+    fprintf(stderr,"COMMAND: usage: COMMAND 8<alicesecret 4<bobpublic 7>sharedsecret\n");
+    die_temp("fdopen 7 failed",strerror(errno));
+  }
+
+  if (fread(alicesecret,1,sizeof alicesecret,alicesecretfile) < sizeof alicesecret) {
+    if (ferror(alicesecretfile))
+      die_temp("read alicesecret failed",strerror(errno));
+    die_temp("read alicesecret failed","end of file");
+  }
+  fclose(alicesecretfile);
+
+  if (fread(bobpublic,1,sizeof bobpublic,bobpublicfile) < sizeof bobpublic) {
+    if (ferror(bobpublicfile))
+      die_temp("read bobpublic failed",strerror(errno));
+    die_temp("read bobpublic failed","end of file");
+  }
+  fclose(bobpublicfile);
+
+  PRIMITIVE(sharedsecret,bobpublic,alicesecret);
+
+  if (fwrite(sharedsecret,1,sizeof sharedsecret,sharedsecretfile) < sizeof sharedsecret)
+    die_temp("write sharedsecret failed",strerror(errno));
+  if (fflush(sharedsecretfile))
+    die_temp("write sharedsecret failed",strerror(errno));
+  fclose(sharedsecretfile);
+
+  return 0;
+}
+'''
+
+# -----
+
+sign = r'''/* WARNING: auto-generated (by autogen/cli); do not edit */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include "lib25519.h" /* -l25519 */
+#include "limits.inc"
+#include "freadall.inc"
+
+static void die_temp(const char *why,const char *why2)
+{
+  if (why2)
+    fprintf(stderr,"COMMAND: fatal: %s: %s\n",why,why2);
+  else
+    fprintf(stderr,"COMMAND: fatal: %s\n",why);
+  exit(111);
+}
+
+static unsigned char sk[PRIMITIVE_SECRETKEYBYTES];
+
+int main()
+{
+  FILE *skfile;
+  unsigned char *buf;
+  long long mlen;
+  long long smlen;
+
+  limits();
+
+  skfile = fdopen(8,"r");
+  if (!skfile) {
+    fprintf(stderr,"COMMAND: usage: COMMAND 8<secretkey <message >signedmessage\n");
+    die_temp("fdopen 8 failed",strerror(errno));
+  }
+  if (fread(sk,1,sizeof sk,skfile) < sizeof sk) {
+    if (ferror(skfile))
+      die_temp("read secretkey failed",strerror(errno));
+    die_temp("read secretkey failed","end of file");
+  }
+  fclose(skfile);
+
+  buf = freadall(&mlen,PRIMITIVE_BYTES,stdin);
+  if (!buf) die_temp("out of memory",0);
+  if (ferror(stdin))
+    die_temp("read message failed",strerror(errno));
+
+  PRIMITIVE(buf,&smlen,buf,mlen,sk);
+
+  if (fwrite(buf,1,smlen,stdout) < smlen)
+    die_temp("write signedmessage failed",strerror(errno));
+  if (fflush(stdout))
+    die_temp("write signedmessage failed",strerror(errno));
+  free(buf);
+
+  return 0;
+}
+'''
+
+# -----
+
+sign_open = r'''/* WARNING: auto-generated (by autogen/cli); do not edit */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include "lib25519.h" /* -l25519 */
+#include "limits.inc"
+#include "freadall.inc"
+
+static void die_temp(const char *why,const char *why2)
+{
+  if (why2)
+    fprintf(stderr,"COMMAND: fatal: %s: %s\n",why,why2);
+  else
+    fprintf(stderr,"COMMAND: fatal: %s\n",why);
+  exit(111);
+}
+
+static unsigned char pk[PRIMITIVE_PUBLICKEYBYTES];
+
+int main()
+{
+  FILE *pkfile;
+  unsigned char *buf;
+  long long smlen;
+  long long mlen;
+
+  limits();
+
+  pkfile = fdopen(4,"r");
+  if (!pkfile) {
+    fprintf(stderr,"COMMAND: usage: COMMAND 4<publickey <signedmessage >message\n");
+    die_temp("fdopen 4 failed",strerror(errno));
+  }
+  if (fread(pk,1,sizeof pk,pkfile) < sizeof pk) {
+    if (ferror(pkfile))
+      die_temp("read publickey failed",strerror(errno));
+    die_temp("read publickey failed","end of file");
+  }
+  fclose(pkfile);
+
+  buf = freadall(&smlen,0,stdin);
+  if (!buf) die_temp("out of memory",0);
+  if (ferror(stdin))
+    die_temp("read signedmessage failed",strerror(errno));
+
+  if (PRIMITIVE_open(buf,&mlen,buf,smlen,pk)) {
+    fprintf(stderr,"COMMAND: fatal: open failed\n");
+    exit(100);
+  }
+
+  if (fwrite(buf,1,mlen,stdout) < mlen)
+    die_temp("write message failed",strerror(errno));
+  if (fflush(stdout))
+    die_temp("write message failed",strerror(errno));
+  free(buf);
+
+  return 0;
+}
+'''
+
+# -----
+
+with open('command/x25519-keypair.c','w') as f:
+  f.write(re.sub('COMMAND','x25519-keypair',re.sub('PRIMITIVE','lib25519_dh',keypair)))
+with open('command/x25519-dh.c','w') as f:
+  f.write(re.sub('COMMAND','x25519-dh',re.sub('PRIMITIVE','lib25519_dh',dh)))
+
+with open('command/ed25519-keypair.c','w') as f:
+  f.write(re.sub('COMMAND','ed25519-keypair',re.sub('PRIMITIVE','lib25519_sign',keypair)))
+with open('command/ed25519-sign.c','w') as f:
+  f.write(re.sub('COMMAND','ed25519-sign',re.sub('PRIMITIVE','lib25519_sign',sign)))
+with open('command/ed25519-open.c','w') as f:
+  f.write(re.sub('COMMAND','ed25519-open',re.sub('PRIMITIVE','lib25519_sign',sign_open)))

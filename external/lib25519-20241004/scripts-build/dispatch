@@ -1,0 +1,247 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import re
+
+def cstring(x):
+  return '"%s"' % x.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n')
+
+def sanitize(x):
+  x = x.replace('-','').replace('_','')
+  return ''.join(c if c in '0123456789abcdefghijklmnopqrstuvwxyz' else '_' for c in x)
+
+exports = {}
+prototypes = {}
+
+ifunc = False
+with open('dispatch/ifunc') as f:
+  for line in f:
+    if line.strip() == '1':
+      ifunc = True
+
+with open('api') as f:
+  for line in f:
+    line = line.strip()
+    if line.startswith('crypto_'):
+      continue
+    if line.startswith('#define '):
+      continue
+    if line.endswith(');'):
+      fun,args = line[:-2].split('(')
+      rettype,fun = fun.split()
+      fun = fun.split('_')
+      o = fun[1]
+      assert fun[0] == 'crypto'
+      if o not in exports: exports[o] = []
+      exports[o] += ['_'.join(fun[1:])]
+      if o not in prototypes: prototypes[o] = []
+      prototypes[o] += [(rettype,fun,args)]
+
+goal = sys.argv[1]
+assert goal in ('auto','manual')
+o = sys.argv[2]
+p = sys.argv[3]
+host = sys.argv[4]
+namespace = sys.argv[5]
+
+impls = []
+selected = []
+usedimpls = set()
+
+for line in sys.stdin:
+  line = line.split()
+  if line[0] == 'impl':
+    impls += [line[1:]]
+  if line[0] == 'selected':
+    a,i,c = line[1:]
+    selected += [(a,i,c)]
+    usedimpls.add((i,c))
+
+with open('allarches') as f:
+  allarches = f.read().splitlines()
+
+icarch = {}
+iccompiler = {}
+
+for i,c in impls:
+  with open('compilerarch/%s' % c) as f:
+    icarch[i,c] = f.read().strip()
+  with open('compilerversion/%s' % c) as f:
+    iccompiler[i,c] = f.read().strip()
+
+if goal == 'manual':
+  allarches = [a for a in allarches if any(a == icarch[i,c] for i,c in impls)]
+
+if goal == 'auto':
+  print(f'extern const char *{namespace}_%s_%s_implementation(void) __attribute__((visibility("default")));' % (o,p))
+  print(f'extern const char *{namespace}_%s_%s_compiler(void) __attribute__((visibility("default")));' % (o,p))
+else:
+  print(f'extern const char *{namespace}_%s_%s_implementation(void);' % (o,p))
+  print(f'extern const char *{namespace}_%s_%s_compiler(void);' % (o,p))
+  print(f'extern const char *{namespace}_dispatch_%s_%s_implementation(long long) __attribute__((visibility("default")));' % (o,p))
+  print(f'extern const char *{namespace}_dispatch_%s_%s_compiler(long long) __attribute__((visibility("default")));' % (o,p))
+  print(f'extern long long {namespace}_numimpl_%s_%s(void) __attribute__((visibility("default")));' % (o,p))
+
+for a in allarches:
+  if a == 'default': continue
+  a_csymbol = sanitize(a)
+  print(f'extern int {namespace}_supports_%s(void);' % a_csymbol)
+if len(allarches) > 1: print('')
+
+def printfun_auto(which,fun=None):
+  defaultpointer = '0'
+
+  if which == 'resolver':
+    shortfun = '_'.join(fun[1:])
+    pshortfun = '_'.join([o,p]+fun[2:])
+    print(f'void *{namespace}_auto_%s(void)' % (pshortfun))
+  elif which == 'implementation':
+    print(f'const char *{namespace}_%s_%s_implementation(void)' % (o,p))
+  elif which == 'compiler':
+    print(f'const char *{namespace}_%s_%s_compiler(void)' % (o,p))
+  else:
+    raise ValueError('unknown printfun %s' % which)
+  print('{')
+  for a,i,c in selected:
+    cond = ''
+    if a != 'default':
+      cond = f'if ({namespace}_supports_%s()) ' % sanitize(a)
+    if which == 'resolver':
+      thispointer = f'{namespace}_{o}_{p}_{sanitize(i)}_{c}_{shortfun}'
+      if a == 'default':
+        defaultpointer = thispointer
+      print(f'  {cond}return {thispointer};')
+    if which == 'implementation':
+      print('  %sreturn %s;' % (cond,cstring(i)))
+    if which == 'compiler':
+      print('  %sreturn %s;' % (cond,cstring(iccompiler[i,c])))
+    if a == 'default': break
+  if len(selected) == 0:
+    print('  return 0; /* no compiled implementations; defer crash to run time */')
+  print('}')
+
+  if which == 'resolver':
+    if ifunc:
+      print('')
+      print(f'%s {namespace}_%s(%s) __attribute__((visibility("default"))) __attribute__((ifunc("{namespace}_auto_%s")));' % (rettype,pshortfun,args,pshortfun))
+    else:
+      print('')
+      print(f'static {rettype} (*{namespace}_{pshortfun}_pointer)({args}) = {defaultpointer};')
+      print('')
+      print('__attribute__((constructor(25519)))')
+      print(f'static void {namespace}_{pshortfun}_pointer_constructor(void)')
+      print('{')
+      print(f'  {namespace}_{pshortfun}_pointer = {namespace}_auto_{pshortfun}();')
+      print('}')
+      print('')
+      namedparams = args.split(',')
+      namedargs = []
+      for i in range(len(namedparams)):
+        if namedparams[i][-1] != '*':
+          namedparams[i] += ' '
+        namedparams[i] += 'arg%d'%i
+        namedargs += ['arg%d'%i]
+      namedparams = ','.join(namedparams)
+      namedargs = ','.join(namedargs)
+      print('__attribute__((visibility("default")))')
+      print(f'{rettype} {namespace}_{pshortfun}({namedparams})')
+      print('{')
+      if rettype == 'void':
+        print(f'  {namespace}_{pshortfun}_pointer({namedargs});')
+      else:
+        print(f'  return {namespace}_{pshortfun}_pointer({namedargs});')
+      print('}')
+
+for rettype,fun,args in prototypes[o]:
+  shortfun = '_'.join(fun[1:])
+  pshortfun = '_'.join([o,p]+fun[2:])
+  if goal == 'auto':
+    print(f'extern %s {namespace}_%s(%s) __attribute__((visibility("default")));' % (rettype,pshortfun,args))
+  else:
+    print(f'extern %s {namespace}_%s(%s);' % (rettype,pshortfun,args))
+    print(f'extern %s (*{namespace}_dispatch_%s(long long))(%s) __attribute__((visibility("default")));' % (rettype,pshortfun,args))
+  print('')
+  for i,c in impls:
+    if goal == 'auto':
+      if (i,c) not in usedimpls:
+        continue
+    print(f'extern %s {namespace}_%s_%s_%s_%s_%s(%s) __attribute__((visibility("default")));' % (rettype,o,p,sanitize(i),c,shortfun,args))
+  print('')
+  if goal == 'auto':
+    printfun_auto('resolver',fun)
+  if goal == 'manual':
+    print(f'%s (*{namespace}_dispatch_%s(long long impl))(%s)' % (rettype,pshortfun,args))
+    print('{')
+    for a in allarches:
+      if a == 'default': continue
+      a_csymbol = sanitize(a)
+      print(f'  int supports_%s = {namespace}_supports_%s();' % (a_csymbol,a_csymbol))
+    print('  if (impl >= 0) {')
+    for i,c in impls:
+      a = icarch[i,c]
+      a_csymbol = sanitize(a)
+      if a == 'default':
+        print(f'    if (!impl--) return {namespace}_%s_%s_%s_%s_%s;' % (o,p,sanitize(i),c,shortfun))
+      else:
+        print(f'    if (supports_%s) if (!impl--) return {namespace}_%s_%s_%s_%s_%s;' % (a_csymbol,o,p,sanitize(i),c,shortfun))
+    print('  }')
+    print(f'  return {namespace}_%s;' % (pshortfun))
+    print('}')
+  print('')
+
+if goal == 'auto':
+  printfun_auto('implementation')
+  print('')
+  printfun_auto('compiler')
+else:
+  print(f'const char *{namespace}_dispatch_%s_%s_implementation(long long impl)' % (o,p))
+  print('{')
+  for a in allarches:
+    if a == 'default': continue
+    a_csymbol = sanitize(a)
+    print(f'  int supports_%s = {namespace}_supports_%s();' % (a_csymbol,a_csymbol))
+  print('  if (impl >= 0) {')
+  for i,c in impls:
+    a = icarch[i,c]
+    a_csymbol = sanitize(a)
+    if a == 'default':
+      print('    if (!impl--) return %s;' % (cstring(i)))
+    else:
+      print('    if (supports_%s) if (!impl--) return %s;' % (a_csymbol,cstring(i)))
+  print('  }')
+  print(f'  return {namespace}_%s_%s_implementation();' % (o,p))
+  print('}')
+  print('')
+
+  print(f'const char *{namespace}_dispatch_%s_%s_compiler(long long impl)' % (o,p))
+  print('{')
+  for a in allarches:
+    if a == 'default': continue
+    a_csymbol = sanitize(a)
+    print(f'  int supports_%s = {namespace}_supports_%s();' % (a_csymbol,a_csymbol))
+  print('  if (impl >= 0) {')
+  for i,c in impls:
+    a = icarch[i,c]
+    a_csymbol = sanitize(a)
+    if a == 'default':
+      print('    if (!impl--) return %s;' % (cstring(iccompiler[i,c])))
+    else:
+      print('    if (supports_%s) if (!impl--) return %s;' % (a_csymbol,cstring(iccompiler[i,c])))
+  print('  }')
+  print(f'  return {namespace}_%s_%s_compiler();' % (o,p))
+  print('}')
+  print('')
+
+  print(f'long long {namespace}_numimpl_%s_%s(void)' % (o,p))
+  print('{')
+  numimpla = sum(1 for (i,c) in impls if icarch[i,c] == 'default')
+  numimpl = ['%d' % numimpla]
+  for a in allarches:
+    if a == 'default': continue
+    a_csymbol = sanitize(a)
+    print(f'  long long supports_%s = {namespace}_supports_%s();' % (a_csymbol,a_csymbol))
+    numimpla = sum(1 for (i,c) in impls if icarch[i,c] == a)
+    numimpl += ['supports_%s*%d' % (a_csymbol,numimpla)]
+  print('  return %s;' % '+'.join(numimpl))
+  print('}')

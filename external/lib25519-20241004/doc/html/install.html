@@ -1,0 +1,144 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+html{overflow-y:scroll}
+body{font-family:"Noto Sans","Droid Sans","DejaVu Sans","Arial",sans-serif;line-height:1.5}
+tt,code{background-color:#f0f0f0;font-family:"Noto Sans Mono","Droid Sans Mono","DejaVu Sans Mono","Courier New",monospace,sans-serif;font-size:1em;}
+pre{margin-left:3em}
+p,ul,ol,blockquote,pre{font-size:1.0em;line-height:1.6}
+li p{font-size:1.0em}
+blockquote p{font-size:1.0em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.0em}
+h1 a{text-decoration:none}
+table{border-collapse:collapse}
+th,td{border:1px solid black}
+table a{text-decoration:none}
+table tr{font-size:1.0em;line-height:1.5}
+tbody tr:nth-child(12n+1){background-color:#f0ffff}
+tbody tr:nth-child(12n+2){background-color:#f0ffff}
+tbody tr:nth-child(12n+3){background-color:#f0ffff}
+tbody tr:nth-child(12n+4){background-color:#f0ffff}
+tbody tr:nth-child(12n+5){background-color:#f0ffff}
+tbody tr:nth-child(12n+6){background-color:#f0ffff}
+tbody tr:nth-child(12n+7){background-color:#fffff0}
+tbody tr:nth-child(12n+8){background-color:#fffff0}
+tbody tr:nth-child(12n+9){background-color:#fffff0}
+tbody tr:nth-child(12n+10){background-color:#fffff0}
+tbody tr:nth-child(12n+11){background-color:#fffff0}
+tbody tr:nth-child(12n+12){background-color:#fffff0}
+.links a:hover{text-decoration:underline}
+.links a:active{text-decoration:underline}
+.links img{width:200px;padding-left:1em}
+.links td{border:0px;padding-top:0.5em;padding-bottom:0.5em}
+.openssl{color:#004040}
+.s2n{color:#400040}
+.lib25519{color:#c25519}
+.headline{padding:0;font-weight:bold;font-size:1.5em;vertical-align:top;padding-bottom:0.5em;color:#c25519}
+.navt{display:inline-block;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
+min-width:16%;margin:0;padding:0;padding-left:0.5em;padding-right:0.5em;vertical-align:center;
+font-weight:bold;font-size:1.1em;text-align:center;border:1px solid black}
+.here{border-bottom:0px;background-color:#ffffff}
+.away{background-color:#c25519;}
+.away a{text-decoration:none;display:block;color:#ffffff}
+.away a:hover,.away a:active{text-decoration:underline}
+.main{margin:0;padding-top:0em;padding-bottom:1%;clear:both}
+</style>
+<title>
+lib25519: Install</title>
+</head>
+<body>
+<div class=headline>
+lib25519</div>
+<div class=nav>
+<div class="navt away"><a href=index.html>Intro</a>
+</div><div class="navt away"><a href=download.html>Download</a>
+</div><div class="navt here">Install
+</div><div class="navt away"><a href=test.html>Test</a>
+</div><div class="navt away"><a href=x25519-cli.html>X CLI</a>
+</div><div class="navt away"><a href=ed25519-cli.html>Ed CLI</a>
+</div><div class="navt away"><a href=api.html>API</a>
+</div><div class="navt away"><a href=security.html>Security</a>
+</div><div class="navt away"><a href=speed.html>Speed</a>
+</div><div class="navt away"><a href=internals.html>Internals</a>
+</div><div class="navt away"><a href=people.html>People</a>
+</div><div class="navt away"><a href=license.html>License</a>
+</div></div>
+<div class=main>
+<p>Prerequisites:</p>
+<ul>
+<li><code>python3</code> (for: build, test)</li>
+<li><code>gcc</code> and/or <code>clang</code> (for: build)</li>
+<li><code>valgrind</code> (for: build, test)</li>
+<li><a href="https://cpucycles.cr.yp.to"><code>libcpucycles</code></a> (for: build, bench)</li>
+<li><a href="https://randombytes.cr.yp.to"><code>librandombytes</code></a> (for: build, test, bench, run)</li>
+</ul>
+<p>Make sure to <a href="test.html">test</a> the compiled library.
+The tests check for subtle security problems that can be created by compilers.
+A compiled version of lib25519 is <strong>not supported</strong> unless it passes the full test suite.</p>
+<h3>For sysadmins</h3>
+<p>To install in <code>/usr/local/{include,lib,bin,man}</code>:</p>
+<pre><code>./configure &amp;&amp; make -j8 install
+</code></pre>
+<h3>For developers with an unprivileged account</h3>
+<p>Typically you'll already have</p>
+<pre><code>export LD_LIBRARY_PATH="$HOME/lib"
+export LIBRARY_PATH="$HOME/lib"
+export CPATH="$HOME/include"
+export MANPATH="$HOME/man"
+export PATH="$HOME/bin:$PATH"
+</code></pre>
+<p>in <code>$HOME/.profile</code>. To install in <code>$HOME/{include,lib,bin,man}</code>:</p>
+<pre><code>./configure --prefix=$HOME &amp;&amp; make -j8 install
+</code></pre>
+<h3>For distributors creating a package</h3>
+<p>Run</p>
+<pre><code>./configure --prefix=/usr &amp;&amp; make -j8
+</code></pre>
+<p>and then follow your usual packaging procedures for the
+<code>build/0/package</code> files:</p>
+<pre><code>build/0/package/include/lib25519.h
+build/0/package/lib/lib25519*
+build/0/package/bin/lib25519*
+build/0/package/man/man3/*.3
+build/0/package/man/man1/*.1
+</code></pre>
+<h3>More options, part 1: s2n-bignum</h3>
+<p>Before <code>./configure</code> you can run <code>./use-s2n-bignum</code>
+to download various <code>.S</code> files from
+<a href="https://github.com/awslabs/s2n-bignum">s2n-bignum</a>
+and integrate them into lib25519.
+The critical feature of these <code>.S</code> files
+is that they are formally verified to work correctly on all inputs.
+The files cover, for 64-bit Intel/AMD/ARM,
+the main <code>nG</code> and <code>nP</code> subroutines used in X25519 key generation and shared-secret generation;
+the files also save some time on some of these CPUs, although not all.
+If you want to disable the other <code>nG</code> and <code>nP</code> implementations,
+you can run
+<code>chmod +t crypto_{nP,nG}/montgomery25519/*</code> before running <code>./use-s2n-bignum</code>.</p>
+<h3>More options, part 2: architectures</h3>
+<p>You can run</p>
+<pre><code>./configure --host=amd64
+</code></pre>
+<p>to override <code>./configure</code>'s guess of the architecture that it should
+compile for.</p>
+<p>Inside the <code>build</code> directory, <code>0</code> is symlinked to <code>amd64</code> for
+<code>--host=amd64</code>. Running <code>make clean</code> removes <code>build/amd64</code>. Re-running
+<code>./configure</code> automatically starts with <code>make clean</code>.</p>
+<p>A subsequent <code>./configure --host=arm64</code> will create <code>build/arm64</code> and
+symlink <code>0 -&gt; arm64</code>, without touching an existing <code>build/amd64</code>. However,
+cross-compilers aren't yet selected automatically.</p>
+<h3>More options, part 3</h3>
+<p>One further <code>./configure</code> option is supported for
+<a href="internals.html">developers</a>:
+<code>--no-trim</code>.</p>
+<p>All <code>./configure</code> options not listed above are experimental and <strong>not supported</strong>.
+Use them at your own risk.</p><hr><font size=1><b>Version:</b>
+This is version 2024.09.25 of the "Install" web page.
+</font>
+</div>
+</body>
+</html>

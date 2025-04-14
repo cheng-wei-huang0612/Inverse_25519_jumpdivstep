@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+
+import os
+
+uarchdate = {
+  'a53':20121030,
+  'a72':20160101, # XXX: announced in 2015.02 but supposedly not shipped until 2016
+  'airmont':20150401, # XXX: not sure about exact date
+  'broadwell':20141027,
+  'core2':20060726,
+  'firestorm':20201110,
+  'ares':20190220, # neoverse n1
+  'goldencove':20211104,
+  'goldmont':20160418,
+  'haswell':20130604,
+  'skylake':20150805,
+  'tigerlake':20200902,
+  'zen2':20190707,
+  'zen3':20201105,
+}
+
+uarchname = {
+  'a53':'Cortex-A53 (2012)',
+  'a72':'Cortex-A72 (2016)',
+  'airmont':'Airmont (2015)',
+  'ares':'Ares (2019)',
+  'broadwell':'Broadwell (2014)',
+  'core2':'Core 2 (2006)',
+  'firestorm':'Firestorm (2020)',
+  'goldencove':'Golden Cove (2021)',
+  'goldmont':'Goldmont (2016)',
+  'haswell':'Haswell (2013)',
+  'skylake':'Skylake (2015)',
+  'tigerlake':'Tiger Lake (2020)',
+  'zen2':'Zen 2 (2019)',
+  'zen3':'Zen 3 (2020)',
+}
+
+def sortkey(m):
+  uarch = ''.join(m.split('-')[:1])
+  return uarchdate[uarch]
+
+machines = sorted(os.listdir('benchmarks'),key=sortkey,reverse=True)
+
+def lib25519(m,s2n=False,exp=False):
+  uarch = uarchname[''.join(m.split('-')[:1])]
+
+  benchmarksdir = ('benchmarks+s2n+exp' if s2n else 'benchmarks+exp') if exp else ('benchmarks+s2n' if s2n else 'benchmarks')
+  libraryname = ('lib25519+s2n+exp' if s2n else 'lib25519+exp') if exp else ('lib25519+s2n' if s2n else 'lib25519')
+
+  with open(f'{benchmarksdir}/{m}') as f:
+    for line in f:
+      line = line.split()
+      if len(line) < 4: continue
+      if line[:3] == ['dh_x25519_keypair','selected','32']:
+        dh_keypair = int(line[3])
+      if line[:3] == ['dh_x25519','selected','32']:
+        dh = int(line[3])
+      if line[:3] == ['sign_ed25519_keypair','selected','32']:
+        sign_keypair = int(line[3])
+      if line[:3] == ['sign_ed25519','selected','59']:
+        sign = int(line[3])
+      if line[:3] == ['sign_ed25519_open','selected','59']:
+        verify = int(line[3])
+      if line[:3] == ['nPbatch_montgomery25519','selected','16']:
+        nPbatch_16 = int(line[3])
+      if line[:3] == ['multiscalar_ed25519','selected','16']:
+        multiscalar_16 = int(line[3])
+
+  C = '<span class=lib25519>'
+  D = '</span>'
+  out.write(f'| | {C}{libraryname}{D} | {C}{dh_keypair}{D} | {C}{dh}{D} | {C}{nPbatch_16//16}{D} | {C}{sign_keypair}{D} | {C}{sign}{D} | {C}{verify}{D} | {C}{multiscalar_16//16}\n')
+
+def openssl(m):
+  uarch = uarchname[''.join(m.split('-')[:1])]
+
+  with open(f'speedcomparison/openssl/{m}') as f:
+    for line in f:
+      line = line.split()
+      if len(line) < 2: continue
+      if line[:1] == ['x25519-keygen-main']:
+        dh_keypair = int(line[1])
+      if line[:1] == ['x25519-dh-main']:
+        dh = int(line[1])
+      if line[:1] == ['ed25519-keygen-main']:
+        sign_keypair = int(line[1])
+      if line[:1] == ['ed25519-sign-main']:
+        sign = int(line[1])
+      if line[:1] == ['ed25519-verify-main']:
+        verify = int(line[1])
+
+  C = '<span class=openssl>'
+  D = '</span>'
+  out.write(f'| {uarch} | {C}OpenSSL{D} | {C}{dh_keypair}{D} | {C}{dh}{D} | | {C}{sign_keypair}{D} | {C}{sign}{D} | {C}{verify}{D} | |\n')
+
+def s2n(m):
+  uarch = uarchname[''.join(m.split('-')[:1])]
+  
+  dh_keypair = None
+  dh = None
+
+  for alt in 'alt-','':
+    with open(f'speedcomparison/s2n-bignum/{alt}{m}') as f:
+      for line in f:
+        line = line.split()
+        if len(line) < 2: continue
+        if line[:1] == ['x25519-keygen']:
+          if dh_keypair is None or int(line[1]) < dh_keypair:
+            dh_keypair = int(line[1])
+        if line[:1] == ['x25519-dh']:
+          if dh is None or int(line[1]) < dh:
+            dh = int(line[1])
+
+  C = '<span class=s2n>'
+  D = '</span>'
+  out.write(f'| | {C}s2n-bignum{D} | {C}{dh_keypair}{D} | {C}{dh}{D} | | | | | |\n')
+
+with open('doc/speed.md.tmp','w') as out:
+  with open('autogen/md-speed-top') as f:
+    out.write(f.read())
+  out.write('\n\n')
+  out.write('| μarch | software | X key | X dh | X batch | Ed key | Ed sign | Ed verif | Ed MSM |\n')
+  out.write('| :---- | :------- | ----: | ---: | ------: | -----: | ------: | -------: | -----: |\n')
+  for m in machines:
+    openssl(m)
+    lib25519(m)
+    lib25519(m,exp=True)
+    lib25519(m,s2n=True,exp=True)
+    lib25519(m,s2n=True)
+    s2n(m)
+  out.write('\n\n')
+  with open('autogen/md-speed-bot') as f:
+    out.write(f.read())
+
+with open('doc/speed.md') as f:
+  x = f.read()
+with open('doc/speed.md.tmp') as f:
+  y = f.read()
+if x != y:
+  os.rename('doc/speed.md.tmp','doc/speed.md')
+else:
+  os.remove('doc/speed.md.tmp')

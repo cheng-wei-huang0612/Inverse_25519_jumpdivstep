@@ -1,0 +1,131 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+html{overflow-y:scroll}
+body{font-family:"Noto Sans","Droid Sans","DejaVu Sans","Arial",sans-serif;line-height:1.5}
+tt,code{background-color:#f0f0f0;font-family:"Noto Sans Mono","Droid Sans Mono","DejaVu Sans Mono","Courier New",monospace,sans-serif;font-size:1em;}
+pre{margin-left:3em}
+p,ul,ol,blockquote,pre{font-size:1.0em;line-height:1.6}
+li p{font-size:1.0em}
+blockquote p{font-size:1.0em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.0em}
+h1 a{text-decoration:none}
+table{border-collapse:collapse}
+th,td{border:1px solid black}
+table a{text-decoration:none}
+table tr{font-size:1.0em;line-height:1.5}
+tbody tr:nth-child(12n+1){background-color:#f0ffff}
+tbody tr:nth-child(12n+2){background-color:#f0ffff}
+tbody tr:nth-child(12n+3){background-color:#f0ffff}
+tbody tr:nth-child(12n+4){background-color:#f0ffff}
+tbody tr:nth-child(12n+5){background-color:#f0ffff}
+tbody tr:nth-child(12n+6){background-color:#f0ffff}
+tbody tr:nth-child(12n+7){background-color:#fffff0}
+tbody tr:nth-child(12n+8){background-color:#fffff0}
+tbody tr:nth-child(12n+9){background-color:#fffff0}
+tbody tr:nth-child(12n+10){background-color:#fffff0}
+tbody tr:nth-child(12n+11){background-color:#fffff0}
+tbody tr:nth-child(12n+12){background-color:#fffff0}
+.links a:hover{text-decoration:underline}
+.links a:active{text-decoration:underline}
+.links img{width:200px;padding-left:1em}
+.links td{border:0px;padding-top:0.5em;padding-bottom:0.5em}
+.openssl{color:#004040}
+.s2n{color:#400040}
+.lib25519{color:#c25519}
+.headline{padding:0;font-weight:bold;font-size:1.5em;vertical-align:top;padding-bottom:0.5em;color:#c25519}
+.navt{display:inline-block;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
+min-width:16%;margin:0;padding:0;padding-left:0.5em;padding-right:0.5em;vertical-align:center;
+font-weight:bold;font-size:1.1em;text-align:center;border:1px solid black}
+.here{border-bottom:0px;background-color:#ffffff}
+.away{background-color:#c25519;}
+.away a{text-decoration:none;display:block;color:#ffffff}
+.away a:hover,.away a:active{text-decoration:underline}
+.main{margin:0;padding-top:0em;padding-bottom:1%;clear:both}
+</style>
+<title>
+lib25519: Test</title>
+</head>
+<body>
+<div class=headline>
+lib25519</div>
+<div class=nav>
+<div class="navt away"><a href=index.html>Intro</a>
+</div><div class="navt away"><a href=download.html>Download</a>
+</div><div class="navt away"><a href=install.html>Install</a>
+</div><div class="navt here">Test
+</div><div class="navt away"><a href=x25519-cli.html>X CLI</a>
+</div><div class="navt away"><a href=ed25519-cli.html>Ed CLI</a>
+</div><div class="navt away"><a href=api.html>API</a>
+</div><div class="navt away"><a href=security.html>Security</a>
+</div><div class="navt away"><a href=speed.html>Speed</a>
+</div><div class="navt away"><a href=internals.html>Internals</a>
+</div><div class="navt away"><a href=people.html>People</a>
+</div><div class="navt away"><a href=license.html>License</a>
+</div></div>
+<div class=main>
+<p>To run the full test suite
+after compiling and installing lib25519,
+run <code>lib25519-fulltest</code>.
+This indicates success in two ways:
+it prints <code>full tests succeeded</code> as its last line of output;
+it exits 0.</p>
+<p>Any change in the compiled library
+(compiling for a different architecture, compiling with a different compiler, etc.) must be subjected to a new round of tests.
+A compiled version of lib25519 that does not pass the full test suite is <strong>not supported</strong>.</p>
+<p>One run of <code>lib25519-fulltest</code>
+was observed to take 31 core-minutes on a 3.3GHz Intel Core i3-12100 with overclocking disabled.
+This test finished in 6 minutes of real time;
+<code>lib25519-fulltest</code> includes some automatic parallelization.
+To limit the number of threads used to 1,
+run <code>env THREADS=1 lib25519-fulltest</code>.</p>
+<p>lib25519 automatically selects
+AVX2 implementations when it is running on an Intel/AMD CPU that supports AVX2,
+while falling back to portable implementations otherwise.
+Running <code>lib25519-fulltest</code> on an Intel/AMD CPU without AVX2
+will say <code>CPU does not support implementation</code> for the AVX2 implementations
+and will fail.
+To test a compilation of lib25519 for Intel/AMD CPUs,
+you have to pick an Intel/AMD CPU with AVX2 to run <code>lib25519-fulltest</code>.</p>
+<p>The rest of this page says more about what is happening inside <code>lib25519-fulltest</code>.</p>
+<h3><a name="conventional"></a>Conventional tests</h3>
+<p>The workhorse inside <code>lib25519-fulltest</code>
+is a separate <code>lib25519-test</code> program.</p>
+<p>Simply calling <code>lib25519-test</code> without arguments
+will run SUPERCOP-style tests that the subroutines in lib25519
+produce the expected results for known inputs (including known randomness),
+and will indicate success in two ways:
+printing <code>all tests succeeded</code> as the last line of output,
+and exiting 0.</p>
+<p>For parallelism,
+<code>lib25519-fulltest</code> calls <code>lib25519-test</code> many times,
+using optional <code>lib25519-test</code> arguments to narrow which subroutines are being tested.</p>
+<h3><a name="dataflow"></a>Data-flow tests</h3>
+<p>Another way that <code>lib25519-fulltest</code>
+runs <code>lib25519-test</code> is as follows,
+running TIMECOP-style tests that branch conditions and array indices
+are independent of secrets:</p>
+<pre><code>env valgrind_multiplier=1 \
+valgrind -q \
+--error-exitcode=99 \
+lib25519-test
+</code></pre>
+<p>This requires <code>valgrind</code> to be installed at test time.
+The output will include a line <code>valgrind 1 declassify 1</code>
+if the library was compiled with <code>--valgrind</code> (which is the only supported option),
+or a line <code>valgrind 1 declassify 0 (expect false positives)</code> otherwise.</p>
+<p>These data-flow tests
+do not supersede the conventional tests.
+The conventional tests run code directly on the CPU
+and might catch issues hidden by the emulation in <code>valgrind</code>.
+The conventional tests also include some memory tests that are disabled to improve the <code>valgrind</code> memory tests
+but that are not necessarily superseded by the <code>valgrind</code> memory tests.</p><hr><font size=1><b>Version:</b>
+This is version 2024.09.25 of the "Test" web page.
+</font>
+</div>
+</body>
+</html>

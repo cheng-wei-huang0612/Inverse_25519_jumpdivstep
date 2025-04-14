@@ -1,0 +1,1 @@
+../../../crypto_pow/inv25519/amd64-mxaa/fe25519_nsquare.S

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+dir="$1"; shift
+base="$1"; shift
+ext="$1"; shift
+
+scripts/cdcompile "$dir" \
+  -fvisibility=hidden \
+  "$@" \
+  -c "$base.$ext"

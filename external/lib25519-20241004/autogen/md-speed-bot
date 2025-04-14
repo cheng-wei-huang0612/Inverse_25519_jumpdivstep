@@ -1,0 +1,99 @@
+Microarchitectures are listed in reverse chronological order of when they were introduced.
+Each library is assigned one foreground color in the table.
+
+In the lib25519 distribution,
+`command/lib25519-speed.c` measures lib25519;
+`benchmarks/*-*` is the output of `lib25519-speed` on various machines;
+`speedcomparison/openssl/*` has code to measure OpenSSL, and measurements from various machines;
+`speedcomparison/s2n/*` has code to measure s2n-bignum, and measurements from various machines;
+and `autogen/md-speed` extracts the table from those measurements.
+OpenSSL benchmarks use version 3.3.2 (2024.09.03);
+s2n-bignum benchmarks use commit acbb18e6343f12a7944de72c1ec0991739600f8c (2024.03.18).
+
+The table reports only median cycle counts;
+see the full output files
+for differences between multiple measurements and the median.
+The table reports the following major operations:
+
+* "X key": Generating an X25519 public key and secret key.
+    This is `dh_x25519_keypair selected 32` in the `lib25519-speed` output
+    (`lib25519_dh_keypair` in the stable API).
+
+    For s2n-bignum,
+    this is `x25519-keygen` in the `s2n25519speed` output,
+    measuring the cost of `curve25519_x25519base_byte_alt`,
+    or `curve25519_x25519base_byte` on machines where that works and is faster.
+
+    For OpenSSL,
+    this is `x25519-keygen-main` in the `openssl25519speed` output,
+    measuring the cost of `EVP_PKEY_Q_keygen(0,0,"X25519")`.
+    This does not include small OpenSSL overheads for converting the public key and secret key to storage format.
+
+* "X dh":
+    Generating an X25519 shared secret.
+    This is `dh_x25519 selected 32` in the `lib25519-speed` output
+    (`lib25519_dh` in the stable API).
+
+    For s2n-bignum,
+    this is `x25519-dh` in the `s2n25519speed` output,
+    measuring the cost of `curve25519_x25519_byte_alt`,
+    or `curve25519_x25519_byte` on machines where that works and is faster.
+
+    For OpenSSL,
+    this is `x25519-dh-main` in the `openssl25519speed` output,
+    measuring the cost of `EVP_PKEY_derive`
+    (as in OpenSSL's speed-testing utility).
+    This does not include the cost of `EVP_PKEY_new_raw_public_key`
+    to decode the public key (`x25519-dh-pkdecode`, 6836 cycles on Tiger Lake),
+    `EVP_PKEY_CTX_new` and `EVP_PKEY_derive_init` and `EVP_PKEY_derive_set_peer` for initialization
+    (together `x25519-dh-init`, 2423 cycles on Tiger Lake),
+    and 
+    `EVP_PKEY_new_raw_private_key` to decode the secret key if it is not decoded already
+    (`x25519-dh-skdecode`, 112114 cycles on Tiger Lake).
+
+* "X batch":
+    Cost _per secret_ of generating 16 separate shared secrets.
+    This is `nPbatch_montgomery25519 selected 16` in the `lib25519-speed` output _divided by 16_.
+
+* "Ed key": Generating an Ed25519 public key and secret key.
+    This is `sign_ed25519_keypair selected 32` in the `lib25519-speed` output
+    (`lib25519_sign_keypair` in the stable API).
+
+    For OpenSSL,
+    this is `ed25519-keygen-main` in the `openssl25519speed` output,
+    measuring the cost of `EVP_PKEY_Q_keygen(0,0,"ED25519")`.
+    This does not include small OpenSSL overheads for converting the public key and secret key to storage format.
+
+* "Ed sign": Generating an Ed25519 signature of a 59-byte message.
+    This is `sign_ed25519 selected 59` in the `lib25519-speed` output
+    (`lib25519_sign` in the stable API).
+
+    For OpenSSL,
+    this is `ed25519-sign-main` in the `openssl25519speed` output,
+    measuring the cost of `EVP_DigestSign`
+    (as in OpenSSL's speed-testing utility).
+    This does not include the cost of 
+    `EVP_MD_CTX_new` and
+    `EVP_DigestSignInit`
+    (`ed25519-sign-init`, 2808 cycles on Tiger Lake),
+    and `EVP_PKEY_new_raw_private_key` to decode the secret key if it is not decoded already
+    (`ed25519-sign-skdecode`, 114894 cycles on Tiger Lake).
+
+* "Ed verif": Verifying an Ed25519 signature and recovering a 59-byte message.
+    This is `sign_ed25519_open selected 59` in the `lib25519-speed` output
+    (`lib25519_sign_open` in the stable API).
+
+    For OpenSSL,
+    this is `ed25519-verify-main` in the `openssl25519speed` output,
+    measuring the cost of `EVP_DigestVerify`
+    (as in OpenSSL's speed-testing utility).
+    This does not include the cost of 
+    `EVP_MD_CTX_new` and
+    `EVP_DigestVerifyInit`
+    (together `ed25519-verify-init`, 2579 cycles on Tiger Lake),
+    and `EVP_PKEY_new_raw_public_key`
+    to decode the public key being used for verification
+    (`ed25519-verify-pkdecode`, 7401 cycles on Tiger Lake).
+
+* "Ed MSM": Cost _per point_ of multi-scalar multiplication with 16 points and 16 full-size scalars.
+    This is `multiscalar_ed25519 selected 16` in the `lib25519-speed` output _divided by 16_.
