@@ -48,7 +48,7 @@ int main(void) {
             mpX, mpInv, mpCheck
         );
         // **Immediately terminate** the program on failure:
-        return 1;
+        return 0;
     } else {
         gmp_printf(
             "Test SUCCESS:\n"

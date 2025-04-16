@@ -69,15 +69,8 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
     // sign_adjustment
     // V = sign(F) * V
     big30_t inv30;
-
     
-    printf("F = ");
-    print_big30_as_mpz(&F);
-    printf("V = ");
-    print_big30_as_mpz(&V);
     sign_adjustment(&inv30, &F, &V);
-    printf("inv30 = ");
-    print_big30_as_mpz(&inv30);
 
     uint256_from_big30(inv, &inv30);
 }
