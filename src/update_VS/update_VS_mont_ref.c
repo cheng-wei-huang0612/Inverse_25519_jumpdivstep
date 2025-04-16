@@ -5,7 +5,12 @@
 #include <gmp.h>
 
 
-void update_VS_mont(big30_t *V, big30_t *S, int64_t *uu, int64_t *vv, int64_t *rr, int64_t *ss) {
+void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss) {
+    int64_t uu = uuvvrrss[0];
+    int64_t vv = uuvvrrss[1];
+    int64_t rr = uuvvrrss[2];
+    int64_t ss = uuvvrrss[3];
+
     mpz_t mpV, mpV_new, mpS, mpS_new, mpuu, mpvv, mprr, mpss, mpinv2p60;
     mpz_inits(mpV, mpV_new, mpS, mpS_new, mpuu, mpvv, mprr, mpss, mpinv2p60, NULL);
     
@@ -23,10 +28,10 @@ void update_VS_mont(big30_t *V, big30_t *S, int64_t *uu, int64_t *vv, int64_t *r
     mpz_from_big30(mpV, V);
     mpz_from_big30(mpS, S);
 
-    mpz_set_si(mpuu, *uu);
-    mpz_set_si(mpvv, *vv);
-    mpz_set_si(mprr, *rr);
-    mpz_set_si(mpss, *ss);
+    mpz_set_si(mpuu, uu);
+    mpz_set_si(mpvv, vv);
+    mpz_set_si(mprr, rr);
+    mpz_set_si(mpss, ss);
 
     mpz_mul(tmp1, mpuu, mpV);
     mpz_mul(tmp2, mpvv, mpS);

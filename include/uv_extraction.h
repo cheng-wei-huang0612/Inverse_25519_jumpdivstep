@@ -6,7 +6,6 @@
 //#include "big30.h"
 #include <gmp.h>
 
-void extraction(int64_t *u, int64_t *v, int64_t *fuv);
-
+void extraction(int64_t *uvrs, int64_t *fuv, int64_t *grs);
 
 #endif

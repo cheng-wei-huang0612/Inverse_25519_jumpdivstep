@@ -4,17 +4,22 @@
 #include "big30.h"
 #include <gmp.h>
 
-void update_FG(big30_t *F, big30_t *G, int64_t *uu, int64_t *vv, int64_t *rr, int64_t *ss) {
+void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss) {
+    int64_t uu = uuvvrrss[0];
+    int64_t vv = uuvvrrss[1];
+    int64_t rr = uuvvrrss[2];
+    int64_t ss = uuvvrrss[3];
+
     mpz_t mpF, mpF_new, mpG, mpG_new, mpuu, mpvv, mprr, mpss, tmp;
     mpz_inits(mpF, mpF_new, mpG, mpG_new, mpuu, mpvv, mprr, mpss, tmp, NULL);
 
     mpz_from_big30(mpF, F);
     mpz_from_big30(mpG, G);
 
-    mpz_set_si(mpuu, *uu);
-    mpz_set_si(mpvv, *vv);
-    mpz_set_si(mprr, *rr);
-    mpz_set_si(mpss, *ss);
+    mpz_set_si(mpuu, uu);
+    mpz_set_si(mpvv, vv);
+    mpz_set_si(mprr, rr);
+    mpz_set_si(mpss, ss);
     
     mpz_mul(tmp, mpuu, mpF);
     mpz_addmul(tmp, mpvv, mpG);

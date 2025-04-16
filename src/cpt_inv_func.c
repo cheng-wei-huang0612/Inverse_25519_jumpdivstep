@@ -54,7 +54,30 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             extraction(&r, &s, &grs);
 
             // update_fg_uuvvrrss
+            if (i == 0 && j == 0) {
+                printf("f = %lld\n", f);
+                printf("g = %lld\n", g);
+                printf("uu = %lld\n", uu);
+                printf("vv = %lld\n", vv);
+                printf("rr = %lld\n", rr);
+                printf("ss = %lld\n", ss);
+                printf("u = %lld\n", u);
+                printf("v = %lld\n", v);
+                printf("r = %lld\n", r);
+                int64_t* pointer_s = &s;
+                printf("*pointer_s: %llx\n", *(int64_t*)pointer_s);
+                printf("s = %lld\n", s);
+            }
             inner_update(&f, &g, &uu, &vv, &rr, &ss, &u, &v, &r, &s);
+            if (i == 0 && j == 0) {
+                printf("after inner update\n");
+                printf("f = %lld\n", f);
+                printf("g = %lld\n", g);
+                printf("uu = %lld\n", uu);
+                printf("vv = %lld\n", vv);
+                printf("rr = %lld\n", rr);
+                printf("ss = %lld\n", ss);
+            }
         }
 
         // Update FG

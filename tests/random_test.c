@@ -7,6 +7,8 @@
 #include <gmp.h>
 
 
+const int NUM_TESTS = 100000;
+
 
 // A small helper to generate a random 256-bit number in uint256_t
 // (Not cryptographically secure! Just for test/demo.)
@@ -30,7 +32,6 @@ int main(void) {
     mpz_from_big30(mpP, &P);
 
     // We'll do 100 random tests.
-    const int NUM_TESTS = 10000;
     for (int i = 0; i < NUM_TESTS; i++) {
         // 1) Generate a random 256-bit x
         uint256_t x;
