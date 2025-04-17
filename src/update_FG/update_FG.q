@@ -30,18 +30,6 @@ caller calleesaved_x28
 caller calleesaved_x29
 stack64 stack_x28
 stack64 stack_x29
-
-caller calleesaved_v8
-caller calleesaved_v9
-caller calleesaved_v10
-caller calleesaved_v11
-caller calleesaved_v12
-caller calleesaved_v13
-caller calleesaved_v14
-caller calleesaved_v15
-
-
-
 int64 uu0uu1
 int64 uu0
 int64 uu1
@@ -175,14 +163,6 @@ push2xint64 calleesaved_x22, calleesaved_x23
 push2xint64 calleesaved_x24, calleesaved_x25
 push2xint64 calleesaved_x26, calleesaved_x27
 push2xint64 calleesaved_x28, calleesaved_x29
-
-
-push2x8b calleesaved_v8 , calleesaved_v9
-push2x8b calleesaved_v10 , calleesaved_v11
-push2x8b calleesaved_v12 , calleesaved_v13
-push2x8b calleesaved_v14 , calleesaved_v15
-
-
 uu0uu1 = mem64[pointeruuvvrrss + 0]
 uu0 = uu0uu1 & ((1 << 30)-1)
 uu1 = (uu0uu1 >> 30) & ((1 << 32)-1)
@@ -641,13 +621,6 @@ R10 = vec_R10_0_S10_0[0/2]
 mem32[pointerF+32] = R10
 S10 = vec_R10_0_S10_0[1/2]
 mem32[pointerG+32] = S10
-
-pop2x8b calleesaved_v14 , calleesaved_v15
-pop2x8b calleesaved_v12 , calleesaved_v13
-pop2x8b calleesaved_v10 , calleesaved_v11
-pop2x8b calleesaved_v8 , calleesaved_v9
-
-
 pop2xint64 calleesaved_x28, calleesaved_x29
 pop2xint64 calleesaved_x26, calleesaved_x27
 pop2xint64 calleesaved_x24, calleesaved_x25
