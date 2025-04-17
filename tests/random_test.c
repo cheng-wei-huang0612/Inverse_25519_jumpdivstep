@@ -7,7 +7,7 @@
 #include <gmp.h>
 
 
-const int NUM_TESTS = 100000;
+const int NUM_TESTS = 10000000;
 
 
 // A small helper to generate a random 256-bit number in uint256_t
@@ -41,9 +41,13 @@ int main(void) {
         mpz_t mpX;
         mpz_init(mpX);
         mpz_from_uint256(mpX, &x);
+        //mpz_set_str(mpX, "21740116914082600554420437631634928787881354298405292420201453070194378295336", 10);
+        mpz_set_str(mpX, "112268305531285587183242698128304489454935666339296768396416541593351932559680", 10);
+        //45387728045799706540189955649598317609471081183716518666244641078291223126285
+
+        mpz_mod(mpX, mpX, mpP);
 
         
-        //mpz_set_str(mpX, "21740116914082600554420437631634928787881354298405292420201453070194378295336", 10);
         uint256_from_mpz(&x, mpX);
 
 

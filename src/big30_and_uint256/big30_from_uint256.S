@@ -75,9 +75,9 @@
 
 # qhasm: reg128 calleesaved_v15
 
-# qhasm: int64 pointer_uint256
-
 # qhasm: int64 pointer_big30
+
+# qhasm: int64 pointer_uint256
 
 # qhasm: input pointer_big30
 
@@ -111,12 +111,90 @@
 
 # qhasm: int64 tmp60
 
+# qhasm: caller calleesaved_x18
+
+# qhasm: caller calleesaved_x19
+
+# qhasm: stack64 stack_x18
+
+# qhasm: stack64 stack_x19
+
+# qhasm: caller calleesaved_x20
+
+# qhasm: caller calleesaved_x21
+
+# qhasm: stack64 stack_x20
+
+# qhasm: stack64 stack_x21
+
+# qhasm: caller calleesaved_x22
+
+# qhasm: caller calleesaved_x23
+
+# qhasm: stack64 stack_x22
+
+# qhasm: stack64 stack_x23
+
+# qhasm: caller calleesaved_x24
+
+# qhasm: caller calleesaved_x25
+
+# qhasm: stack64 stack_x24
+
+# qhasm: stack64 stack_x25
+
+# qhasm: caller calleesaved_x26
+
+# qhasm: caller calleesaved_x27
+
+# qhasm: stack64 stack_x26
+
+# qhasm: stack64 stack_x27
+
+# qhasm: caller calleesaved_x28
+
+# qhasm: caller calleesaved_x29
+
+# qhasm: stack64 stack_x28
+
+# qhasm: stack64 stack_x29
+
 # qhasm: enter big30_from_uint256
 .align 4
 .global _big30_from_uint256
 .global big30_from_uint256
 _big30_from_uint256:
 big30_from_uint256:
+
+# qhasm: push2xint64 calleesaved_x18, calleesaved_x19
+# asm 1: stp <calleesaved_x18=int64#19, <calleesaved_x19=int64#20, [sp, #-16]!
+# asm 2: stp <calleesaved_x18=x18, <calleesaved_x19=x19, [sp, #-16]!
+stp x18, x19, [sp, #-16]!
+
+# qhasm: push2xint64 calleesaved_x20, calleesaved_x21
+# asm 1: stp <calleesaved_x20=int64#21, <calleesaved_x21=int64#22, [sp, #-16]!
+# asm 2: stp <calleesaved_x20=x20, <calleesaved_x21=x21, [sp, #-16]!
+stp x20, x21, [sp, #-16]!
+
+# qhasm: push2xint64 calleesaved_x22, calleesaved_x23
+# asm 1: stp <calleesaved_x22=int64#23, <calleesaved_x23=int64#24, [sp, #-16]!
+# asm 2: stp <calleesaved_x22=x22, <calleesaved_x23=x23, [sp, #-16]!
+stp x22, x23, [sp, #-16]!
+
+# qhasm: push2xint64 calleesaved_x24, calleesaved_x25
+# asm 1: stp <calleesaved_x24=int64#25, <calleesaved_x25=int64#26, [sp, #-16]!
+# asm 2: stp <calleesaved_x24=x24, <calleesaved_x25=x25, [sp, #-16]!
+stp x24, x25, [sp, #-16]!
+
+# qhasm: push2xint64 calleesaved_x26, calleesaved_x27
+# asm 1: stp <calleesaved_x26=int64#27, <calleesaved_x27=int64#28, [sp, #-16]!
+# asm 2: stp <calleesaved_x26=x26, <calleesaved_x27=x27, [sp, #-16]!
+stp x26, x27, [sp, #-16]!
+
+# qhasm: push2xint64 calleesaved_x28, calleesaved_x29
+# asm 1: stp <calleesaved_x28=int64#29, <calleesaved_x29=int64#30, [sp, #-16]!
+# asm 2: stp <calleesaved_x28=x28, <calleesaved_x29=x29, [sp, #-16]!
+stp x28, x29, [sp, #-16]!
 
 # qhasm: limb64_0 = mem64[pointer_uint256 + 0]
 # asm 1: ldr >limb64_0=int64#3, [<pointer_uint256=int64#2, #0]
@@ -267,6 +345,36 @@ str w2, [x0, #28]
 # asm 1: str <limb30_8=int64#2%wregname, [<pointer_big30=int64#1, #32]
 # asm 2: str <limb30_8=w1, [<pointer_big30=x0, #32]
 str w1, [x0, #32]
+
+# qhasm: pop2xint64 calleesaved_x28, calleesaved_x29
+# asm 1: ldp >calleesaved_x28=int64#29, >calleesaved_x29=int64#30, [sp], #16
+# asm 2: ldp >calleesaved_x28=x28, >calleesaved_x29=x29, [sp], #16
+ldp x28, x29, [sp], #16
+
+# qhasm: pop2xint64 calleesaved_x26, calleesaved_x27
+# asm 1: ldp >calleesaved_x26=int64#27, >calleesaved_x27=int64#28, [sp], #16
+# asm 2: ldp >calleesaved_x26=x26, >calleesaved_x27=x27, [sp], #16
+ldp x26, x27, [sp], #16
+
+# qhasm: pop2xint64 calleesaved_x24, calleesaved_x25
+# asm 1: ldp >calleesaved_x24=int64#25, >calleesaved_x25=int64#26, [sp], #16
+# asm 2: ldp >calleesaved_x24=x24, >calleesaved_x25=x25, [sp], #16
+ldp x24, x25, [sp], #16
+
+# qhasm: pop2xint64 calleesaved_x22, calleesaved_x23
+# asm 1: ldp >calleesaved_x22=int64#23, >calleesaved_x23=int64#24, [sp], #16
+# asm 2: ldp >calleesaved_x22=x22, >calleesaved_x23=x23, [sp], #16
+ldp x22, x23, [sp], #16
+
+# qhasm: pop2xint64 calleesaved_x20, calleesaved_x21
+# asm 1: ldp >calleesaved_x20=int64#21, >calleesaved_x21=int64#22, [sp], #16
+# asm 2: ldp >calleesaved_x20=x20, >calleesaved_x21=x21, [sp], #16
+ldp x20, x21, [sp], #16
+
+# qhasm: pop2xint64 calleesaved_x18, calleesaved_x19
+# asm 1: ldp >calleesaved_x18=int64#19, >calleesaved_x19=int64#20, [sp], #16
+# asm 2: ldp >calleesaved_x18=x18, >calleesaved_x19=x19, [sp], #16
+ldp x18, x19, [sp], #16
 
 # qhasm: return
 ret
