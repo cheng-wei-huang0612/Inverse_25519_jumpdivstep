@@ -30,35 +30,37 @@ extern void fe25519_redmul_invert(fe25519 *r, const fe25519 *x);
 
 int main(void){
 
-    fe25519 op0, op1, op2, op3;
+    fe25519 op;
     fe25519 rop;
 
 
-    for(size_t i = 0; i < (ITERATIONS>>2); i++) {
-        op0 = vec_in[4*i + 0];
-        op1 = vec_in[4*i + 1];
-        op2 = vec_in[4*i + 2];
-        op3 = vec_in[4*i + 3];
+    for(size_t i = 0; i < (ITERATIONS); i++) {
+        op = vec_in[i];
         t0 = hal_get_time();
-        fe25519_intmul_invert(&rop, &op0);
-        fe25519_intmul_invert(&rop, &op1);
-        fe25519_intmul_invert(&rop, &op2);
-        fe25519_intmul_invert(&rop, &op3);
-
+        fe25519_intmul_invert(&rop, &op);
+        fe25519_intmul_invert(&rop, &op);
+        fe25519_intmul_invert(&rop, &op);
+        fe25519_intmul_invert(&rop, &op);
 
         t1 = hal_get_time();
-        times[i] = t1 - t0;
+        times[i] = (t1 - t0)>>2;
     }
     qsort(times, ITERATIONS, sizeof(uint64_t), cmp_uint64);
     printf("fe25519_intmul_invert: %lld\n", times[ITERATIONS >> 1]);
 
-    /*for(size_t i = 0; i < ITERATIONS; i++){*/
-    /*    t0 = hal_get_time();*/
-    /*    t1 = hal_get_time();*/
-    /*    times[i] = t1 - t0;*/
-    /*}*/
-    /*qsort(times, ITERATIONS, sizeof(uint64_t), cmp_uint64);*/
-    /*printf("fe25519_intmul_invert: %lld\n", times[ITERATIONS >> 1]);*/
+    for(size_t i = 0; i < (ITERATIONS); i++) {
+        op = vec_in[i];
+        t0 = hal_get_time();
+        fe25519_redmul_invert(&rop, &op);
+        fe25519_redmul_invert(&rop, &op);
+        fe25519_redmul_invert(&rop, &op);
+        fe25519_redmul_invert(&rop, &op);
+
+        t1 = hal_get_time();
+        times[i] = (t1 - t0)>>2;
+    }
+    qsort(times, ITERATIONS, sizeof(uint64_t), cmp_uint64);
+    printf("fe25519_redmul_invert: %lld\n", times[ITERATIONS >> 1]);
 
 }
 
