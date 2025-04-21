@@ -1,0 +1,1 @@
+gcc -Wall -fPIC -fwrapv -O2 -Dlib25519_sign_ed25519_ref10_C0_sc_reduce=lib25519_unified_screducec_1_C0_sc_reduce

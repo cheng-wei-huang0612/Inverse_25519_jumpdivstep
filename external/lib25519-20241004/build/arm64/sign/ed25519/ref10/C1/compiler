@@ -1,0 +1,1 @@
+clang -Wall -fPIC -fwrapv -Qunused-arguments -O2 -Dlib25519_sign_ed25519_ref10_C1_sc_reduce=lib25519_unified_screducec_2_C1_sc_reduce

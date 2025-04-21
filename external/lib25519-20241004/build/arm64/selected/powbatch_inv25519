@@ -1,0 +1,9 @@
+operation powbatch
+primitive inv25519
+note: considering machines supporting default
+note: priority 1.0020867311827957 for ref10 C0
+note: priority 1.0426169294871794 for ref10 C1
+note: priority 6.2057463269230775 for simple C1
+note: priority 6.217731397849462 for simple C0
+selected default ref10 C0
+impl ref10 C0

@@ -1,0 +1,1 @@
+../src/command/ed25519-keypair.c

@@ -1,0 +1,1 @@
+gcc -Wall -fPIC -fwrapv -O2 -Dlib25519_powbatch_inv25519_ref10_C0_fe_0=lib25519_unified_fe0c_1_C0_fe_0 -Dlib25519_powbatch_inv25519_ref10_C0_fe_1=lib25519_unified_fe1c_1_C0_fe_1 -Dlib25519_powbatch_inv25519_ref10_C0_fe_cmov=lib25519_unified_fecmovc_1_C0_fe_cmov

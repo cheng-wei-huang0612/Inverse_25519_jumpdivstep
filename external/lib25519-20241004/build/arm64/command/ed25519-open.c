@@ -1,0 +1,1 @@
+../src/command/ed25519-open.c

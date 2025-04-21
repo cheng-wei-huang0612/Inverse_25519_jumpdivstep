@@ -1,0 +1,9 @@
+operation pow
+primitive inv25519
+note: considering machines supporting default
+note: priority 1.014605946236559 for ref10 C0
+note: priority 1.254583924731183 for donna_c64 C0
+note: priority 1.3849877692307693 for donna_c64 C1
+note: priority 1.4440769423076922 for ref10 C1
+selected default ref10 C0
+impl ref10 C0

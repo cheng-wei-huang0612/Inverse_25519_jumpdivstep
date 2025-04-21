@@ -1,0 +1,1 @@
+../../../../src/crypto_mGnP/ed25519/arm64-maa4-intmul/fe25519_square.S

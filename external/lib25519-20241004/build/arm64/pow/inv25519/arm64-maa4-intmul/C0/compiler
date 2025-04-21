@@ -1,0 +1,1 @@
+gcc -Wall -fPIC -fwrapv -O2 -Dlib25519_pow_inv25519_arm64maa4intmul_C0_fe25519_unpack=lib25519_unified_fe25519unpackc_1_C0_fe25519_unpack

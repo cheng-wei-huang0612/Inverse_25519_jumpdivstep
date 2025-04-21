@@ -1,0 +1,1 @@
+gcc -Wall -fPIC -fwrapv -O2

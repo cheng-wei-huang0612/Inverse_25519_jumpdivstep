@@ -1,0 +1,1 @@
+../src/command/lib25519-test_hashblocks_sha512.c

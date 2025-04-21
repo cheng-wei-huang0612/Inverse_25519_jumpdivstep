@@ -1,0 +1,8 @@
+nP/montgomery25519/arm64-maa4-intmul/shared
+unified/fe25519freezeS/1/shared
+unified/fe25519mulS/1/shared
+unified/fe25519nsquareS/1/shared
+unified/fe25519squareS/1/shared
+unified/fe25519invertc/2/C1
+unified/fe25519packc/2/C1
+unified/fe25519unpackc/4/C1

@@ -1,0 +1,7 @@
+operation nPbatch
+primitive montgomery25519
+note: considering machines supporting default
+note: priority 1.0069576153846154 for ref C1
+note: priority 1.3462615591397848 for ref C0
+selected default ref C1
+impl ref C1

@@ -1,0 +1,1 @@
+clang -Wall -fPIC -fwrapv -Qunused-arguments -O2

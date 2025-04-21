@@ -1,0 +1,15 @@
+nG/merged25519/arm64-maa4-redmul/shared
+unified/fe25519addS/1/shared
+unified/fe25519cmovS/1/shared
+unified/fe25519freezeS/1/shared
+unified/fe25519mulS/2/shared
+unified/fe25519nsquareS/2/shared
+unified/fe25519squareS/2/shared
+unified/fe25519subS/1/shared
+unified/sharedbasedatac/1/shared
+unified/fe25519getparityc/1/C0
+unified/fe25519invertc/1/C0
+unified/fe25519packc/1/C0
+unified/fe25519unpackc/3/C0
+unified/sc25519from32bytesc/1/C0
+unified/sc25519window4c/1/C0

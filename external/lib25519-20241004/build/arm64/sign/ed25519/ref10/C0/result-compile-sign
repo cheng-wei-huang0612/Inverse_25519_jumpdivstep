@@ -1,0 +1,4 @@
+sign.c:1:10: fatal error: 'randombytes.h' file not found
+    1 | #include "randombytes.h"
+      |          ^~~~~~~~~~~~~~~
+1 error generated.

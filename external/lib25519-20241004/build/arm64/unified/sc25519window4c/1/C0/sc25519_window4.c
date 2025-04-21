@@ -1,0 +1,1 @@
+../../../../src/crypto_nG/merged25519/arm64-maa4-intmul/sc25519_window4.c

@@ -1,0 +1,1 @@
+../src/command/lib25519-speed.c

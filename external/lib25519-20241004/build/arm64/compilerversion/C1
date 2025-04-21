@@ -1,0 +1,1 @@
+clang -Wall -fPIC -fwrapv -Qunused-arguments -O2; Homebrew clang version 19.1.7; Target: arm64-apple-darwin24.3.0; Thread model: posix; InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7_1/bin; Configuration file: /opt/homebrew/etc/clang/arm64-apple-darwin24.cfg

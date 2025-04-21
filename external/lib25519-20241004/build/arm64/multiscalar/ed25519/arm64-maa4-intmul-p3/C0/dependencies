@@ -1,0 +1,17 @@
+multiscalar/ed25519/arm64-maa4-intmul-p3/shared
+unified/fe25519addS/1/shared
+unified/fe25519freezeS/1/shared
+unified/fe25519mulS/1/shared
+unified/fe25519nsquareS/1/shared
+unified/fe25519squareS/1/shared
+unified/fe25519subS/1/shared
+unified/fe25519getparityc/1/C0
+unified/fe25519invertc/1/C0
+unified/fe25519iseqc/1/C0
+unified/fe25519packc/1/C0
+unified/fe25519pow2523c/1/C0
+unified/fe25519setintc/1/C0
+unified/fe25519unpackc/3/C0
+unified/sc25519from32bytesc/1/C0
+unified/sc25519slidec/1/C0
+unified/sc25519to32bytesc/1/C0

@@ -1,0 +1,7 @@
+operation verify
+primitive 32
+note: considering machines supporting default
+note: priority 1.0905448717948718 for ref C1
+note: priority 5.556451612903226 for ref C0
+selected default ref C1
+impl ref C1

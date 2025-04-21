@@ -1,0 +1,3 @@
+mladder.S:3870:19: error: unexpected token in '.section' directive
+.section .note.GNU-stack,"",@progbits
+                  ^

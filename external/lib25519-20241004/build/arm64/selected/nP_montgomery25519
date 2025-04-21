@@ -1,0 +1,9 @@
+operation nP
+primitive montgomery25519
+note: considering machines supporting default
+note: priority 2.8630100860215055 for ref10 C0
+note: priority 3.2597434838709676 for donna_c64 C0
+note: priority 3.9031148653846155 for ref10 C1
+note: priority 4.041145320512821 for donna_c64 C1
+selected default ref10 C0
+impl ref10 C0

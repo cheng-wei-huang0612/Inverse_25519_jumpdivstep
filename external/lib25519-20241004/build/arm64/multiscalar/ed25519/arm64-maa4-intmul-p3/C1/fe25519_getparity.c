@@ -1,0 +1,1 @@
+../../../../src/crypto_multiscalar/ed25519/arm64-maa4-intmul-p3/fe25519_getparity.c

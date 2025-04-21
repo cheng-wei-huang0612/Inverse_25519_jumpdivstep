@@ -1,0 +1,1 @@
+clang -Wall -fPIC -fwrapv -Qunused-arguments -O2 -Dlib25519_pow_inv25519_arm64maa4redmul_C1_fe25519_unpack=lib25519_unified_fe25519unpackc_2_C1_fe25519_unpack

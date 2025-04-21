@@ -1,0 +1,1 @@
+../../../../src/crypto_nG/merged25519/arm64-maa4-redmul/sc25519.h

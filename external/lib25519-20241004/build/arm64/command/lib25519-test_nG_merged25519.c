@@ -1,0 +1,1 @@
+../src/command/lib25519-test_nG_merged25519.c

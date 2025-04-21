@@ -1,0 +1,7 @@
+operation hash
+primitive sha512
+note: considering machines supporting default
+note: priority 1.0002886602564103 for ref C1
+note: priority 1.001077505376344 for ref C0
+selected default ref C1
+impl ref C1

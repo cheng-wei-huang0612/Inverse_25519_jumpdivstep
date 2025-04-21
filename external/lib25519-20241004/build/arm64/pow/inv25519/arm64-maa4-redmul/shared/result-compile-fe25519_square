@@ -1,0 +1,3 @@
+fe25519_square.S:141:19: error: unexpected token in '.section' directive
+.section .note.GNU-stack,"",@progbits
+                  ^

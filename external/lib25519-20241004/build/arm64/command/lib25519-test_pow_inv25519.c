@@ -1,0 +1,1 @@
+../src/command/lib25519-test_pow_inv25519.c

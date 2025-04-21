@@ -1,0 +1,4 @@
+keypair.c:2:10: fatal error: 'randombytes.h' file not found
+    2 | #include "randombytes.h"
+      |          ^~~~~~~~~~~~~~~
+1 error generated.

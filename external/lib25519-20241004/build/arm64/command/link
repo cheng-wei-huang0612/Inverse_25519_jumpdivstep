@@ -1,0 +1,5 @@
+#!/bin/sh
+target="$1"; shift
+gcc -Wall -fPIC -fwrapv -O2 \
+  -fvisibility=hidden \
+  -o "$target" "$@"

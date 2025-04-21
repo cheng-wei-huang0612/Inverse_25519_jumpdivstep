@@ -1,0 +1,1 @@
+../src/command/lib25519-test_mGnP_ed25519.c

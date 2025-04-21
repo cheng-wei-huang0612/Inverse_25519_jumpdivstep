@@ -1,0 +1,1 @@
+../../../../src/crypto_nG/merged25519/arm64-maa4-intmul/ge25519_scalarmult_base.c
