@@ -1,15 +1,7 @@
 /* Assembly for field multiplication */
 
-;#include "crypto_asm_hidden.h"
 
 	.p2align 4
-	;ASM_HIDDEN _CRYPTO_SHARED_NAMESPACE(fe25519_mul)
-	;.globl _CRYPTO_SHARED_NAMESPACE(fe25519_mul)
-	;ASM_HIDDEN CRYPTO_SHARED_NAMESPACE(fe25519_mul)
-	;.globl CRYPTO_SHARED_NAMESPACE(fe25519_mul)
-	
-;_CRYPTO_SHARED_NAMESPACE(fe25519_mul):
-;CRYPTO_SHARED_NAMESPACE(fe25519_mul):
 
 	.globl _fe25519_intmul
 	.globl fe25519_intmul
