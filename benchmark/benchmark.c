@@ -26,8 +26,6 @@ extern void fe25519_redmul_invert(fe25519 *r, const fe25519 *x);
 
 
 
-
-
 int main(void){
 
     fe25519 op;
