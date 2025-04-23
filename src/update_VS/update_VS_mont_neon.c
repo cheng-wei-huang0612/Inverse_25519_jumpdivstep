@@ -51,7 +51,7 @@ void update_VS_mont(
 
 
 
-    // Step [2]: Decompose inputs (u, r) into limb formers
+    // Step [2]: Decompose inputs (u, r) into limb forms
     uint32x2_t vec_u0_r0 = {(*u) & ((1ULL << 30)-1), (*r) & ((1ULL << 30)-1)};
     uint32x2_t vec_u1_r1 = {((*u) >> 30) & ((1ULL << 30)-1), ((*r) >> 30) & ((1ULL << 30)-1)};
     uint32x2_t vec_uhat_rhat = {(*u) >> 63, (*r) >> 63};

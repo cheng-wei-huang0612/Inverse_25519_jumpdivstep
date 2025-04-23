@@ -1,13 +1,21 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "big30.h"
-#include "divstep.h"
-#include "uv_extraction.h"
-#include "update_FG.h"
-#include "update_VS_mont.h"
-#include "inner_update.h"
-#include "sign_adjustment.h"
+/*#include "divstep.h"*/
+/*#include "uv_extraction.h"*/
+/*#include "update_FG.h"*/
+/*#include "update_VS_mont.h"*/
+/*#include "inner_update.h"*/
+/*#include "sign_adjustment.h"*/
 #include <gmp.h>
+
+
+extern void divstep(int64_t *delta, int64_t *fuv, int64_t *grs);
+extern void inner_update(int64_t *f, int64_t *g, int64_t *uuvvrrss, int64_t *uvrs );
+extern void sign_adjustment(big30_t *inv30, big30_t *F, big30_t *V);
+extern void extraction(int64_t *uvrs, int64_t *fuv, int64_t *grs);
+extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
+extern void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss);
 
 
 

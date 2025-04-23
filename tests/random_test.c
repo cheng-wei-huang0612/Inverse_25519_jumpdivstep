@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdio.h>
 #include "big30.h"
-#include "cpt_inv.h"
+/*#include "cpt_inv.h"*/
 #include <gmp.h>
 
 

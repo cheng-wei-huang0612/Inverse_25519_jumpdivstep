@@ -21,14 +21,14 @@ typedef struct {
     uint32_t limb[LIMBS]; 
 } big30_t;
 
-typedef struct {
-    uint32_t limb[2];
-} small30_t;
+/*typedef struct {*/
+/*    uint32_t limb[2];*/
+/*} small30_t;*/
 
-// to be deleted
-typedef struct {
-    uint32_t limb[LIMBS + 2]; 
-} big30long_t;
+/*// to be deleted*/
+/*typedef struct {*/
+/*    uint32_t limb[LIMBS + 2]; */
+/*} big30long_t;*/
 
 typedef struct 
 {
@@ -42,6 +42,7 @@ extern big30_t P;
 
 void uint256_from_big30(uint256_t *rop, const big30_t *op);
 void big30_from_uint256(big30_t *rop, const uint256_t *op);
+void cpt_inv(uint256_t *x, uint256_t *inv);
 
 void mpz_from_big30(mpz_t rop, const big30_t *op);
 void big30_from_mpz(big30_t *rop, const mpz_t op);
