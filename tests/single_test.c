@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <gmp.h>
 #include "big30.h"
+#include "big30_mpz.h"
 /*#include "cpt_inv.h"*/
 
 /*const char *TEST_X = "97165018423823247783865467928919784927142320732975169496993440879442771425739";*/

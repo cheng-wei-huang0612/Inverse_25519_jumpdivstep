@@ -5,11 +5,6 @@
 #include <time.h>
 #include <gmp.h>
 
-big30_t P = {
-    0x3fffffed, 0x3fffffff, 0x3fffffff, 0x3fffffff,
-    0x3fffffff, 0x3fffffff, 0x3fffffff, 0x3fffffff,
-    0x00007fff
-};
 
 
 
