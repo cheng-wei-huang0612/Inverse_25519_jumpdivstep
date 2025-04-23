@@ -1,8 +1,8 @@
+#include <stdint.h>
+
 #ifndef BIG30_H
 #define BIG30_H
 
-#include <stdint.h>
-#include <gmp.h>
 
 
 // limb 相關常數
@@ -20,13 +20,9 @@ typedef struct
     uint64_t limb64[4];
 } uint256_t;
 
+extern big30_t P;
 
 
-big30_t P = {
-    0x3fffffed, 0x3fffffff, 0x3fffffff, 0x3fffffff,
-    0x3fffffff, 0x3fffffff, 0x3fffffff, 0x3fffffff,
-    0x00007fff
-};
 
 
 void uint256_from_big30(uint256_t *rop, const big30_t *op);

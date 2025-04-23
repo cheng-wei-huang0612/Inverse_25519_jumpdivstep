@@ -18,6 +18,14 @@ extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
 extern void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss);
 
 
+big30_t P = {
+    0x3fffffed, 0x3fffffff, 0x3fffffff, 0x3fffffff,
+    0x3fffffff, 0x3fffffff, 0x3fffffff, 0x3fffffff,
+    0x00007fff
+};
+
+
+
 
 void cpt_inv(uint256_t *x, uint256_t *inv){
 
