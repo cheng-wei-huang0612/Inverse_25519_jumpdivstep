@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "divstep.h"
 // #include "big30.h"
 #include <gmp.h>
 

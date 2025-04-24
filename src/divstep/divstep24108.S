@@ -121,37 +121,45 @@
 .global divstep
 _divstep:
 divstep:
-        ldr     x8, [x2]
-        ldr     x9, [x0]
-        and     x10, x8, #0x1
-        cmp     x9, #0
-        ldr     x9, [x1]
-        csel    x10, x10, xzr, gt
-        neg     x11, x10
-        sub     x10, x10, #1
-        neg     x12, x9
-        and     x9, x10, x9
-        and     x13, x8, x11
-        and     x12, x11, x12
-        and     x14, x10, x8
-        eor     x9, x9, x13
-        sbfx    x8, x8, #0, #1
-        eor     x12, x14, x12
-        str     x9, [x1]
-        str     x12, [x2]
-        ldr     x9, [x0]
-        neg     x12, x9
-        and     x9, x9, x10
-        and     x10, x12, x11
-        orr     x9, x10, x9
-        str     x9, [x0]
-        ldr     x9, [x1]
-        ldr     x10, [x2]
-        and     x8, x8, x9
-        add     x8, x8, x10
-        asr     x8, x8, #1
-        str     x8, [x2]
-        ldr     x8, [x0]
-        add     x8, x8, #2
-        str     x8, [x0]
-        ret
+    /* ────── load & 基本旗標 ────── */
+    ldr     x3, [x0]          // delta
+    ldr     x4, [x1]          // f  (fuv)
+    ldr     x11,[x2]          // g  (grs)
+
+    and     x6,  x11, #1      // g0 & 1
+    cmp     x3,  #0
+    csetm   x7,  gt           // x7 = -1   (delta > 0) else 0
+    and     x7,  x7, x6       // x7 = 0/1  (cond)
+    neg     x7,  x7           // x7 = c_mask = 0 / -1
+    mvn     x8,  x7           // x8 = n_mask = ~c_mask
+
+/* ────── f' = choose(f,g) ────── */
+    eor     x5,  x4,  x11     // diff = f ^ g
+    and     x5,  x5,  x7      // (x ^ y) & c_mask
+    eor     x5,  x5,  x4      // f'  (x5)
+
+/* ────── g' = choose(g,-f) ───── */
+    neg     x10, x4           // –f
+    eor     x4,  x11, x10     // diff2 = g ^ –f
+    and     x4,  x4,  x7
+    eor     x4,  x4,  x11     // g'  (x4)
+
+/* ────── delta' = choose(delta,-delta) ─ */
+    neg     x9,  x3
+    eor     x9,  x9,  x3
+    and     x9,  x9,  x7
+    eor     x3,  x3,  x9      // delta'
+
+/* ────── gʺ = (g' + (-g0)&f') >> 1 ───── */
+    neg     x12, x6           // 0 / –1
+    and     x12, x12, x5      // (-g0)&f'
+    add     x12, x12, x4      // + g'
+    asr     x4,  x12, #1      // final g  (x4)
+
+/* ────── delta += 2 & store ───── */
+    add     x3,  x3,  #2
+
+    str     x3, [x0]          // delta
+    str     x5, [x1]          // fuv
+    str     x4, [x2]          // grs
+    ret
