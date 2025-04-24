@@ -73,7 +73,7 @@ int main(void){
         times[i] = (t1 - t0)>>2;
     }
     qsort(times, ITERATIONS, sizeof(uint64_t), cmp_uint64);
-    printf("fe25519_redmul_invert: %lld\n", times[ITERATIONS >> 1]);
+    printf("my_invert: %lld\n", times[ITERATIONS >> 1]);
 }
 
 
