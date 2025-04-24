@@ -17,11 +17,11 @@ void update_VS_mont(
 
     // Step [1]: Initialization 
     // vec_P[0..8] = broadcast each limb of P to 2 lanes
-    uint32x2_t vec_P[9];
-    for (int i = 0; i < 9; i++)
-    {
-        vec_P[i] =  vdup_n_u32(P.limb[i]);
-    }
+    /*uint32x2_t vec_P[9];*/
+    /*for (int i = 0; i < 9; i++)*/
+    /*{*/
+    /*    vec_P[i] =  vdup_n_u32(P.limb[i]);*/
+    /*}*/
 
     // vec_V[0..8] = broadcast each limb of V to 2 lanes
     uint32x2_t vec_V[9];
@@ -48,6 +48,8 @@ void update_VS_mont(
     uint32x2_t vec_reductionhat = {0};
     uint64x2_t vec_2p30m1 = {1073741823, 1073741823};
     uint32x2_t vec_u32_2p30m1 = {1073741823, 1073741823};
+    uint32x2_t vec_u32_2p30m19 = {1073741805, 1073741805};
+    uint32x2_t vec_u32_2p15m1 = {32767, 32767};
 
 
 
@@ -73,11 +75,24 @@ void update_VS_mont(
     vec_l0 = vand_u32(vec_l0 ,vec_u32_2p30m1);
 
     vec_prod = vdupq_n_u64(0);
-    for (int i = 0; i < 9; i++){
-        vec_prod = vmlal_u32(vec_prod, vec_P[i], vec_l0 );
+
+    // i = 0
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l0 );
+    vec_tmp[0] = vadd_u32(vec_tmp[0], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
+
+    for (int i = 0 + 1; i < (9 - 1); i++){
+        vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l0 );
         vec_tmp[i] = vadd_u32(vec_tmp[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
+
+    // i = 8
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l0 );
+    vec_tmp[8] = vadd_u32(vec_tmp[8], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
     vec_tmp[9] = vadd_u32(vec_tmp[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
 
@@ -134,13 +149,25 @@ void update_VS_mont(
     vec_l1 = vand_u32(vec_l1 ,vec_u32_2p30m1);
 
     vec_prod = vdupq_n_u64(0);
-    for (int i = 0; i < 9; i++){
-        vec_prod = vmlal_u32(vec_prod, vec_P[i], vec_l1 );
+    
+    // i = 0
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l1 );
+    vec_tmp[0] = vadd_u32(vec_tmp[0], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
+
+    for (int i = 0 + 1; i < (9 - 1); i++){
+        vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l1 );
         vec_tmp[i] = vadd_u32(vec_tmp[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
+
+    // i = 8
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l1 );
+    vec_tmp[8] = vadd_u32(vec_tmp[8], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
     vec_tmp[9] = vadd_u32(vec_tmp[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-    
     
     
     // Step [10]: carry propogation
@@ -203,11 +230,15 @@ void update_VS_mont(
 
 
     // Step [14]: tmp += 2x vec_uhat_rhat & (P-A)
-    for (int i = 0; i < 9; i++)
+    vec_tmp[0] = vadd_u32(vec_tmp[0] , vand_u32(vec_uhat_rhat, vec_u32_2p30m19));
+    vec_tmp[0] = vsub_u32(vec_tmp[0] , vand_u32(vec_uhat_rhat, vec_V[0]));
+    for (int i = 0 + 1; i < (9 - 1); i++)
     {
-        vec_tmp[i] = vadd_u32(vec_tmp[i] , vand_u32(vec_uhat_rhat, vec_P[i]));
+        vec_tmp[i] = vadd_u32(vec_tmp[i] , vand_u32(vec_uhat_rhat, vec_u32_2p30m1));
         vec_tmp[i] = vsub_u32(vec_tmp[i] , vand_u32(vec_uhat_rhat, vec_V[i]));
     }
+    vec_tmp[8] = vadd_u32(vec_tmp[8] , vand_u32(vec_uhat_rhat, vec_u32_2p15m1));
+    vec_tmp[8] = vsub_u32(vec_tmp[8] , vand_u32(vec_uhat_rhat, vec_V[8]));
 
 
     // Step [15]: borrow propogation
@@ -317,11 +348,19 @@ void update_VS_mont(
     vec_l0 = vand_u32(vec_l0 ,vec_u32_2p30m1);
 
     vec_prod = vdupq_n_u64(0);
-    for (int i = 0; i < 9; i++){
-        vec_prod = vmlal_u32(vec_prod, vec_P[i], vec_l0 );
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l0 );
+    vec_tmp2[0] = vadd_u32(vec_tmp2[0], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
+    for (int i = 0 + 1; i < (9 - 1); i++){
+        vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l0 );
         vec_tmp2[i] = vadd_u32(vec_tmp2[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l0 );
+    vec_tmp2[8] = vadd_u32(vec_tmp2[8], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
     vec_tmp2[9] = vadd_u32(vec_tmp2[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
 
@@ -378,11 +417,19 @@ void update_VS_mont(
     vec_l1 = vand_u32(vec_l1 ,vec_u32_2p30m1);
 
     vec_prod = vdupq_n_u64(0);
-    for (int i = 0; i < 9; i++){
-        vec_prod = vmlal_u32(vec_prod, vec_P[i], vec_l1 );
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l1 );
+    vec_tmp2[0] = vadd_u32(vec_tmp2[0], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
+    for (int i = 0 + 1; i < (9 - 1); i++){
+        vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l1 );
         vec_tmp2[i] = vadd_u32(vec_tmp2[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
         vec_prod = vshrq_n_u64(vec_prod, 30);
     }
+    vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l1 );
+    vec_tmp2[8] = vadd_u32(vec_tmp2[8], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    vec_prod = vshrq_n_u64(vec_prod, 30);
+
     vec_tmp2[9] = vadd_u32(vec_tmp2[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
     
     
@@ -446,11 +493,16 @@ void update_VS_mont(
 
 
     // Step [14]: tmp += 2x vec_uhat_rhat & (P-A)
-    for (int i = 0; i < 9; i++)
+
+    vec_tmp2[0] = vadd_u32(vec_tmp2[0] , vand_u32(vec_vhat_shat, vec_u32_2p30m19));
+    vec_tmp2[0] = vsub_u32(vec_tmp2[0] , vand_u32(vec_vhat_shat, vec_S[0]));
+    for (int i = 0 + 1; i < (9 - 1); i++)
     {
-        vec_tmp2[i] = vadd_u32(vec_tmp2[i] , vand_u32(vec_vhat_shat, vec_P[i]));
+        vec_tmp2[i] = vadd_u32(vec_tmp2[i] , vand_u32(vec_vhat_shat, vec_u32_2p30m1));
         vec_tmp2[i] = vsub_u32(vec_tmp2[i] , vand_u32(vec_vhat_shat, vec_S[i]));
     }
+    vec_tmp2[8] = vadd_u32(vec_tmp2[8] , vand_u32(vec_vhat_shat, vec_u32_2p15m1));
+    vec_tmp2[8] = vsub_u32(vec_tmp2[8] , vand_u32(vec_vhat_shat, vec_S[8]));
 
 
     // Step [15]: borrow propogation

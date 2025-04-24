@@ -25,10 +25,10 @@ SRC_ROOT     := $(wildcard *.c *.S)
 SRC_COMMON   := $(wildcard common/*.c common/*.S)
 SRC_REF_INT  := $(wildcard ref_intmul/*.c ref_intmul/*.S)
 SRC_REF_RED  := $(wildcard ref_redmul/*.c ref_redmul/*.S)
-# SRC_FAST     := $(wildcard my_invert/*.c  my_invert/*.S)
+SRC_FAST     := $(wildcard my_invert/*.c  my_invert/*.S)
 
-SRCS := $(SRC_ROOT) $(SRC_COMMON) $(SRC_REF_INT) $(SRC_REF_RED)
-# SRCS := $(SRC_ROOT) $(SRC_COMMON) $(SRC_REF_INT) $(SRC_REF_RED) $(SRC_FAST)
+# SRCS := $(SRC_ROOT) $(SRC_COMMON) $(SRC_REF_INT) $(SRC_REF_RED)
+SRCS := $(SRC_ROOT) $(SRC_COMMON) $(SRC_REF_INT) $(SRC_REF_RED) $(SRC_FAST)
 OBJS := $(SRCS:%.S=%.o)
 OBJS := $(OBJS:%.c=%.o)
 

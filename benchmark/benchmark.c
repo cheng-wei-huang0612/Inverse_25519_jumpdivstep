@@ -8,6 +8,7 @@
 #include "common/hal.h"
 #include "common/fe25519.h"
 #include "common/data.h"
+#include "common/big30.h"
 
 #define ITERATIONS 10000
 
@@ -60,6 +61,16 @@ int main(void){
     qsort(times, ITERATIONS, sizeof(uint64_t), cmp_uint64);
     printf("fe25519_redmul_invert: %lld\n", times[ITERATIONS >> 1]);
 
+    for(size_t i = 0; i < (ITERATIONS); i++) {
+        op = vec_in[i];
+        t0 = hal_get_time();
+        cpt_inv(&rop, &op);
+
+        t1 = hal_get_time();
+        times[i] = (t1 - t0)>>2;
+    }
+    qsort(times, ITERATIONS, sizeof(uint64_t), cmp_uint64);
+    printf("fe25519_redmul_invert: %lld\n", times[ITERATIONS >> 1]);
 }
 
 
