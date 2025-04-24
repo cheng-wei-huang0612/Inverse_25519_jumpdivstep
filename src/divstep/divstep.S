@@ -121,45 +121,37 @@
 .global divstep
 _divstep:
 divstep:
-    /* ────── load & 基本旗標 ────── */
-    ldr     x3, [x0]          // delta
-    ldr     x4, [x1]          // f  (fuv)
-    ldr     x11,[x2]          // g  (grs)
+    /* ────── ① 讀入狀態 ────── */
+    ldr     x3,  [x0]          // delta
+    ldr     x4,  [x1]          // f
+    ldr     x11, [x2]          // g
 
-    and     x6,  x11, #1      // g0 & 1
-    cmp     x3,  #0
-    csetm   x7,  gt           // x7 = -1   (delta > 0) else 0
-    and     x7,  x7, x6       // x7 = 0/1  (cond)
-    neg     x7,  x7           // x7 = c_mask = 0 / -1
-    mvn     x8,  x7           // x8 = n_mask = ~c_mask
+/* ────── ② 取得 g0, 產生 c_mask (0 / -1) ────── */
+    and     x6,  x11, #1       // x6 = g0
+    cmp     x3,  #0            // delta > 0 ?
+    csel    x7,  x6,  xzr, gt  // x7 = g0  (若 delta>0)；否則 0
+    negs    x7,  x7            // x7 = c_mask (0 或 -1)，並設定旗標
+                                // N = 1 ⇔ cond 成立（MI）
 
-/* ────── f' = choose(f,g) ────── */
-    eor     x5,  x4,  x11     // diff = f ^ g
-    and     x5,  x5,  x7      // (x ^ y) & c_mask
-    eor     x5,  x5,  x4      // f'  (x5)
+/* ────── ③ 預先算出 −f 與 −delta（不動旗標） ─ */
+    neg     x10, x4            // −f
+    neg     x9,  x3            // −delta
 
-/* ────── g' = choose(g,-f) ───── */
-    neg     x10, x4           // –f
-    eor     x4,  x11, x10     // diff2 = g ^ –f
-    and     x4,  x4,  x7
-    eor     x4,  x4,  x11     // g'  (x4)
+/* ────── ④ 依條件選 f', g', delta' ────── */
+    csel    x5,  x11, x4,  mi  // f' = (cond? g : f)
+    csel    x4,  x10, x11, mi  // g' = (cond? −f : g)
+    csel    x3,  x9,  x3,  mi  // δ' = (cond? −δ : δ)
 
-/* ────── delta' = choose(delta,-delta) ─ */
-    neg     x9,  x3
-    eor     x9,  x9,  x3
-    and     x9,  x9,  x7
-    eor     x3,  x3,  x9      // delta'
+/* ────── ⑤ gʺ = (g' + ((−g0)&f')) >> 1 ────── */
+    neg     x12, x6            // −g0 (0 / −1)
+    and     x12, x12, x5       // (−g0)&f'
+    add     x12, x12, x4
+    asr     x4,  x12, #1       // gʺ (最終 grs)
 
-/* ────── gʺ = (g' + (-g0)&f') >> 1 ───── */
-    neg     x12, x6           // 0 / –1
-    and     x12, x12, x5      // (-g0)&f'
-    add     x12, x12, x4      // + g'
-    asr     x4,  x12, #1      // final g  (x4)
-
-/* ────── delta += 2 & store ───── */
+/* ────── ⑥ δ += 2，寫回 ────── */
     add     x3,  x3,  #2
 
-    str     x3, [x0]          // delta
-    str     x5, [x1]          // fuv
-    str     x4, [x2]          // grs
+    str     x3,  [x0]          // delta
+    str     x5,  [x1]          // fuv
+    str     x4,  [x2]          // grs
     ret
