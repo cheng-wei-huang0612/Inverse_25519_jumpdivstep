@@ -40,29 +40,29 @@ neg_fuv = -fuv
 neg_delta = -delta
 
 
-fuv_new = grs if negative else fuv
+fuv = grs if negative else fuv
 grs_new = neg_fuv if negative else grs 
 delta = neg_delta if negative else delta
 
 
-grs_final = -g0_and_1
+grs = -g0_and_1
 # grs_final = -g0_and_1
 
-grs_final = grs_final & fuv_new
+grs = grs & fuv
 # grs_new = (-g0_and_1) & fuv_new
 
-grs_final += grs_new
+grs += grs_new
 # grs_new = ((-g0_and_1) & fuv) + (grs)
 
-grs_final = grs_final signed>> 1
+grs = grs signed>> 1
 # grs_new = (((-g0_and_1) & fuv) + (grs)) >> 1
 
 delta += 2
 
 
 mem64[pointer_delta] = delta
-mem64[pointer_fuv] = fuv_new
-mem64[pointer_grs] = grs_final
+mem64[pointer_fuv] = fuv
+mem64[pointer_grs] = grs
 
 
 

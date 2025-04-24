@@ -159,9 +159,9 @@ neg x8,x4
 # asm 2: neg >neg_delta=x9,<delta=x3
 neg x9,x3
 
-# qhasm: fuv_new = grs if negative else fuv
-# asm 1: csel >fuv_new=int64#5,<grs=int64#6,<fuv=int64#5,mi
-# asm 2: csel >fuv_new=x4,<grs=x5,<fuv=x4,mi
+# qhasm: fuv = grs if negative else fuv
+# asm 1: csel >fuv=int64#5,<grs=int64#6,<fuv=int64#5,mi
+# asm 2: csel >fuv=x4,<grs=x5,<fuv=x4,mi
 csel x4,x5,x4,mi
 
 # qhasm: grs_new = neg_fuv if negative else grs 
@@ -174,24 +174,24 @@ csel x5,x8,x5,mi
 # asm 2: csel >delta=x3,<neg_delta=x9,<delta=x3,mi
 csel x3,x9,x3,mi
 
-# qhasm: grs_final = -g0_and_1
-# asm 1: neg >grs_final=int64#7,<g0_and_1=int64#7
-# asm 2: neg >grs_final=x6,<g0_and_1=x6
+# qhasm: grs = -g0_and_1
+# asm 1: neg >grs=int64#7,<g0_and_1=int64#7
+# asm 2: neg >grs=x6,<g0_and_1=x6
 neg x6,x6
 
-# qhasm: grs_final = grs_final & fuv_new
-# asm 1: and  >grs_final=int64#7, <grs_final=int64#7, <fuv_new=int64#5
-# asm 2: and  >grs_final=x6, <grs_final=x6, <fuv_new=x4
+# qhasm: grs = grs & fuv
+# asm 1: and  >grs=int64#7, <grs=int64#7, <fuv=int64#5
+# asm 2: and  >grs=x6, <grs=x6, <fuv=x4
 and  x6, x6, x4
 
-# qhasm: grs_final += grs_new
-# asm 1: add <grs_final=int64#7,<grs_final=int64#7,<grs_new=int64#6
-# asm 2: add <grs_final=x6,<grs_final=x6,<grs_new=x5
+# qhasm: grs += grs_new
+# asm 1: add <grs=int64#7,<grs=int64#7,<grs_new=int64#6
+# asm 2: add <grs=x6,<grs=x6,<grs_new=x5
 add x6,x6,x5
 
-# qhasm: grs_final = grs_final signed>> 1
-# asm 1: asr >grs_final=int64#6, <grs_final=int64#7, #1
-# asm 2: asr >grs_final=x5, <grs_final=x6, #1
+# qhasm: grs = grs signed>> 1
+# asm 1: asr >grs=int64#6, <grs=int64#7, #1
+# asm 2: asr >grs=x5, <grs=x6, #1
 asr x5, x6, #1
 
 # qhasm: delta += 2
@@ -204,14 +204,14 @@ add x3,x3,#2
 # asm 2: str <delta=x3, [<pointer_delta=x0]
 str x3, [x0]
 
-# qhasm: mem64[pointer_fuv] = fuv_new
-# asm 1: str <fuv_new=int64#5, [<pointer_fuv=int64#2]
-# asm 2: str <fuv_new=x4, [<pointer_fuv=x1]
+# qhasm: mem64[pointer_fuv] = fuv
+# asm 1: str <fuv=int64#5, [<pointer_fuv=int64#2]
+# asm 2: str <fuv=x4, [<pointer_fuv=x1]
 str x4, [x1]
 
-# qhasm: mem64[pointer_grs] = grs_final
-# asm 1: str <grs_final=int64#6, [<pointer_grs=int64#3]
-# asm 2: str <grs_final=x5, [<pointer_grs=x2]
+# qhasm: mem64[pointer_grs] = grs
+# asm 1: str <grs=int64#6, [<pointer_grs=int64#3]
+# asm 2: str <grs=x5, [<pointer_grs=x2]
 str x5, [x2]
 
 # qhasm: return
