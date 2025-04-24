@@ -151,7 +151,7 @@ divstep:
 /* ────── ⑥ δ += 2，寫回 ────── */
     add     x3,  x3,  #2
 
+    str     x3,  [x0]          // delta
     str     x5,  [x1]          // fuv
     str     x4,  [x2]          // grs
-    str     x3,  [x0]          // delta
     ret
