@@ -53,12 +53,6 @@ stack64 stack_x29
 
 
 enter divstep
-push2xint64 calleesaved_x18, calleesaved_x19
-push2xint64 calleesaved_x20, calleesaved_x21
-push2xint64 calleesaved_x22, calleesaved_x23
-push2xint64 calleesaved_x24, calleesaved_x25
-push2xint64 calleesaved_x26, calleesaved_x27
-push2xint64 calleesaved_x28, calleesaved_x29
 
 delta = mem64[pointer_delta]
 fuv = mem64[pointer_fuv]
@@ -114,12 +108,6 @@ mem64[pointer_delta] = delta
 mem64[pointer_fuv] = fuv
 mem64[pointer_grs] = grs_new
 
-pop2xint64 calleesaved_x28, calleesaved_x29
-pop2xint64 calleesaved_x26, calleesaved_x27
-pop2xint64 calleesaved_x24, calleesaved_x25
-pop2xint64 calleesaved_x22, calleesaved_x23
-pop2xint64 calleesaved_x20, calleesaved_x21
-pop2xint64 calleesaved_x18, calleesaved_x19
 
 
 
