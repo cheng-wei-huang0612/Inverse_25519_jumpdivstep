@@ -67,7 +67,10 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             fuv = (f & 0xFFFFF) - ( (int64_t) 1 << 41 );
             grs = (g & 0xFFFFF) - ( (int64_t) 1 << 62 );
 
-            for (int k = 0; k < 20; k++) { divstep(&delta, &fuv, &grs); }
+            for (int k = 0; k < 20; k++) { 
+                divstep(&delta, &fuv, &grs); 
+            }
+
 
             // u, v, r, s extraction
             extraction(uvrs, &fuv, &grs);
