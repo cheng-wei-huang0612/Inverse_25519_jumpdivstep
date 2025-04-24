@@ -127,8 +127,8 @@ code += """
 
 """
 
-for i in range(10):
-    code += f"reg128 vec_tmp{i}\n"
+for i in range(11):
+    code += f"reg128 vec_uuV{i}_rrV{i}\n"
 
 code += """
 
@@ -156,57 +156,16 @@ int64 2p15m1
 """
 
 
-code += """
+for i in range(0,8,2):
+    for j in range(2):
+        code += f"2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V{i}_V{i+1}_S{i}_S{i+1}[{j}/4]\n"
+        code += f"vec_uuV{i+j}_rrV{i+j} = vec_product & vec_2x_2p30m1\n"
+        code += f"2x vec_product = vec_product unsigned>> 30\n"
 
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[0/4]
-vec_tmp0 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[1/4]
-vec_tmp1 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[0/4]
-vec_tmp2 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[1/4]
-vec_tmp3 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[0/4]
-vec_tmp4 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[1/4]
-vec_tmp5 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[0/4]
-vec_tmp6 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[1/4]
-vec_tmp7 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-
-2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V8_0_S8_0[0/4]
-vec_tmp8 = vec_product & vec_2x_2p30m1
-2x vec_product = vec_product unsigned>> 30
-
-vec_tmp9 = vec_product & vec_2x_2p30m1
-
-"""
-
-
+code += f"2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V8_0_S8_0[0/4]\n"
+code += f"vec_uuV8_rrV8 = vec_product & vec_2x_2p30m1\n"
+code += f"2x vec_product = vec_product unsigned>> 30\n"
+code += f"vec_uuV9_rrV9 = vec_product & vec_2x_2p30m1\n"
 
 
 code += """
@@ -219,7 +178,7 @@ reg128 vec_l0
 reg128 vec_M
 2x vec_M = 678152731
 
-4x vec_l0 = vec_tmp0 * vec_M
+4x vec_l0 = vec_uuV0_rrV0 * vec_M
 vec_l0 = vec_l0 & vec_2x_2p30m1
 """
 
@@ -242,20 +201,26 @@ reg128 vec_accu
 code += """
 2x vec_product += vec_4x_2p30m19[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV0_rrV0 += vec_accu
+2x vec_product = vec_product >> 30
 
 """
 
 for i in range(1, 8):
     code += "2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]\n"
     code += "vec_accu = vec_product & vec_2x_2p30m1\n"
-    code += "2x vec_tmp0 += vec_accu\n"
+    code += f"2x vec_uuV{i}_rrV{i} += vec_accu\n"
+    code += "2x vec_product = vec_product >> 30\n"
+    code += "\n"
 
 
 code += """
 2x vec_product += vec_4x_2p15m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV8_rrV8 += vec_accu
+2x vec_product = vec_product >> 30
+vec_accu = vec_product & vec_2x_2p30m1
+2x vec_uuV9_rrV9 += vec_accu
 
 """
 
@@ -272,10 +237,36 @@ reg128 vec_carry
 """
 
 for i in range(9):
-    code += f"2x vec_carry = vec_tmp{i} unsigned>> 30\n"
-    code += f"vec_tmp{i} = vec_tmp{i} & vec_2x_2p30m1\n"
-    code += f"2x vec_tmp{i+1} = vec_tmp{i+1} + vec_carry\n"
+    code += f"2x vec_carry = vec_uuV{i}_rrV{i} unsigned>> 30\n"
+    code += f"vec_uuV{i}_rrV{i} = vec_uuV{i}_rrV{i} & vec_2x_2p30m1\n"
+    code += f"2x vec_uuV{i+1}_rrV{i+1} = vec_uuV{i+1}_rrV{i+1} + vec_carry\n"
     code += "\n"
+
+
+
+code += """
+
+# vec_uuV_rrV[1:11] += [uu1, rr1] * V[0:9]
+
+"""
+
+
+
+for i in range(0,8,2):
+    for j in range(2):
+        code += f"2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V{i}_V{i+1}_S{i}_S{i+1}[{j}/4]\n"
+        code += f"vec_uuV{i+j+1}_rrV{i+j+1} = vec_product & vec_2x_2p30m1\n"
+        code += f"2x vec_product = vec_product unsigned>> 30\n"
+        code += "\n"
+
+code += f"2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V8_0_S8_0[0/4]\n"
+code += f"vec_accu = vec_product & vec_2x_2p30m1\n"
+code += f"vec_uuV8_rrV8 = vec_accu\n"
+code += f"2x vec_product = vec_product unsigned>> 30\n"
+code += f"vec_accu = vec_product & vec_2x_2p30m1\n"
+code += f"vec_uuV9_rrV9 = vec_accu\n"
+
+
 
 
 

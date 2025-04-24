@@ -50,12 +50,6 @@ stack64 stack_x29
 
 enter uint256_from_big30
 
-push2xint64 calleesaved_x18, calleesaved_x19
-push2xint64 calleesaved_x20, calleesaved_x21
-push2xint64 calleesaved_x22, calleesaved_x23
-push2xint64 calleesaved_x24, calleesaved_x25
-push2xint64 calleesaved_x26, calleesaved_x27
-push2xint64 calleesaved_x28, calleesaved_x29
 
 
 limb30_0 = mem32[pointer_big30]
@@ -99,12 +93,6 @@ mem64[pointer_uint256 + 16] = limb64_2
 mem64[pointer_uint256 + 24] = limb64_3
 
 
-pop2xint64 calleesaved_x28, calleesaved_x29
-pop2xint64 calleesaved_x26, calleesaved_x27
-pop2xint64 calleesaved_x24, calleesaved_x25
-pop2xint64 calleesaved_x22, calleesaved_x23
-pop2xint64 calleesaved_x20, calleesaved_x21
-pop2xint64 calleesaved_x18, calleesaved_x19
 
 
 

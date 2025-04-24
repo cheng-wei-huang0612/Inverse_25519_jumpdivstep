@@ -60,12 +60,6 @@ stack64 stack_x29
 
 enter inner_update
 
-push2xint64 calleesaved_x18, calleesaved_x19
-push2xint64 calleesaved_x20, calleesaved_x21
-push2xint64 calleesaved_x22, calleesaved_x23
-push2xint64 calleesaved_x24, calleesaved_x25
-push2xint64 calleesaved_x26, calleesaved_x27
-push2xint64 calleesaved_x28, calleesaved_x29
 
 
 f = mem64[pointer_f]
@@ -128,13 +122,6 @@ mem64[pointer_uuvvrrss + 8] = new_vv
 tmp = r * vv
 new_ss = tmp + s * ss
 mem64[pointer_uuvvrrss + 24] = new_ss
-
-pop2xint64 calleesaved_x28, calleesaved_x29
-pop2xint64 calleesaved_x26, calleesaved_x27
-pop2xint64 calleesaved_x24, calleesaved_x25
-pop2xint64 calleesaved_x22, calleesaved_x23
-pop2xint64 calleesaved_x20, calleesaved_x21
-pop2xint64 calleesaved_x18, calleesaved_x19
 
 
 

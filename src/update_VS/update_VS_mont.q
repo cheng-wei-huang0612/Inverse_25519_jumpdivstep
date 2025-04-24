@@ -145,16 +145,17 @@ vec_uu1_rr1_vv1_ss1[1/2] = vv1ss1
 # and 
 # tmp += [uu0 * V, rr0 * V]
 
-reg128 vec_tmp0
-reg128 vec_tmp1
-reg128 vec_tmp2
-reg128 vec_tmp3
-reg128 vec_tmp4
-reg128 vec_tmp5
-reg128 vec_tmp6
-reg128 vec_tmp7
-reg128 vec_tmp8
-reg128 vec_tmp9
+reg128 vec_uuV0_rrV0
+reg128 vec_uuV1_rrV1
+reg128 vec_uuV2_rrV2
+reg128 vec_uuV3_rrV3
+reg128 vec_uuV4_rrV4
+reg128 vec_uuV5_rrV5
+reg128 vec_uuV6_rrV6
+reg128 vec_uuV7_rrV7
+reg128 vec_uuV8_rrV8
+reg128 vec_uuV9_rrV9
+reg128 vec_uuV10_rrV10
 
 
 reg128 vec_product
@@ -178,54 +179,34 @@ int64 2p15m1
 4x vec_4x_2p30m19 = 2p30m19
 4x vec_4x_2p15m1 = 2p15m1
 
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[0/4]
-vec_tmp0 = vec_product & vec_2x_2p30m1
+vec_uuV0_rrV0 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[1/4]
-vec_tmp1 = vec_product & vec_2x_2p30m1
+vec_uuV1_rrV1 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[0/4]
-vec_tmp2 = vec_product & vec_2x_2p30m1
+vec_uuV2_rrV2 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[1/4]
-vec_tmp3 = vec_product & vec_2x_2p30m1
+vec_uuV3_rrV3 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[0/4]
-vec_tmp4 = vec_product & vec_2x_2p30m1
+vec_uuV4_rrV4 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[1/4]
-vec_tmp5 = vec_product & vec_2x_2p30m1
+vec_uuV5_rrV5 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[0/4]
-vec_tmp6 = vec_product & vec_2x_2p30m1
+vec_uuV6_rrV6 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[1/4]
-vec_tmp7 = vec_product & vec_2x_2p30m1
+vec_uuV7_rrV7 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-
 2x vec_product += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V8_0_S8_0[0/4]
-vec_tmp8 = vec_product & vec_2x_2p30m1
+vec_uuV8_rrV8 = vec_product & vec_2x_2p30m1
 2x vec_product = vec_product unsigned>> 30
-
-vec_tmp9 = vec_product & vec_2x_2p30m1
-
+vec_uuV9_rrV9 = vec_product & vec_2x_2p30m1
 
 
 # Compute l0
@@ -235,7 +216,7 @@ reg128 vec_l0
 reg128 vec_M
 2x vec_M = 678152731
 
-4x vec_l0 = vec_tmp0 * vec_M
+4x vec_l0 = vec_uuV0_rrV0 * vec_M
 vec_l0 = vec_l0 & vec_2x_2p30m1
 
 
@@ -249,33 +230,51 @@ reg128 vec_accu
 
 2x vec_product += vec_4x_2p30m19[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV0_rrV0 += vec_accu
+2x vec_product = vec_product >> 30
 
 2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV1_rrV1 += vec_accu
+2x vec_product = vec_product >> 30
+
 2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV2_rrV2 += vec_accu
+2x vec_product = vec_product >> 30
+
 2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV3_rrV3 += vec_accu
+2x vec_product = vec_product >> 30
+
 2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV4_rrV4 += vec_accu
+2x vec_product = vec_product >> 30
+
 2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV5_rrV5 += vec_accu
+2x vec_product = vec_product >> 30
+
 2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV6_rrV6 += vec_accu
+2x vec_product = vec_product >> 30
+
 2x vec_product += vec_4x_2p30m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV7_rrV7 += vec_accu
+2x vec_product = vec_product >> 30
+
 
 2x vec_product += vec_4x_2p15m1[0] unsigned* vec_l0[0/4]
 vec_accu = vec_product & vec_2x_2p30m1
-2x vec_tmp0 += vec_accu
+2x vec_uuV8_rrV8 += vec_accu
+2x vec_product = vec_product >> 30
+vec_accu = vec_product & vec_2x_2p30m1
+2x vec_uuV9_rrV9 += vec_accu
 
 
 
@@ -285,42 +284,84 @@ vec_accu = vec_product & vec_2x_2p30m1
 reg128 vec_carry
 2x vec_carry = 0
 
-2x vec_carry = vec_tmp0 unsigned>> 30
-vec_tmp0 = vec_tmp0 & vec_2x_2p30m1
-2x vec_tmp1 = vec_tmp1 + vec_carry
+2x vec_carry = vec_uuV0_rrV0 unsigned>> 30
+vec_uuV0_rrV0 = vec_uuV0_rrV0 & vec_2x_2p30m1
+2x vec_uuV1_rrV1 = vec_uuV1_rrV1 + vec_carry
 
-2x vec_carry = vec_tmp1 unsigned>> 30
-vec_tmp1 = vec_tmp1 & vec_2x_2p30m1
-2x vec_tmp2 = vec_tmp2 + vec_carry
+2x vec_carry = vec_uuV1_rrV1 unsigned>> 30
+vec_uuV1_rrV1 = vec_uuV1_rrV1 & vec_2x_2p30m1
+2x vec_uuV2_rrV2 = vec_uuV2_rrV2 + vec_carry
 
-2x vec_carry = vec_tmp2 unsigned>> 30
-vec_tmp2 = vec_tmp2 & vec_2x_2p30m1
-2x vec_tmp3 = vec_tmp3 + vec_carry
+2x vec_carry = vec_uuV2_rrV2 unsigned>> 30
+vec_uuV2_rrV2 = vec_uuV2_rrV2 & vec_2x_2p30m1
+2x vec_uuV3_rrV3 = vec_uuV3_rrV3 + vec_carry
 
-2x vec_carry = vec_tmp3 unsigned>> 30
-vec_tmp3 = vec_tmp3 & vec_2x_2p30m1
-2x vec_tmp4 = vec_tmp4 + vec_carry
+2x vec_carry = vec_uuV3_rrV3 unsigned>> 30
+vec_uuV3_rrV3 = vec_uuV3_rrV3 & vec_2x_2p30m1
+2x vec_uuV4_rrV4 = vec_uuV4_rrV4 + vec_carry
 
-2x vec_carry = vec_tmp4 unsigned>> 30
-vec_tmp4 = vec_tmp4 & vec_2x_2p30m1
-2x vec_tmp5 = vec_tmp5 + vec_carry
+2x vec_carry = vec_uuV4_rrV4 unsigned>> 30
+vec_uuV4_rrV4 = vec_uuV4_rrV4 & vec_2x_2p30m1
+2x vec_uuV5_rrV5 = vec_uuV5_rrV5 + vec_carry
 
-2x vec_carry = vec_tmp5 unsigned>> 30
-vec_tmp5 = vec_tmp5 & vec_2x_2p30m1
-2x vec_tmp6 = vec_tmp6 + vec_carry
+2x vec_carry = vec_uuV5_rrV5 unsigned>> 30
+vec_uuV5_rrV5 = vec_uuV5_rrV5 & vec_2x_2p30m1
+2x vec_uuV6_rrV6 = vec_uuV6_rrV6 + vec_carry
 
-2x vec_carry = vec_tmp6 unsigned>> 30
-vec_tmp6 = vec_tmp6 & vec_2x_2p30m1
-2x vec_tmp7 = vec_tmp7 + vec_carry
+2x vec_carry = vec_uuV6_rrV6 unsigned>> 30
+vec_uuV6_rrV6 = vec_uuV6_rrV6 & vec_2x_2p30m1
+2x vec_uuV7_rrV7 = vec_uuV7_rrV7 + vec_carry
 
-2x vec_carry = vec_tmp7 unsigned>> 30
-vec_tmp7 = vec_tmp7 & vec_2x_2p30m1
-2x vec_tmp8 = vec_tmp8 + vec_carry
+2x vec_carry = vec_uuV7_rrV7 unsigned>> 30
+vec_uuV7_rrV7 = vec_uuV7_rrV7 & vec_2x_2p30m1
+2x vec_uuV8_rrV8 = vec_uuV8_rrV8 + vec_carry
 
-2x vec_carry = vec_tmp8 unsigned>> 30
-vec_tmp8 = vec_tmp8 & vec_2x_2p30m1
-2x vec_tmp9 = vec_tmp9 + vec_carry
+2x vec_carry = vec_uuV8_rrV8 unsigned>> 30
+vec_uuV8_rrV8 = vec_uuV8_rrV8 & vec_2x_2p30m1
+2x vec_uuV9_rrV9 = vec_uuV9_rrV9 + vec_carry
 
+
+
+# vec_uuV_rrV[1:11] += [uu1, rr1] * V[0:9]
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V0_V1_S0_S1[0/4]
+vec_uuV1_rrV1 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V0_V1_S0_S1[1/4]
+vec_uuV2_rrV2 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V2_V3_S2_S3[0/4]
+vec_uuV3_rrV3 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V2_V3_S2_S3[1/4]
+vec_uuV4_rrV4 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V4_V5_S4_S5[0/4]
+vec_uuV5_rrV5 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V4_V5_S4_S5[1/4]
+vec_uuV6_rrV6 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V6_V7_S6_S7[0/4]
+vec_uuV7_rrV7 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V6_V7_S6_S7[1/4]
+vec_uuV8_rrV8 = vec_product & vec_2x_2p30m1
+2x vec_product = vec_product unsigned>> 30
+
+2x vec_product += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V8_0_S8_0[0/4]
+vec_accu = vec_product & vec_2x_2p30m1
+vec_uuV8_rrV8 = vec_accu
+2x vec_product = vec_product unsigned>> 30
+vec_accu = vec_product & vec_2x_2p30m1
+vec_uuV9_rrV9 = vec_accu
 pop2x8b calleesaved_v14, calleesaved_v15
 pop2x8b calleesaved_v12, calleesaved_v13
 pop2x8b calleesaved_v10, calleesaved_v11
