@@ -68,7 +68,9 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             grs = (g & 0xFFFFF) - ( (int64_t) 1 << 62 );
 
             for (int k = 0; k < 20; k++) { 
+                if (i == 0 && j == 0) {printf("grs = %lld\n", grs);};
                 divstep(&delta, &fuv, &grs); 
+                if (i == 0 && j == 0) {printf("grs = %lld\n\n", grs);};
             }
 
 
