@@ -65,6 +65,9 @@ int main(void){
         op = vec_in[i];
         t0 = hal_get_time();
         cpt_inv(&rop, &op);
+        cpt_inv(&rop, &op);
+        cpt_inv(&rop, &op);
+        cpt_inv(&rop, &op);
 
         t1 = hal_get_time();
         times[i] = (t1 - t0)>>2;
