@@ -9,7 +9,7 @@ SRC = $(wildcard ../src/cpt_inv_func2.c \
 	             ../src/update_FG/update_FG.S \
 	             ../src/update_VS/update_VS_mont_neon.c \
 	             ../src/inner_update/inner_update.S \
-	             ../src/divstepx20/divstepx20.S \
+	             ../src/divstep/divstep.S \
 	             ../src/extraction/extraction.S \
 				 ../src/sign_adjustment/sign_adjustment.S\
 				 ../src/big30_and_uint256/big30_from_uint256.S \

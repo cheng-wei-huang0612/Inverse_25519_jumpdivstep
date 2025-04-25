@@ -10,7 +10,7 @@
 #include <gmp.h>
 
 
-extern void divstep(int64_t *delta, int64_t *fuv, int64_t *grs);
+extern void divstepx20(int64_t *delta, int64_t *fuv, int64_t *grs);
 extern void inner_update(int64_t *f, int64_t *g, int64_t *uuvvrrss, int64_t *uvrs );
 extern void sign_adjustment(big30_t *inv30, big30_t *F, big30_t *V);
 extern void extraction(int64_t *uvrs, int64_t *fuv, int64_t *grs);
@@ -67,12 +67,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             fuv = (f & 0xFFFFF) - ( (int64_t) 1 << 41 );
             grs = (g & 0xFFFFF) - ( (int64_t) 1 << 62 );
 
-            for (int k = 0; k < 20; k++) { 
-                if (i == 0 && j == 0) { printf("grs = %lld\n",grs);}
-                divstep(&delta, &fuv, &grs); 
-                if (i == 0 && j == 0) { printf("grs = %lld\n",grs);}
-            }
-            /*divstepx20(&delta, &fuv, &grs); */
+            divstepx20(&delta, &fuv, &grs); 
 
 
 
