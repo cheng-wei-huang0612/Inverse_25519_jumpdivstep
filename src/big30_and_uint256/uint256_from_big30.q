@@ -22,44 +22,16 @@ int64 limb30_8
 int64 tmp
 
 
-caller calleesaved_x18
-caller calleesaved_x19
-stack64 stack_x18
-stack64 stack_x19
-caller calleesaved_x20
-caller calleesaved_x21
-stack64 stack_x20
-stack64 stack_x21
-caller calleesaved_x22
-caller calleesaved_x23
-stack64 stack_x22
-stack64 stack_x23
-caller calleesaved_x24
-caller calleesaved_x25
-stack64 stack_x24
-stack64 stack_x25
-caller calleesaved_x26
-caller calleesaved_x27
-stack64 stack_x26
-stack64 stack_x27
-caller calleesaved_x28
-caller calleesaved_x29
-stack64 stack_x28
-stack64 stack_x29
 
 
 enter uint256_from_big30
 
 
 
-limb30_0 = mem32[pointer_big30]
-limb30_1 = mem32[pointer_big30 + 4]
-limb30_2 = mem32[pointer_big30 + 8]
-limb30_3 = mem32[pointer_big30 + 12]
-limb30_4 = mem32[pointer_big30 + 16]
-limb30_5 = mem32[pointer_big30 + 20]
-limb30_6 = mem32[pointer_big30 + 24]
-limb30_7 = mem32[pointer_big30 + 28]
+limb30_0, limb30_1 = mem64[pointer_big30]
+limb30_2, limb30_3 = mem64[pointer_big30 + 8]
+limb30_4, limb30_5 = mem64[pointer_big30 + 16]
+limb30_6, limb30_7 = mem64[pointer_big30 + 24]
 limb30_8 = mem32[pointer_big30 + 32]
 
 
@@ -87,10 +59,8 @@ limb64_3 = limb30_6 | limb30_7
 limb64_3 = limb64_3 | tmp
 
 
-mem64[pointer_uint256] = limb64_0
-mem64[pointer_uint256 + 8] = limb64_1
-mem64[pointer_uint256 + 16] = limb64_2
-mem64[pointer_uint256 + 24] = limb64_3
+mem128[pointer_uint256] = limb64_0, limb64_1
+mem128[pointer_uint256 + 16] = limb64_2, limb64_3
 
 
 
