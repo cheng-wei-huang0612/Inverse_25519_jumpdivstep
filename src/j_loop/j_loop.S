@@ -199,1445 +199,1425 @@ sub x12,x12,x10
 # asm 2: sub <grs=x13,<grs=x13,<2p62=x11
 sub x13,x13,x11
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#12, <grs=int64#14, #1
-# asm 2: and >g0_and_1=x11, <grs=x13, #1
-and x11, x13, #1
+# qhasm: int64 oldG
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm: int64 h
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#12, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x11, xzr, gt
-csel x14, x11, xzr, gt
+# qhasm: int64 z
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm: int64 minus_one
 
-# qhasm:     free c_mask
+# qhasm: int64 delta_new
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm: minus_one = 1
+# asm 1: mov >minus_one=int64#12, #1
+# asm 2: mov >minus_one=x11, #1
+mov x11, #1
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
-
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#14,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x13,<fuv=x12,mi
-csel x12,x13,x12,mi
-
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#14,<neg_fuv=int64#15,<grs=int64#14,mi
-# asm 2: csel >grs_new=x13,<neg_fuv=x14,<grs=x13,mi
-csel x13,x14,x13,mi
-
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
-
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#12,<g0_and_1=int64#12
-# asm 2: neg >grs=x11,<g0_and_1=x11
+# qhasm: minus_one = -minus_one
+# asm 1: neg >minus_one=int64#12,<minus_one=int64#12
+# asm 2: neg >minus_one=x11,<minus_one=x11
 neg x11,x11
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#12, <grs=int64#12, <fuv=int64#13
-# asm 2: and  >grs=x11, <grs=x11, <fuv=x12
-and  x11, x11, x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#12,<grs=int64#12,<grs_new=int64#14
-# asm 2: add <grs=x11,<grs=x11,<grs_new=x13
-add x11,x11,x13
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#12, #1
-# asm 2: asr >grs=x11, <grs=x11, #1
-asr x11, x11, #1
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
-
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
-
-# qhasm:     free c_mask
-
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
-
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
-
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
-
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
-
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
-
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
-
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
 
-# qhasm:     g0_and_1 = grs & 1
-# asm 1: and >g0_and_1=int64#14, <grs=int64#12, #1
-# asm 2: and >g0_and_1=x13, <grs=x11, #1
-and x13, x11, #1
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
 
-# qhasm:     delta - 0!
-# asm 1: cmp <delta=int64#1,#0
-# asm 2: cmp <delta=x0,#0
-cmp x0,#0
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
 
-# qhasm:     c_mask = g0_and_1 if signed> else 0 
-# asm 1: csel >c_mask=int64#15, <g0_and_1=int64#14, xzr, gt
-# asm 2: csel >c_mask=x14, <g0_and_1=x13, xzr, gt
-csel x14, x13, xzr, gt
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
 
-# qhasm:     c_mask = -c_mask!   
-# asm 1: negs >c_mask=int64#15,<c_mask=int64#15
-# asm 2: negs >c_mask=x14,<c_mask=x14
-negs x14,x14
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
 
-# qhasm:     free c_mask
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
 
-# qhasm:     neg_fuv = -fuv
-# asm 1: neg >neg_fuv=int64#15,<fuv=int64#13
-# asm 2: neg >neg_fuv=x14,<fuv=x12
-neg x14,x12
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
 
-# qhasm:     neg_delta = -delta
-# asm 1: neg >neg_delta=int64#16,<delta=int64#1
-# asm 2: neg >neg_delta=x15,<delta=x0
-neg x15,x0
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
 
-# qhasm:     fuv = grs if negative else fuv
-# asm 1: csel >fuv=int64#13,<grs=int64#12,<fuv=int64#13,mi
-# asm 2: csel >fuv=x12,<grs=x11,<fuv=x12,mi
-csel x12,x11,x12,mi
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
 
-# qhasm:     grs_new = neg_fuv if negative else grs 
-# asm 1: csel >grs_new=int64#12,<neg_fuv=int64#15,<grs=int64#12,mi
-# asm 2: csel >grs_new=x11,<neg_fuv=x14,<grs=x11,mi
-csel x11,x14,x11,mi
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#17,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x16,<delta=x0,<minus_one=x11,ne
+csel x16,x0,x11,ne
 
-# qhasm:     delta = neg_delta if negative else delta
-# asm 1: csel >delta=int64#1,<neg_delta=int64#16,<delta=int64#1,mi
-# asm 2: csel >delta=x0,<neg_delta=x15,<delta=x0,mi
-csel x0,x15,x0,mi
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
 
-# qhasm:     grs = -g0_and_1
-# asm 1: neg >grs=int64#14,<g0_and_1=int64#14
-# asm 2: neg >grs=x13,<g0_and_1=x13
-neg x13,x13
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#18,<delta=int64#1,#1
+# asm 2: add >delta_new=x17,<delta=x0,#1
+add x17,x0,#1
 
-# qhasm:     grs = grs & fuv
-# asm 1: and  >grs=int64#14, <grs=int64#14, <fuv=int64#13
-# asm 2: and  >grs=x13, <grs=x13, <fuv=x12
-and  x13, x13, x12
-
-# qhasm:     grs += grs_new
-# asm 1: add <grs=int64#14,<grs=int64#14,<grs_new=int64#12
-# asm 2: add <grs=x13,<grs=x13,<grs_new=x11
-add x13,x13,x11
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
 
 # qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#12, <grs=int64#14, #1
-# asm 2: asr >grs=x11, <grs=x13, #1
-asr x11, x13, #1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
 
-# qhasm:     delta += 2
-# asm 1: add <delta=int64#1,<delta=int64#1,#2
-# asm 2: add <delta=x0,<delta=x0,#2
-add x0,x0,#2
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
+
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
+
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#17,#0
+# asm 2: cmp <z=x16,#0
+cmp x16,#0
+
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#13, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x12, <oldG=x14, <fuv=x12, ge
+csel x12, x14, x12, ge
+
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#14, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x13, <h=x15, <grs=x13, lt
+csel x13, x15, x13, lt
+
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#18, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x17, <delta=x0, lt
+csel x0, x17, x0, lt
+
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#15,<grs=int64#14
+# asm 2: mov >oldG=x14,<grs=x13
+mov x14,x13
+
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#16,<grs=int64#14,<fuv=int64#13
+# asm 2: add >h=x15,<grs=x13,<fuv=x12
+add x15,x13,x12
+
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#14, #1
+# asm 2: tst <grs=x13, #1
+tst x13, #1
+
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#12,<delta=int64#1,<minus_one=int64#12,ne
+# asm 2: csel >z=x11,<delta=x0,<minus_one=x11,ne
+csel x11,x0,x11,ne
+
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#16,<grs=int64#14,<h=int64#16,eq
+# asm 2: csel >h=x15,<grs=x13,<h=x15,eq
+csel x15,x13,x15,eq
+
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#17,<delta=int64#1,#1
+# asm 2: add >delta_new=x16,<delta=x0,#1
+add x16,x0,#1
+
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#14,<grs=int64#14,<fuv=int64#13
+# asm 2: sub <grs=x13,<grs=x13,<fuv=x12
+sub x13,x13,x12
+
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#14, <grs=int64#14, #1
+# asm 2: asr >grs=x13, <grs=x13, #1
+asr x13, x13, #1
+
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#16, <h=int64#16, #1
+# asm 2: asr >h=x15, <h=x15, #1
+asr x15, x15, #1
+
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#1,<delta=int64#1
+# asm 2: neg >delta=x0,<delta=x0
+neg x0,x0
+
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#12,#0
+# asm 2: cmp <z=x11,#0
+cmp x11,#0
+
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#12, <oldG=int64#15, <fuv=int64#13, ge
+# asm 2: csel >fuv=x11, <oldG=x14, <fuv=x12, ge
+csel x11, x14, x12, ge
+
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#13, <h=int64#16, <grs=int64#14, lt
+# asm 2: csel >grs=x12, <h=x15, <grs=x13, lt
+csel x12, x15, x13, lt
+
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#1, <delta_new=int64#17, <delta=int64#1, lt
+# asm 2: csel >delta=x0, <delta_new=x16, <delta=x0, lt
+csel x0, x16, x0, lt
 
 # qhasm: int64 u
 
@@ -1648,54 +1628,54 @@ add x0,x0,#2
 # qhasm: int64 s
 
 # qhasm: v = fuv
-# asm 1: mov >v=int64#1,<fuv=int64#13
-# asm 2: mov >v=x0,<fuv=x12
-mov x0,x12
-
-# qhasm: v = v + 1048576
-# asm 1: add >v=int64#1,<v=int64#1,#1048576
-# asm 2: add >v=x0,<v=x0,#1048576
-add x0,x0,#1048576
-
-# qhasm: v = v + 2p41
-# asm 1: add >v=int64#1,<v=int64#1,<2p41=int64#11
-# asm 2: add >v=x0,<v=x0,<2p41=x10
-add x0,x0,x10
-
-# qhasm: v = v signed>> 42
-# asm 1: asr >v=int64#1, <v=int64#1, #42
-# asm 2: asr >v=x0, <v=x0, #42
-asr x0, x0, #42
-
-# qhasm: u = fuv + 1048576
-# asm 1: add >u=int64#13,<fuv=int64#13,#1048576
-# asm 2: add >u=x12,<fuv=x12,#1048576
-add x12,x12,#1048576
-
-# qhasm: u = u << 22
-# asm 1: lsl >u=int64#13, <u=int64#13, #22
-# asm 2: lsl >u=x12, <u=x12, #22
-lsl x12, x12, #22
-
-# qhasm: u = u signed>> 43
-# asm 1: asr >u=int64#13, <u=int64#13, #43
-# asm 2: asr >u=x12, <u=x12, #43
-asr x12, x12, #43
-
-# qhasm: s = grs
-# asm 1: mov >s=int64#14,<grs=int64#12
-# asm 2: mov >s=x13,<grs=x11
+# asm 1: mov >v=int64#14,<fuv=int64#12
+# asm 2: mov >v=x13,<fuv=x11
 mov x13,x11
 
-# qhasm: s = s + 1048576
-# asm 1: add >s=int64#14,<s=int64#14,#1048576
-# asm 2: add >s=x13,<s=x13,#1048576
+# qhasm: v = v + 1048576
+# asm 1: add >v=int64#14,<v=int64#14,#1048576
+# asm 2: add >v=x13,<v=x13,#1048576
 add x13,x13,#1048576
 
+# qhasm: v = v + 2p41
+# asm 1: add >v=int64#14,<v=int64#14,<2p41=int64#11
+# asm 2: add >v=x13,<v=x13,<2p41=x10
+add x13,x13,x10
+
+# qhasm: v = v signed>> 42
+# asm 1: asr >v=int64#14, <v=int64#14, #42
+# asm 2: asr >v=x13, <v=x13, #42
+asr x13, x13, #42
+
+# qhasm: u = fuv + 1048576
+# asm 1: add >u=int64#12,<fuv=int64#12,#1048576
+# asm 2: add >u=x11,<fuv=x11,#1048576
+add x11,x11,#1048576
+
+# qhasm: u = u << 22
+# asm 1: lsl >u=int64#12, <u=int64#12, #22
+# asm 2: lsl >u=x11, <u=x11, #22
+lsl x11, x11, #22
+
+# qhasm: u = u signed>> 43
+# asm 1: asr >u=int64#12, <u=int64#12, #43
+# asm 2: asr >u=x11, <u=x11, #43
+asr x11, x11, #43
+
+# qhasm: s = grs
+# asm 1: mov >s=int64#15,<grs=int64#13
+# asm 2: mov >s=x14,<grs=x12
+mov x14,x12
+
+# qhasm: s = s + 1048576
+# asm 1: add >s=int64#15,<s=int64#15,#1048576
+# asm 2: add >s=x14,<s=x14,#1048576
+add x14,x14,#1048576
+
 # qhasm: s = s + 2p41
-# asm 1: add >s=int64#11,<s=int64#14,<2p41=int64#11
-# asm 2: add >s=x10,<s=x13,<2p41=x10
-add x10,x13,x10
+# asm 1: add >s=int64#11,<s=int64#15,<2p41=int64#11
+# asm 2: add >s=x10,<s=x14,<2p41=x10
+add x10,x14,x10
 
 # qhasm: s = s signed>> 42
 # asm 1: asr >s=int64#11, <s=int64#11, #42
@@ -1703,19 +1683,19 @@ add x10,x13,x10
 asr x10, x10, #42
 
 # qhasm: r = grs + 1048576
-# asm 1: add >r=int64#12,<grs=int64#12,#1048576
-# asm 2: add >r=x11,<grs=x11,#1048576
-add x11,x11,#1048576
+# asm 1: add >r=int64#13,<grs=int64#13,#1048576
+# asm 2: add >r=x12,<grs=x12,#1048576
+add x12,x12,#1048576
 
 # qhasm: r = r << 22
-# asm 1: lsl >r=int64#12, <r=int64#12, #22
-# asm 2: lsl >r=x11, <r=x11, #22
-lsl x11, x11, #22
+# asm 1: lsl >r=int64#13, <r=int64#13, #22
+# asm 2: lsl >r=x12, <r=x12, #22
+lsl x12, x12, #22
 
 # qhasm: r = r signed>> 43
-# asm 1: asr >r=int64#12, <r=int64#12, #43
-# asm 2: asr >r=x11, <r=x11, #43
-asr x11, x11, #43
+# asm 1: asr >r=int64#13, <r=int64#13, #43
+# asm 2: asr >r=x12, <r=x12, #43
+asr x12, x12, #43
 
 # qhasm: int64 tmp
 
@@ -1736,74 +1716,74 @@ asr x11, x11, #43
 # qhasm: int64 new_ss
 
 # qhasm: prod_lo = u * f
-# asm 1: mul >prod_lo=int64#14,<u=int64#13,<f=int64#5
-# asm 2: mul >prod_lo=x13,<u=x12,<f=x4
-mul x13,x12,x4
+# asm 1: mul >prod_lo=int64#15,<u=int64#12,<f=int64#5
+# asm 2: mul >prod_lo=x14,<u=x11,<f=x4
+mul x14,x11,x4
 
 # qhasm: prod_hi = u signed* f (hi)
-# asm 1: smulh >prod_hi=int64#15, <u=int64#13, <f=int64#5
-# asm 2: smulh >prod_hi=x14, <u=x12, <f=x4
-smulh x14, x12, x4
+# asm 1: smulh >prod_hi=int64#16, <u=int64#12, <f=int64#5
+# asm 2: smulh >prod_hi=x15, <u=x11, <f=x4
+smulh x15, x11, x4
 
 # qhasm: tmp = v * g
-# asm 1: mul >tmp=int64#16,<v=int64#1,<g=int64#6
-# asm 2: mul >tmp=x15,<v=x0,<g=x5
-mul x15,x0,x5
+# asm 1: mul >tmp=int64#17,<v=int64#14,<g=int64#6
+# asm 2: mul >tmp=x16,<v=x13,<g=x5
+mul x16,x13,x5
 
 # qhasm: prod_lo += tmp !
-# asm 1: adds <prod_lo=int64#14, <prod_lo=int64#14, <tmp=int64#16
-# asm 2: adds <prod_lo=x13, <prod_lo=x13, <tmp=x15
-adds x13, x13, x15
+# asm 1: adds <prod_lo=int64#15, <prod_lo=int64#15, <tmp=int64#17
+# asm 2: adds <prod_lo=x14, <prod_lo=x14, <tmp=x16
+adds x14, x14, x16
 
 # qhasm: tmp = v signed* g (hi)
-# asm 1: smulh >tmp=int64#16, <v=int64#1, <g=int64#6
-# asm 2: smulh >tmp=x15, <v=x0, <g=x5
-smulh x15, x0, x5
+# asm 1: smulh >tmp=int64#17, <v=int64#14, <g=int64#6
+# asm 2: smulh >tmp=x16, <v=x13, <g=x5
+smulh x16, x13, x5
 
 # qhasm: prod_hi = prod_hi + tmp + carry 
-# asm 1: adc >prod_hi=int64#15,<prod_hi=int64#15,<tmp=int64#16
-# asm 2: adc >prod_hi=x14,<prod_hi=x14,<tmp=x15
-adc x14,x14,x15
+# asm 1: adc >prod_hi=int64#16,<prod_hi=int64#16,<tmp=int64#17
+# asm 2: adc >prod_hi=x15,<prod_hi=x15,<tmp=x16
+adc x15,x15,x16
 
 # qhasm: prod_lo = prod_lo unsigned>> 20
-# asm 1: lsr >prod_lo=int64#14, <prod_lo=int64#14, #20
-# asm 2: lsr >prod_lo=x13, <prod_lo=x13, #20
-lsr x13, x13, #20
+# asm 1: lsr >prod_lo=int64#15, <prod_lo=int64#15, #20
+# asm 2: lsr >prod_lo=x14, <prod_lo=x14, #20
+lsr x14, x14, #20
 
 # qhasm: prod_hi = prod_hi << 44
-# asm 1: lsl >prod_hi=int64#15, <prod_hi=int64#15, #44
-# asm 2: lsl >prod_hi=x14, <prod_hi=x14, #44
-lsl x14, x14, #44
+# asm 1: lsl >prod_hi=int64#16, <prod_hi=int64#16, #44
+# asm 2: lsl >prod_hi=x15, <prod_hi=x15, #44
+lsl x15, x15, #44
 
 # qhasm: new_f = prod_lo | prod_hi
-# asm 1: orr >new_f=int64#14, <prod_lo=int64#14, <prod_hi=int64#15
-# asm 2: orr >new_f=x13, <prod_lo=x13, <prod_hi=x14
-orr x13, x13, x14
+# asm 1: orr >new_f=int64#15, <prod_lo=int64#15, <prod_hi=int64#16
+# asm 2: orr >new_f=x14, <prod_lo=x14, <prod_hi=x15
+orr x14, x14, x15
 
 # qhasm: mem64[pointer_f] = new_f
-# asm 1: str <new_f=int64#14, [<pointer_f=int64#2]
-# asm 2: str <new_f=x13, [<pointer_f=x1]
-str x13, [x1]
+# asm 1: str <new_f=int64#15, [<pointer_f=int64#2]
+# asm 2: str <new_f=x14, [<pointer_f=x1]
+str x14, [x1]
 
 # qhasm: prod_lo = r * f
-# asm 1: mul >prod_lo=int64#2,<r=int64#12,<f=int64#5
-# asm 2: mul >prod_lo=x1,<r=x11,<f=x4
-mul x1,x11,x4
+# asm 1: mul >prod_lo=int64#2,<r=int64#13,<f=int64#5
+# asm 2: mul >prod_lo=x1,<r=x12,<f=x4
+mul x1,x12,x4
 
 # qhasm: prod_hi = r signed* f (hi)
-# asm 1: smulh >prod_hi=int64#5, <r=int64#12, <f=int64#5
-# asm 2: smulh >prod_hi=x4, <r=x11, <f=x4
-smulh x4, x11, x4
+# asm 1: smulh >prod_hi=int64#5, <r=int64#13, <f=int64#5
+# asm 2: smulh >prod_hi=x4, <r=x12, <f=x4
+smulh x4, x12, x4
 
 # qhasm: tmp = s * g
-# asm 1: mul >tmp=int64#14,<s=int64#11,<g=int64#6
-# asm 2: mul >tmp=x13,<s=x10,<g=x5
-mul x13,x10,x5
+# asm 1: mul >tmp=int64#15,<s=int64#11,<g=int64#6
+# asm 2: mul >tmp=x14,<s=x10,<g=x5
+mul x14,x10,x5
 
 # qhasm: prod_lo += tmp !
-# asm 1: adds <prod_lo=int64#2, <prod_lo=int64#2, <tmp=int64#14
-# asm 2: adds <prod_lo=x1, <prod_lo=x1, <tmp=x13
-adds x1, x1, x13
+# asm 1: adds <prod_lo=int64#2, <prod_lo=int64#2, <tmp=int64#15
+# asm 2: adds <prod_lo=x1, <prod_lo=x1, <tmp=x14
+adds x1, x1, x14
 
 # qhasm: tmp = s signed* g (hi)
 # asm 1: smulh >tmp=int64#6, <s=int64#11, <g=int64#6
@@ -1836,19 +1816,19 @@ orr x1, x1, x4
 str x1, [x2]
 
 # qhasm: tmp = u * uu
-# asm 1: mul >tmp=int64#2,<u=int64#13,<uu=int64#7
-# asm 2: mul >tmp=x1,<u=x12,<uu=x6
-mul x1,x12,x6
+# asm 1: mul >tmp=int64#2,<u=int64#12,<uu=int64#7
+# asm 2: mul >tmp=x1,<u=x11,<uu=x6
+mul x1,x11,x6
 
 # qhasm: new_uu = tmp + v * rr
-# asm 1: madd >new_uu=int64#2, <v=int64#1, <rr=int64#9, <tmp=int64#2
-# asm 2: madd >new_uu=x1, <v=x0, <rr=x8, <tmp=x1
-madd x1, x0, x8, x1
+# asm 1: madd >new_uu=int64#2, <v=int64#14, <rr=int64#9, <tmp=int64#2
+# asm 2: madd >new_uu=x1, <v=x13, <rr=x8, <tmp=x1
+madd x1, x13, x8, x1
 
 # qhasm: tmp = r * uu
-# asm 1: mul >tmp=int64#3,<r=int64#12,<uu=int64#7
-# asm 2: mul >tmp=x2,<r=x11,<uu=x6
-mul x2,x11,x6
+# asm 1: mul >tmp=int64#3,<r=int64#13,<uu=int64#7
+# asm 2: mul >tmp=x2,<r=x12,<uu=x6
+mul x2,x12,x6
 
 # qhasm: new_rr = tmp + s * rr
 # asm 1: madd >new_rr=int64#3, <s=int64#11, <rr=int64#9, <tmp=int64#3
@@ -1856,34 +1836,34 @@ mul x2,x11,x6
 madd x2, x10, x8, x2
 
 # qhasm: tmp = u * vv
-# asm 1: mul >tmp=int64#5,<u=int64#13,<vv=int64#8
-# asm 2: mul >tmp=x4,<u=x12,<vv=x7
-mul x4,x12,x7
+# asm 1: mul >tmp=int64#5,<u=int64#12,<vv=int64#8
+# asm 2: mul >tmp=x4,<u=x11,<vv=x7
+mul x4,x11,x7
 
 # qhasm: new_vv = tmp + v * ss
-# asm 1: madd >new_vv=int64#1, <v=int64#1, <ss=int64#10, <tmp=int64#5
-# asm 2: madd >new_vv=x0, <v=x0, <ss=x9, <tmp=x4
-madd x0, x0, x9, x4
+# asm 1: madd >new_vv=int64#5, <v=int64#14, <ss=int64#10, <tmp=int64#5
+# asm 2: madd >new_vv=x4, <v=x13, <ss=x9, <tmp=x4
+madd x4, x13, x9, x4
 
 # qhasm: mem128[pointer_uuvvrrss] = new_uu, new_vv
-# asm 1: stp <new_uu=int64#2, <new_vv=int64#1, [<pointer_uuvvrrss=int64#4]
-# asm 2: stp <new_uu=x1, <new_vv=x0, [<pointer_uuvvrrss=x3]
-stp x1, x0, [x3]
+# asm 1: stp <new_uu=int64#2, <new_vv=int64#5, [<pointer_uuvvrrss=int64#4]
+# asm 2: stp <new_uu=x1, <new_vv=x4, [<pointer_uuvvrrss=x3]
+stp x1, x4, [x3]
 
 # qhasm: tmp = r * vv
-# asm 1: mul >tmp=int64#1,<r=int64#12,<vv=int64#8
-# asm 2: mul >tmp=x0,<r=x11,<vv=x7
-mul x0,x11,x7
+# asm 1: mul >tmp=int64#2,<r=int64#13,<vv=int64#8
+# asm 2: mul >tmp=x1,<r=x12,<vv=x7
+mul x1,x12,x7
 
 # qhasm: new_ss = tmp + s * ss
-# asm 1: madd >new_ss=int64#1, <s=int64#11, <ss=int64#10, <tmp=int64#1
-# asm 2: madd >new_ss=x0, <s=x10, <ss=x9, <tmp=x0
-madd x0, x10, x9, x0
+# asm 1: madd >new_ss=int64#2, <s=int64#11, <ss=int64#10, <tmp=int64#2
+# asm 2: madd >new_ss=x1, <s=x10, <ss=x9, <tmp=x1
+madd x1, x10, x9, x1
 
 # qhasm: mem128[pointer_uuvvrrss + 16] = new_rr, new_ss
-# asm 1: stp <new_rr=int64#3, <new_ss=int64#1, [<pointer_uuvvrrss=int64#4, #16]
-# asm 2: stp <new_rr=x2, <new_ss=x0, [<pointer_uuvvrrss=x3, #16]
-stp x2, x0, [x3, #16]
+# asm 1: stp <new_rr=int64#3, <new_ss=int64#2, [<pointer_uuvvrrss=int64#4, #16]
+# asm 2: stp <new_rr=x2, <new_ss=x1, [<pointer_uuvvrrss=x3, #16]
+stp x2, x1, [x3, #16]
 
 # qhasm: return
 ret

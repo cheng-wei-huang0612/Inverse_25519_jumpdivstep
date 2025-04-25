@@ -169,6 +169,54 @@
 
 # qhasm: int64 eighteen
 
+# qhasm: caller calleesaved_x18
+
+# qhasm: caller calleesaved_x19
+
+# qhasm: stack64 stack_x18
+
+# qhasm: stack64 stack_x19
+
+# qhasm: caller calleesaved_x20
+
+# qhasm: caller calleesaved_x21
+
+# qhasm: stack64 stack_x20
+
+# qhasm: stack64 stack_x21
+
+# qhasm: caller calleesaved_x22
+
+# qhasm: caller calleesaved_x23
+
+# qhasm: stack64 stack_x22
+
+# qhasm: stack64 stack_x23
+
+# qhasm: caller calleesaved_x24
+
+# qhasm: caller calleesaved_x25
+
+# qhasm: stack64 stack_x24
+
+# qhasm: stack64 stack_x25
+
+# qhasm: caller calleesaved_x26
+
+# qhasm: caller calleesaved_x27
+
+# qhasm: stack64 stack_x26
+
+# qhasm: stack64 stack_x27
+
+# qhasm: caller calleesaved_x28
+
+# qhasm: caller calleesaved_x29
+
+# qhasm: stack64 stack_x28
+
+# qhasm: stack64 stack_x29
+
 # qhasm: enter sign_adjustment
 .align 4
 .global _sign_adjustment

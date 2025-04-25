@@ -107,50 +107,132 @@
 
 # qhasm: int64 neg_delta
 
+# qhasm: int64 oldG
+
+# qhasm: int64 h
+
+# qhasm: int64 z
+
+# qhasm: int64 minus_one
+
+# qhasm: int64 delta_new
+
 # qhasm: enter divstep
 .align 4
 .global _divstep
 .global divstep
 _divstep:
 divstep:
-        ldr     x3,  [x0]           // δ
-        ldr     x4,  [x1]           // f
-        ldr     x11, [x2]           // g
 
-        //////////////////////////////////////////
-        // 1. 生成 c_mask 以及 MI 旗標
-        //////////////////////////////////////////
-        ands    x6,  x11, #1        // Z=1 ⇔ g0=0
-▶       ccmp    x3,  #0,  #2, ne   // 若 g0=1 再比較 δ>0
-                                     //   否則把 NZCV=0010 (N=0,Z=0,C=1,V=0)
-▶       csetm   x7,  mi             // x7 = 0 / –1；**不**改 NZCV
-        // －－此時：
-        //   MI = (δ>0 ∧ g0=1)
-        //   x7 = −1 〃            //
+# qhasm: delta = mem64[pointer_delta]
+# asm 1: ldr >delta=int64#4, [<pointer_delta=int64#1]
+# asm 2: ldr >delta=x3, [<pointer_delta=x0]
+ldr x3, [x0]
 
-        //////////////////////////////////////////
-        // 2. 依 MI 交換 (f,g,δ)
-        //////////////////////////////////////////
-        neg     x10, x4             // −f
-        neg     x9,  x3             // −δ
-        csel    x4,  x11, x4,  mi   // f′
-        csel    x11, x10, x11, mi   // g′
-        csel    x3,  x9,  x3,  mi   // δ′
+# qhasm: fuv = mem64[pointer_fuv]
+# asm 1: ldr >fuv=int64#5, [<pointer_fuv=int64#2]
+# asm 2: ldr >fuv=x4, [<pointer_fuv=x1]
+ldr x4, [x1]
 
-        //////////////////////////////////////////
-        // 3. g′ += ((−g0) & f′) ，再 >>1
-        //////////////////////////////////////////
-        neg     x12, x6             // −g0 = 0 / –1
-        and     x12, x12, x4
-        add     x11, x11, x12
-        asr     x11, x11, #1
+# qhasm: grs = mem64[pointer_grs]
+# asm 1: ldr >grs=int64#6, [<pointer_grs=int64#3]
+# asm 2: ldr >grs=x5, [<pointer_grs=x2]
+ldr x5, [x2]
 
-        add     x3,  x3,  #2        // δ′′ = δ′ + 2
+# qhasm: minus_one = 1
+# asm 1: mov >minus_one=int64#7, #1
+# asm 2: mov >minus_one=x6, #1
+mov x6, #1
 
-        //////////////////////////////////////////
-        // 4. 回寫
-        //////////////////////////////////////////
-        str     x3,  [x0]
-        str     x4,  [x1]
-        str     x11,[x2]
-        ret
+# qhasm: minus_one = -minus_one
+# asm 1: neg >minus_one=int64#7,<minus_one=int64#7
+# asm 2: neg >minus_one=x6,<minus_one=x6
+neg x6,x6
+
+# qhasm:     oldG = grs
+# asm 1: mov >oldG=int64#8,<grs=int64#6
+# asm 2: mov >oldG=x7,<grs=x5
+mov x7,x5
+
+# qhasm:     h = grs + fuv
+# asm 1: add >h=int64#9,<grs=int64#6,<fuv=int64#5
+# asm 2: add >h=x8,<grs=x5,<fuv=x4
+add x8,x5,x4
+
+# qhasm:     grs & 1 == 0
+# asm 1: tst <grs=int64#6, #1
+# asm 2: tst <grs=x5, #1
+tst x5, #1
+
+# qhasm:     z = delta if negativeequal else minus_one
+# asm 1: csel >z=int64#7,<delta=int64#4,<minus_one=int64#7,ne
+# asm 2: csel >z=x6,<delta=x3,<minus_one=x6,ne
+csel x6,x3,x6,ne
+
+# qhasm:     h = grs if equal else h
+# asm 1: csel >h=int64#9,<grs=int64#6,<h=int64#9,eq
+# asm 2: csel >h=x8,<grs=x5,<h=x8,eq
+csel x8,x5,x8,eq
+
+# qhasm:     delta_new = delta + 1
+# asm 1: add >delta_new=int64#10,<delta=int64#4,#1
+# asm 2: add >delta_new=x9,<delta=x3,#1
+add x9,x3,#1
+
+# qhasm:     grs -= fuv
+# asm 1: sub <grs=int64#6,<grs=int64#6,<fuv=int64#5
+# asm 2: sub <grs=x5,<grs=x5,<fuv=x4
+sub x5,x5,x4
+
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#6, <grs=int64#6, #1
+# asm 2: asr >grs=x5, <grs=x5, #1
+asr x5, x5, #1
+
+# qhasm:     h = h signed>> 1
+# asm 1: asr >h=int64#9, <h=int64#9, #1
+# asm 2: asr >h=x8, <h=x8, #1
+asr x8, x8, #1
+
+# qhasm:     delta = -delta
+# asm 1: neg >delta=int64#4,<delta=int64#4
+# asm 2: neg >delta=x3,<delta=x3
+neg x3,x3
+
+# qhasm:     z - 0
+# asm 1: cmp <z=int64#7,#0
+# asm 2: cmp <z=x6,#0
+cmp x6,#0
+
+# qhasm:     fuv = oldG if !signed< else fuv
+# asm 1: csel >fuv=int64#5, <oldG=int64#8, <fuv=int64#5, ge
+# asm 2: csel >fuv=x4, <oldG=x7, <fuv=x4, ge
+csel x4, x7, x4, ge
+
+# qhasm:     grs = h if signed< else grs
+# asm 1: csel >grs=int64#6, <h=int64#9, <grs=int64#6, lt
+# asm 2: csel >grs=x5, <h=x8, <grs=x5, lt
+csel x5, x8, x5, lt
+
+# qhasm:     delta = delta_new if signed< else delta
+# asm 1: csel >delta=int64#4, <delta_new=int64#10, <delta=int64#4, lt
+# asm 2: csel >delta=x3, <delta_new=x9, <delta=x3, lt
+csel x3, x9, x3, lt
+
+# qhasm: mem64[pointer_delta] = delta
+# asm 1: str <delta=int64#4, [<pointer_delta=int64#1]
+# asm 2: str <delta=x3, [<pointer_delta=x0]
+str x3, [x0]
+
+# qhasm: mem64[pointer_fuv] = fuv
+# asm 1: str <fuv=int64#5, [<pointer_fuv=int64#2]
+# asm 2: str <fuv=x4, [<pointer_fuv=x1]
+str x4, [x1]
+
+# qhasm: mem64[pointer_grs] = grs
+# asm 1: str <grs=int64#6, [<pointer_grs=int64#3]
+# asm 2: str <grs=x5, [<pointer_grs=x2]
+str x5, [x2]
+
+# qhasm: return
+ret

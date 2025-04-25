@@ -5,9 +5,14 @@
 extern void j_loop(int64_t *delta, int64_t *f, int64_t *g, int64_t *uuvvrrss);
 extern void j_loop_final(int64_t *delta, int64_t *f, int64_t *g, int64_t *uuvvrrss);
 
-extern void sign_adjustment(big30_t *inv30, big30_t *F, big30_t *V);
 extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
 extern void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss);
+extern void final_adjustment(uint256_t *inv, big30_t *F, big30_t *V);
+/*extern void sign_adjustment(big30_t *inv30, big30_t *F, big30_t *V);*/
+
+
+
+
 
 
 big30_t P = {
@@ -26,7 +31,6 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
     int64_t delta = 1;
     int64_t fuv, grs;
     int64_t uuvvrrss[4];
-    int64_t uvrs[4];
     
     big30_from_uint256(&G, x);
 
@@ -69,9 +73,10 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
     
     // sign_adjustment
     // V = sign(F) * V
-    big30_t inv30;
     
-    sign_adjustment(&inv30, &F, &V);
-
-    uint256_from_big30(inv, &inv30);
+    final_adjustment(inv, &F, &V);
+    /*big30_t inv30;*/
+    /*sign_adjustment(&inv30, &F, &V);*/
+    /**/
+    /*uint256_from_big30(inv, &inv30);*/
 }

@@ -21,7 +21,11 @@ int64 grs_final
 int64 neg_fuv
 int64 neg_delta
 
-
+int64 oldG
+int64 h
+int64 z
+int64 minus_one
+int64 delta_new
 
 enter divstep
 
@@ -29,35 +33,30 @@ delta = mem64[pointer_delta]
 fuv = mem64[pointer_fuv]
 grs = mem64[pointer_grs]
 
-
-g0_and_1 = grs & 1
-
-delta - 0!
-c_mask = g0_and_1 if signed> else 0 
-c_mask = -c_mask!
-
-neg_fuv = -fuv
-neg_delta = -delta
+minus_one = 1
+minus_one = -minus_one
 
 
-fuv = grs if negative else fuv
-grs_new = neg_fuv if negative else grs 
-delta = neg_delta if negative else delta
 
 
-grs = -g0_and_1
-# grs_final = -g0_and_1
+    oldG = grs
+    h = grs + fuv
 
-grs = grs & fuv
-# grs_new = (-g0_and_1) & fuv_new
+    grs & 1 == 0
+    z = delta if negativeequal else minus_one
+    h = grs if equal else h
 
-grs += grs_new
-# grs_new = ((-g0_and_1) & fuv) + (grs)
+    delta_new = delta + 1
+    grs -= fuv
 
-grs = grs signed>> 1
-# grs_new = (((-g0_and_1) & fuv) + (grs)) >> 1
+    grs = grs signed>> 1
+    h = h signed>> 1
+    delta = -delta
 
-delta += 2
+    z - 0
+    fuv = oldG if !signed< else fuv
+    grs = h if signed< else grs
+    delta = delta_new if signed< else delta
 
 
 mem64[pointer_delta] = delta
