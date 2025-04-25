@@ -1,16 +1,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "big30.h"
-/*#include "divstep.h"*/
-/*#include "uv_extraction.h"*/
-/*#include "update_FG.h"*/
-/*#include "update_VS_mont.h"*/
-/*#include "inner_update.h"*/
-/*#include "sign_adjustment.h"*/
-#include <gmp.h>
-
 
 extern void j_loop(int64_t *delta, int64_t *f, int64_t *g, int64_t *uuvvrrss);
+extern void j_loop_final(int64_t *delta, int64_t *f, int64_t *g, int64_t *uuvvrrss);
 
 extern void sign_adjustment(big30_t *inv30, big30_t *F, big30_t *V);
 extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
@@ -61,11 +54,9 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
         uuvvrrss[1] = 0;
         uuvvrrss[2] = 0;
         uuvvrrss[3] = 1;
-
-        for (int j = 0; j < 3; j++) {
-            j_loop(&delta, &f, &g, uuvvrrss);
-
-        }
+        j_loop(&delta, &f, &g, uuvvrrss);
+        j_loop(&delta, &f, &g, uuvvrrss);
+        j_loop_final(&delta, &f, &g, uuvvrrss);
 
 
         // Update FG

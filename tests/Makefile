@@ -7,6 +7,7 @@ LDFLAGS = -lgmp
 # 通用的 SRC (可以視需求篩選或增減)
 SRC = $(wildcard ../src/cpt_inv_func4.c \
 	  			 ../src/j_loop/j_loop.S \
+				 ../src/j_loop_final/j_loop_final.S \
 	             ../src/update_FG/update_FG.S \
 	             ../src/update_VS/update_VS_mont_neon.c \
 				 ../src/sign_adjustment/sign_adjustment.S\
