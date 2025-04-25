@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "uv_extraction.h"
 //#include "big30.h"
 #include <gmp.h>
 
