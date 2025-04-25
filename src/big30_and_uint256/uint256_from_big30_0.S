@@ -111,54 +111,6 @@
 
 # qhasm: int64 tmp
 
-# qhasm: caller calleesaved_x18
-
-# qhasm: caller calleesaved_x19
-
-# qhasm: stack64 stack_x18
-
-# qhasm: stack64 stack_x19
-
-# qhasm: caller calleesaved_x20
-
-# qhasm: caller calleesaved_x21
-
-# qhasm: stack64 stack_x20
-
-# qhasm: stack64 stack_x21
-
-# qhasm: caller calleesaved_x22
-
-# qhasm: caller calleesaved_x23
-
-# qhasm: stack64 stack_x22
-
-# qhasm: stack64 stack_x23
-
-# qhasm: caller calleesaved_x24
-
-# qhasm: caller calleesaved_x25
-
-# qhasm: stack64 stack_x24
-
-# qhasm: stack64 stack_x25
-
-# qhasm: caller calleesaved_x26
-
-# qhasm: caller calleesaved_x27
-
-# qhasm: stack64 stack_x26
-
-# qhasm: stack64 stack_x27
-
-# qhasm: caller calleesaved_x28
-
-# qhasm: caller calleesaved_x29
-
-# qhasm: stack64 stack_x28
-
-# qhasm: stack64 stack_x29
-
 # qhasm: enter uint256_from_big30
 .align 4
 .global _uint256_from_big30
@@ -166,45 +118,25 @@
 _uint256_from_big30:
 uint256_from_big30:
 
-# qhasm: limb30_0 = mem32[pointer_big30]
-# asm 1: ldr >limb30_0=int64#3%wregname, [<pointer_big30=int64#2]
-# asm 2: ldr >limb30_0=w2, [<pointer_big30=x1]
-ldr w2, [x1]
+# qhasm: limb30_0, limb30_1 = mem64[pointer_big30]
+# asm 1: ldp >limb30_0=int64#3%wregname, >limb30_1=int64#4%wregname, [<pointer_big30=int64#2]
+# asm 2: ldp >limb30_0=w2, >limb30_1=w3, [<pointer_big30=x1]
+ldp w2, w3, [x1]
 
-# qhasm: limb30_1 = mem32[pointer_big30 + 4]
-# asm 1: ldr >limb30_1=int64#4%wregname, [<pointer_big30=int64#2, 4]
-# asm 2: ldr >limb30_1=w3, [<pointer_big30=x1, 4]
-ldr w3, [x1, 4]
+# qhasm: limb30_2, limb30_3 = mem64[pointer_big30 + 8]
+# asm 1: ldp >limb30_2=int64#5%wregname, >limb30_3=int64#6%wregname, [<pointer_big30=int64#2, #8]
+# asm 2: ldp >limb30_2=w4, >limb30_3=w5, [<pointer_big30=x1, #8]
+ldp w4, w5, [x1, #8]
 
-# qhasm: limb30_2 = mem32[pointer_big30 + 8]
-# asm 1: ldr >limb30_2=int64#5%wregname, [<pointer_big30=int64#2, #8]
-# asm 2: ldr >limb30_2=w4, [<pointer_big30=x1, #8]
-ldr w4, [x1, #8]
+# qhasm: limb30_4, limb30_5 = mem64[pointer_big30 + 16]
+# asm 1: ldp >limb30_4=int64#7%wregname, >limb30_5=int64#8%wregname, [<pointer_big30=int64#2, #16]
+# asm 2: ldp >limb30_4=w6, >limb30_5=w7, [<pointer_big30=x1, #16]
+ldp w6, w7, [x1, #16]
 
-# qhasm: limb30_3 = mem32[pointer_big30 + 12]
-# asm 1: ldr >limb30_3=int64#6%wregname, [<pointer_big30=int64#2, #12]
-# asm 2: ldr >limb30_3=w5, [<pointer_big30=x1, #12]
-ldr w5, [x1, #12]
-
-# qhasm: limb30_4 = mem32[pointer_big30 + 16]
-# asm 1: ldr >limb30_4=int64#7%wregname, [<pointer_big30=int64#2, #16]
-# asm 2: ldr >limb30_4=w6, [<pointer_big30=x1, #16]
-ldr w6, [x1, #16]
-
-# qhasm: limb30_5 = mem32[pointer_big30 + 20]
-# asm 1: ldr >limb30_5=int64#8%wregname, [<pointer_big30=int64#2, #20]
-# asm 2: ldr >limb30_5=w7, [<pointer_big30=x1, #20]
-ldr w7, [x1, #20]
-
-# qhasm: limb30_6 = mem32[pointer_big30 + 24]
-# asm 1: ldr >limb30_6=int64#9%wregname, [<pointer_big30=int64#2, #24]
-# asm 2: ldr >limb30_6=w8, [<pointer_big30=x1, #24]
-ldr w8, [x1, #24]
-
-# qhasm: limb30_7 = mem32[pointer_big30 + 28]
-# asm 1: ldr >limb30_7=int64#10%wregname, [<pointer_big30=int64#2, #28]
-# asm 2: ldr >limb30_7=w9, [<pointer_big30=x1, #28]
-ldr w9, [x1, #28]
+# qhasm: limb30_6, limb30_7 = mem64[pointer_big30 + 24]
+# asm 1: ldp >limb30_6=int64#9%wregname, >limb30_7=int64#10%wregname, [<pointer_big30=int64#2, #24]
+# asm 2: ldp >limb30_6=w8, >limb30_7=w9, [<pointer_big30=x1, #24]
+ldp w8, w9, [x1, #24]
 
 # qhasm: limb30_8 = mem32[pointer_big30 + 32]
 # asm 1: ldr >limb30_8=int64#2%wregname, [<pointer_big30=int64#2, #32]
@@ -306,25 +238,15 @@ orr x5, x5, x6
 # asm 2: orr >limb64_3=x1, <limb64_3=x5, <tmp=x1
 orr x1, x5, x1
 
-# qhasm: mem64[pointer_uint256] = limb64_0
-# asm 1: str <limb64_0=int64#3, [<pointer_uint256=int64#1]
-# asm 2: str <limb64_0=x2, [<pointer_uint256=x0]
-str x2, [x0]
+# qhasm: mem128[pointer_uint256] = limb64_0, limb64_1
+# asm 1: stp <limb64_0=int64#3, <limb64_1=int64#4, [<pointer_uint256=int64#1]
+# asm 2: stp <limb64_0=x2, <limb64_1=x3, [<pointer_uint256=x0]
+stp x2, x3, [x0]
 
-# qhasm: mem64[pointer_uint256 + 8] = limb64_1
-# asm 1: str <limb64_1=int64#4, [<pointer_uint256=int64#1, #8]
-# asm 2: str <limb64_1=x3, [<pointer_uint256=x0, #8]
-str x3, [x0, #8]
-
-# qhasm: mem64[pointer_uint256 + 16] = limb64_2
-# asm 1: str <limb64_2=int64#5, [<pointer_uint256=int64#1, #16]
-# asm 2: str <limb64_2=x4, [<pointer_uint256=x0, #16]
-str x4, [x0, #16]
-
-# qhasm: mem64[pointer_uint256 + 24] = limb64_3
-# asm 1: str <limb64_3=int64#2, [<pointer_uint256=int64#1, #24]
-# asm 2: str <limb64_3=x1, [<pointer_uint256=x0, #24]
-str x1, [x0, #24]
+# qhasm: mem128[pointer_uint256 + 16] = limb64_2, limb64_3
+# asm 1: stp <limb64_2=int64#5, <limb64_3=int64#2, [<pointer_uint256=int64#1, #16]
+# asm 2: stp <limb64_2=x4, <limb64_3=x1, [<pointer_uint256=x0, #16]
+stp x4, x1, [x0, #16]
 
 # qhasm: return 
 ret
