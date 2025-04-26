@@ -73,14 +73,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -93,14 +93,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -113,14 +113,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -133,14 +133,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -153,14 +153,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -173,14 +173,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -193,14 +193,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -213,14 +213,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -233,14 +233,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -253,14 +253,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -273,14 +273,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -293,14 +293,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -313,14 +313,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -333,14 +333,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -353,14 +353,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -373,14 +373,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -393,14 +393,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -413,14 +413,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -433,14 +433,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
     oldG = grs
@@ -453,14 +453,14 @@ minus_one = -minus_one
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
     fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
+
 
     
 

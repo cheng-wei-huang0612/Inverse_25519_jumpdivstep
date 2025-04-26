@@ -39,14 +39,11 @@ grs = mem64[pointer_grs]
 for i in range(20):
     code += """
     g0_and_1 = grs & 1
-
     delta - 0!
-    
 
     c_mask = g0_and_1 if signed> else 0 
     c_mask = -c_mask!   
     free c_mask
-
 
     neg_fuv = -fuv
     neg_delta = -delta
