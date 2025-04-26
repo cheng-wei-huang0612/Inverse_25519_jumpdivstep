@@ -87,8 +87,6 @@ for i in range(20):
     fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
-
-
     """
 
 

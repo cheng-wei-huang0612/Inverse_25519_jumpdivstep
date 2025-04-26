@@ -80,15 +80,13 @@ for i in range(20):
     delta_new = delta + 1
     grs -= fuv
 
-    grs = grs signed>> 1
-    h = h signed>> 1
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
+    grs = grs signed>> 1
     delta = delta_new if signed< else delta
-
 
 
     """
