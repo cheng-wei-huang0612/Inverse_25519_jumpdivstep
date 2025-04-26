@@ -76,8 +76,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -96,8 +96,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -116,8 +116,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -136,8 +136,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -156,8 +156,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -176,8 +176,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -196,8 +196,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -216,8 +216,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -236,8 +236,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -256,8 +256,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -276,8 +276,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -296,8 +296,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -316,8 +316,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -336,8 +336,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -356,8 +356,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -376,8 +376,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -396,8 +396,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -416,8 +416,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -436,8 +436,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
@@ -456,8 +456,8 @@ minus_one = -minus_one
     delta = -delta
 
     z - 0
-    fuv = oldG if !signed< else fuv
     grs = h if signed< else grs
+    fuv = oldG if !signed< else fuv
     grs = grs signed>> 1
     delta = delta_new if signed< else delta
 
