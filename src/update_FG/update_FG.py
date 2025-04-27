@@ -1,6 +1,9 @@
 
+code = """enter update_FG"""
 
-input_variables_and_entrance = """
+
+
+code += """
 int64 pointerF
 int64 pointerG
 int64 pointeruuvvrrss
@@ -10,31 +13,83 @@ input pointerG
 input pointeruuvvrrss
 """
 
-entrance = """
-
-enter update_FG
+code += """
+# Calling Convention
 
 """
 
-# Calling Convension
-calling_conv_var = ""
-calling_conv = ""
-calling_conv_dump = ""
+
+for i in range(18, 29+1,1):
+    code += f"caller calleesaved_x{i}\n"
+for i in range(8, 15+1,1):
+    code += f"caller calleesaved_v{i}\n"
+
 for i in range(18, 29+1,2):
-    calling_conv_var += f"caller calleesaved_x{i}\n"
-    calling_conv_var += f"caller calleesaved_x{i+1}\n"
-    calling_conv_var += f"stack64 stack_x{i}\n"
-    calling_conv_var += f"stack64 stack_x{i+1}\n"
+    code += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
 
-    calling_conv += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
-for i in range(29, 18-1,-2):
-    calling_conv_dump += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
+for i in range(8, 15+1,2):
+    code += f"push2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
 
 
+code += """
+
+# F, G Data Layout Configuration
+
+"""
+
+for symbol in ["F","G"]:
+    
+    code += f"int64 {symbol}0{symbol}1\n"
+    code += f"int64 {symbol}2{symbol}3\n"
+    code += f"int64 {symbol}4{symbol}5\n"
+    code += f"int64 {symbol}6{symbol}7\n"
+    code += f"int64 {symbol}8\n"
+    code += "\n"
+    code += f"{symbol}0{symbol}1, {symbol}2{symbol}3 = mem128[pointer{symbol}]\n"
+    code += f"{symbol}4{symbol}5, {symbol}6{symbol}7 = mem128[pointer{symbol}+16]\n"
+    code += f"{symbol}8 = mem32[pointer{symbol}+32]\n"
+    code += "\n"
 
 
 
 
+for i in range(0,8,2):
+    code += f"reg128 vec_F{i}_F{i+1}_G{i}_G{i+1} \n"
+    code += "\n"
+    code += f"vec_F{i}_F{i+1}_G{i}_G{i+1}[0/2] = F{i}F{i+1} \n"
+    code += f"vec_F{i}_F{i+1}_G{i}_G{i+1}[1/2] = G{i}G{i+1} \n"
+    code += "\n"
+
+
+code += """
+reg128 vec_F8_0_G8_0
+vec_F8_0_G8_0[0/2] = F8
+vec_F8_0_G8_0[1/2] = G8
+"""
+
+
+code += """
+
+# uu, vv, rr, ss 
+# They are obtained in general-purpose register
+# The method to move them into Neon register matters
+
+# Simulating that they are given in the general-purpose register
+# int64 uu
+# int64 vv
+# int64 rr
+# int64 ss
+
+uu, vv = mem128[pointeruuvvrrss]
+rr, ss = mem128[pointeruuvvrrss + 16]
+
+
+# We try to move them into the shape
+# vec_uu0_rr0_vv0_ss0
+# vec_uu1_rr1_vv1_ss1
+
+
+"""
 
 
 # Data initialization, we do not need optimization
@@ -45,40 +100,16 @@ data_initialization = ""
 i = 0
 for symbol in ["uu","vv","rr","ss"]:
 
-    data_initialization_var += f"int64 {symbol}0{symbol}1\n"
-    data_initialization_var += f"int64 {symbol}0\n"
-    data_initialization_var += f"int64 {symbol}1\n"
-    data_initialization += f"{symbol}0{symbol}1 = mem64[pointeruuvvrrss + {8*i}]\n"
-    data_initialization += f"{symbol}0 = {symbol}0{symbol}1 & ((1 << 30)-1)\n"
-    data_initialization += f"{symbol}1 = ({symbol}0{symbol}1 >> 30) & ((1 << 32)-1)\n"
+    code += f"int64 {symbol}\n"
+    code += f"int64 {symbol}0\n"
+    code += f"int64 {symbol}1\n"
+    code += f"{symbol} = mem64[pointeruuvvrrss + {8*i}]\n"
+    code += f"{symbol}0 = {symbol} & ((1 << 30)-1)\n"
+    code += f"{symbol}1 = ({symbol} >> 30) & ((1 << 32)-1)\n"
     i += 1
 
-for symbol in ["F","G"]:
-    
-    data_initialization_var += f"int64 {symbol}0{symbol}1\n"
-    data_initialization_var += f"int64 {symbol}2{symbol}3\n"
-    data_initialization_var += f"int64 {symbol}4{symbol}5\n"
-    data_initialization_var += f"int64 {symbol}6{symbol}7\n"
-    data_initialization_var += f"int64 {symbol}8\n"
-    #data_initialization_var += f"int64 {symbol}0\n"
-    #data_initialization_var += f"int64 {symbol}1\n"
-    #data_initialization_var += f"int64 {symbol}2\n"
-    #data_initialization_var += f"int64 {symbol}3\n"
-    data_initialization += f"{symbol}0{symbol}1, {symbol}2{symbol}3 = mem128[pointer{symbol}]\n"
-    data_initialization += f"{symbol}4{symbol}5, {symbol}6{symbol}7 = mem128[pointer{symbol}+16]\n"
-    data_initialization += f"{symbol}8 = mem32[pointer{symbol}+32]\n"
-    #data_initialization += f"{symbol}0 = {symbol}0{symbol}1 & ((1 << 30)-1)\n"
-    #data_initialization += f"{symbol}1 = ({symbol}0{symbol}1 >> 30) & ((1 << 30)-1)\n"
 
-for i in range(0,8,2):
-    data_initialization_var += f"reg128 vec_F{i}_F{i+1}_G{i}_G{i+1} \n"
 
-    data_initialization += f"vec_F{i}_F{i+1}_G{i}_G{i+1}[0/2] = F{i}F{i+1} \n"
-    data_initialization += f"vec_F{i}_F{i+1}_G{i}_G{i+1}[1/2] = G{i}G{i+1} \n"
-
-data_initialization_var += "reg128 vec_F8_0_G8_0\n"
-data_initialization += f"vec_F8_0_G8_0[0/2] = F8 \n"
-data_initialization += f"vec_F8_0_G8_0[1/2] = G8 \n"
 
 for i in range(0,2):
     data_initialization_var += f"reg128 vec_uu{i}_rr{i}_vv{i}_ss{i}\n"
@@ -538,8 +569,16 @@ mem32[pointerG+32] = S10
 """
 
 
-code = ""
-code += input_variables_and_entrance
+calling_conv_var = ""
+calling_conv = ""
+calling_conv_dump = ""
+
+for i in range(15-1, 8-1,-2):
+    calling_conv_dump += f"pop2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
+for i in range(29, 18-1,-2):
+    calling_conv_dump += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
+
+
 
 code += calling_conv_var
 
@@ -565,7 +604,6 @@ int64 debug3
 """
 
 
-code += entrance
 
 code += """
 #Data initialization:

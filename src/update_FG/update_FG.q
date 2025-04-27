@@ -1,4 +1,4 @@
-
+enter update_FG
 int64 pointerF
 int64 pointerG
 int64 pointeruuvvrrss
@@ -6,57 +6,132 @@ int64 pointeruuvvrrss
 input pointerF
 input pointerG
 input pointeruuvvrrss
+
+# Calling Convention
+
 caller calleesaved_x18
 caller calleesaved_x19
-stack64 stack_x18
-stack64 stack_x19
 caller calleesaved_x20
 caller calleesaved_x21
-stack64 stack_x20
-stack64 stack_x21
 caller calleesaved_x22
 caller calleesaved_x23
-stack64 stack_x22
-stack64 stack_x23
 caller calleesaved_x24
 caller calleesaved_x25
-stack64 stack_x24
-stack64 stack_x25
 caller calleesaved_x26
 caller calleesaved_x27
-stack64 stack_x26
-stack64 stack_x27
 caller calleesaved_x28
 caller calleesaved_x29
-stack64 stack_x28
-stack64 stack_x29
-int64 uu0uu1
-int64 uu0
-int64 uu1
-int64 vv0vv1
-int64 vv0
-int64 vv1
-int64 rr0rr1
-int64 rr0
-int64 rr1
-int64 ss0ss1
-int64 ss0
-int64 ss1
+caller calleesaved_v8
+caller calleesaved_v9
+caller calleesaved_v10
+caller calleesaved_v11
+caller calleesaved_v12
+caller calleesaved_v13
+caller calleesaved_v14
+caller calleesaved_v15
+push2xint64 calleesaved_x18, calleesaved_x19
+push2xint64 calleesaved_x20, calleesaved_x21
+push2xint64 calleesaved_x22, calleesaved_x23
+push2xint64 calleesaved_x24, calleesaved_x25
+push2xint64 calleesaved_x26, calleesaved_x27
+push2xint64 calleesaved_x28, calleesaved_x29
+push2x8b calleesaved_v8, calleesaved_v9
+push2x8b calleesaved_v10, calleesaved_v11
+push2x8b calleesaved_v12, calleesaved_v13
+push2x8b calleesaved_v14, calleesaved_v15
+
+
+# F, G Data Layout Configuration
+
 int64 F0F1
 int64 F2F3
 int64 F4F5
 int64 F6F7
 int64 F8
+
+F0F1, F2F3 = mem128[pointerF]
+F4F5, F6F7 = mem128[pointerF+16]
+F8 = mem32[pointerF+32]
+
 int64 G0G1
 int64 G2G3
 int64 G4G5
 int64 G6G7
 int64 G8
+
+G0G1, G2G3 = mem128[pointerG]
+G4G5, G6G7 = mem128[pointerG+16]
+G8 = mem32[pointerG+32]
+
 reg128 vec_F0_F1_G0_G1 
+
+vec_F0_F1_G0_G1[0/2] = F0F1 
+vec_F0_F1_G0_G1[1/2] = G0G1 
+
 reg128 vec_F2_F3_G2_G3 
+
+vec_F2_F3_G2_G3[0/2] = F2F3 
+vec_F2_F3_G2_G3[1/2] = G2G3 
+
 reg128 vec_F4_F5_G4_G5 
+
+vec_F4_F5_G4_G5[0/2] = F4F5 
+vec_F4_F5_G4_G5[1/2] = G4G5 
+
 reg128 vec_F6_F7_G6_G7 
+
+vec_F6_F7_G6_G7[0/2] = F6F7 
+vec_F6_F7_G6_G7[1/2] = G6G7 
+
+
 reg128 vec_F8_0_G8_0
+vec_F8_0_G8_0[0/2] = F8
+vec_F8_0_G8_0[1/2] = G8
+
+
+# uu, vv, rr, ss 
+# They are obtained in general-purpose register
+# The method to move them into Neon register matters
+
+# Simulating that they are given in the general-purpose register
+int64 uu
+int64 vv
+int64 rr
+int64 ss
+
+uu, vv = mem128[pointeruuvvrrss]
+rr, ss = mem128[pointeruuvvrrss + 16]
+
+
+# We try to move them into the shape
+# vec_uu0_rr0_vv0_ss0
+# vec_uu1_rr1_vv1_ss1
+
+
+int64 uu
+int64 uu0
+int64 uu1
+uu = mem64[pointeruuvvrrss + 0]
+uu0 = uu & ((1 << 30)-1)
+uu1 = (uu >> 30) & ((1 << 32)-1)
+int64 vv
+int64 vv0
+int64 vv1
+vv = mem64[pointeruuvvrrss + 8]
+vv0 = vv & ((1 << 30)-1)
+vv1 = (vv >> 30) & ((1 << 32)-1)
+int64 rr
+int64 rr0
+int64 rr1
+rr = mem64[pointeruuvvrrss + 16]
+rr0 = rr & ((1 << 30)-1)
+rr1 = (rr >> 30) & ((1 << 32)-1)
+int64 ss
+int64 ss0
+int64 ss1
+ss = mem64[pointeruuvvrrss + 24]
+ss0 = ss & ((1 << 30)-1)
+ss1 = (ss >> 30) & ((1 << 32)-1)
 reg128 vec_uu0_rr0_vv0_ss0
 int64 uu0rr0
 int64 vv0ss0
@@ -152,45 +227,7 @@ int64 debug1
 int64 debug2
 int64 debug3
 
-
-enter update_FG
-
-
 #Data initialization:
-push2xint64 calleesaved_x18, calleesaved_x19
-push2xint64 calleesaved_x20, calleesaved_x21
-push2xint64 calleesaved_x22, calleesaved_x23
-push2xint64 calleesaved_x24, calleesaved_x25
-push2xint64 calleesaved_x26, calleesaved_x27
-push2xint64 calleesaved_x28, calleesaved_x29
-uu0uu1 = mem64[pointeruuvvrrss + 0]
-uu0 = uu0uu1 & ((1 << 30)-1)
-uu1 = (uu0uu1 >> 30) & ((1 << 32)-1)
-vv0vv1 = mem64[pointeruuvvrrss + 8]
-vv0 = vv0vv1 & ((1 << 30)-1)
-vv1 = (vv0vv1 >> 30) & ((1 << 32)-1)
-rr0rr1 = mem64[pointeruuvvrrss + 16]
-rr0 = rr0rr1 & ((1 << 30)-1)
-rr1 = (rr0rr1 >> 30) & ((1 << 32)-1)
-ss0ss1 = mem64[pointeruuvvrrss + 24]
-ss0 = ss0ss1 & ((1 << 30)-1)
-ss1 = (ss0ss1 >> 30) & ((1 << 32)-1)
-F0F1, F2F3 = mem128[pointerF]
-F4F5, F6F7 = mem128[pointerF+16]
-F8 = mem32[pointerF+32]
-G0G1, G2G3 = mem128[pointerG]
-G4G5, G6G7 = mem128[pointerG+16]
-G8 = mem32[pointerG+32]
-vec_F0_F1_G0_G1[0/2] = F0F1 
-vec_F0_F1_G0_G1[1/2] = G0G1 
-vec_F2_F3_G2_G3[0/2] = F2F3 
-vec_F2_F3_G2_G3[1/2] = G2G3 
-vec_F4_F5_G4_G5[0/2] = F4F5 
-vec_F4_F5_G4_G5[1/2] = G4G5 
-vec_F6_F7_G6_G7[0/2] = F6F7 
-vec_F6_F7_G6_G7[1/2] = G6G7 
-vec_F8_0_G8_0[0/2] = F8 
-vec_F8_0_G8_0[1/2] = G8 
 rr0 = rr0 << 32
 uu0rr0 = uu0 | rr0
 vec_uu0_rr0_vv0_ss0[0/2] = uu0rr0
@@ -621,6 +658,10 @@ R10 = vec_R10_0_S10_0[0/2]
 mem32[pointerF+32] = R10
 S10 = vec_R10_0_S10_0[1/2]
 mem32[pointerG+32] = S10
+pop2x8b calleesaved_v14, calleesaved_v15
+pop2x8b calleesaved_v12, calleesaved_v13
+pop2x8b calleesaved_v10, calleesaved_v11
+pop2x8b calleesaved_v8, calleesaved_v9
 pop2xint64 calleesaved_x28, calleesaved_x29
 pop2xint64 calleesaved_x26, calleesaved_x27
 pop2xint64 calleesaved_x24, calleesaved_x25

@@ -7,7 +7,9 @@
 #include "prg.h"
 #include "big30_mpz.h"
 
-void gmp_linear_comb(
+extern void update_FG(big30_t *F, big30_t *G, const int64_t *uuvvrrss);
+
+void gmp_update_FG(
     big30_t *F, big30_t *G,
     const int64_t *uuvvrrss
 ) {
@@ -45,6 +47,17 @@ void gmp_linear_comb(
     mpz_clears(mpF, mpG, mpu, mpv, mpr, mps, mpSum, mpTmp, NULL);
 }
 
+void one_test(big30_t *F, big30_t *G, const int64_t *uuvvrrss) {
+
+    big30_t F_for_gmp, G_for_gmp;
+
+    gmp_update_FG(F, G, uuvvrrss);
+    update_FG(F, G, uuvvrrss);
+
+
+}
+
+
 
 
 int main(void) {
@@ -63,6 +76,14 @@ int main(void) {
     random_gmp_in_range(mpr, rstate, 61);
     random_gmp_in_range(mps, rstate, 61);
 
+    printf("operands: \n");
+    gmp_printf("mpF = %Zd\n", mpF);
+    gmp_printf("mpG = %Zd\n", mpG);
+    gmp_printf("mpu = %Zd\n", mpu);
+    gmp_printf("mpv = %Zd\n", mpv);
+    gmp_printf("mpr = %Zd\n", mpr);
+    gmp_printf("mps = %Zd\n", mps);
+
     big30_t F, G;
     int64_t uuvvrrss[4];
     big30_from_mpz(&F, mpF);
@@ -75,22 +96,17 @@ int main(void) {
 
     gmp_linear_comb(&F, &G, uuvvrrss);
 
-
     mpz_from_big30(mpGMPF, &F);
     mpz_from_big30(mpGMPG, &G);
 
-    gmp_printf("mpF = %Zd\n", mpF);
-    gmp_printf("mpG = %Zd\n", mpG);
-    gmp_printf("mpu = %Zd\n", mpu);
-    gmp_printf("mpv = %Zd\n", mpv);
-    gmp_printf("mpr = %Zd\n", mpr);
-    gmp_printf("mps = %Zd\n", mps);
 
     gmp_printf("mpGMPF = %Zd\n", mpGMPF);
     gmp_printf("mpGMPG = %Zd\n", mpGMPG);
 
     gmp_printf("\nsage: (((%Zd) * (%Zd) + (%Zd) * (%Zd))>>60) == (%Zd)\n", mpu, mpF, mpv, mpG, mpGMPF);
     gmp_printf("\nsage: (((%Zd) * (%Zd) + (%Zd) * (%Zd))>>60) == (%Zd)\n", mpr, mpF, mps, mpG, mpGMPG);
+
+
 
     return 0;
 }

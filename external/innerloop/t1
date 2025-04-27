@@ -1,0 +1,1376 @@
+proc main (L0x7fffffffded0, L0x7fffffffded8, L0x7fffffffdee0, L0x7fffffffdee8, _extract_init, _loop20_init, andn, dontcare, equal, high, in, int64, low, r8, r9, rax, rcx, rdi, rdx, sar, subb, subc, temp, uint64) =
+{
+  true
+  &&
+  true
+}
+
+(* 0x0000555555555d1a in ._loop20_init () *)
+0x0000555555555d1a in ._loop20_init ();
+(* andn   %rdi,%r9,%rcx                            #! PC = 0x555555555d1a *)
+andn   %%rdi,%%r9,%%rcx                            #! 0x555555555d1a = 0x555555555d1a;
+(* 0x0000555555555d1f in ._loop20_init () *)
+0x0000555555555d1f in ._loop20_init ();
+(* andn   %rdx,%r9,%rax                            #! PC = 0x555555555d1f *)
+andn   %%rdx,%%r9,%%rax                            #! 0x555555555d1f = 0x555555555d1f;
+(* 0x0000555555555d24 in ._loop20_init () *)
+0x0000555555555d24 in ._loop20_init ();
+(* add    0x378(%rsp),%rcx                         #! EA = L0x7fffffffded8; Value = 0xfffffe0000000000; PC = 0x555555555d24 *)
+adds carry rcx L0x7fffffffded8 rcx;
+(* 0x0000555555555d2c in ._loop20_init () *)
+0x0000555555555d2c in ._loop20_init ();
+(* add    0x380(%rsp),%rax                         #! EA = L0x7fffffffdee0; Value = 0xc000000000000000; PC = 0x555555555d2c *)
+adds carry rax L0x7fffffffdee0 rax;
+(* 0x0000555555555d34 in ._loop20_init () *)
+0x0000555555555d34 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555d34 *)
+mov r10 -1@uint64;
+(* 0x0000555555555d3b in ._loop20_init () *)
+0x0000555555555d3b in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555d3b *)
+mov r11 rax;
+(* 0x0000555555555d3e in ._loop20_init () *)
+0x0000555555555d3e in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555d3e *)
+add r12 rax rcx;
+(* 0x0000555555555d42 in ._loop20_init () *)
+0x0000555555555d42 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555d42 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555d48 in ._loop20_init () *)
+0x0000555555555d48 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555d48 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555d4c in ._loop20_init () *)
+0x0000555555555d4c in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555d4c *)
+cmov r12 equal rax r12;
+(* 0x0000555555555d50 in ._loop20_init () *)
+0x0000555555555d50 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555d50 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555d54 in ._loop20_init () *)
+0x0000555555555d54 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555d54 *)
+subb carry rax rax rcx;
+(* 0x0000555555555d57 in ._loop20_init () *)
+0x0000555555555d57 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555d57 *)
+split 1 rax dontcare rax;
+(* 0x0000555555555d5a in ._loop20_init () *)
+0x0000555555555d5a in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555d5a *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555d5d in ._loop20_init () *)
+0x0000555555555d5d in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555d5d *)
+sub r8 0@int64 r8;
+(* 0x0000555555555d60 in ._loop20_init () *)
+0x0000555555555d60 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555d60 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555d64 in ._loop20_init () *)
+0x0000555555555d64 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555d64 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555d68 in ._loop20_init () *)
+0x0000555555555d68 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555d68 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555d6c in ._loop20_init () *)
+0x0000555555555d6c in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555d6c *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555d70 in ._loop20_init () *)
+0x0000555555555d70 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555d70 *)
+mov r10 -1@uint64;
+(* 0x0000555555555d77 in ._loop20_init () *)
+0x0000555555555d77 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555d77 *)
+mov r11 rax;
+(* 0x0000555555555d7a in ._loop20_init () *)
+0x0000555555555d7a in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555d7a *)
+add r12 rax rcx;
+(* 0x0000555555555d7e in ._loop20_init () *)
+0x0000555555555d7e in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555d7e *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555d84 in ._loop20_init () *)
+0x0000555555555d84 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555d84 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555d88 in ._loop20_init () *)
+0x0000555555555d88 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555d88 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555d8c in ._loop20_init () *)
+0x0000555555555d8c in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555d8c *)
+add r13 1@uint64 r8;
+(* 0x0000555555555d90 in ._loop20_init () *)
+0x0000555555555d90 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555d90 *)
+subb carry rax rax rcx;
+(* 0x0000555555555d93 in ._loop20_init () *)
+0x0000555555555d93 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555d93 *)
+split 1 rax dontcare rax;
+(* 0x0000555555555d96 in ._loop20_init () *)
+0x0000555555555d96 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555d96 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555d99 in ._loop20_init () *)
+0x0000555555555d99 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555d99 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555d9c in ._loop20_init () *)
+0x0000555555555d9c in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555d9c *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555da0 in ._loop20_init () *)
+0x0000555555555da0 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555da0 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555da4 in ._loop20_init () *)
+0x0000555555555da4 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555da4 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555da8 in ._loop20_init () *)
+0x0000555555555da8 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555da8 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555dac in ._loop20_init () *)
+0x0000555555555dac in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555dac *)
+mov r10 -1@uint64;
+(* 0x0000555555555db3 in ._loop20_init () *)
+0x0000555555555db3 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555db3 *)
+mov r11 rax;
+(* 0x0000555555555db6 in ._loop20_init () *)
+0x0000555555555db6 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555db6 *)
+add r12 rax rcx;
+(* 0x0000555555555dba in ._loop20_init () *)
+0x0000555555555dba in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555dba *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555dc0 in ._loop20_init () *)
+0x0000555555555dc0 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555dc0 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555dc4 in ._loop20_init () *)
+0x0000555555555dc4 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555dc4 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555dc8 in ._loop20_init () *)
+0x0000555555555dc8 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555dc8 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555dcc in ._loop20_init () *)
+0x0000555555555dcc in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555dcc *)
+subb carry rax rax rcx;
+(* 0x0000555555555dcf in ._loop20_init () *)
+0x0000555555555dcf in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555dcf *)
+split 1 rax dontcare rax;
+(* 0x0000555555555dd2 in ._loop20_init () *)
+0x0000555555555dd2 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555dd2 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555dd5 in ._loop20_init () *)
+0x0000555555555dd5 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555dd5 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555dd8 in ._loop20_init () *)
+0x0000555555555dd8 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555dd8 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555ddc in ._loop20_init () *)
+0x0000555555555ddc in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555ddc *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555de0 in ._loop20_init () *)
+0x0000555555555de0 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555de0 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555de4 in ._loop20_init () *)
+0x0000555555555de4 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555de4 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555de8 in ._loop20_init () *)
+0x0000555555555de8 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555de8 *)
+mov r10 -1@uint64;
+(* 0x0000555555555def in ._loop20_init () *)
+0x0000555555555def in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555def *)
+mov r11 rax;
+(* 0x0000555555555df2 in ._loop20_init () *)
+0x0000555555555df2 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555df2 *)
+add r12 rax rcx;
+(* 0x0000555555555df6 in ._loop20_init () *)
+0x0000555555555df6 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555df6 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555dfc in ._loop20_init () *)
+0x0000555555555dfc in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555dfc *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555e00 in ._loop20_init () *)
+0x0000555555555e00 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555e00 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555e04 in ._loop20_init () *)
+0x0000555555555e04 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555e04 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555e08 in ._loop20_init () *)
+0x0000555555555e08 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555e08 *)
+subb carry rax rax rcx;
+(* 0x0000555555555e0b in ._loop20_init () *)
+0x0000555555555e0b in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555e0b *)
+split 1 rax dontcare rax;
+(* 0x0000555555555e0e in ._loop20_init () *)
+0x0000555555555e0e in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555e0e *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555e11 in ._loop20_init () *)
+0x0000555555555e11 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555e11 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555e14 in ._loop20_init () *)
+0x0000555555555e14 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555e14 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555e18 in ._loop20_init () *)
+0x0000555555555e18 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555e18 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555e1c in ._loop20_init () *)
+0x0000555555555e1c in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555e1c *)
+cmov rax carry r12 rax;
+(* 0x0000555555555e20 in ._loop20_init () *)
+0x0000555555555e20 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555e20 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555e24 in ._loop20_init () *)
+0x0000555555555e24 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555e24 *)
+mov r10 -1@uint64;
+(* 0x0000555555555e2b in ._loop20_init () *)
+0x0000555555555e2b in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555e2b *)
+mov r11 rax;
+(* 0x0000555555555e2e in ._loop20_init () *)
+0x0000555555555e2e in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555e2e *)
+add r12 rax rcx;
+(* 0x0000555555555e32 in ._loop20_init () *)
+0x0000555555555e32 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555e32 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555e38 in ._loop20_init () *)
+0x0000555555555e38 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555e38 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555e3c in ._loop20_init () *)
+0x0000555555555e3c in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555e3c *)
+cmov r12 equal rax r12;
+(* 0x0000555555555e40 in ._loop20_init () *)
+0x0000555555555e40 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555e40 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555e44 in ._loop20_init () *)
+0x0000555555555e44 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555e44 *)
+subb carry rax rax rcx;
+(* 0x0000555555555e47 in ._loop20_init () *)
+0x0000555555555e47 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555e47 *)
+split 1 rax dontcare rax;
+(* 0x0000555555555e4a in ._loop20_init () *)
+0x0000555555555e4a in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555e4a *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555e4d in ._loop20_init () *)
+0x0000555555555e4d in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555e4d *)
+sub r8 0@int64 r8;
+(* 0x0000555555555e50 in ._loop20_init () *)
+0x0000555555555e50 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555e50 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555e54 in ._loop20_init () *)
+0x0000555555555e54 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555e54 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555e58 in ._loop20_init () *)
+0x0000555555555e58 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555e58 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555e5c in ._loop20_init () *)
+0x0000555555555e5c in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555e5c *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555e60 in ._loop20_init () *)
+0x0000555555555e60 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555e60 *)
+mov r10 -1@uint64;
+(* 0x0000555555555e67 in ._loop20_init () *)
+0x0000555555555e67 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555e67 *)
+mov r11 rax;
+(* 0x0000555555555e6a in ._loop20_init () *)
+0x0000555555555e6a in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555e6a *)
+add r12 rax rcx;
+(* 0x0000555555555e6e in ._loop20_init () *)
+0x0000555555555e6e in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555e6e *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555e74 in ._loop20_init () *)
+0x0000555555555e74 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555e74 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555e78 in ._loop20_init () *)
+0x0000555555555e78 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555e78 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555e7c in ._loop20_init () *)
+0x0000555555555e7c in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555e7c *)
+add r13 1@uint64 r8;
+(* 0x0000555555555e80 in ._loop20_init () *)
+0x0000555555555e80 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555e80 *)
+subb carry rax rax rcx;
+(* 0x0000555555555e83 in ._loop20_init () *)
+0x0000555555555e83 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555e83 *)
+split 1 rax dontcare rax;
+(* 0x0000555555555e86 in ._loop20_init () *)
+0x0000555555555e86 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555e86 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555e89 in ._loop20_init () *)
+0x0000555555555e89 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555e89 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555e8c in ._loop20_init () *)
+0x0000555555555e8c in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555e8c *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555e90 in ._loop20_init () *)
+0x0000555555555e90 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555e90 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555e94 in ._loop20_init () *)
+0x0000555555555e94 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555e94 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555e98 in ._loop20_init () *)
+0x0000555555555e98 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555e98 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555e9c in ._loop20_init () *)
+0x0000555555555e9c in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555e9c *)
+mov r10 -1@uint64;
+(* 0x0000555555555ea3 in ._loop20_init () *)
+0x0000555555555ea3 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555ea3 *)
+mov r11 rax;
+(* 0x0000555555555ea6 in ._loop20_init () *)
+0x0000555555555ea6 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555ea6 *)
+add r12 rax rcx;
+(* 0x0000555555555eaa in ._loop20_init () *)
+0x0000555555555eaa in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555eaa *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555eb0 in ._loop20_init () *)
+0x0000555555555eb0 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555eb0 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555eb4 in ._loop20_init () *)
+0x0000555555555eb4 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555eb4 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555eb8 in ._loop20_init () *)
+0x0000555555555eb8 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555eb8 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555ebc in ._loop20_init () *)
+0x0000555555555ebc in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555ebc *)
+subb carry rax rax rcx;
+(* 0x0000555555555ebf in ._loop20_init () *)
+0x0000555555555ebf in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555ebf *)
+split 1 rax dontcare rax;
+(* 0x0000555555555ec2 in ._loop20_init () *)
+0x0000555555555ec2 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555ec2 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555ec5 in ._loop20_init () *)
+0x0000555555555ec5 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555ec5 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555ec8 in ._loop20_init () *)
+0x0000555555555ec8 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555ec8 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555ecc in ._loop20_init () *)
+0x0000555555555ecc in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555ecc *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555ed0 in ._loop20_init () *)
+0x0000555555555ed0 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555ed0 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555ed4 in ._loop20_init () *)
+0x0000555555555ed4 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555ed4 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555ed8 in ._loop20_init () *)
+0x0000555555555ed8 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555ed8 *)
+mov r10 -1@uint64;
+(* 0x0000555555555edf in ._loop20_init () *)
+0x0000555555555edf in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555edf *)
+mov r11 rax;
+(* 0x0000555555555ee2 in ._loop20_init () *)
+0x0000555555555ee2 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555ee2 *)
+add r12 rax rcx;
+(* 0x0000555555555ee6 in ._loop20_init () *)
+0x0000555555555ee6 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555ee6 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555eec in ._loop20_init () *)
+0x0000555555555eec in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555eec *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555ef0 in ._loop20_init () *)
+0x0000555555555ef0 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555ef0 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555ef4 in ._loop20_init () *)
+0x0000555555555ef4 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555ef4 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555ef8 in ._loop20_init () *)
+0x0000555555555ef8 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555ef8 *)
+subb carry rax rax rcx;
+(* 0x0000555555555efb in ._loop20_init () *)
+0x0000555555555efb in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555efb *)
+split 1 rax dontcare rax;
+(* 0x0000555555555efe in ._loop20_init () *)
+0x0000555555555efe in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555efe *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555f01 in ._loop20_init () *)
+0x0000555555555f01 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555f01 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555f04 in ._loop20_init () *)
+0x0000555555555f04 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555f04 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555f08 in ._loop20_init () *)
+0x0000555555555f08 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555f08 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555f0c in ._loop20_init () *)
+0x0000555555555f0c in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555f0c *)
+cmov rax carry r12 rax;
+(* 0x0000555555555f10 in ._loop20_init () *)
+0x0000555555555f10 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555f10 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555f14 in ._loop20_init () *)
+0x0000555555555f14 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555f14 *)
+mov r10 -1@uint64;
+(* 0x0000555555555f1b in ._loop20_init () *)
+0x0000555555555f1b in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555f1b *)
+mov r11 rax;
+(* 0x0000555555555f1e in ._loop20_init () *)
+0x0000555555555f1e in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555f1e *)
+add r12 rax rcx;
+(* 0x0000555555555f22 in ._loop20_init () *)
+0x0000555555555f22 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555f22 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555f28 in ._loop20_init () *)
+0x0000555555555f28 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555f28 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555f2c in ._loop20_init () *)
+0x0000555555555f2c in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555f2c *)
+cmov r12 equal rax r12;
+(* 0x0000555555555f30 in ._loop20_init () *)
+0x0000555555555f30 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555f30 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555f34 in ._loop20_init () *)
+0x0000555555555f34 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555f34 *)
+subb carry rax rax rcx;
+(* 0x0000555555555f37 in ._loop20_init () *)
+0x0000555555555f37 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555f37 *)
+split 1 rax dontcare rax;
+(* 0x0000555555555f3a in ._loop20_init () *)
+0x0000555555555f3a in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555f3a *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555f3d in ._loop20_init () *)
+0x0000555555555f3d in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555f3d *)
+sub r8 0@int64 r8;
+(* 0x0000555555555f40 in ._loop20_init () *)
+0x0000555555555f40 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555f40 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555f44 in ._loop20_init () *)
+0x0000555555555f44 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555f44 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555f48 in ._loop20_init () *)
+0x0000555555555f48 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555f48 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555f4c in ._loop20_init () *)
+0x0000555555555f4c in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555f4c *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555f50 in ._loop20_init () *)
+0x0000555555555f50 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555f50 *)
+mov r10 -1@uint64;
+(* 0x0000555555555f57 in ._loop20_init () *)
+0x0000555555555f57 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555f57 *)
+mov r11 rax;
+(* 0x0000555555555f5a in ._loop20_init () *)
+0x0000555555555f5a in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555f5a *)
+add r12 rax rcx;
+(* 0x0000555555555f5e in ._loop20_init () *)
+0x0000555555555f5e in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555f5e *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555f64 in ._loop20_init () *)
+0x0000555555555f64 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555f64 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555f68 in ._loop20_init () *)
+0x0000555555555f68 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555f68 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555f6c in ._loop20_init () *)
+0x0000555555555f6c in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555f6c *)
+add r13 1@uint64 r8;
+(* 0x0000555555555f70 in ._loop20_init () *)
+0x0000555555555f70 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555f70 *)
+subb carry rax rax rcx;
+(* 0x0000555555555f73 in ._loop20_init () *)
+0x0000555555555f73 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555f73 *)
+split 1 rax dontcare rax;
+(* 0x0000555555555f76 in ._loop20_init () *)
+0x0000555555555f76 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555f76 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555f79 in ._loop20_init () *)
+0x0000555555555f79 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555f79 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555f7c in ._loop20_init () *)
+0x0000555555555f7c in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555f7c *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555f80 in ._loop20_init () *)
+0x0000555555555f80 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555f80 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555f84 in ._loop20_init () *)
+0x0000555555555f84 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555f84 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555f88 in ._loop20_init () *)
+0x0000555555555f88 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555f88 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555f8c in ._loop20_init () *)
+0x0000555555555f8c in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555f8c *)
+mov r10 -1@uint64;
+(* 0x0000555555555f93 in ._loop20_init () *)
+0x0000555555555f93 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555f93 *)
+mov r11 rax;
+(* 0x0000555555555f96 in ._loop20_init () *)
+0x0000555555555f96 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555f96 *)
+add r12 rax rcx;
+(* 0x0000555555555f9a in ._loop20_init () *)
+0x0000555555555f9a in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555f9a *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555fa0 in ._loop20_init () *)
+0x0000555555555fa0 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555fa0 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555fa4 in ._loop20_init () *)
+0x0000555555555fa4 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555fa4 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555fa8 in ._loop20_init () *)
+0x0000555555555fa8 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555fa8 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555fac in ._loop20_init () *)
+0x0000555555555fac in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555fac *)
+subb carry rax rax rcx;
+(* 0x0000555555555faf in ._loop20_init () *)
+0x0000555555555faf in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555faf *)
+split 1 rax dontcare rax;
+(* 0x0000555555555fb2 in ._loop20_init () *)
+0x0000555555555fb2 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555fb2 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555fb5 in ._loop20_init () *)
+0x0000555555555fb5 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555fb5 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555fb8 in ._loop20_init () *)
+0x0000555555555fb8 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555fb8 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555fbc in ._loop20_init () *)
+0x0000555555555fbc in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555fbc *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555fc0 in ._loop20_init () *)
+0x0000555555555fc0 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555fc0 *)
+cmov rax carry r12 rax;
+(* 0x0000555555555fc4 in ._loop20_init () *)
+0x0000555555555fc4 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555555fc4 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555555fc8 in ._loop20_init () *)
+0x0000555555555fc8 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555555fc8 *)
+mov r10 -1@uint64;
+(* 0x0000555555555fcf in ._loop20_init () *)
+0x0000555555555fcf in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555555fcf *)
+mov r11 rax;
+(* 0x0000555555555fd2 in ._loop20_init () *)
+0x0000555555555fd2 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555555fd2 *)
+add r12 rax rcx;
+(* 0x0000555555555fd6 in ._loop20_init () *)
+0x0000555555555fd6 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555555fd6 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555555fdc in ._loop20_init () *)
+0x0000555555555fdc in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555555fdc *)
+cmov r10 equal r10 r8;
+(* 0x0000555555555fe0 in ._loop20_init () *)
+0x0000555555555fe0 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555555fe0 *)
+cmov r12 equal rax r12;
+(* 0x0000555555555fe4 in ._loop20_init () *)
+0x0000555555555fe4 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555555fe4 *)
+add r13 1@uint64 r8;
+(* 0x0000555555555fe8 in ._loop20_init () *)
+0x0000555555555fe8 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555555fe8 *)
+subb carry rax rax rcx;
+(* 0x0000555555555feb in ._loop20_init () *)
+0x0000555555555feb in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555555feb *)
+split 1 rax dontcare rax;
+(* 0x0000555555555fee in ._loop20_init () *)
+0x0000555555555fee in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555555fee *)
+split 1 r12 dontcare r12;
+(* 0x0000555555555ff1 in ._loop20_init () *)
+0x0000555555555ff1 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555555ff1 *)
+sub r8 0@int64 r8;
+(* 0x0000555555555ff4 in ._loop20_init () *)
+0x0000555555555ff4 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555555ff4 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555555ff8 in ._loop20_init () *)
+0x0000555555555ff8 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555555ff8 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555555ffc in ._loop20_init () *)
+0x0000555555555ffc in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555555ffc *)
+cmov rax carry r12 rax;
+(* 0x0000555555556000 in ._loop20_init () *)
+0x0000555555556000 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555556000 *)
+cmov r8 carry r13 r8;
+(* 0x0000555555556004 in ._loop20_init () *)
+0x0000555555556004 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555556004 *)
+mov r10 -1@uint64;
+(* 0x000055555555600b in ._loop20_init () *)
+0x000055555555600b in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x55555555600b *)
+mov r11 rax;
+(* 0x000055555555600e in ._loop20_init () *)
+0x000055555555600e in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x55555555600e *)
+add r12 rax rcx;
+(* 0x0000555555556012 in ._loop20_init () *)
+0x0000555555556012 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555556012 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555556018 in ._loop20_init () *)
+0x0000555555556018 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555556018 *)
+cmov r10 equal r10 r8;
+(* 0x000055555555601c in ._loop20_init () *)
+0x000055555555601c in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x55555555601c *)
+cmov r12 equal rax r12;
+(* 0x0000555555556020 in ._loop20_init () *)
+0x0000555555556020 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555556020 *)
+add r13 1@uint64 r8;
+(* 0x0000555555556024 in ._loop20_init () *)
+0x0000555555556024 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555556024 *)
+subb carry rax rax rcx;
+(* 0x0000555555556027 in ._loop20_init () *)
+0x0000555555556027 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555556027 *)
+split 1 rax dontcare rax;
+(* 0x000055555555602a in ._loop20_init () *)
+0x000055555555602a in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x55555555602a *)
+split 1 r12 dontcare r12;
+(* 0x000055555555602d in ._loop20_init () *)
+0x000055555555602d in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x55555555602d *)
+sub r8 0@int64 r8;
+(* 0x0000555555556030 in ._loop20_init () *)
+0x0000555555556030 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555556030 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555556034 in ._loop20_init () *)
+0x0000555555556034 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555556034 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555556038 in ._loop20_init () *)
+0x0000555555556038 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555556038 *)
+cmov rax carry r12 rax;
+(* 0x000055555555603c in ._loop20_init () *)
+0x000055555555603c in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x55555555603c *)
+cmov r8 carry r13 r8;
+(* 0x0000555555556040 in ._loop20_init () *)
+0x0000555555556040 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555556040 *)
+mov r10 -1@uint64;
+(* 0x0000555555556047 in ._loop20_init () *)
+0x0000555555556047 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555556047 *)
+mov r11 rax;
+(* 0x000055555555604a in ._loop20_init () *)
+0x000055555555604a in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x55555555604a *)
+add r12 rax rcx;
+(* 0x000055555555604e in ._loop20_init () *)
+0x000055555555604e in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x55555555604e *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555556054 in ._loop20_init () *)
+0x0000555555556054 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555556054 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555556058 in ._loop20_init () *)
+0x0000555555556058 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555556058 *)
+cmov r12 equal rax r12;
+(* 0x000055555555605c in ._loop20_init () *)
+0x000055555555605c in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x55555555605c *)
+add r13 1@uint64 r8;
+(* 0x0000555555556060 in ._loop20_init () *)
+0x0000555555556060 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555556060 *)
+subb carry rax rax rcx;
+(* 0x0000555555556063 in ._loop20_init () *)
+0x0000555555556063 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555556063 *)
+split 1 rax dontcare rax;
+(* 0x0000555555556066 in ._loop20_init () *)
+0x0000555555556066 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555556066 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555556069 in ._loop20_init () *)
+0x0000555555556069 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555556069 *)
+sub r8 0@int64 r8;
+(* 0x000055555555606c in ._loop20_init () *)
+0x000055555555606c in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x55555555606c *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555556070 in ._loop20_init () *)
+0x0000555555556070 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555556070 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555556074 in ._loop20_init () *)
+0x0000555555556074 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555556074 *)
+cmov rax carry r12 rax;
+(* 0x0000555555556078 in ._loop20_init () *)
+0x0000555555556078 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555556078 *)
+cmov r8 carry r13 r8;
+(* 0x000055555555607c in ._loop20_init () *)
+0x000055555555607c in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x55555555607c *)
+mov r10 -1@uint64;
+(* 0x0000555555556083 in ._loop20_init () *)
+0x0000555555556083 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555556083 *)
+mov r11 rax;
+(* 0x0000555555556086 in ._loop20_init () *)
+0x0000555555556086 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555556086 *)
+add r12 rax rcx;
+(* 0x000055555555608a in ._loop20_init () *)
+0x000055555555608a in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x55555555608a *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555556090 in ._loop20_init () *)
+0x0000555555556090 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555556090 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555556094 in ._loop20_init () *)
+0x0000555555556094 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555556094 *)
+cmov r12 equal rax r12;
+(* 0x0000555555556098 in ._loop20_init () *)
+0x0000555555556098 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555556098 *)
+add r13 1@uint64 r8;
+(* 0x000055555555609c in ._loop20_init () *)
+0x000055555555609c in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x55555555609c *)
+subb carry rax rax rcx;
+(* 0x000055555555609f in ._loop20_init () *)
+0x000055555555609f in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x55555555609f *)
+split 1 rax dontcare rax;
+(* 0x00005555555560a2 in ._loop20_init () *)
+0x00005555555560a2 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x5555555560a2 *)
+split 1 r12 dontcare r12;
+(* 0x00005555555560a5 in ._loop20_init () *)
+0x00005555555560a5 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x5555555560a5 *)
+sub r8 0@int64 r8;
+(* 0x00005555555560a8 in ._loop20_init () *)
+0x00005555555560a8 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x5555555560a8 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x00005555555560ac in ._loop20_init () *)
+0x00005555555560ac in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x5555555560ac *)
+cmov rcx carry rcx r11;
+(* 0x00005555555560b0 in ._loop20_init () *)
+0x00005555555560b0 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x5555555560b0 *)
+cmov rax carry r12 rax;
+(* 0x00005555555560b4 in ._loop20_init () *)
+0x00005555555560b4 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x5555555560b4 *)
+cmov r8 carry r13 r8;
+(* 0x00005555555560b8 in ._loop20_init () *)
+0x00005555555560b8 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x5555555560b8 *)
+mov r10 -1@uint64;
+(* 0x00005555555560bf in ._loop20_init () *)
+0x00005555555560bf in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x5555555560bf *)
+mov r11 rax;
+(* 0x00005555555560c2 in ._loop20_init () *)
+0x00005555555560c2 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x5555555560c2 *)
+add r12 rax rcx;
+(* 0x00005555555560c6 in ._loop20_init () *)
+0x00005555555560c6 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x5555555560c6 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x00005555555560cc in ._loop20_init () *)
+0x00005555555560cc in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x5555555560cc *)
+cmov r10 equal r10 r8;
+(* 0x00005555555560d0 in ._loop20_init () *)
+0x00005555555560d0 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x5555555560d0 *)
+cmov r12 equal rax r12;
+(* 0x00005555555560d4 in ._loop20_init () *)
+0x00005555555560d4 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x5555555560d4 *)
+add r13 1@uint64 r8;
+(* 0x00005555555560d8 in ._loop20_init () *)
+0x00005555555560d8 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x5555555560d8 *)
+subb carry rax rax rcx;
+(* 0x00005555555560db in ._loop20_init () *)
+0x00005555555560db in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x5555555560db *)
+split 1 rax dontcare rax;
+(* 0x00005555555560de in ._loop20_init () *)
+0x00005555555560de in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x5555555560de *)
+split 1 r12 dontcare r12;
+(* 0x00005555555560e1 in ._loop20_init () *)
+0x00005555555560e1 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x5555555560e1 *)
+sub r8 0@int64 r8;
+(* 0x00005555555560e4 in ._loop20_init () *)
+0x00005555555560e4 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x5555555560e4 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x00005555555560e8 in ._loop20_init () *)
+0x00005555555560e8 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x5555555560e8 *)
+cmov rcx carry rcx r11;
+(* 0x00005555555560ec in ._loop20_init () *)
+0x00005555555560ec in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x5555555560ec *)
+cmov rax carry r12 rax;
+(* 0x00005555555560f0 in ._loop20_init () *)
+0x00005555555560f0 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x5555555560f0 *)
+cmov r8 carry r13 r8;
+(* 0x00005555555560f4 in ._loop20_init () *)
+0x00005555555560f4 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x5555555560f4 *)
+mov r10 -1@uint64;
+(* 0x00005555555560fb in ._loop20_init () *)
+0x00005555555560fb in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x5555555560fb *)
+mov r11 rax;
+(* 0x00005555555560fe in ._loop20_init () *)
+0x00005555555560fe in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x5555555560fe *)
+add r12 rax rcx;
+(* 0x0000555555556102 in ._loop20_init () *)
+0x0000555555556102 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x555555556102 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555556108 in ._loop20_init () *)
+0x0000555555556108 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555556108 *)
+cmov r10 equal r10 r8;
+(* 0x000055555555610c in ._loop20_init () *)
+0x000055555555610c in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x55555555610c *)
+cmov r12 equal rax r12;
+(* 0x0000555555556110 in ._loop20_init () *)
+0x0000555555556110 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555556110 *)
+add r13 1@uint64 r8;
+(* 0x0000555555556114 in ._loop20_init () *)
+0x0000555555556114 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555556114 *)
+subb carry rax rax rcx;
+(* 0x0000555555556117 in ._loop20_init () *)
+0x0000555555556117 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555556117 *)
+split 1 rax dontcare rax;
+(* 0x000055555555611a in ._loop20_init () *)
+0x000055555555611a in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x55555555611a *)
+split 1 r12 dontcare r12;
+(* 0x000055555555611d in ._loop20_init () *)
+0x000055555555611d in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x55555555611d *)
+sub r8 0@int64 r8;
+(* 0x0000555555556120 in ._loop20_init () *)
+0x0000555555556120 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555556120 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555556124 in ._loop20_init () *)
+0x0000555555556124 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555556124 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555556128 in ._loop20_init () *)
+0x0000555555556128 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555556128 *)
+cmov rax carry r12 rax;
+(* 0x000055555555612c in ._loop20_init () *)
+0x000055555555612c in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x55555555612c *)
+cmov r8 carry r13 r8;
+(* 0x0000555555556130 in ._loop20_init () *)
+0x0000555555556130 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x555555556130 *)
+mov r10 -1@uint64;
+(* 0x0000555555556137 in ._loop20_init () *)
+0x0000555555556137 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555556137 *)
+mov r11 rax;
+(* 0x000055555555613a in ._loop20_init () *)
+0x000055555555613a in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x55555555613a *)
+add r12 rax rcx;
+(* 0x000055555555613e in ._loop20_init () *)
+0x000055555555613e in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x55555555613e *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555556144 in ._loop20_init () *)
+0x0000555555556144 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555556144 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555556148 in ._loop20_init () *)
+0x0000555555556148 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555556148 *)
+cmov r12 equal rax r12;
+(* 0x000055555555614c in ._loop20_init () *)
+0x000055555555614c in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x55555555614c *)
+add r13 1@uint64 r8;
+(* 0x0000555555556150 in ._loop20_init () *)
+0x0000555555556150 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x555555556150 *)
+subb carry rax rax rcx;
+(* 0x0000555555556153 in ._loop20_init () *)
+0x0000555555556153 in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x555555556153 *)
+split 1 rax dontcare rax;
+(* 0x0000555555556156 in ._loop20_init () *)
+0x0000555555556156 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555556156 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555556159 in ._loop20_init () *)
+0x0000555555556159 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555556159 *)
+sub r8 0@int64 r8;
+(* 0x000055555555615c in ._loop20_init () *)
+0x000055555555615c in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x55555555615c *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x0000555555556160 in ._loop20_init () *)
+0x0000555555556160 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x555555556160 *)
+cmov rcx carry rcx r11;
+(* 0x0000555555556164 in ._loop20_init () *)
+0x0000555555556164 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x555555556164 *)
+cmov rax carry r12 rax;
+(* 0x0000555555556168 in ._loop20_init () *)
+0x0000555555556168 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x555555556168 *)
+cmov r8 carry r13 r8;
+(* 0x000055555555616c in ._loop20_init () *)
+0x000055555555616c in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x55555555616c *)
+mov r10 -1@uint64;
+(* 0x0000555555556173 in ._loop20_init () *)
+0x0000555555556173 in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x555555556173 *)
+mov r11 rax;
+(* 0x0000555555556176 in ._loop20_init () *)
+0x0000555555556176 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x555555556176 *)
+add r12 rax rcx;
+(* 0x000055555555617a in ._loop20_init () *)
+0x000055555555617a in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x55555555617a *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x0000555555556180 in ._loop20_init () *)
+0x0000555555556180 in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x555555556180 *)
+cmov r10 equal r10 r8;
+(* 0x0000555555556184 in ._loop20_init () *)
+0x0000555555556184 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x555555556184 *)
+cmov r12 equal rax r12;
+(* 0x0000555555556188 in ._loop20_init () *)
+0x0000555555556188 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x555555556188 *)
+add r13 1@uint64 r8;
+(* 0x000055555555618c in ._loop20_init () *)
+0x000055555555618c in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x55555555618c *)
+subb carry rax rax rcx;
+(* 0x000055555555618f in ._loop20_init () *)
+0x000055555555618f in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x55555555618f *)
+split 1 rax dontcare rax;
+(* 0x0000555555556192 in ._loop20_init () *)
+0x0000555555556192 in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x555555556192 *)
+split 1 r12 dontcare r12;
+(* 0x0000555555556195 in ._loop20_init () *)
+0x0000555555556195 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x555555556195 *)
+sub r8 0@int64 r8;
+(* 0x0000555555556198 in ._loop20_init () *)
+0x0000555555556198 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x555555556198 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x000055555555619c in ._loop20_init () *)
+0x000055555555619c in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x55555555619c *)
+cmov rcx carry rcx r11;
+(* 0x00005555555561a0 in ._loop20_init () *)
+0x00005555555561a0 in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x5555555561a0 *)
+cmov rax carry r12 rax;
+(* 0x00005555555561a4 in ._loop20_init () *)
+0x00005555555561a4 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x5555555561a4 *)
+cmov r8 carry r13 r8;
+(* 0x00005555555561a8 in ._loop20_init () *)
+0x00005555555561a8 in ._loop20_init ();
+(* mov    $0xffffffffffffffff,%r10                 #! PC = 0x5555555561a8 *)
+mov r10 -1@uint64;
+(* 0x00005555555561af in ._loop20_init () *)
+0x00005555555561af in ._loop20_init ();
+(* mov    %rax,%r11                                #! PC = 0x5555555561af *)
+mov r11 rax;
+(* 0x00005555555561b2 in ._loop20_init () *)
+0x00005555555561b2 in ._loop20_init ();
+(* lea    (%rax,%rcx,1),%r12                       #! PC = 0x5555555561b2 *)
+add r12 rax rcx;
+(* 0x00005555555561b6 in ._loop20_init () *)
+0x00005555555561b6 in ._loop20_init ();
+(* test   $0x1,%rax                                #! PC = 0x5555555561b6 *)
+split 1 dontcare low rax;
+subc equal dontcare low 1@uint64;
+(* 0x00005555555561bc in ._loop20_init () *)
+0x00005555555561bc in ._loop20_init ();
+(* cmovne %r8,%r10                                 #! PC = 0x5555555561bc *)
+cmov r10 equal r10 r8;
+(* 0x00005555555561c0 in ._loop20_init () *)
+0x00005555555561c0 in ._loop20_init ();
+(* cmove  %rax,%r12                                #! PC = 0x5555555561c0 *)
+cmov r12 equal rax r12;
+(* 0x00005555555561c4 in ._loop20_init () *)
+0x00005555555561c4 in ._loop20_init ();
+(* lea    0x1(%r8),%r13                            #! PC = 0x5555555561c4 *)
+add r13 1@uint64 r8;
+(* 0x00005555555561c8 in ._loop20_init () *)
+0x00005555555561c8 in ._loop20_init ();
+(* sub    %rcx,%rax                                #! PC = 0x5555555561c8 *)
+subb carry rax rax rcx;
+(* 0x00005555555561cb in ._loop20_init () *)
+0x00005555555561cb in ._loop20_init ();
+(* sar    %rax                                     #! PC = 0x5555555561cb *)
+split 1 rax dontcare rax;
+(* 0x00005555555561ce in ._loop20_init () *)
+0x00005555555561ce in ._loop20_init ();
+(* sar    %r12                                     #! PC = 0x5555555561ce *)
+split 1 r12 dontcare r12;
+(* 0x00005555555561d1 in ._loop20_init () *)
+0x00005555555561d1 in ._loop20_init ();
+(* neg    %r8                                      #! PC = 0x5555555561d1 *)
+sub r8 0@int64 r8;
+(* 0x00005555555561d4 in ._loop20_init () *)
+0x00005555555561d4 in ._loop20_init ();
+(* cmp    $0x0,%r10                                #! PC = 0x5555555561d4 *)
+split 63 high temp r10;
+subc carry temp high 1@uint64;
+(* 0x00005555555561d8 in ._loop20_init () *)
+0x00005555555561d8 in ._loop20_init ();
+(* cmovge %r11,%rcx                                #! PC = 0x5555555561d8 *)
+cmov rcx carry rcx r11;
+(* 0x00005555555561dc in ._loop20_init () *)
+0x00005555555561dc in ._loop20_init ();
+(* cmovl  %r12,%rax                                #! PC = 0x5555555561dc *)
+cmov rax carry r12 rax;
+(* 0x00005555555561e0 in ._loop20_init () *)
+0x00005555555561e0 in ._loop20_init ();
+(* cmovl  %r13,%r8                                 #! PC = 0x5555555561e0 *)
+cmov r8 carry r13 r8;
+(* 0x00005555555561e4 in ._extract_init () *)
+0x00005555555561e4 in ._extract_init ();
+(* mov    0x388(%rsp),%r10                         #! EA = L0x7fffffffdee8; Value = 0x0000020000100000; PC = 0x5555555561e4 *)
+mov r10 L0x7fffffffdee8;
+(* 0x00005555555561ec in ._extract_init () *)
+0x00005555555561ec in ._extract_init ();
+(* lea    (%rax,%r10,1),%r11                       #! PC = 0x5555555561ec *)
+add r11 rax r10;
+(* 0x00005555555561f0 in ._extract_init () *)
+0x00005555555561f0 in ._extract_init ();
+(* sar    $0x2a,%r11                               #! PC = 0x5555555561f0 *)
+sar    $0x2a,%%r11                               #! 0x5555555561f0 = 0x5555555561f0;
+(* 0x00005555555561f4 in ._extract_init () *)
+0x00005555555561f4 in ._extract_init ();
+(* mov    %rdx,%r12                                #! PC = 0x5555555561f4 *)
+mov r12 rdx;
+(* 0x00005555555561f7 in ._extract_init () *)
+0x00005555555561f7 in ._extract_init ();
+(* imul   %r11,%rdx                                #! PC = 0x5555555561f7 *)
+umull dontcare rdx r11 rdx;
+(* 0x00005555555561fb in ._extract_init () *)
+0x00005555555561fb in ._extract_init ();
+(* lea    (%rcx,%r10,1),%r10                       #! PC = 0x5555555561fb *)
+add r10 rcx r10;
+(* 0x00005555555561ff in ._extract_init () *)
+0x00005555555561ff in ._extract_init ();
+(* sar    $0x2a,%r10                               #! PC = 0x5555555561ff *)
+sar    $0x2a,%%r10                               #! 0x5555555561ff = 0x5555555561ff;
+(* 0x0000555555556203 in ._extract_init () *)
+0x0000555555556203 in ._extract_init ();
+(* imul   %r10,%r12                                #! PC = 0x555555556203 *)
+umull dontcare r12 r10 r12;
+(* 0x0000555555556207 in ._extract_init () *)
+0x0000555555556207 in ._extract_init ();
+(* mov    0x370(%rsp),%r13                         #! EA = L0x7fffffffded0; Value = 0x0000000000100000; PC = 0x555555556207 *)
+mov r13 L0x7fffffffded0;
+(* 0x000055555555620f in ._extract_init () *)
+0x000055555555620f in ._extract_init ();
+(* lea    (%rax,%r13,1),%rax                       #! PC = 0x55555555620f *)
+add rax rax r13;
+(* 0x0000555555556213 in ._extract_init () *)
+0x0000555555556213 in ._extract_init ();
+(* shl    $0x16,%rax                               #! PC = 0x555555556213 *)
+shl    $0x16,%%rax                               #! 0x555555556213 = 0x555555556213;
+(* 0x0000555555556217 in ._extract_init () *)
+0x0000555555556217 in ._extract_init ();
+(* sar    $0x2b,%rax                               #! PC = 0x555555556217 *)
+sar    $0x2b,%%rax                               #! 0x555555556217 = 0x555555556217;
+(* 0x000055555555621b in ._extract_init () *)
+0x000055555555621b in ._extract_init ();
+(* mov    %rdi,%r14                                #! PC = 0x55555555621b *)
+mov r14 rdi;
+(* 0x000055555555621e in ._extract_init () *)
+0x000055555555621e in ._extract_init ();
+(* imul   %rax,%r14                                #! PC = 0x55555555621e *)
+umull dontcare r14 rax r14;
+(* 0x0000555555556222 in ._extract_init () *)
+0x0000555555556222 in ._extract_init ();
+(* lea    (%rcx,%r13,1),%rcx                       #! PC = 0x555555556222 *)
+add rcx rcx r13;
+(* 0x0000555555556226 in ._extract_init () *)
+0x0000555555556226 in ._extract_init ();
+(* shl    $0x16,%rcx                               #! PC = 0x555555556226 *)
+shl    $0x16,%%rcx                               #! 0x555555556226 = 0x555555556226;
+(* 0x000055555555622a in ._extract_init () *)
+0x000055555555622a in ._extract_init ();
+(* sar    $0x2b,%rcx                               #! PC = 0x55555555622a *)
+sar    $0x2b,%%rcx                               #! 0x55555555622a = 0x55555555622a;
+(* 0x000055555555622e in ._extract_init () *)
+0x000055555555622e in ._extract_init ();
+(* imul   %rcx,%rdi                                #! PC = 0x55555555622e *)
+umull dontcare rdi rcx rdi;
+(* 0x0000555555556232 in ._extract_init () *)
+0x0000555555556232 in ._extract_init ();
+(* add    %r12,%rdi                                #! PC = 0x555555556232 *)
+adds carry rdi r12 rdi;
+(* 0x0000555555556235 in ._extract_init () *)
+0x0000555555556235 in ._extract_init ();
+(* add    %r14,%rdx                                #! PC = 0x555555556235 *)
+adds carry rdx r14 rdx;
+(* 0x0000555555556238 in ._extract_init () *)
+0x0000555555556238 in ._extract_init ();
+(* sar    $0x14,%rdi                               #! PC = 0x555555556238 *)
+sar    $0x14,%%rdi                               #! 0x555555556238 = 0x555555556238;
+(* 0x000055555555623c in ._extract_init () *)
+0x000055555555623c in ._extract_init ();
+(* sar    $0x14,%rdx                               #! PC = 0x55555555623c *)
+sar    $0x14,%%rdx                               #! 0x55555555623c = 0x55555555623c;
+(* 0x0000555555556240 in ._extract_init () *)
+0x0000555555556240 in ._extract_init ();
+(* mov    %r10,0x300(%rsp)                         #! EA = L0x7fffffffde60; PC = 0x555555556240 *)
+mov L0x7fffffffde60 r10;
+(* 0x0000555555556248 in ._extract_init () *)
+0x0000555555556248 in ._extract_init ();
+(* mov    %rcx,0x2e0(%rsp)                         #! EA = L0x7fffffffde40; PC = 0x555555556248 *)
+mov L0x7fffffffde40 rcx;
+(* 0x0000555555556250 in ._extract_init () *)
+0x0000555555556250 in ._extract_init ();
+(* mov    %r11,0x2f0(%rsp)                         #! EA = L0x7fffffffde50; PC = 0x555555556250 *)
+mov L0x7fffffffde50 r11;
+(* 0x0000555555556258 in ._extract_init () *)
+0x0000555555556258 in ._extract_init ();
+(* mov    %rax,0x310(%rsp)                         #! EA = L0x7fffffffde70; PC = 0x555555556258 *)
+mov L0x7fffffffde70 rax;
+(* 0x0000555555556260 in ._extract_init () *)
+0x0000555555556260 in ._extract_init ();
+
+{
+  true
+  &&
+  true
+}
+
