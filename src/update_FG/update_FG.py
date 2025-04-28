@@ -75,75 +75,75 @@ code += """
 # The method to move them into Neon register matters
 
 # Simulating that they are given in the general-purpose register
-# int64 uu
-# int64 vv
-# int64 rr
-# int64 ss
+int64 uu
+int64 vv
+int64 rr
+int64 ss
 
-uu, vv = mem128[pointeruuvvrrss]
+uu, vv = mem128[pointeruuvvrrss + 0]
 rr, ss = mem128[pointeruuvvrrss + 16]
-
-
-# We try to move them into the shape
-# vec_uu0_rr0_vv0_ss0
-# vec_uu1_rr1_vv1_ss1
-
 
 """
 
 
 # Data initialization, we do not need optimization
 # make vec_F0_F1_G0_G1, ... 
-data_initialization_var = ""
-data_initialization = ""
 
-i = 0
 for symbol in ["uu","vv","rr","ss"]:
 
-    code += f"int64 {symbol}\n"
     code += f"int64 {symbol}0\n"
     code += f"int64 {symbol}1\n"
-    code += f"{symbol} = mem64[pointeruuvvrrss + {8*i}]\n"
     code += f"{symbol}0 = {symbol} & ((1 << 30)-1)\n"
     code += f"{symbol}1 = ({symbol} >> 30) & ((1 << 32)-1)\n"
-    i += 1
+    code += "\n"
+
+
+for j in range(2):
+    code += f"reg128 vec_uu{j}_rr{j}_vv{j}_ss{j}\n"
+    code += "\n"
+    for (i, symbol) in enumerate(["uu", "rr", "vv", "ss"]):
+        code += f"vec_uu{j}_rr{j}_vv{j}_ss{j}[{i}/4] = {symbol}{j}\n"
+
+    code += "\n"
+
+
+
+code += """
+
+reg128 vec_uuhat_rrhat_vvhat_sshat
+reg128 vec_uuhat_rrhat
+reg128 vec_vvhat_sshat
+
+# Get the hats
+4x vec_uuhat_rrhat_vvhat_sshat = vec_uu1_rr1_vv1_ss1 >> 31
+4x vec_uuhat_rrhat = vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[1/4] vec_uuhat_rrhat_vvhat_sshat[1/4]
+4x vec_vvhat_sshat = vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[3/4] vec_uuhat_rrhat_vvhat_sshat[3/4]
+
+"""
 
 
 
 
-for i in range(0,2):
-    data_initialization_var += f"reg128 vec_uu{i}_rr{i}_vv{i}_ss{i}\n"
-    for j,a,b in [(0,"uu", "rr"), (1,"vv", "ss")]:
-
-        data_initialization_var += f"int64 {a}{i}{b}{i}\n"
-
-        data_initialization += f"{b}{i} = {b}{i} << 32\n"
-        data_initialization += f"{a}{i}{b}{i} = {a}{i} | {b}{i}\n"
-        data_initialization += f"vec_uu{i}_rr{i}_vv{i}_ss{i}[{j}/2] = {a}{i}{b}{i}\n"
-
-
-# Unsigned product
-unsigned_product_var = ""
-unsigned_product = ""
-
-
-unsigned_product_var += """
+code += """
+# Now we perform the unsigned long product
 reg128 vec_tmp0
 reg128 vec_MASK2p30m1
 reg128 vec_MASK2p32m1
-"""
 
-
-unsigned_product += "vec_tmp0 = vec_tmp0 ^ vec_tmp0\n"
-for i in range(0,11):
-    unsigned_product_var += f"reg128 vec_R{i}_0_S{i}_0\n"
-
-unsigned_product += """
+2x vec_tmp0 = 0
 2x vec_MASK2p32m1 = 0xFFFFFFFF
 2x vec_MASK2p30m1 = vec_MASK2p32m1 unsigned>> 2
+
 """
 
-unsigned_product += """
+
+
+for i in range(0,11):
+    code += f"reg128 vec_R{i}_0_S{i}_0\n"
+
+
+
+code += """
 2x vec_tmp0 += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_F0_F1_G0_G1[0/4]
 2x vec_tmp0 += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_F0_F1_G0_G1[2/4]
 
@@ -224,219 +224,259 @@ vec_R10_0_S10_0 = vec_tmp0
 
 """
 
+code += """
+
+# We collect the unsigned products as
+# vec_R0_R1_S0_S1
+# vec_R2_R3_S2_S3
+# vec_R4_R5_S4_S5
+# vec_R6_R7_S6_S7
+# vec_R8_R9_S8_S9
+# vec_R10_0_S10_0
+
+"""
 
 
 # Read out 
 # Prepare for the following hat subtraction
-read_out_var = ""
-read_out = ""
 
-read_out += "\n\n#Collect the unsigned_product\n\n"
-
-#for i in range(0,6):
-    #read_out_var += f"reg128 vec_R{i}_0_S{i}_0\n"
-    
 for i in range(0,10,2):
-    read_out_var += f"reg128 vec_R{i}_R{i+1}_S{i}_S{i+1}\n"
-for i in range(0,10,2):
-    read_out += f"2x vec_R{i+1}_0_S{i+1}_0 <<= 32\n"
-    read_out += f"vec_R{i}_R{i+1}_S{i}_S{i+1} = vec_R{i}_0_S{i}_0 | vec_R{i+1}_0_S{i+1}_0\n"
+    code += f"reg128 vec_R{i}_R{i+1}_S{i}_S{i+1}\n"
+    code += f"2x vec_R{i+1}_0_S{i+1}_0 <<= 32\n"
+    code += f"vec_R{i}_R{i+1}_S{i}_S{i+1} = vec_R{i}_0_S{i}_0 | vec_R{i+1}_0_S{i+1}_0\n"
+    code += "\n"
 
 
-read_out += """
-#Till now, we have
-#vec_R0_R1_S0_S1
-#vec_R2_R3_S2_S3
-#vec_R4_R5_S4_S5
-#vec_R6_R7_S6_S7
-#vec_R8_R9_S8_S9
-#vec_R10_0_S10_0
-#these stores our unsigned product
 
 
-"""
+
 
 # Minus
 # Prepare the Masks for the following carry propagation and negation
-mask_var = ""
-mask = ""
 
-mask_var += """
+code += """
 int64 carry1
+
+carry1 = 3221225472
+reg128 vec_MASKcarry1
+
+2x vec_MASKcarry1 = carry1
+
+reg128 vec_MASKcarry2
+
+2x vec_MASKcarry2 = vec_MASKcarry1 << 32
+
+reg128 vec_MASKcarry
+
+vec_MASKcarry = vec_MASKcarry1 | vec_MASKcarry2
+
+reg128 vec_MASKeffect
+
+vec_MASKeffect = ~vec_MASKcarry
+
 int64 ONE
 
-reg128 vec_MASKcarry1
-reg128 vec_MASKcarry2
-reg128 vec_MASKcarry
-reg128 vec_MASKeffect
+ONE = 1
+
 reg128 vec_ONE
+
+2x vec_ONE = ONE
+
 reg128 vec_MASKhalfeffect
+
+int64 2p32m1
+
+2p32m1 = 4294967295
+
+2x vec_MASKhalfeffect = 2p32m1
+
 """
 
-mask += "carry1 = 3221225472\n"
-mask += "2x vec_MASKcarry1 = carry1\n"
-mask += "2x vec_MASKcarry2 = vec_MASKcarry1 << 32\n"
-mask += "vec_MASKcarry = vec_MASKcarry1 | vec_MASKcarry2\n"
-mask += "vec_MASKeffect = ~vec_MASKcarry\n"
-mask += "ONE = 1\n"
-mask += "2x vec_ONE = ONE\n"
-mask += "carry1 = 4294967295\n"
-mask += "2x vec_MASKhalfeffect = carry1\n"
 
 
 
 # Minus the [ uhat & F , rhat & F ] and [ vhat & G , shat & G ]
 
-minus1_var = ""
-minus1 = ""
 
-minus1_var += """
-
-reg128 vec_uhat_rhat_vhat_shat
-reg128 vec_uhat_rhat
-reg128 vec_vhat_shat
-
+code += """
 reg128 vec_tmp1
 reg128 vec_tmp2
 reg128 vec_tmp3
 reg128 vec_tmp4
 reg128 vec_tmp5
+
 reg128 vec_carry1
 reg128 vec_carry2
 """
 
-minus1 += """
-# Get the hats
-4x vec_uhat_rhat_vhat_shat = vec_uu1_rr1_vv1_ss1 >> 31
-4x vec_uhat_rhat = vec_uhat_rhat_vhat_shat[0/4] vec_uhat_rhat_vhat_shat[0/4] vec_uhat_rhat_vhat_shat[1/4] vec_uhat_rhat_vhat_shat[1/4]
-4x vec_vhat_shat = vec_uhat_rhat_vhat_shat[2/4] vec_uhat_rhat_vhat_shat[2/4] vec_uhat_rhat_vhat_shat[3/4] vec_uhat_rhat_vhat_shat[3/4]
-"""
 
-minus1 += """
+code += """
 # Minus [ uhat & 4F , rhat & 4F ]
+#
+# Prepare vec_tmpn = 4*F
 """
 
 for i in range(0,8,2):
-    minus1 += f"2x vec_tmp{1+(i>>1)} = vec_F{i}_F{i+1}_G{i}_G{i+1}[0/2]\n"
-minus1 += "2x vec_tmp5 = vec_F8_0_G8_0[0/2]\n"
+    code += f"2x vec_tmp{1+(i>>1)} = vec_F{i}_F{i+1}_G{i}_G{i+1}[0/2]\n"
+code += "2x vec_tmp5 = vec_F8_0_G8_0[0/2]\n"
+code += "\n"
 
 for i in range(1,6):
-    minus1 += f"2x vec_tmp{i} <<= 2\n"
+    code += f"2x vec_tmp{i} <<= 2\n"
 
 for i in range(1,5,1):
     # i = 1, 2, 3, 4
-    minus1 += f"vec_carry1 = vec_tmp{i} & vec_MASKcarry1\n"
-    minus1 += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry1\n"
+    code += f"vec_carry1 = vec_tmp{i} & vec_MASKcarry1\n"
+    code += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry1\n"
+    code += f"2x vec_carry1 <<= 2\n"
+    code += f"vec_tmp{i} |= vec_carry1\n"
+    code += "\n"
 
-    minus1 += f"2x vec_carry1 <<= 2\n"
-    minus1 += f"vec_tmp{i} |= vec_carry1\n"
+    code += f"vec_carry2 = vec_tmp{i} & vec_MASKcarry2\n"
+    code += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry2\n"
+    code += f"2x vec_carry2 unsigned>>= 62\n"
+    code += f"vec_tmp{i+1} |= vec_carry2\n"
+    code += "\n"
+    code += "\n"
 
-    minus1 += f"vec_carry2 = vec_tmp{i} & vec_MASKcarry2\n"
-    minus1 += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry2\n"
-    minus1 += f"2x vec_carry2 unsigned>>= 62\n"
-    minus1 += f"vec_tmp{i+1} |= vec_carry2\n"
+code += """
 
-minus1 += "\n#So far, we have stored 4F into tmp1-5\n\n"
+# So far, we have stored 4F into tmp1-5
+# We now take the negation of 4F, i.e., -4F
+# Effectively, we do -A = not(A)+1 
+# however, the not is perform according to effective bits, that is, excluded the carry buffer bits
+
+"""
 
 for i in range(1,5,1):
     # i = 1, 2, 3, 4
-    minus1 += f"vec_tmp{i} ^= vec_MASKcarry\n"
-    minus1 += f"vec_tmp{i} = ~vec_tmp{i}\n"
+    code += f"vec_tmp{i} ^= vec_MASKcarry\n"
+    code += f"vec_tmp{i} = ~vec_tmp{i}\n"
 
-minus1 += "vec_tmp5 ^= vec_MASKhalfeffect\n"
-#minus1 += "vec_tmp5 = ~vec_tmp5\n"
+code += "vec_tmp5 ^= vec_MASKhalfeffect\n"
 
-minus1 += "2x vec_tmp1 += vec_ONE\n"
+code += "2x vec_tmp1 += vec_ONE\n"
 
-minus1 += "\n#So far, we have stored F' = -4F into tmp1-5\n\n"
+code += """
+
+# So far, we have stored F' = -4F into tmp1-5
+
+# We now perform the conditional subtraction
+"""
 
 for i in range(1,6,1):
     # i = 1, 2, 3, 4, 5
-    minus1 += f"vec_tmp{i} &= vec_uhat_rhat\n"
+    code += f"vec_tmp{i} &= vec_uuhat_rrhat\n"
 
 for i in range(1,5,1):
     # i = 1, 2, 3, 4
-    minus1 += f"2x vec_R{2*i}_R{2*i+1}_S{2*i}_S{2*i+1} += vec_tmp{i}\n"
+    code += f"2x vec_R{2*i}_R{2*i+1}_S{2*i}_S{2*i+1} += vec_tmp{i}\n"
 
-minus1 += "2x vec_R10_0_S10_0 += vec_tmp5\n"
+code += "2x vec_R10_0_S10_0 += vec_tmp5\n"
+code += "\n"
 
 
-minus1 += "\n\n# Minus [ vhat & 4G , shat & 4G ]\n\n"
+code += """
+
+# Minus [ vhat & 4G , shat & 4G ]
+
+"""
 
 for i in range(0,8,2):
-    minus1 += f"2x vec_tmp{1+(i>>1)} = vec_F{i}_F{i+1}_G{i}_G{i+1}[1/2]\n"
-minus1 += "2x vec_tmp5 = vec_F8_0_G8_0[1/2]\n"
+    code += f"2x vec_tmp{1+(i>>1)} = vec_F{i}_F{i+1}_G{i}_G{i+1}[1/2]\n"
+code += "2x vec_tmp5 = vec_F8_0_G8_0[1/2]\n"
 
 for i in range(1,6):
-    minus1 += f"2x vec_tmp{i} <<= 2\n"
+    code += f"2x vec_tmp{i} <<= 2\n"
+
+
+code += """
+
+# Remark:
+# vec_F0_F1_G0_G1
+# vec_F2_F3_G2_G3
+# vec_F4_F5_G4_G5
+# vec_F6_F7_G6_G7
+# These data are no longer used, 
+# vec_F8_0_G8_0 will be used for getting vec_Fhat_0_Ghat_0 later
+
+"""
+
 
 for i in range(1,5,1):
     # i = 1, 2, 3, 4
-    minus1 += f"vec_carry1 = vec_tmp{i} & vec_MASKcarry1\n"
-    minus1 += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry1\n"
+    code += f"vec_carry1 = vec_tmp{i} & vec_MASKcarry1\n"
+    code += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry1\n"
+    code += f"2x vec_carry1 <<= 2\n"
+    code += f"vec_tmp{i} |= vec_carry1\n"
+    code += "\n"
 
-    minus1 += f"2x vec_carry1 <<= 2\n"
-    minus1 += f"vec_tmp{i} |= vec_carry1\n"
+    code += f"vec_carry2 = vec_tmp{i} & vec_MASKcarry2\n"
+    code += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry2\n"
+    code += f"2x vec_carry2 unsigned>>= 62\n"
+    code += f"vec_tmp{i+1} |= vec_carry2\n"
+    code += "\n"
+    code += "\n"
 
-    minus1 += f"vec_carry2 = vec_tmp{i} & vec_MASKcarry2\n"
-    minus1 += f"vec_tmp{i} = vec_tmp{i} & ~vec_MASKcarry2\n"
-    minus1 += f"2x vec_carry2 unsigned>>= 62\n"
-    minus1 += f"vec_tmp{i+1} |= vec_carry2\n"
-
-minus1 += "\n#So far, we have stored 4G into tmp1-5\n\n"
+code += """
+# So far, we have stored 4G into tmp1-5
+"""
 
 for i in range(1,5,1):
     # i = 1, 2, 3, 4
-    minus1 += f"vec_tmp{i} ^= vec_MASKcarry\n"
-    minus1 += f"vec_tmp{i} = ~vec_tmp{i}\n"
+    code += f"vec_tmp{i} ^= vec_MASKcarry\n"
+    code += f"vec_tmp{i} = ~vec_tmp{i}\n"
 
-minus1 += "vec_tmp5 ^= vec_MASKhalfeffect\n"
+code += "vec_tmp5 ^= vec_MASKhalfeffect\n"
 #minus1 += "vec_tmp5 = ~vec_tmp5\n"
 
-minus1 += "2x vec_tmp1 += vec_ONE\n"
+code += "2x vec_tmp1 += vec_ONE\n"
 
-minus1 += "\n#So far, we have stored G' = -4G into tmp1-5\n\n"
+code += """
+# So far, we have stored G' = -4G into tmp1-5
+"""
 
 for i in range(1,6,1):
     # i = 1, 2, 3, 4, 5
-    minus1 += f"vec_tmp{i} &= vec_vhat_shat\n"
+    code += f"vec_tmp{i} &= vec_vvhat_sshat\n"
 
+code += "reg128 vec_F8_F9_G8_G9\n"
+code += "reg128 vec_F10_0_G10_0\n"
 for i in range(1,5,1):
     # i = 1, 2, 3, 4
-    minus1 += f"2x vec_R{2*i}_R{2*i+1}_S{2*i}_S{2*i+1} += vec_tmp{i}\n"
+    code += f"2x vec_F{2*i}_F{2*i+1}_G{2*i}_G{2*i+1} = vec_R{2*i}_R{2*i+1}_S{2*i}_S{2*i+1} + vec_tmp{i}\n"
 
-minus1 += "2x vec_R10_0_S10_0 += vec_tmp5\n"
+code += "2x vec_F10_0_G10_0 = vec_R10_0_S10_0 + vec_tmp5\n"
+code += "\n"
 
 
 
 
 # Carry propagation
-carry_propagation_var = ""
-carry_propagation = ""
 
-carry_propagation += "\n# Now we do carry propagation\n\n"
+code += """
+
+# Carry propagation
+
+"""
 
 for i in range(2,10,2):
-    carry_propagation += f"vec_carry1 = vec_R{i}_R{i+1}_S{i}_S{i+1} & vec_MASKcarry1\n"
-    carry_propagation += f"vec_R{i}_R{i+1}_S{i}_S{i+1} = vec_R{i}_R{i+1}_S{i}_S{i+1} & ~vec_MASKcarry1\n"
-    carry_propagation += f"2x vec_carry1 <<= 2\n"
-    carry_propagation += f"2x vec_R{i}_R{i+1}_S{i}_S{i+1} += vec_carry1\n"
-    carry_propagation += f"vec_carry2 = vec_R{i}_R{i+1}_S{i}_S{i+1} & vec_MASKcarry2\n"
-    carry_propagation += f"vec_R{i}_R{i+1}_S{i}_S{i+1} = vec_R{i}_R{i+1}_S{i}_S{i+1} & ~vec_MASKcarry2\n"
-    carry_propagation += f"2x vec_carry2 unsigned>>= 62\n"
+    code += f"vec_carry1 = vec_F{i}_F{i+1}_G{i}_G{i+1} & vec_MASKcarry1\n"
+    code += f"vec_F{i}_F{i+1}_G{i}_G{i+1} = vec_F{i}_F{i+1}_G{i}_G{i+1} & ~vec_MASKcarry1\n"
+    code += f"2x vec_carry1 <<= 2\n"
+    code += f"2x vec_F{i}_F{i+1}_G{i}_G{i+1} += vec_carry1\n"
+    code += f"vec_carry2 = vec_F{i}_F{i+1}_G{i}_G{i+1} & vec_MASKcarry2\n"
+    code += f"vec_F{i}_F{i+1}_G{i}_G{i+1} = vec_F{i}_F{i+1}_G{i}_G{i+1} & ~vec_MASKcarry2\n"
+    code += f"2x vec_carry2 unsigned>>= 62\n"
     if i <8:
-        carry_propagation += f"2x vec_R{i+2}_R{i+3}_S{i+2}_S{i+3} += vec_carry2\n"
+        code += f"2x vec_F{i+2}_F{i+3}_G{i+2}_G{i+3} += vec_carry2\n"
     else:
-        carry_propagation += f"2x vec_R{i+2}_0_S{i+2}_0 += vec_carry2\n"
-        
+        code += f"2x vec_F{i+2}_0_G{i+2}_0 += vec_carry2\n"
+    code += "\n"
 
 
 # Minus the [ Fhat & u , Fhat & r ] and [ Ghat & v , Ghat & s ]
-
-minus2_var = ""
-minus2 = ""
-
-minus2_var += """
+code += """
 
 reg128 vec_Fhat_0_Ghat_0
 reg128 vec_Fhat
@@ -445,7 +485,7 @@ reg128 vec_Ghat
 
 """
 
-minus2 += """
+code += """
 4x vec_Fhat_0_Ghat_0 = vec_F8_0_G8_0 >> 31
 
 4x vec_Fhat = vec_Fhat_0_Ghat_0[0/4]
@@ -481,11 +521,8 @@ vec_tmp1 &= vec_Fhat
 # vec_tmp3 = [ (Fhat&u')1, 0, (Fhat&r')1, 0 ]
 
 
-# do vec_R8_R9_S8_S9 += vec_tmp2
-2x vec_R8_R9_S8_S9 += vec_tmp2
-# do vec_R10_0_S10_0 += vec_tmp3
-2x vec_R10_0_S10_0 += vec_tmp3
-
+2x vec_F8_F9_G8_G9 += vec_tmp2
+2x vec_F10_0_G10_0 += vec_tmp3
 
 
 
@@ -519,120 +556,70 @@ vec_tmp1 &= vec_Ghat
 # vec_tmp3 = [ (Ghat&v')1, 0, (Ghat&s')1, 0 ]
 
 
-# do vec_R8_R9_S8_S9 += vec_tmp2
-2x vec_R8_R9_S8_S9 += vec_tmp2
-# do vec_R10_0_S10_0 += vec_tmp3
-2x vec_R10_0_S10_0 += vec_tmp3
+2x vec_F8_F9_G8_G9 += vec_tmp2
+2x vec_F10_0_G10_0 += vec_tmp3
 
 """
 
 # Carry propagation2
-carry_propagation2_var = ""
-carry_propagation2 = ""
 
-carry_propagation2 += "\n# Now we do carry propagation2\n\n"
-carry_propagation2 += "vec_carry1 = vec_R8_R9_S8_S9 & vec_MASKcarry1\n"
-carry_propagation2 += "vec_R8_R9_S8_S9 = vec_R8_R9_S8_S9 & ~vec_MASKcarry1\n"
-carry_propagation2 += "2x vec_carry1 <<= 2\n"
-carry_propagation2 += "2x vec_R8_R9_S8_S9 += vec_carry1\n"
-carry_propagation2 += "vec_carry2 = vec_R8_R9_S8_S9 & vec_MASKcarry2\n"
-carry_propagation2 += "vec_R8_R9_S8_S9 = vec_R8_R9_S8_S9 & ~vec_MASKcarry2\n"
-carry_propagation2 += "2x vec_carry2 unsigned>>= 62\n"
-carry_propagation2 += "2x vec_R10_0_S10_0 += vec_carry2\n"
+code += """
+# Now we do carry propagation2
 
-
-
-
-# Store the result
-store_result_var = ""
-store_result = ""
-for symbol in ["R","S"]:
-    for i in range(0,10,2):
-        store_result_var += f"int64 {symbol}{i}{symbol}{i+1}\n"
-    for i in range(0,10):
-        store_result_var += f"int64 {symbol}{i}\n"
-for i in range(2,10,2):
-    store_result += f"R{i}R{i+1} = vec_R{i}_R{i+1}_S{i}_S{i+1}[0/2]\n"
-    store_result += f"S{i}S{i+1} = vec_R{i}_R{i+1}_S{i}_S{i+1}[1/2]\n"
-    store_result += f"mem64[pointerF+{4*(i-2)}] = R{i}R{i+1}\n"
-    store_result += f"mem64[pointerG+{4*(i-2)}] = S{i}S{i+1}\n"
-
-store_result_var += """
-int64 R10
-int64 S10
-"""
-store_result += """
-R10 = vec_R10_0_S10_0[0/2]
-mem32[pointerF+32] = R10
-S10 = vec_R10_0_S10_0[1/2]
-mem32[pointerG+32] = S10
+vec_carry1 = vec_F8_F9_G8_G9 & vec_MASKcarry1
+vec_F8_F9_G8_G9 = vec_F8_F9_G8_G9 & ~vec_MASKcarry1
+2x vec_carry1 <<= 2
+2x vec_F8_F9_G8_G9 += vec_carry1
+vec_carry2 = vec_F8_F9_G8_G9 & vec_MASKcarry2
+vec_F8_F9_G8_G9 = vec_F8_F9_G8_G9 & ~vec_MASKcarry2
+2x vec_carry2 unsigned>>= 62
+2x vec_F10_0_G10_0 += vec_carry2
 """
 
 
-calling_conv_var = ""
-calling_conv = ""
-calling_conv_dump = ""
+
+code += """
+
+# Now we store the results back to memory
+
+
+reg128 vec_F2_F3_F4_F5
+reg128 vec_G2_G3_G4_G5
+2x vec_F2_F3_F4_F5 zip= vec_F2_F3_G2_G3[0/2] vec_F4_F5_G4_G5[0/2]
+2x vec_G2_G3_G4_G5 zip= vec_F2_F3_G2_G3[1/2] vec_F4_F5_G4_G5[1/2]
+
+
+reg128 vec_F6_F7_F8_F9
+reg128 vec_G6_G7_G8_G9
+2x vec_F6_F7_F8_F9 zip= vec_F6_F7_G6_G7[0/2] vec_F8_F9_G8_G9[0/2]
+2x vec_G6_G7_G8_G9 zip= vec_F6_F7_G6_G7[1/2] vec_F8_F9_G8_G9[1/2]
+
+mem256[pointerF] = vec_F2_F3_F4_F5, vec_F6_F7_F8_F9
+mem256[pointerG] = vec_G2_G3_G4_G5, vec_G6_G7_G8_G9
+# mem128[pointerF + 16] = vec_F6_F7_F8_F9
+# mem128[pointerG + 16] = vec_G6_G7_G8_G9
+
+
+int64 F10
+F10 = vec_F10_0_G10_0[0/2]
+mem32[pointerF+32] = F10
+int64 G10
+G10 = vec_F10_0_G10_0[1/2]
+mem32[pointerG+32] = G10
+
+
+"""
+
+
+
+
+
 
 for i in range(15-1, 8-1,-2):
-    calling_conv_dump += f"pop2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
+    code += f"pop2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
 for i in range(29, 18-1,-2):
-    calling_conv_dump += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
+    code += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
 
-
-
-code += calling_conv_var
-
-code += data_initialization_var
-
-code += unsigned_product_var
-
-code += read_out_var
-
-code += store_result_var
-
-code += mask_var
-
-code += minus1_var
-
-code += minus2_var
-
-code += """
-int64 debug0
-int64 debug1
-int64 debug2
-int64 debug3
-"""
-
-
-
-code += """
-#Data initialization:
-"""
-
-code += calling_conv
-code += data_initialization
-
-code += "\n#so far, we are ready for the real computation, i.e., from now on, we will be serious on optimizations.\n"
-code += "\n#Unsigned product\n"
-
-code += unsigned_product
-
-code += read_out
-# code += "\n\n#DEBUG: The unsigned product behaves as expected\n\n"
-
-#code += store_result
-
-code += "\n\n#Producing the masks\n\n"
-code += mask
-code += minus1
-code += carry_propagation
-
-code += minus2
-code += carry_propagation2
-
-code += store_result
-
-code += calling_conv_dump
 
 
 code += """
