@@ -88,6 +88,9 @@ static int bench(void)
 
   print_percentiles("intmul_invert", cycles);
 
+
+  printf("\n\n\n\n");
+
   for (i = 0; i < NTESTS; i++)
   {
     for (j = 0; j < NWARMUP; j++)
