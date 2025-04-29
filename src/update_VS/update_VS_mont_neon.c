@@ -4,45 +4,45 @@
 #include "big30.h"
 
 
-void print_u64x2(uint64x2_t vec) {
-    uint64_t values[2];
-    vst1q_u64(values, vec);  // 將 vec 的 4 個 lane 存到陣列
-    printf("[ %llu, %llu ]\n",
-           values[0], values[1]);
-}
-void print_u32x2(uint32x2_t vec) {
-    uint32_t values[2];
-    vst1_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
-    printf("[ %u, %u ]\n",
-           values[0], values[1]);
-}
-void print_vec_tmp(uint32x2_t *vec_tmp, int length) {
-    for (int i = 0; i < length; i++) {
-        printf("i = %d  ",i);
-        print_u32x2(vec_tmp[i]);
-    }
-}
-
-//
-// void print_vec_tmp_as_mpz(uint32x2_t *vec_tmp) {
-//     big30_t left, right;
-//     mpz_t mpleft, mpright;
-//     mpz_inits(mpleft, mpright, NULL);
-//
-//     for (int i = 0; i < 9; i++) {
-//         left.limb[i] = vget_lane_u32(vec_tmp[i],0);
-//         right.limb[i] = vget_lane_u32(vec_tmp[i],1);
+// void print_u64x2(uint64x2_t vec) {
+//     uint64_t values[2];
+//     vst1q_u64(values, vec);  // 將 vec 的 4 個 lane 存到陣列
+//     printf("[ %llu, %llu ]\n",
+//            values[0], values[1]);
+// }
+// void print_u32x2(uint32x2_t vec) {
+//     uint32_t values[2];
+//     vst1_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
+//     printf("[ %u, %u ]\n",
+//            values[0], values[1]);
+// }
+// void print_vec_tmp(uint32x2_t *vec_tmp, int length) {
+//     for (int i = 0; i < length; i++) {
+//         printf("i = %d  ",i);
+//         print_u32x2(vec_tmp[i]);
 //     }
-//
-//     mpz_from_big30(mpleft, &left);
-//     mpz_from_big30(mpright, &right);
-//
-//     gmp_printf("lane 0 = %Zd\n", mpleft);
-//     gmp_printf("lane 1 = %Zd\n", mpright);
-//
-//
 // }
 //
+// //
+// // void print_vec_tmp_as_mpz(uint32x2_t *vec_tmp) {
+// //     big30_t left, right;
+// //     mpz_t mpleft, mpright;
+// //     mpz_inits(mpleft, mpright, NULL);
+// //
+// //     for (int i = 0; i < 9; i++) {
+// //         left.limb[i] = vget_lane_u32(vec_tmp[i],0);
+// //         right.limb[i] = vget_lane_u32(vec_tmp[i],1);
+// //     }
+// //
+// //     mpz_from_big30(mpleft, &left);
+// //     mpz_from_big30(mpright, &right);
+// //
+// //     gmp_printf("lane 0 = %Zd\n", mpleft);
+// //     gmp_printf("lane 1 = %Zd\n", mpright);
+// //
+// //
+// // }
+// //
 
 void update_VS_mont(
         big30_t *V, big30_t *S, int64_t *uuvvrrss
@@ -76,7 +76,7 @@ void update_VS_mont(
 
     // vec_M = [M, M]
     // M = -P^-1 mod B (B = 2^30)
-    uint32x2_t vec_M = {678152731,678152731};
+    uint32x2_t vec_M = {678152731, 678152731};
 
 
     // Constants, buffer, and mask
