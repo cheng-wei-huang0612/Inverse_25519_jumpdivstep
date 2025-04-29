@@ -11,8 +11,7 @@ LIBS    := -lgmp                 # 連結 GMP
 # ── source files ────────────────────────────────────────────────
 # 共用：任何可執行檔都需要
 COMMON_C   := big30.c prg.c gmp_update_VS_mont.c update_VS_mont_neon.c
-# COMMON_C   := big30.c prg.c gmp_update_VS_mont.c update_VS_mont_neon1.c
-# COMMON_S   := update_VS_mont.S
+COMMON_S   := update_VS_mont.S
 COMMON_OBJ := $(COMMON_C:.c=.o) $(COMMON_S:.S=.o)
 
 # 要產出的主要執行檔

@@ -15,10 +15,10 @@ extern void final_adjustment(uint256_t *inv, big30_t *F, big30_t *V);
 
 
 
-big30_t P = {
+big30_t P = {{
     0x3fffffed, 0x3fffffff, 0x3fffffff, 0x3fffffff,
     0x3fffffff, 0x3fffffff, 0x3fffffff, 0x3fffffff,
-    0x00007fff
+    0x00007fff}
 };
 
 
@@ -29,7 +29,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
     big30_t F, G, V, S;
     int64_t f, g;
     int64_t delta = 1;
-    int64_t fuv, grs;
+    // int64_t fuv, grs;
     int64_t uuvvrrss[4];
     
     big30_from_uint256(&G, x);

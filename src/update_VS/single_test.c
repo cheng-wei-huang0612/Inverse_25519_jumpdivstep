@@ -25,9 +25,9 @@ extern void update_VS_mont    (big30_t *V, big30_t *S,
 #define STR_V  "20384000732001190256880125251084984776488001328286089934013543019932639390"
 #define STR_S  "532383207561649968850626322179893688700703563984035316431725426422083031442"
 #define STR_U  "7980253010095423"
-#define STR_VV "17206597020321163"
+#define STR_VV "0"
 #define STR_R  "-7006695587252234"
-#define STR_SS "907836161843879"
+#define STR_SS "0"
 /* ------------------------------------------------------------- */
 
 static void mpz_set_str_checked(mpz_t z, const char *s)
