@@ -60,7 +60,7 @@ static int bench(void)
   uint256_t b = {0};
   int i, j;
   uint64_t t0, t1;
-  uint64_t cycles_ntt[NTESTS];
+  uint64_t cycles[NTESTS];
 
   for (i = 0; i < NTESTS; i++)
   {
@@ -75,18 +75,18 @@ static int bench(void)
       fe25519_intmul_invert(&a, &a);
     }
     t1 = get_cyclecounter();
-    cycles_ntt[i] = t1 - t0;
+    cycles[i] = t1 - t0;
   }
 
-  qsort(cycles_ntt, NTESTS, sizeof(uint64_t), cmp_uint64_t);
+  qsort(cycles, NTESTS, sizeof(uint64_t), cmp_uint64_t);
 
-  print_median("ntt", cycles_ntt);
+  print_median("intmul_invert", cycles);
 
   printf("\n");
 
   print_percentile_legend();
 
-  print_percentiles("ntt", cycles_ntt);
+  print_percentiles("intmul_invert", cycles);
 
   for (i = 0; i < NTESTS; i++)
   {
@@ -101,18 +101,18 @@ static int bench(void)
       cpt_inv(&b, &b);
     }
     t1 = get_cyclecounter();
-    cycles_ntt[i] = t1 - t0;
+    cycles[i] = t1 - t0;
   }
 
-  qsort(cycles_ntt, NTESTS, sizeof(uint64_t), cmp_uint64_t);
+  qsort(cycles, NTESTS, sizeof(uint64_t), cmp_uint64_t);
 
-  print_median("ntt", cycles_ntt);
+  print_median("safegcd", cycles);
 
   printf("\n");
 
   print_percentile_legend();
 
-  print_percentiles("ntt", cycles_ntt);
+  print_percentiles("safegcd", cycles);
 
   return 0;
 }
