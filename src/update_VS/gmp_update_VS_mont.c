@@ -1,11 +1,17 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "update_VS_mont.h"
 #include "big30.h"
+#include "big30_mpz.h"
 #include <gmp.h>
+big30_t P = {
+    0x3fffffed, 0x3fffffff, 0x3fffffff, 0x3fffffff,
+    0x3fffffff, 0x3fffffff, 0x3fffffff, 0x3fffffff,
+    0x00007fff
+};
 
 
-void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss) {
+
+void gmp_update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss) {
     int64_t uu = uuvvrrss[0];
     int64_t vv = uuvvrrss[1];
     int64_t rr = uuvvrrss[2];
