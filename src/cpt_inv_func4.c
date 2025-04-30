@@ -28,7 +28,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
 
     big30_t F, G, V, S;
     int64_t f, g;
-    int64_t delta = 1;
+    int64_t delta = 0;
     // int64_t fuv, grs;
     int64_t uuvvrrss[4];
     

@@ -22,6 +22,9 @@ int64 neg_fuv
 int64 neg_delta
 int64 oldG
 int64 h
+int64 hh
+int64 m
+int64 m1
 int64 z
 int64 minus_one
 int64 delta_new
@@ -30,434 +33,574 @@ int64 delta_new
 
 enter divstepx20
 
-delta = mem64[pointer_delta]
+m = mem64[pointer_delta]
 fuv = mem64[pointer_fuv]
 grs = mem64[pointer_grs]
 
 minus_one = 1
 minus_one = -minus_one
 
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-    oldG = grs
-    h = grs + fuv
+    h = fuv + grs
+    hh = grs - fuv
+    m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
 
-    grs & 1 == 0
-    z = delta if negativeequal else minus_one
-    h = grs if equal else h
+    
 
-    delta_new = delta + 1
-    grs -= fuv
+    m = m1 if N=0 else -m
 
-    grs = grs signed>> 1
-    h = h signed>> 1
-    delta = -delta
+    
+    
 
-    z - 0
-    fuv = oldG if !signed< else fuv
-    grs = h if signed< else grs
-    delta = delta_new if signed< else delta
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
+    fuv = fuv if N=0 else grs
+    grs = grs_new signed>> 1
 
 
     
-mem64[pointer_delta] = delta
+mem64[pointer_delta] = m
 mem64[pointer_fuv] = fuv
 mem64[pointer_grs] = grs
 

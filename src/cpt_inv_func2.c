@@ -31,7 +31,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
 
     big30_t F, G, V, S;
     int64_t f, g;
-    int64_t delta = 1;
+    int64_t delta = 0;
     int64_t fuv, grs;
     int64_t uuvvrrss[4];
     int64_t uvrs[4];
@@ -68,9 +68,9 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             grs = (g & 0xFFFFF) - ( (int64_t) 1 << 62 );
 
             for (int k = 0; k < 20; k++) { 
-                /*if (i == 0 && j == 0) { printf("grs = %lld\n",grs);}*/
+                // if (i == 0 && j == 0) { printf("\n\niteration %u:\nfuv = %lld\n grs = %lld\n m = %lld\n", k, fuv, grs, delta);}
                 divstep(&delta, &fuv, &grs); 
-                /*if (i == 0 && j == 0) { printf("grs = %lld\n",grs);}*/
+                // if (i == 0 && j == 0) { printf("fuv = %lld\n grs = %lld\n m = %lld\n ", fuv, grs, delta);}
             }
             /*divstepx20(&delta, &fuv, &grs); */
 
