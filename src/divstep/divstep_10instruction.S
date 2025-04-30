@@ -130,8 +130,6 @@
 _divstep:
 divstep:
 
-# qhasm: int64 g1
-
 # qhasm: m = mem64[pointer_delta]
 # asm 1: ldr >m=int64#4, [<pointer_delta=int64#1]
 # asm 2: ldr >m=x3, [<pointer_delta=x0]
@@ -147,25 +145,30 @@ ldr x4, [x1]
 # asm 2: ldr >grs=x5, [<pointer_grs=x2]
 ldr x5, [x2]
 
-# qhasm:     g1 = grs & 1
-# asm 1: and >g1=int64#7, <grs=int64#6, #1
-# asm 2: and >g1=x6, <grs=x5, #1
-and x6, x5, #1
+# qhasm:     h = fuv + grs
+# asm 1: add >h=int64#7,<fuv=int64#5,<grs=int64#6
+# asm 2: add >h=x6,<fuv=x4,<grs=x5
+add x6,x4,x5
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#8,<grs=int64#6,<fuv=int64#5
 # asm 2: sub >hh=x7,<grs=x5,<fuv=x4
 sub x7,x5,x4
 
-# qhasm:     h = grs + g1 * fuv
-# asm 1: madd >h=int64#7, <g1=int64#7, <fuv=int64#5, <grs=int64#6
-# asm 2: madd >h=x6, <g1=x6, <fuv=x4, <grs=x5
-madd x6, x6, x4, x5
-
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#9,<m=int64#4,#1
 # asm 2: sub >m1=x8,<m=x3,#1
 sub x8,x3,#1
+
+# qhasm:     grs & 1
+# asm 1: tst <grs=int64#6, #1
+# asm 2: tst <grs=x5, #1
+tst x5, #1
+
+# qhasm:     grs_new = h if Z=0 else grs
+# asm 1: csel >grs_new=int64#7, <h=int64#7, <grs=int64#6, ne
+# asm 2: csel >grs_new=x6, <h=x6, <grs=x5, ne
+csel x6, x6, x5, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#9, <grs=int64#6, ROR #1
@@ -177,20 +180,20 @@ tst x8, x5, ROR #1
 # asm 2: csneg >m=x3, <m1=x8, <m=x3, pl
 csneg x3, x8, x3, pl
 
+# qhasm:     grs_new = grs_new if N=0 else hh
+# asm 1: csel >grs_new=int64#7, <grs_new=int64#7, <hh=int64#8, pl
+# asm 2: csel >grs_new=x6, <grs_new=x6, <hh=x7, pl
+csel x6, x6, x7, pl
+
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#5, <fuv=int64#5, <grs=int64#6, pl
 # asm 2: csel >fuv=x4, <fuv=x4, <grs=x5, pl
 csel x4, x4, x5, pl
 
-# qhasm:     grs = h if N=0 else hh
-# asm 1: csel >grs=int64#6, <h=int64#7, <hh=int64#8, pl
-# asm 2: csel >grs=x5, <h=x6, <hh=x7, pl
-csel x5, x6, x7, pl
-
-# qhasm:     grs = grs signed>> 1
-# asm 1: asr >grs=int64#6, <grs=int64#6, #1
-# asm 2: asr >grs=x5, <grs=x5, #1
-asr x5, x5, #1
+# qhasm:     grs = grs_new signed>> 1
+# asm 1: asr >grs=int64#6, <grs_new=int64#7, #1
+# asm 2: asr >grs=x5, <grs_new=x6, #1
+asr x5, x6, #1
 
 # qhasm: mem64[pointer_delta] = m
 # asm 1: str <m=int64#4, [<pointer_delta=int64#1]

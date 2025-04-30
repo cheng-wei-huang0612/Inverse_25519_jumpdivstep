@@ -32,27 +32,37 @@ int64 delta_new
 
 enter divstep
 
-int64 g1
-
 m = mem64[pointer_delta]
 fuv = mem64[pointer_fuv]
 grs = mem64[pointer_grs]
 
 
 
-    g1 = grs & 1
+    h = fuv + grs
     hh = grs - fuv
-    h = grs + g1 * fuv
     m1 = m - 1 
+    grs & 1
+    # if Z = 1 then grs & 1 == 0
+    # if Z = 0 then grs & 1 == 1
+ 
+    grs_new = h if Z=0 else grs
  
  
     m1 & (grs >>> 1)
     # if m - 1 < 0 ang grs & 1 == 1 then N = 1
     # else N = 0
+
+    
+
     m = m1 if N=0 else -m
+
+    
+    
+
+    grs_new = grs_new if N=0 else hh
+    #grs = hh if N=0 else grs
     fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
+    grs = grs_new signed>> 1
 
 
 mem64[pointer_delta] = m

@@ -225,30 +225,27 @@ neg x12,x12
 
 # qhasm: int64 m1
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm: int64 g1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -260,45 +257,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -310,45 +302,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -360,45 +347,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -410,45 +392,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -460,45 +437,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -510,45 +482,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -560,45 +527,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -610,45 +572,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -660,45 +617,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -710,45 +662,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -760,45 +707,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -810,45 +752,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -860,45 +797,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -910,45 +842,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -960,45 +887,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -1010,45 +932,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -1060,45 +977,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -1110,45 +1022,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -1160,45 +1067,40 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
 
-# qhasm:     h = fuv + grs
-# asm 1: add >h=int64#16,<fuv=int64#14,<grs=int64#15
-# asm 2: add >h=x15,<fuv=x13,<grs=x14
-add x15,x13,x14
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
+
+# qhasm:     g1 = grs & 1
+# asm 1: and >g1=int64#16, <grs=int64#15, #1
+# asm 2: and >g1=x15, <grs=x14, #1
+and x15, x14, #1
 
 # qhasm:     hh = grs - fuv
 # asm 1: sub >hh=int64#17,<grs=int64#15,<fuv=int64#14
 # asm 2: sub >hh=x16,<grs=x14,<fuv=x13
 sub x16,x14,x13
 
+# qhasm:     h = grs + g1 * fuv
+# asm 1: madd >h=int64#16, <g1=int64#16, <fuv=int64#14, <grs=int64#15
+# asm 2: madd >h=x15, <g1=x15, <fuv=x13, <grs=x14
+madd x15, x15, x13, x14
+
 # qhasm:     m1 = m - 1 
 # asm 1: sub >m1=int64#18,<m=int64#5,#1
 # asm 2: sub >m1=x17,<m=x4,#1
 sub x17,x4,#1
-
-# qhasm:     grs & 1
-# asm 1: tst <grs=int64#15, #1
-# asm 2: tst <grs=x14, #1
-tst x14, #1
-
-# qhasm:     grs_new = h if Z=0 else grs
-# asm 1: csel >grs_new=int64#16, <h=int64#16, <grs=int64#15, ne
-# asm 2: csel >grs_new=x15, <h=x15, <grs=x14, ne
-csel x15, x15, x14, ne
 
 # qhasm:     m1 & (grs >>> 1)
 # asm 1: tst <m1=int64#18, <grs=int64#15, ROR #1
@@ -1210,20 +1112,20 @@ tst x17, x14, ROR #1
 # asm 2: csneg >m=x4, <m1=x17, <m=x4, pl
 csneg x4, x17, x4, pl
 
-# qhasm:     grs_new = grs_new if N=0 else hh
-# asm 1: csel >grs_new=int64#16, <grs_new=int64#16, <hh=int64#17, pl
-# asm 2: csel >grs_new=x15, <grs_new=x15, <hh=x16, pl
-csel x15, x15, x16, pl
-
 # qhasm:     fuv = fuv if N=0 else grs
 # asm 1: csel >fuv=int64#14, <fuv=int64#14, <grs=int64#15, pl
 # asm 2: csel >fuv=x13, <fuv=x13, <grs=x14, pl
 csel x13, x13, x14, pl
 
-# qhasm:     grs = grs_new signed>> 1
-# asm 1: asr >grs=int64#15, <grs_new=int64#16, #1
-# asm 2: asr >grs=x14, <grs_new=x15, #1
-asr x14, x15, #1
+# qhasm:     grs = h if N=0 else hh
+# asm 1: csel >grs=int64#15, <h=int64#16, <hh=int64#17, pl
+# asm 2: csel >grs=x14, <h=x15, <hh=x16, pl
+csel x14, x15, x16, pl
+
+# qhasm:     grs = grs signed>> 1
+# asm 1: asr >grs=int64#15, <grs=int64#15, #1
+# asm 2: asr >grs=x14, <grs=x14, #1
+asr x14, x14, #1
 
 # qhasm: mem64[pointer_delta] = m
 # asm 1: str <m=int64#5, [<pointer_delta=int64#1]
