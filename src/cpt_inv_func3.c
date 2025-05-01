@@ -109,7 +109,7 @@ __asm__ volatile(
 
     /* v = (fuv + 2^20 + 2^41) >> 42  */
     /* s = (grs + 2^20 + 2^41) >> 42  */
-    "mov        v4.2d,  v0.2d                     \n"
+    "mov        v4.16b,  v0.16b                     \n"
     "add        v4.2d,  v4.2d, v2.2d                     \n"
     "add        v4.2d,  v4.2d, v3.2d                     \n"
     "sshr       v4.2d,  v4.2d, #42                     \n"
@@ -123,7 +123,7 @@ __asm__ volatile(
 
     /* u = round(fuv/2^21)    r = round(grs/2^21)  */
 
-    "mov        v5.2d,  v0.2d                     \n"
+    "mov        v5.16b,  v0.16b                     \n"
     "add        v5.2d,  v5.2d, v2.2d                     \n"
     "shl        v5.2d,  v5.2d, #22                     \n"
     "sshr       v5.2d,  v5.2d, #43                     \n"
