@@ -18,7 +18,7 @@ LDFLAGS = -lgmp
 
 SRC = $(wildcard ../src/cpt_inv_func3.c \
 	             ../src/update_FG/update_FG.S \
-	             ../src/update_VS/update_VS_mont_neon.c \
+	             ../src/update_VS/update_VS_mont_inline_neon.c \
 				 ../src/big30_and_uint256/big30_from_uint256.S \
 				 ../src/big30_and_uint256/uint256_from_big30.S \
 				 ../src/final_adjustment/final_adjustment.S \

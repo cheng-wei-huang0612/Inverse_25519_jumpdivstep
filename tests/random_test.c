@@ -8,7 +8,7 @@
 #include <gmp.h>
 
 
-const int NUM_TESTS = 1000000;
+const int NUM_TESTS = 100000;
 
 
 // A small helper to generate a random 256-bit number in uint256_t

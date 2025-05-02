@@ -29,6 +29,7 @@ int64 m1
 int64 z
 int64 minus_one
 int64 delta_new
+int64 ff
 
 enter divstep
 
@@ -40,18 +41,14 @@ grs = mem64[pointer_grs]
 
 
 
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
     m1 = m - 1 
- 
- 
+    grs & 1
+    ff = fuv if Z=0 else 0
     m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
     m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
+    fuv = grs if N=1 else fuv
+    ff = ff if N=0 else -ff
+    grs = grs + ff
     grs = grs signed>> 1
 
 
