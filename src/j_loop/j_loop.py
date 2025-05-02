@@ -71,37 +71,25 @@ int64 h
 int64 hh
 int64 m1
 
+int64 ff
 
 """
 
 for i in range(20):
     code += """
 
-    h = fuv + grs
-    hh = grs - fuv
     m1 = m - 1 
     grs & 1
-    # if Z = 1 then grs & 1 == 0
-    # if Z = 0 then grs & 1 == 1
- 
-    grs_new = h if Z=0 else grs
- 
- 
+    ff = fuv if Z=0 else 0
     m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-
-    
-
     m = m1 if N=0 else -m
+    fuv = grs if N=1 else fuv
+    ff = ff if N=0 else -ff
+    grs = grs + ff
+    grs = grs signed>> 1
 
-    
-    
-
-    grs_new = grs_new if N=0 else hh
-    #grs = hh if N=0 else grs
-    fuv = fuv if N=0 else grs
-    grs = grs_new signed>> 1
+    free m1
+    free ff
 
     """
 

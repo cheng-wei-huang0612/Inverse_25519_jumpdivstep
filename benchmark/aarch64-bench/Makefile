@@ -12,7 +12,7 @@ SOURCES = hal/hal.c \
 					../ref_intmul/fe25519_intmul.S \
 					../ref_intmul/fe25519_intmul_nsquare.S \
 					../ref_intmul/fe25519_intmul_square.S \
-					../my_invert/cpt_inv_func3.c \
+					../my_invert/cpt_inv_func4.c \
 					../my_invert/divstepx20.S \
 					../my_invert/big30_from_uint256.S \
 					../my_invert/j_loop.S \
