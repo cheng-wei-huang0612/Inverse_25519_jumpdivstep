@@ -12,7 +12,8 @@
 #include "big30.h"
 
 #define NWARMUP 10
-#define NITERATIONS 500
+#define NITERATIONS 1
+// #define NITERATIONS 500
 #define NTESTS 1000
 
 static int cmp_uint64_t(const void *a, const void *b)
