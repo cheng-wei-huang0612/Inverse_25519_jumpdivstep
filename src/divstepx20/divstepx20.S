@@ -108,20 +108,6 @@
 _divstepx20:
 divstepx20:
 
-# qhasm: m = mem64[pointer_delta]
-# asm 1: ldr >m=int64#4, [<pointer_delta=int64#1]
-# asm 2: ldr >m=x3, [<pointer_delta=x0]
-ldr x3, [x0]
-
-# qhasm: fuv = mem64[pointer_fuv]
-# asm 1: ldr >fuv=int64#5, [<pointer_fuv=int64#2]
-# asm 2: ldr >fuv=x4, [<pointer_fuv=x1]
-ldr x4, [x1]
-
-# qhasm: grs = mem64[pointer_grs]
-# asm 1: ldr >grs=int64#6, [<pointer_grs=int64#3]
-# asm 2: ldr >grs=x5, [<pointer_grs=x2]
-ldr x5, [x2]
 
 # qhasm: int64 ff
 
@@ -1105,20 +1091,6 @@ asr x5, x5, #1
 
 # qhasm:     free ff
 
-# qhasm: mem64[pointer_delta] = m
-# asm 1: str <m=int64#4, [<pointer_delta=int64#1]
-# asm 2: str <m=x3, [<pointer_delta=x0]
-str x3, [x0]
-
-# qhasm: mem64[pointer_fuv] = fuv
-# asm 1: str <fuv=int64#5, [<pointer_fuv=int64#2]
-# asm 2: str <fuv=x4, [<pointer_fuv=x1]
-str x4, [x1]
-
-# qhasm: mem64[pointer_grs] = grs
-# asm 1: str <grs=int64#6, [<pointer_grs=int64#3]
-# asm 2: str <grs=x5, [<pointer_grs=x2]
-str x5, [x2]
 
 # qhasm: return
 ret
