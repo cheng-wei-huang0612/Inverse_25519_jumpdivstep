@@ -65,7 +65,7 @@ static int bench(void)
   uint64_t t0, t1;
   uint64_t cycles[NTESTS];
 
-  for (int i = 0; i < NTESTS; i++)
+  for (i = 0; i < NTESTS; i++)
   {
     t0 = get_cyclecounter();
 
