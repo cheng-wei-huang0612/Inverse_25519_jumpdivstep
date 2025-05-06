@@ -83,8 +83,8 @@ return
 
 """
 
-with open("divstepx20.q", "w") as f:
+with open("divstepx20_1.q", "w") as f:
     f.write(code)
 
 import os
-os.system("qhasm-aarch64-align < divstepx20.q > divstepx20.S")
+os.system("qhasm-aarch64-align < divstepx20_1.q > divstepx20_1.S")
