@@ -71,7 +71,7 @@ static int bench(void)
     // {
     //   divstepx20(&delta, &f, &g);
     // }
-    for (volatile int i = 0; i < 32768; i++) __asm__ volatile("nop");
+    for (volatile int k = 0; k < 32768; k++) __asm__ volatile("nop");
 
     t0 = get_cyclecounter();
     for (j = 0; j < NITERATIONS; j++)
