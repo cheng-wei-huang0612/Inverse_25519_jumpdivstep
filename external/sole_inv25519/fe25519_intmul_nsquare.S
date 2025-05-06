@@ -1,15 +1,7 @@
 /* Assembly for feedback field squaring */
 
-; #include "crypto_asm_hidden.h"
 
 	.p2align 4
-	; ASM_HIDDEN _CRYPTO_SHARED_NAMESPACE(fe25519_nsquare)
-	; .globl _CRYPTO_SHARED_NAMESPACE(fe25519_nsquare)
-	; ASM_HIDDEN CRYPTO_SHARED_NAMESPACE(fe25519_nsquare)
-	; .globl CRYPTO_SHARED_NAMESPACE(fe25519_nsquare)
-	
-; _CRYPTO_SHARED_NAMESPACE(fe25519_nsquare):
-; CRYPTO_SHARED_NAMESPACE(fe25519_nsquare):
 
 	.globl _fe25519_intmul_nsquare
 	.globl fe25519_intmul_nsquare
@@ -108,4 +100,3 @@ fe25519_intmul_nsquare:
 	stp	x5, x6, [x0, #16]
 	
 	ret
-; .section	.note.GNU-stack,"",@progbits
