@@ -20,7 +20,7 @@ SOURCES = hal/hal.c \
 					../src/j_loop_final/j_loop_final.S \
 					../src/final_adjustment/final_adjustment.S \
 					../src/update_FG/update_FG.S \
-					../src/update_VS/update_VS_mont_inline_neon.c \
+					../src/update_VS/update_VS_mont_neon.c \
 
 	# -Wmissing-prototypes \
 
