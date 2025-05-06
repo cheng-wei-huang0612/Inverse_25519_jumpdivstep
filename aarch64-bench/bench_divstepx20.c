@@ -11,7 +11,7 @@
 #include "fe25519.h"
 #include "big30.h"
 
-#define NWARMUP 100
+#define NWARMUP 10
 #define NITERATIONS 500
 #define NTESTS 1000
 
