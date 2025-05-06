@@ -65,11 +65,11 @@ static int bench(void)
   uint64_t t0, t1;
   uint64_t cycles[NTESTS];
 
-  for (i = 0; i < NTESTS; i++)
+  for (int i = 0; i < NTESTS; i++)
   {
     t0 = get_cyclecounter();
 
-    for(int i=0;i<500;i++) asm volatile("");
+    for(int k=0;k<500;k++) asm volatile("");
 
     t1 = get_cyclecounter();
 
