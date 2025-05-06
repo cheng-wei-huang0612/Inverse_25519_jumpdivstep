@@ -83,13 +83,13 @@ static int bench(void)
 
   qsort(cycles, NTESTS, sizeof(uint64_t), cmp_uint64_t);
 
-  print_median("intmul_invert", cycles);
+  print_median("divstepx20", cycles);
 
   printf("\n");
 
   print_percentile_legend();
 
-  print_percentiles("intmul_invert", cycles);
+  print_percentiles("divstepx20", cycles);
 
 
   printf("\n\n\n\n");
