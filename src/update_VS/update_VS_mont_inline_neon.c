@@ -53,15 +53,15 @@ void print_vec_tmp(uint32x2_t *vec_tmp, int length) {
 void update_VS_mont(
         big30_t *V, big30_t *S, int64_t *uuvvrrss
 ){
-    int64_t *u = &(uuvvrrss[0]);
-    int64_t *v = &(uuvvrrss[1]);
-    int64_t *r = &(uuvvrrss[2]);
-    int64_t *s = &(uuvvrrss[3]);
+    // int64_t *u = &(uuvvrrss[0]);
+    // int64_t *v = &(uuvvrrss[1]);
+    // int64_t *r = &(uuvvrrss[2]);
+    // int64_t *s = &(uuvvrrss[3]);
 
 
-    // vec_M = [M, M]
-    // M = -P^-1 mod B (B = 2^30)
-    uint32x2_t vec_M = {678152731, 678152731};
+    // // vec_M = [M, M]
+    // // M = -P^-1 mod B (B = 2^30)
+    // uint32x2_t vec_M = {678152731, 678152731};
 
 
     // Constants, buffer, and mask
@@ -244,6 +244,12 @@ __asm__ volatile(
     uint32x2_t vec_V[9];
     uint32x2_t vec_S[9];
 
+    uint32x4_t vec_V0_V1_S0_S1;
+    uint32x4_t vec_V2_V3_S2_S3;
+    uint32x4_t vec_V4_V5_S4_S5;
+    uint32x4_t vec_V6_V7_S6_S7;
+    uint32x4_t vec_V8_0_S8_0;
+
 
 __asm__ volatile(
     /* ==== 1. 把 V[0..8]、S[0..8] 載到 x4–x9 ===================== */
@@ -271,6 +277,24 @@ __asm__ volatile(
     "ins   v4.d[0], x8              \n"
     "ins   v4.d[1], x13             \n"
     // so, v0 = vec_V0_V1_S0_S1
+
+    // dump to vec_V0_V1_S0_S1
+    "umov    x0, v0.d[0]\n"
+    "umov    x1, v0.d[1]\n"
+    "stp     x0, x1, [%[p_vec_V0_V1_S0_S1]]\n"
+    "umov    x0, v1.d[0]\n"
+    "umov    x1, v1.d[1]\n"
+    "stp     x0, x1, [%[p_vec_V2_V3_S2_S3]]\n"
+    "umov    x0, v2.d[0]\n"
+    "umov    x1, v2.d[1]\n"
+    "stp     x0, x1, [%[p_vec_V4_V5_S4_S5]]\n"
+    "umov    x0, v3.d[0]\n"
+    "umov    x1, v3.d[1]\n"
+    "stp     x0, x1, [%[p_vec_V6_V7_S6_S7]]\n"
+    "umov    x0, v4.d[0]\n"
+    "umov    x1, v4.d[1]\n"
+    "stp     x0, x1, [%[p_vec_V8_0_S8_0]]\n"
+
 
     /* ==== 3. 立刻拆回 vec_V / vec_S，釋放 v0–v4 =============== */
     /* v0 --------------------------------------------------------- */
@@ -323,10 +347,15 @@ __asm__ volatile(
       [pV] "r"(V->limb),
       [pS] "r"(S->limb),
       [oV] "r"(vec_V),
-      [oS] "r"(vec_S)
+      [oS] "r"(vec_S),
+      [p_vec_V0_V1_S0_S1] "r"(&vec_V0_V1_S0_S1),
+      [p_vec_V2_V3_S2_S3] "r"(&vec_V2_V3_S2_S3),
+      [p_vec_V4_V5_S4_S5] "r"(&vec_V4_V5_S4_S5),
+      [p_vec_V6_V7_S6_S7] "r"(&vec_V6_V7_S6_S7),
+      [p_vec_V8_0_S8_0] "r"(&vec_V8_0_S8_0)
     : "memory",
       /* 這些在區塊內被用到／覆寫，列入 clobber */
-      "x4","x5","x6","x7","x8","x9","x10","x11","x12","x13",
+      "x0","x1","x4","x5","x6","x7","x8","x9","x10","x11","x12","x13",
       "v0","v1","v2","v3","v4","v16"
 );
     // for (int i = 0; i < 9; i++)
@@ -335,132 +364,1805 @@ __asm__ volatile(
     //     vec_S[i] =  vdup_n_u32(S->limb[i]);
     // }
 
+  // print_u32x4((uint32x4_t){V->limb[8],0,S->limb[8],0  });
+  // print_u32x4(vec_V8_0_S8_0);
 
     // Step []: vec_uuV_rrV[0..10] = initialize to zero
-    uint32x2_t vec_uuV_rrV[11] = {0}; 
-    for (int i = 0; i < 11; i++) {
-        vec_uuV_rrV[i] = vdup_n_u32(0);
-    }
+    
+    uint32x4_t vec_uuV0_uuV1_rrV0_rrV1;
+    uint32x4_t vec_uuV2_uuV3_rrV2_rrV3;
+    uint32x4_t vec_uuV4_uuV5_rrV4_rrV5;
+    uint32x4_t vec_uuV6_uuV7_rrV6_rrV7;
+    uint32x4_t vec_uuV8_uuV9_rrV8_rrV9;
+    uint32x4_t vec_uuV10_0_rrV10_0;
+
+    uint32x2_t vec_uuV_rrV[11]; 
+
+    // for (int i = 0; i < 11; i++) {
+    //     vec_uuV_rrV[i] = vdup_n_u32(0);
+    // }
+
+
+    // // Step [3]: tmp += u0 * V
+    // vec_prod = vdupq_n_u64(0);
+    // for (int i = 0; i < 9; i++){
+    //     vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u0_r0 );
+    //     vec_uuV_rrV[i] = vadd_u32(vec_uuV_rrV[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    //     vec_prod = vshrq_n_u64(vec_prod, 30);
+    // }
+    // vec_uuV_rrV[9] = vadd_u32(vec_uuV_rrV[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
 
 
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_V0_V1_S0_S1]] \n"
+    "ins   v0.d[0], x0              \n"
+    "ins   v0.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V2_V3_S2_S3]] \n"
+    "ins   v1.d[0], x0              \n"
+    "ins   v1.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V4_V5_S4_S5]] \n"
+    "ins   v2.d[0], x0              \n"
+    "ins   v2.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V6_V7_S6_S7]] \n"
+    "ins   v3.d[0], x0              \n"
+    "ins   v3.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V8_0_S8_0]] \n"
+    "ins   v4.d[0], x0              \n"
+    "ins   v4.d[1], x1              \n"
+
+
+    "ldp   x0, x1, [%[p_vec_uu0_rr0_vv0_ss0]] \n"
+    "ins   v5.d[0], x0              \n"
+    "ins   v5.d[1], x1              \n"
+
+
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v6.d[0], x0              \n"
+    "ins   v6.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v7.d[0], x0              \n"
+    "ins   v7.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v8.d[0], x0              \n"
+    "ins   v8.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v9.d[0], x0              \n"
+    "ins   v9.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v10.d[0], x0              \n"
+    "ins   v10.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v11.d[0], x0              \n"
+    "ins   v11.d[1], x1              \n"
+    // v6 = vec_uuV0_uuV1_rrV0_rrV1
+    // v7 = vec_uuV2_uuV3_rrV2_rrV3
+    // v8 = vec_uuV4_uuV5_rrV4_rrV5
+    // v9 = vec_uuV6_uuV7_rrV6_rrV7
+    // v10 = vec_uuV8_uuV9_rrV8_rrV9
+    // v11 = vec_uuV10_0_rrV10_0
+
+    "movi  v6.2d, #0                   \n"
+    "movi  v7.2d, #0                   \n"
+    "movi  v8.2d, #0                   \n"
+    "movi  v9.2d, #0                   \n"
+    "movi  v10.2d, #0                   \n"
+    "movi  v11.2d, #0                   \n"
+
+    "mov   x0, #1                   \n"
+    "lsl   x0, x0, #30              \n"
+    "sub   x0, x0, #1                   \n"
+    "dup   v15.2d, x0               \n"
 
 
 
+    "movi  v16.2d, #0                \n"
+    // v16 = vec_prod
+    // v17 = vec_buf
 
+    "umlal v16.2d, v5.2s, v0.s[0]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v6.2d, v6.2d, v17.2d          \n"
 
+    "umlal v16.2d, v5.2s, v0.s[1]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v6.2d, v6.2d, v17.2d          \n"
     
 
-    // Step [3]: tmp += u0 * V
-    vec_prod = vdupq_n_u64(0);
-    for (int i = 0; i < 9; i++){
-        vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u0_r0 );
-        vec_uuV_rrV[i] = vadd_u32(vec_uuV_rrV[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        vec_prod = vshrq_n_u64(vec_prod, 30);
-    }
-    vec_uuV_rrV[9] = vadd_u32(vec_uuV_rrV[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+
+
+    "umlal v16.2d, v5.2s, v1.s[0]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v7.2d, v7.2d, v17.2d          \n"
+
+    "umlal v16.2d, v5.2s, v1.s[1]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v7.2d, v7.2d, v17.2d          \n"
+
+
+    "umlal v16.2d, v5.2s, v2.s[0]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v8.2d, v8.2d, v17.2d          \n"
+
+    "umlal v16.2d, v5.2s, v2.s[1]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v8.2d, v8.2d, v17.2d          \n"
+
+
+    "umlal v16.2d, v5.2s, v3.s[0]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v9.2d, v9.2d, v17.2d          \n"
+
+    "umlal v16.2d, v5.2s, v3.s[1]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v9.2d, v9.2d, v17.2d          \n"
+
+
+    "umlal v16.2d, v5.2s, v4.s[0]        \n"
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v10.2d, v10.2d, v17.2d          \n"
+
+    "and   v17.16b, v16.16b, v15.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v10.2d, v10.2d, v17.2d          \n"
+
+
+
+    // dump to 
+    // v6 = vec_uuV0_uuV1_rrV0_rrV1
+    // v7 = vec_uuV2_uuV3_rrV2_rrV3
+    // v8 = vec_uuV4_uuV5_rrV4_rrV5
+    // v9 = vec_uuV6_uuV7_rrV6_rrV7
+    // v10 = vec_uuV8_uuV9_rrV8_rrV9
+    // v11 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v6.d[0]              \n"
+    "umov   x1, v6.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v7.d[0]              \n"
+    "umov   x1, v7.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v8.d[0]              \n"
+    "umov   x1, v8.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v9.d[0]              \n"
+    "umov   x1, v9.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v10.d[0]              \n"
+    "umov   x1, v10.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v11.d[0]              \n"
+    "umov   x1, v11.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v6.s[0]                        \n"
+    "umov   w1, v6.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v6.s[1]                        \n"
+    "umov   w1, v6.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v7.s[0]                        \n"
+    "umov   w1, v7.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v7.s[1]                        \n"
+    "umov   w1, v7.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+    "umov   w0, v8.s[0]                        \n"
+    "umov   w1, v8.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+    "umov   w0, v8.s[1]                        \n"
+    "umov   w1, v8.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v9.s[0]                        \n"
+    "umov   w1, v9.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+    "umov   w0, v9.s[1]                        \n"
+    "umov   w1, v9.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+    "umov   w0, v10.s[0]                        \n"
+    "umov   w1, v10.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+    "umov   w0, v10.s[1]                        \n"
+    "umov   w1, v10.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    "umov   w0, v11.s[0]                        \n"
+    "umov   w1, v11.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    :
+    : // pointers
+      [p_vec_V0_V1_S0_S1] "r"(&vec_V0_V1_S0_S1),
+      [p_vec_V2_V3_S2_S3] "r"(&vec_V2_V3_S2_S3),
+      [p_vec_V4_V5_S4_S5] "r"(&vec_V4_V5_S4_S5),
+      [p_vec_V6_V7_S6_S7] "r"(&vec_V6_V7_S6_S7),
+      [p_vec_V8_0_S8_0] "r"(&vec_V8_0_S8_0),
+      [p_vec_uu0_rr0_vv0_ss0] "r"(&vec_uu0_rr0_vv0_ss0),
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v15","v16","v17","v18"
+  );
+
+
+
+
+
+  // print_u32x2(vec_uuV_rrV[6]);
+  // print_u32x2(vec_uuV_rrV[7]);
+  // print_u32x4(vec_uuV6_uuV7_rrV6_rrV7);
+
+
+
+
 
     
     // Step [4]: l0 = tmp[0] * M mod 2^30
     //            and tmp += l0 * P
-    uint32x2_t vec_l0 = vmul_u32(vec_uuV_rrV[0], vec_M);
-    vec_l0 = vand_u32(vec_l0 ,vec_u32_2p30m1);
+  
+    // vec_M = [M, M]
+    // M = -P^-1 mod B (B = 2^30)
+    uint32x2_t vec_M = {678152731, 678152731};
 
-    vec_prod = vdupq_n_u64(0);
+    uint32x2_t vec_l0;
+    // vec_l0 = vmul_u32(vec_uuV_rrV[0], vec_M);
+    // vec_l0 = vand_u32(vec_l0 ,vec_u32_2p30m1);
 
-    // i = 0
-    vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l0 );
-    vec_uuV_rrV[0] = vadd_u32(vec_uuV_rrV[0], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-    vec_prod = vshrq_n_u64(vec_prod, 30);
+__asm__ volatile(
+    /* === 1. 取 vec_uuV_rrV[0] → v0.2s ========================= */
+    "ldr    w0, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]              \n"  /* v0 = uuV_rrV[0]    */
+    "ldr    w1, [%[p_vec_uuV0_uuV1_rrV0_rrV1], #8]              \n"  /* v0 = uuV_rrV[0]    */
+    "ins    v0.s[0], w0   \n"
+    "ins    v0.s[1], w1   \n"
+
+    /* === 2. 建立 vec_M = [678152731, 678152731] = 0x286BCA1B ==== */
+    "movz   w1,  #0xCA1B                        \n"  /* 低 16‑bit          */
+    "movk   w1,  #0x286B,  lsl #16              \n"  /* 高 16‑bit          */
+    "dup    v1.2s,  w1                          \n"  /* v1 = vec_M         */
+
+    /* === 3. vec_l0 = (v0 * v1) & (2³⁰‑1) ====================== */
+    "mul    v2.2s, v0.2s, v1.2s                 \n"  /* v2 = uuV *  M      */
+
+        /* 2³⁰‑1 mask：0x3FFFFFFF */
+    "mov    w1,  #1                             \n"
+    "lsl    w1,  w1,  #30                       \n"
+    "sub    w1,  w1,  #1                        \n"
+    "dup    v3.2s,  w1                          \n"  /* v3 = mask          */
+
+    "and    v2.8b, v2.8b, v3.8b                 \n"  /* keep low 30 bits   */
+    "st1    {v2.2s}, [%[p_vec_l0]]              \n"  /* vec_l0 ← memory    */
+
+    :
+    : [p_vec_uuV0_uuV1_rrV0_rrV1]   "r" (&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_l0]   "r" (&vec_l0),
+      [p_vec_prod] "r" (&vec_prod)
+    : "memory",
+      /* GPR */
+      "w0","w1",
+      /* NEON */
+      "v0","v1","v2","v3","v4"
+);
 
 
-    for (int i = 0 + 1; i < (9 - 1); i++){
-        vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l0 );
-        vec_uuV_rrV[i] = vadd_u32(vec_uuV_rrV[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        vec_prod = vshrq_n_u64(vec_prod, 30);
-    }
 
-    // i = 8
-    vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l0 );
-    vec_uuV_rrV[8] = vadd_u32(vec_uuV_rrV[8], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-    vec_prod = vshrq_n_u64(vec_prod, 30);
+    // vec_prod = vdupq_n_u64(0);
+    // // i = 0
+    // vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l0 );
+    // vec_uuV_rrV[0] = vadd_u32(vec_uuV_rrV[0], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    // vec_prod = vshrq_n_u64(vec_prod, 30);
+    //
+    //
+    // for (int i = 0 + 1; i < (9 - 1); i++){
+    //     vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l0 );
+    //     vec_uuV_rrV[i] = vadd_u32(vec_uuV_rrV[i], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    //     vec_prod = vshrq_n_u64(vec_prod, 30);
+    // }
+    //
+    // // i = 8
+    // vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l0 );
+    // vec_uuV_rrV[8] = vadd_u32(vec_uuV_rrV[8], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    // vec_prod = vshrq_n_u64(vec_prod, 30);
+    //
+    // vec_uuV_rrV[9] = vadd_u32(vec_uuV_rrV[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
-    vec_uuV_rrV[9] = vadd_u32(vec_uuV_rrV[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+
+
+  __asm__(
+    "ldp   w0, w1, [%[p_vec_l0]]\n"
+    "ins   v5.s[0], w0              \n"
+    "ins   v5.s[1], w1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v6.d[0], x0              \n"
+    "ins   v6.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v7.d[0], x0              \n"
+    "ins   v7.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v8.d[0], x0              \n"
+    "ins   v8.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v9.d[0], x0              \n"
+    "ins   v9.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v10.d[0], x0              \n"
+    "ins   v10.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v11.d[0], x0              \n"
+    "ins   v11.d[1], x1              \n"
+    // v6 = vec_uuV0_uuV1_rrV0_rrV1
+    // v7 = vec_uuV2_uuV3_rrV2_rrV3
+    // v8 = vec_uuV4_uuV5_rrV4_rrV5
+    // v9 = vec_uuV6_uuV7_rrV6_rrV7
+    // v10 = vec_uuV8_uuV9_rrV8_rrV9
+    // v11 = vec_uuV10_0_rrV10_0
+
+
+    "mov   x0, #1                   \n"
+    "lsl   x1, x0, #30              \n"
+    "sub   x1, x1, #1                   \n"
+    "dup   v13.2d, x1               \n"
+    "sub   x1, x1, #18                   \n"
+    "dup   v14.2d, x1               \n"
+    "lsl   x1, x0, #15              \n"
+    "sub   x1, x1, #1                   \n"
+    "dup   v15.2d, x1               \n"
+    // v13 = vec_2p30m1
+    // v14 = vec_2p30m19
+    // v15 = vec_2p15m1
+
+
+
+    "movi  v16.2d, #0                \n"
+    // v16 = vec_prod
+    // v17 = vec_buf
+
+    "umlal v16.2d, v5.2s, v14.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v6.2d, v6.2d, v17.2d          \n"
+
+    "umlal v16.2d, v5.2s, v13.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v6.2d, v6.2d, v17.2d          \n"
+
+
+    "umlal v16.2d, v5.2s, v13.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v7.2d, v7.2d, v17.2d          \n"
+
+    "umlal v16.2d, v5.2s, v13.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v7.2d, v7.2d, v17.2d          \n"
+
+
+    "umlal v16.2d, v5.2s, v13.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v8.2d, v8.2d, v17.2d          \n"
+
+    "umlal v16.2d, v5.2s, v13.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v8.2d, v8.2d, v17.2d          \n"
+
+
+    "umlal v16.2d, v5.2s, v13.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v9.2d, v9.2d, v17.2d          \n"
+
+    "umlal v16.2d, v5.2s, v13.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v9.2d, v9.2d, v17.2d          \n"
+
+
+    "umlal v16.2d, v5.2s, v15.s[0]        \n"
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "add   v10.2d, v10.2d, v17.2d          \n"
+
+    "and   v17.16b, v16.16b, v13.16b     \n"
+    "ushr  v16.2d, v16.2d, #30           \n"
+    "shl   v17.2d, v17.2d, #32           \n"
+    "add   v10.2d, v10.2d, v17.2d          \n"
+
+
+
+    // dump to 
+    // v6 = vec_uuV0_uuV1_rrV0_rrV1
+    // v7 = vec_uuV2_uuV3_rrV2_rrV3
+    // v8 = vec_uuV4_uuV5_rrV4_rrV5
+    // v9 = vec_uuV6_uuV7_rrV6_rrV7
+    // v10 = vec_uuV8_uuV9_rrV8_rrV9
+    // v11 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v6.d[0]              \n"
+    "umov   x1, v6.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v7.d[0]              \n"
+    "umov   x1, v7.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v8.d[0]              \n"
+    "umov   x1, v8.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v9.d[0]              \n"
+    "umov   x1, v9.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v10.d[0]              \n"
+    "umov   x1, v10.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v11.d[0]              \n"
+    "umov   x1, v11.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v6.s[0]                        \n"
+    "umov   w1, v6.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v6.s[1]                        \n"
+    "umov   w1, v6.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v7.s[0]                        \n"
+    "umov   w1, v7.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v7.s[1]                        \n"
+    "umov   w1, v7.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+    "umov   w0, v8.s[0]                        \n"
+    "umov   w1, v8.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+    "umov   w0, v8.s[1]                        \n"
+    "umov   w1, v8.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v9.s[0]                        \n"
+    "umov   w1, v9.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+    "umov   w0, v9.s[1]                        \n"
+    "umov   w1, v9.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+    "umov   w0, v10.s[0]                        \n"
+    "umov   w1, v10.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+    "umov   w0, v10.s[1]                        \n"
+    "umov   w1, v10.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    "umov   w0, v11.s[0]                        \n"
+    "umov   w1, v11.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    :
+    : // pointers
+      [p_vec_l0]   "r" (&vec_l0),
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v13","v14","v15","v16","v17","v18"
+  );
+
+  // print_u32x2(vec_uuV_rrV[1]);
 
 
     // Step [5]: carry propogation
-    vec_carry = vdup_n_u32(0);
-    for (int i = 0; i < 9; i++){
-        vec_carry = vshr_n_u32(vec_uuV_rrV[i], 30);
-        vec_uuV_rrV[i] = vand_u32(vec_uuV_rrV[i], vec_u32_2p30m1);
-        vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vec_carry);
-    }
+    // vec_carry = vdup_n_u32(0);
+    // for (int i = 0; i < 9; i++){
+    //     vec_carry = vshr_n_u32(vec_uuV_rrV[i], 30);
+    //     vec_uuV_rrV[i] = vand_u32(vec_uuV_rrV[i], vec_u32_2p30m1);
+    //     vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vec_carry);
+    // }
 
+
+  __asm__(
+
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v6.d[0], x0              \n"
+    "ins   v6.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v7.d[0], x0              \n"
+    "ins   v7.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v8.d[0], x0              \n"
+    "ins   v8.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v9.d[0], x0              \n"
+    "ins   v9.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v10.d[0], x0              \n"
+    "ins   v10.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v11.d[0], x0              \n"
+    "ins   v11.d[1], x1              \n"
+    // v6 = vec_uuV0_uuV1_rrV0_rrV1
+    // v7 = vec_uuV2_uuV3_rrV2_rrV3
+    // v8 = vec_uuV4_uuV5_rrV4_rrV5
+    // v9 = vec_uuV6_uuV7_rrV6_rrV7
+    // v10 = vec_uuV8_uuV9_rrV8_rrV9
+    // v11 = vec_uuV10_0_rrV10_0
+
+
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x1 = 2p30a2p31
+    "dup   v13.2d, x0               \n"
+    // v13 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v14.2d, x0               \n"
+    // v14 = vec_2x_2p62a2p63
+
+
+    "movi  v17.2d, #0                \n"
+    // v17 = vec_carry
+
+
+    "and   v17.16b, v6.16b, v13.16b   \n"
+    "bic   v6.16b, v6.16b, v13.16b   \n"
+    "shl   v17.2d,  v17.2d, #2       \n"
+    "add   v6.2d,   v6.2d,  v17.2d   \n"
+
+    "and   v17.16b, v6.16b, v14.16b   \n"
+    "bic   v6.16b, v6.16b, v14.16b   \n"
+    "ushr  v17.2d,  v17.2d, #62       \n"
+    "add   v7.2d,   v7.2d,  v17.2d   \n"
+
+
+    "and   v17.16b, v7.16b, v13.16b   \n"
+    "bic   v7.16b, v7.16b, v13.16b   \n"
+    "shl   v17.2d,  v17.2d, #2       \n"
+    "add   v7.2d,   v7.2d,  v17.2d   \n"
+
+    "and   v17.16b, v7.16b, v14.16b   \n"
+    "bic   v7.16b, v7.16b, v14.16b   \n"
+    "ushr  v17.2d,  v17.2d, #62       \n"
+    "add   v8.2d,   v8.2d,  v17.2d   \n"
+
+
+    "and   v17.16b, v8.16b, v13.16b   \n"
+    "bic   v8.16b, v8.16b, v13.16b   \n"
+    "shl   v17.2d,  v17.2d, #2       \n"
+    "add   v8.2d,   v8.2d,  v17.2d   \n"
+
+    "and   v17.16b, v8.16b, v14.16b   \n"
+    "bic   v8.16b, v8.16b, v14.16b   \n"
+    "ushr  v17.2d,  v17.2d, #62       \n"
+    "add   v9.2d,   v9.2d,  v17.2d   \n"
+
+
+    "and   v17.16b, v9.16b, v13.16b   \n"
+    "bic   v9.16b, v9.16b, v13.16b   \n"
+    "shl   v17.2d,  v17.2d, #2       \n"
+    "add   v9.2d,   v9.2d,  v17.2d   \n"
+
+    "and   v17.16b, v9.16b, v14.16b   \n"
+    "bic   v9.16b, v9.16b, v14.16b   \n"
+    "ushr  v17.2d,  v17.2d, #62       \n"
+    "add   v10.2d,   v10.2d,  v17.2d   \n"
+
+
+    "and   v17.16b, v10.16b, v13.16b   \n"
+    "bic   v10.16b, v10.16b, v13.16b   \n"
+    "shl   v17.2d,  v17.2d, #2       \n"
+    "add   v10.2d,   v10.2d,  v17.2d   \n"
+    // dump to 
+    // v6 = vec_uuV0_uuV1_rrV0_rrV1
+    // v7 = vec_uuV2_uuV3_rrV2_rrV3
+    // v8 = vec_uuV4_uuV5_rrV4_rrV5
+    // v9 = vec_uuV6_uuV7_rrV6_rrV7
+    // v10 = vec_uuV8_uuV9_rrV8_rrV9
+    // v11 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v6.d[0]              \n"
+    "umov   x1, v6.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v7.d[0]              \n"
+    "umov   x1, v7.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v8.d[0]              \n"
+    "umov   x1, v8.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v9.d[0]              \n"
+    "umov   x1, v9.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v10.d[0]              \n"
+    "umov   x1, v10.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v11.d[0]              \n"
+    "umov   x1, v11.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v6.s[0]                        \n"
+    "umov   w1, v6.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v6.s[1]                        \n"
+    "umov   w1, v6.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v7.s[0]                        \n"
+    "umov   w1, v7.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v7.s[1]                        \n"
+    "umov   w1, v7.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+    "umov   w0, v8.s[0]                        \n"
+    "umov   w1, v8.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+    "umov   w0, v8.s[1]                        \n"
+    "umov   w1, v8.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v9.s[0]                        \n"
+    "umov   w1, v9.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+    "umov   w0, v9.s[1]                        \n"
+    "umov   w1, v9.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+    "umov   w0, v10.s[0]                        \n"
+    "umov   w1, v10.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+    "umov   w0, v10.s[1]                        \n"
+    "umov   w1, v10.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    "umov   w0, v11.s[0]                        \n"
+    "umov   w1, v11.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    :
+    : // pointers
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v13","v14","v15","v16","v17","v18"
+  );
+
+
+  // print_u32x2(vec_uuV_rrV[1]);
     
-    // Step [7]: tmp += u1 * V 
-    vec_prod = vdupq_n_u64(0);
-    for (int i = 0; i < 9; i++){
-        vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u1_r1 );
-        vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        vec_prod = vshrq_n_u64(vec_prod, 30);
-    }
-    vec_uuV_rrV[9+1] = vadd_u32(vec_uuV_rrV[9+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    // // Step [7]: tmp += u1 * V 
+    // vec_prod = vdupq_n_u64(0);
+    // for (int i = 0; i < 9; i++){
+    //     vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u1_r1 );
+    //     vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    //     vec_prod = vshrq_n_u64(vec_prod, 30);
+    // }
+    // vec_uuV_rrV[9+1] = vadd_u32(vec_uuV_rrV[9+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
     
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_V0_V1_S0_S1]] \n"
+    "ins   v0.d[0], x0              \n"
+    "ins   v0.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V2_V3_S2_S3]] \n"
+    "ins   v1.d[0], x0              \n"
+    "ins   v1.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V4_V5_S4_S5]] \n"
+    "ins   v2.d[0], x0              \n"
+    "ins   v2.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V6_V7_S6_S7]] \n"
+    "ins   v3.d[0], x0              \n"
+    "ins   v3.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V8_0_S8_0]] \n"
+    "ins   v4.d[0], x0              \n"
+    "ins   v4.d[1], x1              \n"
+
+
+    "ldp   x0, x1, [%[p_vec_uu1_rr1_vv1_ss1]] \n"
+    "ins   v11.d[0], x0              \n"
+    "ins   v11.d[1], x1              \n"
+
+
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+
+    "mov   x0, #1                   \n"
+    "lsl   x0, x0, #30              \n"
+    "sub   x0, x0, #1                   \n"
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30m1
 
 
 
-    // Step [8]: carry propogation
-    vec_carry = vdup_n_u32(0);
-    for (int i = 0; i < 9; i++){
-        // carry = tmp[i] >> 30;
-        vec_carry = vshr_n_u32(vec_uuV_rrV[i+1], 30);
-        // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
-        vec_uuV_rrV[i+1] = vand_u32(vec_uuV_rrV[i+1], vec_u32_2p30m1);
-        // tmp[i+1] += carry; 
-        vec_uuV_rrV[i+2] = vadd_u32(vec_uuV_rrV[i+2], vec_carry);
-    }
+    "movi  v19.2d, #0                \n"
+    // v19 = vec_prod
+    // v20 = vec_buf
+
+    "umlal v19.2d, v11.2s, v0.s[0]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "shl   v20.2d, v20.2d, #32           \n"
+    "add   v12.2d, v12.2d, v20.2d          \n"
 
 
+    "umlal v19.2d, v11.2s, v0.s[1]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "add   v13.2d, v13.2d, v20.2d          \n"
+
+    "umlal v19.2d, v11.2s, v1.s[0]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "shl   v20.2d, v20.2d, #32           \n"
+    "add   v13.2d, v13.2d, v20.2d          \n"
+
+
+    "umlal v19.2d, v11.2s, v1.s[1]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "add   v14.2d, v14.2d, v20.2d          \n"
+
+    "umlal v19.2d, v11.2s, v2.s[0]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "shl   v20.2d, v20.2d, #32           \n"
+    "add   v14.2d, v14.2d, v20.2d          \n"
+
+
+    "umlal v19.2d, v11.2s, v2.s[1]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "add   v15.2d, v15.2d, v20.2d          \n"
+
+    "umlal v19.2d, v11.2s, v3.s[0]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "shl   v20.2d, v20.2d, #32           \n"
+    "add   v15.2d, v15.2d, v20.2d          \n"
+
+
+    "umlal v19.2d, v11.2s, v3.s[1]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "add   v16.2d, v16.2d, v20.2d          \n"
+
+    "umlal v19.2d, v11.2s, v4.s[0]        \n"
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "ushr  v19.2d, v19.2d, #30           \n"
+    "shl   v20.2d, v20.2d, #32           \n"
+    "add   v16.2d, v16.2d, v20.2d          \n"
+
+
+    "and   v20.16b, v19.16b, v18.16b     \n"
+    "add   v17.2d, v17.2d, v20.2d          \n"
+
+
+
+
+
+
+
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+     "umov   w0, v14.s[0]                        \n"
+     "umov   w1, v14.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+     "umov   w0, v14.s[1]                        \n"
+     "umov   w1, v14.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+    "umov   w0, v15.s[1]                        \n"
+    "umov   w1, v15.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+    "umov   w0, v16.s[0]                        \n"
+    "umov   w1, v16.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+    "umov   w0, v16.s[1]                        \n"
+    "umov   w1, v16.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    "umov   w0, v17.s[0]                        \n"
+    "umov   w1, v17.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    :
+    : // pointers
+      [p_vec_V0_V1_S0_S1] "r"(&vec_V0_V1_S0_S1),
+      [p_vec_V2_V3_S2_S3] "r"(&vec_V2_V3_S2_S3),
+      [p_vec_V4_V5_S4_S5] "r"(&vec_V4_V5_S4_S5),
+      [p_vec_V6_V7_S6_S7] "r"(&vec_V6_V7_S6_S7),
+      [p_vec_V8_0_S8_0] "r"(&vec_V8_0_S8_0),
+      [p_vec_uu1_rr1_vv1_ss1] "r"(&vec_uu1_rr1_vv1_ss1),
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20"
+  );
+
+
+  // print_u32x2(vec_uuV_rrV[6]);
+  // print_u32x2(vec_uuV_rrV[7]);
+  // print_u32x4(vec_uuV6_uuV7_rrV6_rrV7);
+
+
+
+    // // Step [8]: carry propogation
+    // vec_carry = vdup_n_u32(0);
+    // for (int i = 0; i < 9; i++){
+    //     // carry = tmp[i] >> 30;
+    //     vec_carry = vshr_n_u32(vec_uuV_rrV[i+1], 30);
+    //     // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
+    //     vec_uuV_rrV[i+1] = vand_u32(vec_uuV_rrV[i+1], vec_u32_2p30m1);
+    //     // tmp[i+1] += carry; 
+    //     vec_uuV_rrV[i+2] = vadd_u32(vec_uuV_rrV[i+2], vec_carry);
+    // }
+
+
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+
+
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x1 = 2p30a2p31
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v19.2d, x0               \n"
+    // v19 = vec_2x_2p62a2p63
+
+
+    "movi  v20.2d, #0                \n"
+    // v20 = vec_carry
+
+
+    // "and   v20.16b, v12.16b, v18.16b   \n"
+    // "bic   v12.16b, v12.16b, v18.16b   \n"
+    // "shl   v20.2d,  v20.2d,  #2       \n"
+    // "add   v12.2d,  v12.2d,  v20.2d   \n"
+
+    "and   v20.16b, v12.16b, v19.16b   \n"
+    "bic   v12.16b, v12.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v13.16b, v18.16b   \n"
+    "bic   v13.16b, v13.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+    "and   v20.16b, v13.16b, v19.16b   \n"
+    "bic   v13.16b, v13.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v14.16b, v18.16b   \n"
+    "bic   v14.16b, v14.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+    "and   v20.16b, v14.16b, v19.16b   \n"
+    "bic   v14.16b, v14.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v15.16b, v18.16b   \n"
+    "bic   v15.16b, v15.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+    "and   v20.16b, v15.16b, v19.16b   \n"
+    "bic   v15.16b, v15.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v16.16b, v18.16b   \n"
+    "bic   v16.16b, v16.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+    "and   v20.16b, v16.16b, v19.16b   \n"
+    "bic   v16.16b, v16.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v17.2d,  v17.2d,  v20.2d   \n"
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+     "umov   w0, v14.s[0]                        \n"
+     "umov   w1, v14.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+     "umov   w0, v14.s[1]                        \n"
+     "umov   w1, v14.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+     "umov   w0, v15.s[1]                        \n"
+     "umov   w1, v15.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+     "umov   w0, v16.s[0]                        \n"
+     "umov   w1, v16.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+     "umov   w0, v16.s[1]                        \n"
+     "umov   w1, v16.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+     "umov   w0, v17.s[0]                        \n"
+     "umov   w1, v17.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+
+    :
+    : // pointers
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20"
+  );
 
 
     // Step [9]: l1 = tmp[0] * M mod 2^30
     //            and tmp += l0 * P
-    uint32x2_t vec_l1 = vmul_u32(vec_uuV_rrV[1], vec_M);
-    vec_l1 = vand_u32(vec_l1 ,vec_u32_2p30m1);
+    uint32x2_t vec_l1;
+    // vec_l1 = vmul_u32(vec_uuV_rrV[1], vec_M);
+    // vec_l1 = vand_u32(vec_l1 ,vec_u32_2p30m1);
 
-    vec_prod = vdupq_n_u64(0);
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+
+    "movz   w1,  #0xCA1B                        \n"  /* 低 16‑bit          */
+    "movk   w1,  #0x286B,  lsl #16              \n"  /* 高 16‑bit          */
+    "dup    v18.4s,  w1                          \n"  
+    // v18 = [M, M, M, M]
+
+    "mov    x0, #3  \n"
+    "lsl    x0, x0, #30  \n"
+    "dup    v19.4s, w0 \n"
+    // v19 = vec_4x_2p30a2p31
+
+    "mul    v18.4s, v12.4s, v18.4s \n"
+    "bic    v18.16b, v18.16b, v19.16b \n"
+    // v18 = [*, l1_left, *, l1_right]
+    "uzp2    v18.4s, v18.4s, v18.4s \n"
+    // v18 = [l1_left, l1_right, *, *]
     
-    // i = 0
-    vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l1 );
-    vec_uuV_rrV[1] = vadd_u32(vec_uuV_rrV[1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-    vec_prod = vshrq_n_u64(vec_prod, 30);
+     "umov   w0, v18.s[0]                        \n"
+     "umov   w1, v18.s[1]                        \n"
+     "stp    w0, w1, [%[p_vec_l1]]         \n"
 
 
-    for (int i = 0 + 1; i < (9 - 1); i++){
-        vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l1 );
-        vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-        vec_prod = vshrq_n_u64(vec_prod, 30);
-    }
 
-    // i = 8
-    vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l1 );
-    vec_uuV_rrV[8+1] = vadd_u32(vec_uuV_rrV[8+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
-    vec_prod = vshrq_n_u64(vec_prod, 30);
+    :
+    : // pointers
+      [p_vec_l1] "r"(&vec_l1),
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
 
-    vec_uuV_rrV[9+1] = vadd_u32(vec_uuV_rrV[9+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20"
+  );
+
+    // print_u32x2(vec_l1);
+
+
+    //
+    // vec_prod = vdupq_n_u64(0);
+    //
+    // // i = 0
+    // vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m19, vec_l1 );
+    // vec_uuV_rrV[1] = vadd_u32(vec_uuV_rrV[1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    // vec_prod = vshrq_n_u64(vec_prod, 30);
+    //
+    //
+    // for (int i = 0 + 1; i < (9 - 1); i++){
+    //     vec_prod = vmlal_u32(vec_prod, vec_u32_2p30m1, vec_l1 );
+    //     vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    //     vec_prod = vshrq_n_u64(vec_prod, 30);
+    // }
+    //
+    // // i = 8
+    // vec_prod = vmlal_u32(vec_prod, vec_u32_2p15m1, vec_l1 );
+    // vec_uuV_rrV[8+1] = vadd_u32(vec_uuV_rrV[8+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
+    // vec_prod = vshrq_n_u64(vec_prod, 30);
+    //
+    // vec_uuV_rrV[9+1] = vadd_u32(vec_uuV_rrV[9+1], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
     
+
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+
+    "ldp   x0, x1, [%[p_vec_l1]]\n"
+    "ins   v18.d[0], x0              \n"
+    "ins   v18.d[1], x1              \n"
+    // v18 = vec_l0
+
+    "mov   x0, #1                   \n"
+    "lsl   x1, x0, #30              \n"
+    "sub   x1, x1, #1                   \n"
+    "dup   v19.2d, x1               \n"
+    "sub   x1, x1, #18                   \n"
+    "dup   v20.2d, x1               \n"
+    "lsl   x1, x0, #15              \n"
+    "sub   x1, x1, #1                   \n"
+    "dup   v21.2d, x1               \n"
+    // v19 = vec_2p30m1
+    // v20 = vec_2p30m19
+    // v21 = vec_2p15m1
+
+
+    "movi  v22.2d, #0                \n"
+    // v22 = vec_prod
+    // v23 = vec_buf
+
+    "umlal v22.2d, v18.2s, v20.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "shl   v23.2d, v23.2d, #32           \n"
+    "add   v12.2d, v12.2d, v23.2d          \n"
+
+
+    "umlal v22.2d, v18.2s, v19.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "add   v13.2d, v13.2d, v23.2d          \n"
+
+    "umlal v22.2d, v18.2s, v19.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "shl   v23.2d, v23.2d, #32           \n"
+    "add   v13.2d, v13.2d, v23.2d          \n"
+
+
+    "umlal v22.2d, v18.2s, v19.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "add   v14.2d, v14.2d, v23.2d          \n"
+
+    "umlal v22.2d, v18.2s, v19.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "shl   v23.2d, v23.2d, #32           \n"
+    "add   v14.2d, v14.2d, v23.2d          \n"
+
+
+    "umlal v22.2d, v18.2s, v19.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "add   v15.2d, v15.2d, v23.2d          \n"
+
+    "umlal v22.2d, v18.2s, v19.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "shl   v23.2d, v23.2d, #32           \n"
+    "add   v15.2d, v15.2d, v23.2d          \n"
+
+
+    "umlal v22.2d, v18.2s, v19.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "add   v16.2d, v16.2d, v23.2d          \n"
+
+    "umlal v22.2d, v18.2s, v21.s[0]        \n"
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "ushr  v22.2d, v22.2d, #30           \n"
+    "shl   v23.2d, v23.2d, #32           \n"
+    "add   v16.2d, v16.2d, v23.2d          \n"
+
+
+    "and   v23.16b, v22.16b, v19.16b     \n"
+    "add   v17.2d, v17.2d, v23.2d          \n"
+
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+    "umov   w0, v14.s[0]                        \n"
+    "umov   w1, v14.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+    "umov   w0, v14.s[1]                        \n"
+    "umov   w1, v14.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+    "umov   w0, v15.s[1]                        \n"
+    "umov   w1, v15.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+    "umov   w0, v16.s[0]                        \n"
+    "umov   w1, v16.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+    "umov   w0, v16.s[1]                        \n"
+    "umov   w1, v16.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    "umov   w0, v17.s[0]                        \n"
+    "umov   w1, v17.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+
+    :
+    : // pointers
+      [p_vec_l1] "r"(&vec_l1),
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20","v21","v22","v23"
+  );
+
+
+
     
-    // Step [10]: carry propogation
-    vec_carry = vdup_n_u32(0);
-    for (int i = 0; i<9; i++){
-        // carry = tmp[i] >> 30;
-        vec_carry = vshr_n_u32(vec_uuV_rrV[i], 30);
-        // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
-        vec_uuV_rrV[i] = vand_u32(vec_uuV_rrV[i], vec_u32_2p30m1);
-        // tmp[i+1] += carry; 
-        vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vec_carry);
-    }
+    // // Step [10]: carry propogation
+    // vec_carry = vdup_n_u32(0);
+    // for (int i = 0; i<9; i++){
+    //     // carry = tmp[i] >> 30;
+    //     vec_carry = vshr_n_u32(vec_uuV_rrV[i], 30);
+    //     // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
+    //     vec_uuV_rrV[i] = vand_u32(vec_uuV_rrV[i], vec_u32_2p30m1);
+    //     // tmp[i+1] += carry; 
+    //     vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vec_carry);
+    // }
     
+
+
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+
+
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x1 = 2p30a2p31
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v19.2d, x0               \n"
+    // v19 = vec_2x_2p62a2p63
+
+
+    "movi  v20.2d, #0                \n"
+    // v20 = vec_carry
+
+
+    // "and   v20.16b, v12.16b, v18.16b   \n"
+    // "bic   v12.16b, v12.16b, v18.16b   \n"
+    // "shl   v20.2d,  v20.2d,  #2       \n"
+    // "add   v12.2d,  v12.2d,  v20.2d   \n"
+
+    "and   v20.16b, v12.16b, v19.16b   \n"
+    "bic   v12.16b, v12.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v13.16b, v18.16b   \n"
+    "bic   v13.16b, v13.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+    "and   v20.16b, v13.16b, v19.16b   \n"
+    "bic   v13.16b, v13.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v14.16b, v18.16b   \n"
+    "bic   v14.16b, v14.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+    "and   v20.16b, v14.16b, v19.16b   \n"
+    "bic   v14.16b, v14.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v15.16b, v18.16b   \n"
+    "bic   v15.16b, v15.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+    "and   v20.16b, v15.16b, v19.16b   \n"
+    "bic   v15.16b, v15.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v16.16b, v18.16b   \n"
+    "bic   v16.16b, v16.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+    "and   v20.16b, v16.16b, v19.16b   \n"
+    "bic   v16.16b, v16.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v17.2d,  v17.2d,  v20.2d   \n"
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+     "umov   w0, v14.s[0]                        \n"
+     "umov   w1, v14.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+     "umov   w0, v14.s[1]                        \n"
+     "umov   w1, v14.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+     "umov   w0, v15.s[1]                        \n"
+     "umov   w1, v15.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+     "umov   w0, v16.s[0]                        \n"
+     "umov   w1, v16.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+     "umov   w0, v16.s[1]                        \n"
+     "umov   w1, v16.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+     "umov   w0, v17.s[0]                        \n"
+     "umov   w1, v17.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+
+    :
+    : // pointers
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20"
+  );
+
+
+
+
+
+
+
+
     
     
     // // Step [11]: tmp = tmp / B
@@ -478,101 +2180,1296 @@ __asm__ volatile(
     // See if tmp[0:9] >= P;
     // tmp >= P iff tmp + 19 >= 2^255;
 
-    uint32x2_t vec_small_tmp = {0};
-    vec_small_tmp = vdup_n_u32(19);
-    for (int i = 0; i < 8; i++)
-    {
-        vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[i+2]);
-        vec_small_tmp = vshr_n_u32(vec_small_tmp, 30);
-    }
-    vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[8+2]);
+    uint32x2_t vec_small_tmp;
 
-    vec_reductionhat = (uint32x2_t)vshr_n_s32(
-        (int32x2_t)vsub_u32(
-            vec_u32_2p15m1,
-            vec_small_tmp
-        ),
-        31
-    );
+    // vec_small_tmp = vdup_n_u32(19);
+    // for (int i = 0; i < 8; i++)
+    // {
+    //     vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[i+2]);
+    //     vec_small_tmp = vshr_n_u32(vec_small_tmp, 30);
+    // }
+    // vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[8+2]);
+    //
+    // vec_reductionhat = (uint32x2_t)vshr_n_s32(
+    //     (int32x2_t)vsub_u32(
+    //         vec_u32_2p15m1,
+    //         vec_small_tmp
+    //     ),
+    //     31
+    // );
 
-    vec_uuV_rrV[0+2] = vadd_u32(vec_uuV_rrV[2], vand_u32(vec_reductionhat, vdup_n_u32(19)));
-    vec_uuV_rrV[8+2] = vsub_u32(vec_uuV_rrV[10], vand_u32(vec_reductionhat, vdup_n_u32(32768)));
+
+    // vec_uuV_rrV[0+2] = vadd_u32(vec_uuV_rrV[2], vand_u32(vec_reductionhat, vdup_n_u32(19)));
+    // vec_uuV_rrV[8+2] = vsub_u32(vec_uuV_rrV[10], vand_u32(vec_reductionhat, vdup_n_u32(32768)));
+
+
+
+
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+
+
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x1 = 2p30a2p31
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v19.2d, x0               \n"
+    // v19 = vec_2x_2p62a2p63
+
+    "mov   x0, #19                   \n"
+    "dup   v20.2d, x0               \n"
+    // v20 = vec_2x_19 = [19, 19]
+    "mov   x0, #1                   \n"
+    "lsl   x0, x0, #15              \n"
+    "dup   v21.2d, x0               \n"
+    // v21 = vec_2x_2p15 = [32768, 32768]
+
+    "mov  v22.16b, v20.16b                \n"
+    // v22 = vec_small_tmp = [19, 19]
+
+
+    "add   v22.2d,  v22.2d,  v13.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v13.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v14.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v14.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v15.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v15.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v16.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v16.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v17.2d   \n"
+    "sub   v18.2d,  v21.2d,  v22.2d   \n"
+    "sshr  v18.2d,  v18.2d,  #63       \n"
+    // v18 is the reduction hat
+    
+    // "umov   w0, v18.s[0]              \n"
+    // "umov   w1, v18.s[2]              \n"
+    // "stp   w0, w1, [%[p_vec_reductionhat]]\n"
+
+
+    "and    v20.16b, v20.16b, v18.16b \n"
+    "add    v13.2d,  v13.2d,  v20.2d  \n"
+    "and    v21.16b, v21.16b, v18.16b \n"
+    "sub    v17.2d,  v17.2d,  v21.2d  \n"
+
+
+
+
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+     "umov   w0, v14.s[0]                        \n"
+     "umov   w1, v14.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+     "umov   w0, v14.s[1]                        \n"
+     "umov   w1, v14.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+     "umov   w0, v15.s[1]                        \n"
+     "umov   w1, v15.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+     "umov   w0, v16.s[0]                        \n"
+     "umov   w1, v16.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+     "umov   w0, v16.s[1]                        \n"
+     "umov   w1, v16.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+     "umov   w0, v17.s[0]                        \n"
+     "umov   w1, v17.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+
+    :
+    : // pointers
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0),
+      [p_vec_reductionhat] "r"(&vec_reductionhat)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20","v21","v22"
+  );
+
+
+
+
 
 
 
     
 
-    // Step [13]: carry propogation
-    vec_carry = vdup_n_u32(0);
-    for (int i = 0; i<8; i++){
-        vec_carry = vshr_n_u32(vec_uuV_rrV[i+2], 30);
-        vec_uuV_rrV[i+2] = vand_u32(vec_uuV_rrV[i+2], vec_u32_2p30m1);
-        vec_uuV_rrV[i+3] = vadd_u32(vec_uuV_rrV[i+3], vec_carry);
-    }
+    // // Step [13]: carry propogation
+    // vec_carry = vdup_n_u32(0);
+    // for (int i = 0; i<8; i++){
+    //     vec_carry = vshr_n_u32(vec_uuV_rrV[i+2], 30);
+    //     vec_uuV_rrV[i+2] = vand_u32(vec_uuV_rrV[i+2], vec_u32_2p30m1);
+    //     vec_uuV_rrV[i+3] = vadd_u32(vec_uuV_rrV[i+3], vec_carry);
+    // }
+
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
 
 
 
-    // Step [14]: tmp += 2x vec_uhat_rhat & (P-A)
-    vec_uuV_rrV[2] = vadd_u32(vec_uuV_rrV[2] , vand_u32(vec_uhat_rhat, vec_u32_2p30m19));
-    vec_uuV_rrV[2] = vsub_u32(vec_uuV_rrV[2] , vand_u32(vec_uhat_rhat, vec_V[0]));
-    for (int i = 0 + 1; i < (9 - 1); i++)
-    {
-        vec_uuV_rrV[i+2] = vadd_u32(vec_uuV_rrV[i+2] , vand_u32(vec_uhat_rhat, vec_u32_2p30m1));
-        vec_uuV_rrV[i+2] = vsub_u32(vec_uuV_rrV[i+2] , vand_u32(vec_uhat_rhat, vec_V[i]));
-    }
-    vec_uuV_rrV[8+2] = vadd_u32(vec_uuV_rrV[8+2] , vand_u32(vec_uhat_rhat, vec_u32_2p15m1));
-    vec_uuV_rrV[8+2] = vsub_u32(vec_uuV_rrV[8+2] , vand_u32(vec_uhat_rhat, vec_V[8]));
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x1 = 2p30a2p31
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v19.2d, x0               \n"
+    // v19 = vec_2x_2p62a2p63
 
 
-    // Step [15]: borrow propogation
-    for (int i = 0; i < 8; i++)
-    {   
-        // borrow = tmp[i] >> 31;
-        vec_borrow = vshr_n_u32(vec_uuV_rrV[i+2],31);
-        // tmp[i+1] = tmp[i+1] - borrow;
-        vec_uuV_rrV[i+1+2] = vsub_u32(vec_uuV_rrV[i+1+2], vec_borrow);
-        // tmp[i+0] = tmp[i+0] + (borrow << 30);
-        vec_uuV_rrV[i+0+2] = vadd_u32(vec_uuV_rrV[i+0+2], vshl_n_u32(vec_borrow,30));
-    }
+    "movi  v20.2d, #0                \n"
+    // v20 = vec_carry
 
+
+    // "and   v20.16b, v12.16b, v18.16b   \n"
+    // "bic   v12.16b, v12.16b, v18.16b   \n"
+    // "shl   v20.2d,  v20.2d,  #2       \n"
+    // "add   v12.2d,  v12.2d,  v20.2d   \n"
+
+    // "and   v20.16b, v12.16b, v19.16b   \n"
+    // "bic   v12.16b, v12.16b, v19.16b   \n"
+    // "ushr  v20.2d,  v20.2d,  #62       \n"
+    // "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v13.16b, v18.16b   \n"
+    "bic   v13.16b, v13.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+    "and   v20.16b, v13.16b, v19.16b   \n"
+    "bic   v13.16b, v13.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v14.16b, v18.16b   \n"
+    "bic   v14.16b, v14.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+    "and   v20.16b, v14.16b, v19.16b   \n"
+    "bic   v14.16b, v14.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v15.16b, v18.16b   \n"
+    "bic   v15.16b, v15.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+    "and   v20.16b, v15.16b, v19.16b   \n"
+    "bic   v15.16b, v15.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v16.16b, v18.16b   \n"
+    "bic   v16.16b, v16.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+    "and   v20.16b, v16.16b, v19.16b   \n"
+    "bic   v16.16b, v16.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v17.2d,  v17.2d,  v20.2d   \n"
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+     "umov   w0, v14.s[0]                        \n"
+     "umov   w1, v14.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+     "umov   w0, v14.s[1]                        \n"
+     "umov   w1, v14.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+     "umov   w0, v15.s[1]                        \n"
+     "umov   w1, v15.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+     "umov   w0, v16.s[0]                        \n"
+     "umov   w1, v16.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+     "umov   w0, v16.s[1]                        \n"
+     "umov   w1, v16.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+     "umov   w0, v17.s[0]                        \n"
+     "umov   w1, v17.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+
+    :
+    : // pointers
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20"
+  );
+
+
+    //
+    //
+    // // Step [14]: tmp += 2x vec_uhat_rhat & (P-A)
+    // vec_uuV_rrV[2] = vadd_u32(vec_uuV_rrV[2] , vand_u32(vec_uhat_rhat, vec_u32_2p30m19));
+    // vec_uuV_rrV[2] = vsub_u32(vec_uuV_rrV[2] , vand_u32(vec_uhat_rhat, vec_V[0]));
+    // for (int i = 0 + 1; i < (9 - 1); i++)
+    // {
+    //     vec_uuV_rrV[i+2] = vadd_u32(vec_uuV_rrV[i+2] , vand_u32(vec_uhat_rhat, vec_u32_2p30m1));
+    //     vec_uuV_rrV[i+2] = vsub_u32(vec_uuV_rrV[i+2] , vand_u32(vec_uhat_rhat, vec_V[i]));
+    // }
+    // vec_uuV_rrV[8+2] = vadd_u32(vec_uuV_rrV[8+2] , vand_u32(vec_uhat_rhat, vec_u32_2p15m1));
+    // vec_uuV_rrV[8+2] = vsub_u32(vec_uuV_rrV[8+2] , vand_u32(vec_uhat_rhat, vec_V[8]));
+    //
+    //
+    // // Step [15]: borrow propogation
+    // for (int i = 0; i < 8; i++)
+    // {   
+    //     // borrow = tmp[i] >> 31;
+    //     vec_borrow = vshr_n_u32(vec_uuV_rrV[i+2],31);
+    //     // tmp[i+1] = tmp[i+1] - borrow;
+    //     vec_uuV_rrV[i+1+2] = vsub_u32(vec_uuV_rrV[i+1+2], vec_borrow);
+    //     // tmp[i+0] = tmp[i+0] + (borrow << 30);
+    //     vec_uuV_rrV[i+0+2] = vadd_u32(vec_uuV_rrV[i+0+2], vshl_n_u32(vec_borrow,30));
+    // }
+    //
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_V0_V1_S0_S1]] \n"
+    "ins   v0.d[0], x0              \n"
+    "ins   v0.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V2_V3_S2_S3]] \n"
+    "ins   v1.d[0], x0              \n"
+    "ins   v1.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V4_V5_S4_S5]] \n"
+    "ins   v2.d[0], x0              \n"
+    "ins   v2.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V6_V7_S6_S7]] \n"
+    "ins   v3.d[0], x0              \n"
+    "ins   v3.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_V8_0_S8_0]] \n"
+    "ins   v4.d[0], x0              \n"
+    "ins   v4.d[1], x1              \n"
+
+
+    "ldp   x0, x1, [%[p_vec_uuhat_rrhat_vvhat_sshat]]\n"
+    "ins   v11.d[0], x0              \n"
+    "ins   v11.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[1]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    /* v18 = 2^30-1  (0x3fffffff) */
+    "mov     x0, #1     \n"
+    "lsl     x0, x0, #30\n"
+    "sub     x0, x0, #1 \n"
+    "dup     v18.4s, w0\n"
+
+    /* v22 = 2^15-1  (0x7fff)      */
+    "mov     x0, #1     \n"
+    "lsl     x0, x0, #15\n"
+    "sub     x0, x0, #1 \n"
+    "dup     v22.2d,  x0\n"
+
+    /* v23 = zip(ûh,ûh,r̂h,r̂h)    */
+    "zip1    v23.4s,  v11.4s,  v11.4s   \n"
+    /* = [uhat,uhat,rhat,rhat] */
+
+
+    "zip1    v21.2d,  v0.2d,  v0.2d \n"
+    "sub     v21.4s,  v18.4s,  v21.4s\n"
+    "and     v21.16b, v21.16b,  v23.16b\n"
+    "add     v13.4s,  v13.4s,  v21.4s\n"
+
+    "zip1    v21.2d,  v1.2d,  v1.2d \n"
+    "sub     v21.4s,  v18.4s,  v21.4s\n"
+    "and     v21.16b, v21.16b,  v23.16b\n"
+    "add     v14.4s,  v14.4s,  v21.4s\n"
+
+    "zip1    v21.2d,  v2.2d,  v2.2d \n"
+    "sub     v21.4s,  v18.4s,  v21.4s\n"
+    "and     v21.16b, v21.16b,  v23.16b\n"
+    "add     v15.4s,  v15.4s,  v21.4s\n"
+
+    "zip1    v21.2d,  v3.2d,  v3.2d \n"
+    "sub     v21.4s,  v18.4s,  v21.4s\n"
+    "and     v21.16b, v21.16b,  v23.16b\n"
+    "add     v16.4s,  v16.4s,  v21.4s\n"
+
+    "zip1    v21.2d,  v4.2d,  v4.2d \n"
+    "sub     v21.4s,  v22.4s,  v21.4s\n"
+    "and     v21.16b, v21.16b,  v23.16b\n"
+    "add     v17.4s,  v17.4s,  v21.4s\n"
+
+    /* carry propogation */
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x0 = 2p30a2p31
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v19.2d, x0               \n"
+    // v19 = vec_2x_2p62a2p63
+
+
+    "movi  v20.2d, #0                \n"
+    // v20 = vec_carry
+
+
+
+    "and   v20.16b, v13.16b, v18.16b   \n"
+
+
+
+
+    "bic   v13.16b, v13.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+    "and   v20.16b, v13.16b, v19.16b   \n"
+    "bic   v13.16b, v13.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v14.16b, v18.16b   \n"
+    "bic   v14.16b, v14.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+    "and   v20.16b, v14.16b, v19.16b   \n"
+    "bic   v14.16b, v14.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v15.16b, v18.16b   \n"
+    "bic   v15.16b, v15.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+    "and   v20.16b, v15.16b, v19.16b   \n"
+    "bic   v15.16b, v15.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v16.16b, v18.16b   \n"
+    "bic   v16.16b, v16.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+    "and   v20.16b, v16.16b, v19.16b   \n"
+    "bic   v16.16b, v16.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v17.2d,  v17.2d,  v20.2d   \n"
+
+
+    /* minus 18 from uuV[0], rrV[0] */
+    "mov     x0, #18                   \n"
+    "dup     v18.2d, x0               \n"
+    "and     v18.16b,  v18.16b,  v23.16b\n"
+    "sub     v13.4s,  v13.4s,  v18.4s\n"
+
+    /* borrow propogation */
+
+    "mov     x0, #1                   \n"
+    "lsl     x0, x0, #31                   \n"
+    "dup     v18.2d, x0               \n"
+    "lsl     x0, x0, #32                   \n"
+    "dup     v19.2d, x0               \n"
+    // v18 = vec_2p31
+    // v19 = vec_2p63
+
+    "mov     x0, #3                   \n"
+    "lsl     x0, x0, #30                   \n"
+    "dup     v20.2d, x0               \n"
+    "lsl     x0, x0, #32                   \n"
+    "dup     v21.2d, x0               \n"
+    // v20 = vec_2x_2p30a2p31
+    // v21 = vec_2x_2p62a2p63
+
+     // v22 = vec_borrow
+     "and     v22.16b, v13.16b, v18.16b\n"
+     "bic     v13.16b, v13.16b, v20.16b\n"
+     "shl     v22.2d,  v22.2d, #1      \n"
+     "sub     v13.4s,  v13.4s, v22.4s  \n"
+
+     "and     v22.16b, v13.16b, v19.16b\n"
+     "bic     v13.16b, v13.16b, v21.16b\n"
+     "ushr    v22.2d,  v22.2d, #63     \n"
+     "sub     v14.4s,  v14.4s, v22.4s  \n"
+
+
+     "and     v22.16b, v14.16b, v18.16b\n"
+     "bic     v14.16b, v14.16b, v20.16b\n"
+     "shl     v22.2d,  v22.2d, #1      \n"
+     "sub     v14.4s,  v14.4s, v22.4s  \n"
+
+     "and     v22.16b, v14.16b, v19.16b\n"
+     "bic     v14.16b, v14.16b, v21.16b\n"
+     "ushr    v22.2d,  v22.2d, #63     \n"
+     "sub     v15.4s,  v15.4s, v22.4s  \n"
+
+
+     "and     v22.16b, v15.16b, v18.16b\n"
+     "bic     v15.16b, v15.16b, v20.16b\n"
+     "shl     v22.2d,  v22.2d, #1      \n"
+     "sub     v15.4s,  v15.4s, v22.4s  \n"
+
+     "and     v22.16b, v15.16b, v19.16b\n"
+     "bic     v15.16b, v15.16b, v21.16b\n"
+     "ushr    v22.2d,  v22.2d, #63     \n"
+     "sub     v16.4s,  v16.4s, v22.4s  \n"
+
+
+     "and     v22.16b, v16.16b, v18.16b\n"
+     "bic     v16.16b, v16.16b, v20.16b\n"
+     "shl     v22.2d,  v22.2d, #1      \n"
+     "sub     v16.4s,  v16.4s, v22.4s  \n"
+
+     "and     v22.16b, v16.16b, v19.16b\n"
+     "bic     v16.16b, v16.16b, v21.16b\n"
+     "ushr    v22.2d,  v22.2d, #63     \n"
+     "sub     v17.4s,  v17.4s, v22.4s  \n"
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+    "umov   w0, v14.s[0]                        \n"
+    "umov   w1, v14.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+    "umov   w0, v14.s[1]                        \n"
+    "umov   w1, v14.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+    "umov   w0, v15.s[1]                        \n"
+    "umov   w1, v15.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+    "umov   w0, v16.s[0]                        \n"
+    "umov   w1, v16.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+    "umov   w0, v16.s[1]                        \n"
+    "umov   w1, v16.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    "umov   w0, v17.s[0]                        \n"
+    "umov   w1, v17.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+    :
+    : // pointers
+      [p_vec_V0_V1_S0_S1] "r"(&vec_V0_V1_S0_S1),
+      [p_vec_V2_V3_S2_S3] "r"(&vec_V2_V3_S2_S3),
+      [p_vec_V4_V5_S4_S5] "r"(&vec_V4_V5_S4_S5),
+      [p_vec_V6_V7_S6_S7] "r"(&vec_V6_V7_S6_S7),
+      [p_vec_V8_0_S8_0] "r"(&vec_V8_0_S8_0),
+      [p_vec_uuhat_rrhat_vvhat_sshat] "r"(&vec_uuhat_rrhat_vvhat_sshat),
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1","x2","x3",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10",
+      "v11","v12","v13","v14","v15","v16","v17","v18","v19","v20",
+      "v21","v22","v23"
+  );
 
     
+    // // Step [16]: Reduction P once:
+    //
+    // // See if tmp[0:9] >= P;
+    // // tmp >= P iff tmp + 19 >= 2^255;
+    //
+    // vec_small_tmp = vdup_n_u32(19ULL);
+    // for (int i = 0; i < 8; i++)
+    // {
+    //     vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[i+2]);
+    //     vec_small_tmp = vshr_n_u32(vec_small_tmp, 30);
+    // }
+    // vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[8+2]);
+    //
+    // vec_reductionhat = (uint32x2_t)vshr_n_s32(
+    //     (int32x2_t)vsub_u32(
+    //         vec_u32_2p15m1,
+    //         vec_small_tmp
+    //     ),
+    //     31
+    // );
+    //
+    // vec_uuV_rrV[0+2] = vadd_u32(vec_uuV_rrV[0+2], vand_u32(vec_reductionhat, vdup_n_u32(19)));
+    // vec_uuV_rrV[8+2] = vsub_u32(vec_uuV_rrV[8+2], vand_u32(vec_reductionhat, vdup_n_u32(32768)));
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+
+
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x1 = 2p30a2p31
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v19.2d, x0               \n"
+    // v19 = vec_2x_2p62a2p63
+
+    "mov   x0, #19                   \n"
+    "dup   v20.2d, x0               \n"
+    // v20 = vec_2x_19 = [19, 19]
+    "mov   x0, #1                   \n"
+    "lsl   x0, x0, #15              \n"
+    "dup   v21.2d, x0               \n"
+    // v21 = vec_2x_2p15 = [32768, 32768]
+
+    "mov  v22.16b, v20.16b                \n"
+    // v22 = vec_small_tmp = [19, 19]
+
+
+    "add   v22.2d,  v22.2d,  v13.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v13.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v14.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v14.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v15.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v15.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v16.2d   \n"
+    "and   v22.16b,  v22.16b,  v18.16b \n"
+    "shl   v22.2d,  v22.2d,  #2       \n"
+ 
+    "add   v22.2d,  v22.2d,  v16.2d   \n"
+    "and   v22.16b,  v22.16b,  v19.16b \n"
+    "ushr  v22.2d,  v22.2d,  #62       \n"
+
+
+    "add   v22.2d,  v22.2d,  v17.2d   \n"
+    "sub   v18.2d,  v21.2d,  v22.2d   \n"
+    "sshr  v18.2d,  v18.2d,  #63       \n"
+    // v18 is the reduction hat
     
-    // Step [16]: Reduction P once:
-
-    // See if tmp[0:9] >= P;
-    // tmp >= P iff tmp + 19 >= 2^255;
-
-    vec_small_tmp = vdup_n_u32(19ULL);
-    for (int i = 0; i < 8; i++)
-    {
-        vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[i+2]);
-        vec_small_tmp = vshr_n_u32(vec_small_tmp, 30);
-    }
-    vec_small_tmp = vadd_u32(vec_small_tmp, vec_uuV_rrV[8+2]);
-
-    vec_reductionhat = (uint32x2_t)vshr_n_s32(
-        (int32x2_t)vsub_u32(
-            vec_u32_2p15m1,
-            vec_small_tmp
-        ),
-        31
-    );
-
-    vec_uuV_rrV[0+2] = vadd_u32(vec_uuV_rrV[0+2], vand_u32(vec_reductionhat, vdup_n_u32(19)));
-    vec_uuV_rrV[8+2] = vsub_u32(vec_uuV_rrV[8+2], vand_u32(vec_reductionhat, vdup_n_u32(32768)));
+    // "umov   w0, v18.s[0]              \n"
+    // "umov   w1, v18.s[2]              \n"
+    // "stp   w0, w1, [%[p_vec_reductionhat]]\n"
 
 
-    // Step [17]: carry propogation
-    vec_carry = vdup_n_u32(0);
-    for (int i = 0; i<8; i++){
-        // carry = tmp[i] >> 30;
-        vec_carry = vshr_n_u32(vec_uuV_rrV[i+2], 30);
-        // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
-        vec_uuV_rrV[i+2] = vand_u32(vec_uuV_rrV[i+2], vec_u32_2p30m1);
-        // tmp[i+1] += carry; 
-        vec_uuV_rrV[i+1+2] = vadd_u32(vec_uuV_rrV[i+1+2], vec_carry);
-    }
+    "and    v20.16b, v20.16b, v18.16b \n"
+    "add    v13.2d,  v13.2d,  v20.2d  \n"
+    "and    v21.16b, v21.16b, v18.16b \n"
+    "sub    v17.2d,  v17.2d,  v21.2d  \n"
+
+
+
+
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+     "umov   w0, v14.s[0]                        \n"
+     "umov   w1, v14.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+     "umov   w0, v14.s[1]                        \n"
+     "umov   w1, v14.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+     "umov   w0, v15.s[1]                        \n"
+     "umov   w1, v15.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+     "umov   w0, v16.s[0]                        \n"
+     "umov   w1, v16.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+     "umov   w0, v16.s[1]                        \n"
+     "umov   w1, v16.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+     "umov   w0, v17.s[0]                        \n"
+     "umov   w1, v17.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+
+    :
+    : // pointers
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0),
+      [p_vec_reductionhat] "r"(&vec_reductionhat)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20","v21","v22"
+  );
+
+
+    // // Step [17]: carry propogation
+    // vec_carry = vdup_n_u32(0);
+    // for (int i = 0; i<8; i++){
+    //     // carry = tmp[i] >> 30;
+    //     vec_carry = vshr_n_u32(vec_uuV_rrV[i+2], 30);
+    //     // tmp[i] = tmp[i] & (((uint64_t)1<<30) -1);
+    //     vec_uuV_rrV[i+2] = vand_u32(vec_uuV_rrV[i+2], vec_u32_2p30m1);
+    //     // tmp[i+1] += carry; 
+    //     vec_uuV_rrV[i+1+2] = vadd_u32(vec_uuV_rrV[i+1+2], vec_carry);
+    // }
+
+  __asm__(
+    "ldp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+    "ins   v12.d[0], x0              \n"
+    "ins   v12.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+    "ins   v13.d[0], x0              \n"
+    "ins   v13.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+    "ins   v14.d[0], x0              \n"
+    "ins   v14.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+    "ins   v15.d[0], x0              \n"
+    "ins   v15.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+    "ins   v16.d[0], x0              \n"
+    "ins   v16.d[1], x1              \n"
+
+    "ldp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+    "ins   v17.d[0], x0              \n"
+    "ins   v17.d[1], x1              \n"
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+
+
+    "mov   x0, #3                   \n"
+    "lsl   x0, x0, #30              \n"
+    // x1 = 2p30a2p31
+    "dup   v18.2d, x0               \n"
+    // v18 = vec_2x_2p30a2p31
+    "lsl   x0, x0, #32              \n"
+    "dup   v19.2d, x0               \n"
+    // v19 = vec_2x_2p62a2p63
+
+
+    "movi  v20.2d, #0                \n"
+    // v20 = vec_carry
+
+
+    // "and   v20.16b, v12.16b, v18.16b   \n"
+    // "bic   v12.16b, v12.16b, v18.16b   \n"
+    // "shl   v20.2d,  v20.2d,  #2       \n"
+    // "add   v12.2d,  v12.2d,  v20.2d   \n"
+
+    // "and   v20.16b, v12.16b, v19.16b   \n"
+    // "bic   v12.16b, v12.16b, v19.16b   \n"
+    // "ushr  v20.2d,  v20.2d,  #62       \n"
+    // "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v13.16b, v18.16b   \n"
+    "bic   v13.16b, v13.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v13.2d,  v13.2d,  v20.2d   \n"
+
+    "and   v20.16b, v13.16b, v19.16b   \n"
+    "bic   v13.16b, v13.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v14.16b, v18.16b   \n"
+    "bic   v14.16b, v14.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v14.2d,  v14.2d,  v20.2d   \n"
+
+    "and   v20.16b, v14.16b, v19.16b   \n"
+    "bic   v14.16b, v14.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v15.16b, v18.16b   \n"
+    "bic   v15.16b, v15.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v15.2d,  v15.2d,  v20.2d   \n"
+
+    "and   v20.16b, v15.16b, v19.16b   \n"
+    "bic   v15.16b, v15.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+
+    "and   v20.16b, v16.16b, v18.16b   \n"
+    "bic   v16.16b, v16.16b, v18.16b   \n"
+    "shl   v20.2d,  v20.2d,  #2       \n"
+    "add   v16.2d,  v16.2d,  v20.2d   \n"
+
+    "and   v20.16b, v16.16b, v19.16b   \n"
+    "bic   v16.16b, v16.16b, v19.16b   \n"
+    "ushr  v20.2d,  v20.2d,  #62       \n"
+    "add   v17.2d,  v17.2d,  v20.2d   \n"
+    // dump to 
+    // v12 = vec_uuV0_uuV1_rrV0_rrV1
+    // v13 = vec_uuV2_uuV3_rrV2_rrV3
+    // v14 = vec_uuV4_uuV5_rrV4_rrV5
+    // v15 = vec_uuV6_uuV7_rrV6_rrV7
+    // v16 = vec_uuV8_uuV9_rrV8_rrV9
+    // v17 = vec_uuV10_0_rrV10_0
+
+    "umov   x0, v12.d[0]              \n"
+    "umov   x1, v12.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV0_uuV1_rrV0_rrV1]]\n"
+
+    "umov   x0, v13.d[0]              \n"
+    "umov   x1, v13.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV2_uuV3_rrV2_rrV3]]\n"
+
+    "umov   x0, v14.d[0]              \n"
+    "umov   x1, v14.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV4_uuV5_rrV4_rrV5]]\n"
+
+    "umov   x0, v15.d[0]              \n"
+    "umov   x1, v15.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV6_uuV7_rrV6_rrV7]]\n"
+
+    "umov   x0, v16.d[0]              \n"
+    "umov   x1, v16.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV8_uuV9_rrV8_rrV9]]\n"
+
+    "umov   x0, v17.d[0]              \n"
+    "umov   x1, v17.d[1]              \n"
+    "stp   x0, x1, [%[p_vec_uuV10_0_rrV10_0]]\n"
+
+    // dump to
+    //
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+    "umov   w0, v12.s[0]                        \n"
+    "umov   w1, v12.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV]]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+    "umov   w0, v12.s[1]                        \n"
+    "umov   w1, v12.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #8]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+    "umov   w0, v13.s[0]                        \n"
+    "umov   w1, v13.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #16]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+    "umov   w0, v13.s[1]                        \n"
+    "umov   w1, v13.s[3]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #24]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+     "umov   w0, v14.s[0]                        \n"
+     "umov   w1, v14.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #32]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+     "umov   w0, v14.s[1]                        \n"
+     "umov   w1, v14.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #40]         \n"
+
+    // "ldp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+    "umov   w0, v15.s[0]                        \n"
+    "umov   w1, v15.s[2]                        \n"
+    "stp    w0, w1, [%[p_vec_uuV_rrV], #48]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+     "umov   w0, v15.s[1]                        \n"
+     "umov   w1, v15.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #56]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+     "umov   w0, v16.s[0]                        \n"
+     "umov   w1, v16.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #64]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+     "umov   w0, v16.s[1]                        \n"
+     "umov   w1, v16.s[3]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #72]         \n"
+
+     // "ldp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+     "umov   w0, v17.s[0]                        \n"
+     "umov   w1, v17.s[2]                        \n"
+     "stp    w0, w1, [%[p_vec_uuV_rrV], #80]         \n"
+
+    :
+    : // pointers
+      [p_vec_uuV_rrV] "r"(vec_uuV_rrV),
+      [p_vec_uuV0_uuV1_rrV0_rrV1] "r"(&vec_uuV0_uuV1_rrV0_rrV1),
+      [p_vec_uuV2_uuV3_rrV2_rrV3] "r"(&vec_uuV2_uuV3_rrV2_rrV3),
+      [p_vec_uuV4_uuV5_rrV4_rrV5] "r"(&vec_uuV4_uuV5_rrV4_rrV5),
+      [p_vec_uuV6_uuV7_rrV6_rrV7] "r"(&vec_uuV6_uuV7_rrV6_rrV7),
+      [p_vec_uuV8_uuV9_rrV8_rrV9] "r"(&vec_uuV8_uuV9_rrV8_rrV9),
+      [p_vec_uuV10_0_rrV10_0] "r"(&vec_uuV10_0_rrV10_0)
+
+    : "memory",
+      "x0","x1",
+      "v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20"
+  );
+
 
 
     // So fat, vec_uuV_rrV[2:11] stores [ u*V*R-1 mod P, r*V*R-1 mod P ]

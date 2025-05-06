@@ -8,18 +8,19 @@ LD  := $(CC)
 
 SOURCES = hal/hal.c \
 					bench.c \
-					../ref_intmul/fe25519_intmul_invert.c \
-					../ref_intmul/fe25519_intmul.S \
-					../ref_intmul/fe25519_intmul_nsquare.S \
-					../ref_intmul/fe25519_intmul_square.S \
-					../my_invert/cpt_inv_func4.c \
-					../my_invert/divstepx20.S \
-					../my_invert/big30_from_uint256.S \
-					../my_invert/j_loop.S \
-					../my_invert/final_adjustment.S \
-					../my_invert/j_loop_final.S \
-					../my_invert/update_FG.S \
-					../my_invert/update_VS_mont_neon.c \
+					../external/sole_inv25519/fe25519_intmul_invert.c \
+					../external/sole_inv25519/fe25519_intmul.S \
+					../external/sole_inv25519/fe25519_intmul_nsquare.S \
+					../external/sole_inv25519/fe25519_intmul_square.S \
+					../src/cpt_inv_func4.c \
+					../src/divstepx20/divstepx20.S \
+					../src/big30_and_uint256/big30_from_uint256.S \
+					../src/big30_and_uint256/uint256_from_big30.S \
+					../src/j_loop/j_loop.S \
+					../src/j_loop_final/j_loop_final.S \
+					../src/final_adjustment/final_adjustment.S \
+					../src/update_FG/update_FG.S \
+					../src/update_VS/update_VS_mont_inline_neon.c \
 
 	# -Wmissing-prototypes \
 
