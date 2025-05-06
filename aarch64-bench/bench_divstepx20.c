@@ -69,7 +69,7 @@ static int bench(void)
   {
     t0 = get_cyclecounter();
 
-    for(int k=0;k<500;k++) asm volatile("");
+    for(int k=0;k<500;k++) __asm__ volatile("");
 
     t1 = get_cyclecounter();
 
