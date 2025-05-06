@@ -1,0 +1,2 @@
+../src/big30_and_uint256/uint256_from_big30.o: \
+ ../src/big30_and_uint256/uint256_from_big30.S
