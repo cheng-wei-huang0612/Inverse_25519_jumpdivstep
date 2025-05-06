@@ -11,9 +11,9 @@
 #include "fe25519.h"
 #include "big30.h"
 
-#define NWARMUP 50
-#define NITERATIONS 300
-#define NTESTS 500
+#define NWARMUP 100
+#define NITERATIONS 500
+#define NTESTS 1000
 
 static int cmp_uint64_t(const void *a, const void *b)
 {
