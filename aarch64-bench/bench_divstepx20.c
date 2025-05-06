@@ -67,6 +67,30 @@ static int bench(void)
 
   for (i = 0; i < NTESTS; i++)
   {
+    t0 = get_cyclecounter();
+
+    for(int i=0;i<500;i++) asm volatile("");
+
+    t1 = get_cyclecounter();
+
+    cycles[i] = t1 - t0;
+  }
+
+  qsort(cycles, NTESTS, sizeof(uint64_t), cmp_uint64_t);
+
+  print_median("empty", cycles);
+
+  printf("\n");
+
+  print_percentile_legend();
+
+  print_percentiles("empty", cycles);
+
+
+  printf("\n\n\n\n");
+
+  for (i = 0; i < NTESTS; i++)
+  {
     // for (j = 0; j < NWARMUP; j++)
     // {
     //   divstepx20(&delta, &f, &g);
