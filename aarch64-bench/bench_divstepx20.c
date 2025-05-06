@@ -12,7 +12,7 @@
 #include "big30.h"
 
 #define NWARMUP 10
-#define NITERATIONS 10
+#define NITERATIONS 100
 // #define NITERATIONS 500
 #define NTESTS 1000
 
