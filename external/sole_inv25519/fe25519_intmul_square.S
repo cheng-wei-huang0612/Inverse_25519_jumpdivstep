@@ -1,15 +1,7 @@
 /* Assembly for field squaring */
 
-; #include "crypto_asm_hidden.h"
 
 	.p2align 4
-; 	ASM_HIDDEN _CRYPTO_SHARED_NAMESPACE(fe25519_square)
-; 	.globl _CRYPTO_SHARED_NAMESPACE(fe25519_square)
-; 	ASM_HIDDEN CRYPTO_SHARED_NAMESPACE(fe25519_square)
-; 	.globl CRYPTO_SHARED_NAMESPACE(fe25519_square)
-;
-; _CRYPTO_SHARED_NAMESPACE(fe25519_square):
-; CRYPTO_SHARED_NAMESPACE(fe25519_square):
 
 	.globl _fe25519_intmul_square
 	.globl fe25519_intmul_square
@@ -102,4 +94,3 @@ fe25519_intmul_square:
 	stp	x5, x6, [x0, #16]
 	
 	ret
-; .section	.note.GNU-stack,"",@progbits
