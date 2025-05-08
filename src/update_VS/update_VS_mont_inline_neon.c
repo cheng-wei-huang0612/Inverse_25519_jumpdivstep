@@ -4,31 +4,31 @@
 #include "big30.h"
 
 
-void print_u64x2(uint64x2_t vec) {
-    uint64_t values[2];
-    vst1q_u64(values, vec);  // 將 vec 的 4 個 lane 存到陣列
-    printf("[ %llu, %llu ]\n",
-           values[0], values[1]);
-}
-void print_u32x2(uint32x2_t vec) {
-    uint32_t values[2];
-    vst1_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
-    printf("[ %u, %u ]\n",
-           values[0], values[1]);
-}
-void print_u32x4(uint32x4_t vec) {
-    uint32_t values[4];
-    vst1q_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
-    printf("[ %u, %u, %u, %u ]\n",
-           values[0], values[1], values[2], values[3]);
-}
-void print_vec_tmp(uint32x2_t *vec_tmp, int length) {
-    for (int i = 0; i < length; i++) {
-        printf("i = %d  ",i);
-        print_u32x2(vec_tmp[i]);
-    }
-}
-//
+// void print_u64x2(uint64x2_t vec) {
+//     uint64_t values[2];
+//     vst1q_u64(values, vec);  // 將 vec 的 4 個 lane 存到陣列
+//     printf("[ %llu, %llu ]\n",
+//            values[0], values[1]);
+// }
+// void print_u32x2(uint32x2_t vec) {
+//     uint32_t values[2];
+//     vst1_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
+//     printf("[ %u, %u ]\n",
+//            values[0], values[1]);
+// }
+// void print_u32x4(uint32x4_t vec) {
+//     uint32_t values[4];
+//     vst1q_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
+//     printf("[ %u, %u, %u, %u ]\n",
+//            values[0], values[1], values[2], values[3]);
+// }
+// void print_vec_tmp(uint32x2_t *vec_tmp, int length) {
+//     for (int i = 0; i < length; i++) {
+//         printf("i = %d  ",i);
+//         print_u32x2(vec_tmp[i]);
+//     }
+// }
+// //
 // //
 // // void print_vec_tmp_as_mpz(uint32x2_t *vec_tmp) {
 // //     big30_t left, right;
