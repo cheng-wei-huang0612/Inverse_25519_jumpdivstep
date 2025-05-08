@@ -14,7 +14,7 @@ extern void update_VS_mont    (big30_t *V, big30_t *S,
                                const int64_t *uuvvrrss);
 extern void gmp_update_VS_mont(big30_t *V, big30_t *S,
                                const int64_t *uuvvrrss);
-#define NUMBEROFTEST 10000
+#define NUMBEROFTEST 100000
 
 int main(void)
 {
