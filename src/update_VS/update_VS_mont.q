@@ -41,53 +41,91 @@ push2x8b calleesaved_v10, calleesaved_v11
 push2x8b calleesaved_v12, calleesaved_v13
 push2x8b calleesaved_v14, calleesaved_v15
 
+# register initialization and specification
 
-# F, G Data Layout Configuration
+
+reg128 vec_F0_F1_G0_G1
+assign v0 to vec_F0_F1_G0_G1
+reg128 vec_F2_F3_G2_G3
+assign v1 to vec_F2_F3_G2_G3
+reg128 vec_F4_F5_G4_G5
+assign v2 to vec_F4_F5_G4_G5
+reg128 vec_F6_F7_G6_G7
+assign v3 to vec_F6_F7_G6_G7
+reg128 vec_F8_F9_G8_G9
+assign v4 to vec_F8_F9_G8_G9
+# The F9, G9 are always 0, we put them here for easy program writing
+
+reg128 vec_V0_V1_S0_S1
+assign v5 to vec_V0_V1_S0_S1
+reg128 vec_V2_V3_S2_S3
+assign v6 to vec_V2_V3_S2_S3
+reg128 vec_V4_V5_S4_S5
+assign v7 to vec_V4_V5_S4_S5
+reg128 vec_V6_V7_S6_S7
+assign v8 to vec_V6_V7_S6_S7
+reg128 vec_V8_V9_S8_S9
+assign v9 to vec_V8_V9_S8_S9
+# The V9, S9 are always 0, we put them here for easy program writing
+
+reg128 vec_uu0_rr0_vv0_ss0
+assign v10 to vec_uu0_rr0_vv0_ss0
+reg128 vec_uu1_rr1_vv1_ss1
+assign v11 to vec_uu1_rr1_vv1_ss1
+reg128 vec_uuhat_rrhat_vvhat_sshat
+assign v12 to vec_uuhat_rrhat_vvhat_sshat
+
+reg128 vec_2x_2p30m1
+assign v13 to vec_2x_2p30m1
+
+int64 2p30m1
+2p30m1 = 1073741823
+2x vec_2x_2p30m1 = 2p30m1
+
+
+
+# V, S Data Layout Configuration
 
 int64 V0V1
 int64 V2V3
 int64 V4V5
 int64 V6V7
-int64 V8
+int64 V8V9
 
 V0V1, V2V3 = mem128[pointerV]
 V4V5, V6V7 = mem128[pointerV+16]
-V8 = mem32[pointerV+32]
+V8V9 = mem32[pointerV+32]
 
 int64 S0S1
 int64 S2S3
 int64 S4S5
 int64 S6S7
-int64 S8
+int64 S8S9
 
 S0S1, S2S3 = mem128[pointerS]
 S4S5, S6S7 = mem128[pointerS+16]
-S8 = mem32[pointerS+32]
+S8S9 = mem32[pointerS+32]
 
-reg128 vec_V0_V1_S0_S1 
 
 vec_V0_V1_S0_S1[0/2] = V0V1 
 vec_V0_V1_S0_S1[1/2] = S0S1 
 
-reg128 vec_V2_V3_S2_S3 
 
 vec_V2_V3_S2_S3[0/2] = V2V3 
 vec_V2_V3_S2_S3[1/2] = S2S3 
 
-reg128 vec_V4_V5_S4_S5 
 
 vec_V4_V5_S4_S5[0/2] = V4V5 
 vec_V4_V5_S4_S5[1/2] = S4S5 
 
-reg128 vec_V6_V7_S6_S7 
 
 vec_V6_V7_S6_S7[0/2] = V6V7 
 vec_V6_V7_S6_S7[1/2] = S6S7 
 
 
-reg128 vec_V8_0_S8_0
-vec_V8_0_S8_0[0/2] = V8
-vec_V8_0_S8_0[1/2] = S8
+vec_V8_V9_S8_S9[0/2] = V8V9 
+vec_V8_V9_S8_S9[1/2] = S8S9 
+
 
 
 # At this function, the uu, vv, rr, ss are already in neon registers
@@ -120,14 +158,12 @@ int64 ss1
 ss0 = ss & ((1 << 30)-1)
 ss1 = (ss >> 30) & ((1 << 32)-1)
 
-reg128 vec_uu0_rr0_vv0_ss0
 
 vec_uu0_rr0_vv0_ss0[0/4] = uu0
 vec_uu0_rr0_vv0_ss0[1/4] = rr0
 vec_uu0_rr0_vv0_ss0[2/4] = vv0
 vec_uu0_rr0_vv0_ss0[3/4] = ss0
 
-reg128 vec_uu1_rr1_vv1_ss1
 
 vec_uu1_rr1_vv1_ss1[0/4] = uu1
 vec_uu1_rr1_vv1_ss1[1/4] = rr1
@@ -136,28 +172,26 @@ vec_uu1_rr1_vv1_ss1[3/4] = ss1
 
 
 
-reg128 vec_uuhat_rrhat_vvhat_sshat
-reg128 vec_uuhat_rrhat
-reg128 vec_vvhat_sshat
+
 
 # Get the hats
 4x vec_uuhat_rrhat_vvhat_sshat = vec_uu1_rr1_vv1_ss1 >> 31
-4x vec_uuhat_rrhat = vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[1/4] vec_uuhat_rrhat_vvhat_sshat[1/4]
-4x vec_vvhat_sshat = vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[3/4] vec_uuhat_rrhat_vvhat_sshat[3/4]
 
-free vec_uuhat_rrhat_vvhat_sshat
+reg128 front_vec_4x_2p30a2p31
+4x front_vec_4x_2p30a2p31 = 0xC0 << 24
+vec_uu1_rr1_vv1_ss1 &= ~front_vec_4x_2p30a2p31
+
+
 
 
 # Now we do vec_uuV[0:9]_0_rrV[0:9]_0 = [uu0 * V, rr0 * V]
 
 reg128 vec_prod
-reg128 vec_buf
 2x vec_prod = 0
-reg128 vec_2x_2p30m1
-int64 2p30m1
-2p30m1 = 1073741823
-2x vec_2x_2p30m1 = 2p30m1
+reg128 vec_prod_1
+2x vec_prod_1 = 0
 
+reg128 vec_buf
 
 # Prepare P values
 
@@ -172,651 +206,555 @@ reg128 vec_2x_2p15m1
 
 2x vec_2x_2p30m19 = 2p30m19
 2x vec_2x_2p15m1 = 2p15m1
-
-
-
-reg128 vec_uuV0_uuV1_rrV0_rrV1
-2x vec_uuV0_uuV1_rrV0_rrV1 = 0
-reg128 vec_uuV2_uuV3_rrV2_rrV3
-2x vec_uuV2_uuV3_rrV2_rrV3 = 0
-reg128 vec_uuV4_uuV5_rrV4_rrV5
-2x vec_uuV4_uuV5_rrV4_rrV5 = 0
-reg128 vec_uuV6_uuV7_rrV6_rrV7
-2x vec_uuV6_uuV7_rrV6_rrV7 = 0
-reg128 vec_uuV8_uuV9_rrV8_rrV9
-2x vec_uuV8_uuV9_rrV8_rrV9 = 0
-
-reg128 vec_uuV10_0_rrV10_0
-2x vec_uuV10_0_rrV10_0 = 0
-
-
-
-
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[0/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_uuV0_uuV1_rrV0_rrV1 += vec_buf
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[1/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_buf <<= 30
-    2x vec_uuV0_uuV1_rrV0_rrV1 += vec_buf
-
-    
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[0/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_uuV2_uuV3_rrV2_rrV3 += vec_buf
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[1/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_buf <<= 30
-    2x vec_uuV2_uuV3_rrV2_rrV3 += vec_buf
-
-    
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[0/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_uuV4_uuV5_rrV4_rrV5 += vec_buf
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[1/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_buf <<= 30
-    2x vec_uuV4_uuV5_rrV4_rrV5 += vec_buf
-
-    
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[0/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_uuV6_uuV7_rrV6_rrV7 += vec_buf
-
-    2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[1/4]
-    vec_buf = vec_prod & vec_2x_2p30m1
-    2x vec_prod unsigned>>= 30
-    2x vec_buf <<= 30
-    2x vec_uuV6_uuV7_rrV6_rrV7 += vec_buf
-
-    
-
-2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V8_0_S8_0[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_buf
-
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_prod
-
-
-# Compute l0 = (uu0 * V)[0] * M mod B
-#            = (rr0 * V)[0] * M mod B
-
-
-reg128 vec_l0 
-reg128 vec_M
-reg128 vec_4x_2p30m1
 int64 M
-
-4x vec_4x_2p30m1 = vec_2x_2p30m1[0]
-
 
 #M = 678152731
 M = 0
 M[0/4] = 51739
 M[1/4] = 10347
-2x vec_M = M
-# vec_M = [M, 0, M, 0]
+reg128 vec_M
+4x vec_M = M
+# vec_M = [M, M, M, M]
 
-4x vec_l0 = vec_uuV0_uuV1_rrV0_rrV1 * vec_M
-vec_l0 &= vec_2x_2p30m1
 
-# Currently, we get
-# vec_l0 = [l0(uuV0 * M mod B), 0, l0(rrV0 * M mod B), 0]
-# But we need the shape
-# vec_l0 = [l0(uuV0 * M mod B), l0(rrV0 * M mod B), 0, 0]
-# For this purpose, we do
-4x vec_l0 = vec_l0[0/4] vec_l0[2/4] vec_l0[0/4] vec_l0[2/4] 
 
 
-# Now we perform
-# [uuV, rrV] += l0 * P
-# vec_uuV[0:9]_0_rrV[0:9]_0 += [l0 * P, l0 * P]
+reg128 vec_l0_V
+reg128 vec_l0_S
+reg128 vec_l1_V
+reg128 vec_l1_S
 
+2x vec_prod = vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[0/4]
+4x vec_l0_V = vec_prod * vec_M
+vec_l0_V &= vec_2x_2p30m1
+4x vec_l0_V = vec_l0_V[0/4] vec_l0_V[2/4] vec_l0_V[0/4] vec_l0_V[2/4]
 
-2x vec_prod = 0
-2x vec_buf = 0
 
+2x vec_prod += vec_l0_V[0] unsigned* vec_2x_2p30m19[0/4]
 
+2x vec_prod >>= 30
 
-# i = 0
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m19[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV0_uuV1_rrV0_rrV1 += vec_buf
-#
-# i = 1
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV0_uuV1_rrV0_rrV1 += vec_buf
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V0_V1_S0_S1[1/4]
+2x vec_prod += vec_l0_V[0] unsigned* vec_2x_2p30m1[0/4]
 
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V0_V1_S0_S1[0/4]
 
-# i = 2
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_buf
+4x vec_l1_V = vec_prod * vec_M
+vec_l1_V &= vec_2x_2p30m1
+4x vec_l1_V = vec_l1_V[0/4] vec_l1_V[2/4] vec_l1_V[0/4] vec_l1_V[2/4]
 
-# i = 3
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_buf
+2x vec_prod += vec_l1_V[0] unsigned* vec_2x_2p30m19[0/4]
 
 
-# i = 4
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_buf
 
-# i = 5
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_buf
 
 
-# i = 6
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_buf
 
-# i = 7
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_buf
+                    2x vec_prod_1 = vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V0_V1_S0_S1[2/4]
+                    4x vec_l0_S = vec_prod_1 * vec_M
+                    vec_l0_S &= vec_2x_2p30m1
+                    4x vec_l0_S = vec_l0_S[0/4] vec_l0_S[2/4] vec_l0_S[0/4] vec_l0_S[2/4]
 
 
-# i = 8
-2x vec_prod += vec_l0[0] unsigned* vec_2x_2p15m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_buf
+                    2x vec_prod_1 += vec_l0_S[0] unsigned* vec_2x_2p30m19[0/4]
 
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_prod
+                    2x vec_prod_1 >>= 30
 
+                    2x vec_prod_1 += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V0_V1_S0_S1[3/4]
+                    2x vec_prod_1 += vec_l0_S[0] unsigned* vec_2x_2p30m1[0/4]
 
-# Carry masks
+                    2x vec_prod_1 += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V0_V1_S0_S1[2/4]
 
-reg128 vec_2x_2p30a2p31
-reg128 vec_2x_2p62a2p63
+                    4x vec_l1_S = vec_prod_1 * vec_M
+                    vec_l1_S &= vec_2x_2p30m1
+                    4x vec_l1_S = vec_l1_S[0/4] vec_l1_S[2/4] vec_l1_S[0/4] vec_l1_S[2/4]
 
-2x vec_2x_2p30a2p31 = 3
-# 3 = 2p0a2p1
-# shift it left by 30
-2x vec_2x_2p30a2p31 <<= 30
-2x vec_2x_2p62a2p63 = vec_2x_2p30a2p31 << 32
+                    2x vec_prod_1 += vec_l1_S[0] unsigned* vec_2x_2p30m19[0/4]
 
-
-
-# Carry Propagation
-
-reg128 vec_carry1
-reg128 vec_carry2
-
-vec_carry1 = vec_uuV0_uuV1_rrV0_rrV1 & vec_2x_2p30a2p31
-vec_uuV0_uuV1_rrV0_rrV1 = vec_uuV0_uuV1_rrV0_rrV1 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV0_uuV1_rrV0_rrV1 += vec_carry1
-
-vec_carry2 = vec_uuV0_uuV1_rrV0_rrV1 & vec_2x_2p62a2p63
-vec_uuV0_uuV1_rrV0_rrV1 = vec_uuV0_uuV1_rrV0_rrV1 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_carry2
-
-
-vec_carry1 = vec_uuV2_uuV3_rrV2_rrV3 & vec_2x_2p30a2p31
-vec_uuV2_uuV3_rrV2_rrV3 = vec_uuV2_uuV3_rrV2_rrV3 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_carry1
-
-vec_carry2 = vec_uuV2_uuV3_rrV2_rrV3 & vec_2x_2p62a2p63
-vec_uuV2_uuV3_rrV2_rrV3 = vec_uuV2_uuV3_rrV2_rrV3 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_carry2
-
-
-vec_carry1 = vec_uuV4_uuV5_rrV4_rrV5 & vec_2x_2p30a2p31
-vec_uuV4_uuV5_rrV4_rrV5 = vec_uuV4_uuV5_rrV4_rrV5 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_carry1
-
-vec_carry2 = vec_uuV4_uuV5_rrV4_rrV5 & vec_2x_2p62a2p63
-vec_uuV4_uuV5_rrV4_rrV5 = vec_uuV4_uuV5_rrV4_rrV5 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_carry2
-
-
-vec_carry1 = vec_uuV6_uuV7_rrV6_rrV7 & vec_2x_2p30a2p31
-vec_uuV6_uuV7_rrV6_rrV7 = vec_uuV6_uuV7_rrV6_rrV7 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_carry1
-
-vec_carry2 = vec_uuV6_uuV7_rrV6_rrV7 & vec_2x_2p62a2p63
-vec_uuV6_uuV7_rrV6_rrV7 = vec_uuV6_uuV7_rrV6_rrV7 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_carry2
-
-
-vec_carry1 = vec_uuV8_uuV9_rrV8_rrV9 & vec_2x_2p30a2p31
-vec_uuV8_uuV9_rrV8_rrV9 = vec_uuV8_uuV9_rrV8_rrV9 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_carry1
-
-# vec_uuV[1:10]_0_rrV[1:10]_0 += [uu1 * V, rr1 * V]
-
-2x vec_prod = 0
-2x vec_buf = 0
-
-
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V0_V1_S0_S1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV0_uuV1_rrV0_rrV1 += vec_buf
-
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V0_V1_S0_S1[1/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_buf
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V2_V3_S2_S3[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_buf
-
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V2_V3_S2_S3[1/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_buf
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V4_V5_S4_S5[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_buf
-
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V4_V5_S4_S5[1/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_buf
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V6_V7_S6_S7[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_buf
-
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V6_V7_S6_S7[1/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_buf
-
-2x vec_prod = vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V8_0_S8_0[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_buf <<= 30
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_buf
-
-
-2x vec_uuV10_0_rrV10_0 += vec_buf
-
-
-
-# Carry Propagation
-
-vec_carry1 = vec_uuV0_uuV1_rrV0_rrV1 & vec_2x_2p30a2p31
-vec_uuV0_uuV1_rrV0_rrV1 = vec_uuV0_uuV1_rrV0_rrV1 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV0_uuV1_rrV0_rrV1 += vec_carry1
-
-vec_carry2 = vec_uuV0_uuV1_rrV0_rrV1 & vec_2x_2p62a2p63
-vec_uuV0_uuV1_rrV0_rrV1 = vec_uuV0_uuV1_rrV0_rrV1 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_carry2
-
-
-vec_carry1 = vec_uuV2_uuV3_rrV2_rrV3 & vec_2x_2p30a2p31
-vec_uuV2_uuV3_rrV2_rrV3 = vec_uuV2_uuV3_rrV2_rrV3 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV2_uuV3_rrV2_rrV3 += vec_carry1
-
-vec_carry2 = vec_uuV2_uuV3_rrV2_rrV3 & vec_2x_2p62a2p63
-vec_uuV2_uuV3_rrV2_rrV3 = vec_uuV2_uuV3_rrV2_rrV3 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_carry2
-
-
-vec_carry1 = vec_uuV4_uuV5_rrV4_rrV5 & vec_2x_2p30a2p31
-vec_uuV4_uuV5_rrV4_rrV5 = vec_uuV4_uuV5_rrV4_rrV5 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV4_uuV5_rrV4_rrV5 += vec_carry1
-
-vec_carry2 = vec_uuV4_uuV5_rrV4_rrV5 & vec_2x_2p62a2p63
-vec_uuV4_uuV5_rrV4_rrV5 = vec_uuV4_uuV5_rrV4_rrV5 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_carry2
-
-
-vec_carry1 = vec_uuV6_uuV7_rrV6_rrV7 & vec_2x_2p30a2p31
-vec_uuV6_uuV7_rrV6_rrV7 = vec_uuV6_uuV7_rrV6_rrV7 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV6_uuV7_rrV6_rrV7 += vec_carry1
-
-vec_carry2 = vec_uuV6_uuV7_rrV6_rrV7 & vec_2x_2p62a2p63
-vec_uuV6_uuV7_rrV6_rrV7 = vec_uuV6_uuV7_rrV6_rrV7 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_carry2
-
-
-vec_carry1 = vec_uuV8_uuV9_rrV8_rrV9 & vec_2x_2p30a2p31
-vec_uuV8_uuV9_rrV8_rrV9 = vec_uuV8_uuV9_rrV8_rrV9 & ~vec_2x_2p30a2p31
-2x vec_carry1 <<= 2
-2x vec_uuV8_uuV9_rrV8_rrV9 += vec_carry1
-
-vec_carry2 = vec_uuV8_uuV9_rrV8_rrV9 & vec_2x_2p62a2p63
-vec_uuV8_uuV9_rrV8_rrV9 = vec_uuV8_uuV9_rrV8_rrV9 & ~vec_2x_2p62a2p63
-2x vec_carry2 unsigned>>= 62
-2x vec_uuV10_0_rrV10_0 += vec_carry2
-2x vec_carry = vec_uuV1_0_rrV1_0 unsigned>> 30
-vec_uuV1_0_rrV1_0 &= vec_2x_2p30m1
-2x vec_uuV2_0_rrV2_0 += vec_carry
-
-2x vec_carry = vec_uuV2_0_rrV2_0 unsigned>> 30
-vec_uuV2_0_rrV2_0 &= vec_2x_2p30m1
-2x vec_uuV3_0_rrV3_0 += vec_carry
-
-2x vec_carry = vec_uuV3_0_rrV3_0 unsigned>> 30
-vec_uuV3_0_rrV3_0 &= vec_2x_2p30m1
-2x vec_uuV4_0_rrV4_0 += vec_carry
-
-2x vec_carry = vec_uuV4_0_rrV4_0 unsigned>> 30
-vec_uuV4_0_rrV4_0 &= vec_2x_2p30m1
-2x vec_uuV5_0_rrV5_0 += vec_carry
-
-2x vec_carry = vec_uuV5_0_rrV5_0 unsigned>> 30
-vec_uuV5_0_rrV5_0 &= vec_2x_2p30m1
-2x vec_uuV6_0_rrV6_0 += vec_carry
-
-2x vec_carry = vec_uuV6_0_rrV6_0 unsigned>> 30
-vec_uuV6_0_rrV6_0 &= vec_2x_2p30m1
-2x vec_uuV7_0_rrV7_0 += vec_carry
-
-2x vec_carry = vec_uuV7_0_rrV7_0 unsigned>> 30
-vec_uuV7_0_rrV7_0 &= vec_2x_2p30m1
-2x vec_uuV8_0_rrV8_0 += vec_carry
-
-2x vec_carry = vec_uuV8_0_rrV8_0 unsigned>> 30
-vec_uuV8_0_rrV8_0 &= vec_2x_2p30m1
-2x vec_uuV9_0_rrV9_0 += vec_carry
-
-2x vec_carry = vec_uuV9_0_rrV9_0 unsigned>> 30
-vec_uuV9_0_rrV9_0 &= vec_2x_2p30m1
-2x vec_uuV10_0_rrV10_0 += vec_carry
-
-
-# Compute l1
-
+reg128 vec_Vp0_Vp1_Sp0_Sp1
+reg128 vec_Vp2_Vp3_Sp2_Sp3
+reg128 vec_Vp4_Vp5_Sp4_Sp5
+reg128 vec_Vp6_Vp7_Sp6_Sp7
+reg128 vec_Vp8_Vp9_Sp8_Sp9
+reg128 vec_l0
 reg128 vec_l1
-4x vec_l1 = vec_uuV1_0_rrV1_0 * vec_M
-vec_l1 &= vec_2x_2p30m1
 
-4x vec_l1 = vec_l1[0/4] vec_l1[2/4] vec_l1[0/4] vec_l1[2/4] 
+2x vec_l0 = vec_l0_V + vec_l0_S
+2x vec_l1 = vec_l1_V + vec_l1_S
 
+2x vec_prod = vec_prod + vec_prod_1
+2x vec_prod >>= 30
 
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[0/4]
+2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V2_V3_S2_S3[2/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V0_V1_S0_S1[1/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V0_V1_S0_S1[3/4]
 
-
-# vec_uuV[1:10]_0_rrV[1:10]_0 += [l1 * P, l1 * P]
-
-
-
-2x vec_prod = 0
-2x vec_buf = 0
-
-
-
-# i = 0
-2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m19[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV1_0_rrV1_0 += vec_buf
-
-
-# i = 1
+# += vec_l0 * P2
+2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
+# += vec_l1 * P1
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV2_0_rrV2_0 += vec_buf
 
-# i = 2
+vec_Vp0_Vp1_Sp0_Sp1 = vec_prod & vec_2x_2p30m1
+2x vec_prod >>= 30
+
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V2_V3_S2_S3[1/4]
+2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V2_V3_S2_S3[3/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V2_V3_S2_S3[0/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V2_V3_S2_S3[2/4]
+
+# += vec_l0 * P3
+2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
+# += vec_l1 * P2
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV3_0_rrV3_0 += vec_buf
 
-# i = 3
+
+vec_buf = vec_prod & vec_2x_2p30m1
+2x vec_prod >>= 30
+2x vec_buf <<= 32
+vec_Vp0_Vp1_Sp0_Sp1 |= vec_buf
+
+
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[0/4]
+2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V4_V5_S4_S5[2/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V2_V3_S2_S3[1/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V2_V3_S2_S3[3/4]
+
+# += vec_l0 * P4
+2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
+# += vec_l1 * P3
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV4_0_rrV4_0 += vec_buf
 
-# i = 4
+
+vec_Vp2_Vp3_Sp2_Sp3 = vec_prod & vec_2x_2p30m1
+2x vec_prod >>= 30
+
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[1/4]
+2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V4_V5_S4_S5[3/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V4_V5_S4_S5[0/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V4_V5_S4_S5[2/4]
+
+# += vec_l0 * P5
+2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
+# += vec_l1 * P4
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV5_0_rrV5_0 += vec_buf
 
-# i = 5
+
+vec_buf = vec_prod & vec_2x_2p30m1
+2x vec_prod >>= 30
+2x vec_buf <<= 32
+vec_Vp2_Vp3_Sp2_Sp3 |= vec_buf
+
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[0/4]
+2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V6_V7_S6_S7[2/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V4_V5_S4_S5[1/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V4_V5_S4_S5[3/4]
+
+# += vec_l0 * P6
+2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
+# += vec_l1 * P5
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV6_0_rrV6_0 += vec_buf
 
-# i = 6
+
+vec_Vp4_Vp5_Sp4_Sp5 = vec_prod & vec_2x_2p30m1
+2x vec_prod >>= 30
+
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[1/4]
+2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V6_V7_S6_S7[3/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V6_V7_S6_S7[0/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V6_V7_S6_S7[2/4]
+
+# += vec_l0 * P7
+2x vec_prod += vec_l0[0] unsigned* vec_2x_2p30m1[0/4]
+# += vec_l1 * P6
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV7_0_rrV7_0 += vec_buf
 
-# i = 7
+
+vec_buf = vec_prod & vec_2x_2p30m1
+2x vec_prod >>= 30
+2x vec_buf <<= 32
+vec_Vp4_Vp5_Sp4_Sp5 |= vec_buf
+
+2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V8_V9_S8_S9[0/4]
+2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V8_V9_S8_S9[2/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V6_V7_S6_S7[1/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V6_V7_S6_S7[3/4]
+
+# += vec_l0 * P8
+2x vec_prod += vec_l0[0] unsigned* vec_2x_2p15m1[0/4]
+# += vec_l1 * P7
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p30m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV8_0_rrV8_0 += vec_buf
 
 
-# i = 8
+vec_Vp6_Vp7_Sp6_Sp7 = vec_prod & vec_2x_2p30m1
+2x vec_prod >>= 30
+
+
+2x vec_prod += vec_uu1_rr1_vv1_ss1[0] unsigned* vec_V8_V9_S8_S9[0/4]
+2x vec_prod += vec_uu1_rr1_vv1_ss1[1] unsigned* vec_V8_V9_S8_S9[2/4]
+
+# += vec_l1 * P8
 2x vec_prod += vec_l1[0] unsigned* vec_2x_2p15m1[0/4]
-vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_prod unsigned>>= 30
-2x vec_uuV9_0_rrV9_0 += vec_buf
+
 
 vec_buf = vec_prod & vec_2x_2p30m1
-2x vec_uuV10_0_rrV10_0 += vec_buf
+2x vec_prod >>= 30
+2x vec_buf <<= 32
+vec_Vp6_Vp7_Sp6_Sp7 |= vec_buf
+
+vec_Vp8_Vp9_Sp8_Sp9 = vec_prod & vec_2x_2p30m1
 
 
-# Carry Propagation
-2x vec_carry = vec_uuV1_0_rrV1_0 unsigned>> 30
-vec_uuV1_0_rrV1_0 &= vec_2x_2p30m1
-2x vec_uuV2_0_rrV2_0 += vec_carry
+  
+# Branchless minus [uuhat, rrhat] & P-V
+#                  [vvhat, sshat] & P-S
 
-2x vec_carry = vec_uuV2_0_rrV2_0 unsigned>> 30
-vec_uuV2_0_rrV2_0 &= vec_2x_2p30m1
-2x vec_uuV3_0_rrV3_0 += vec_carry
+reg128 vec_uuhat_rrhat
+reg128 vec_vvhat_sshat
+4x vec_uuhat_rrhat = vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[1/4] vec_uuhat_rrhat_vvhat_sshat[1/4]
 
-2x vec_carry = vec_uuV3_0_rrV3_0 unsigned>> 30
-vec_uuV3_0_rrV3_0 &= vec_2x_2p30m1
-2x vec_uuV4_0_rrV4_0 += vec_carry
-
-2x vec_carry = vec_uuV4_0_rrV4_0 unsigned>> 30
-vec_uuV4_0_rrV4_0 &= vec_2x_2p30m1
-2x vec_uuV5_0_rrV5_0 += vec_carry
-
-2x vec_carry = vec_uuV5_0_rrV5_0 unsigned>> 30
-vec_uuV5_0_rrV5_0 &= vec_2x_2p30m1
-2x vec_uuV6_0_rrV6_0 += vec_carry
-
-2x vec_carry = vec_uuV6_0_rrV6_0 unsigned>> 30
-vec_uuV6_0_rrV6_0 &= vec_2x_2p30m1
-2x vec_uuV7_0_rrV7_0 += vec_carry
-
-2x vec_carry = vec_uuV7_0_rrV7_0 unsigned>> 30
-vec_uuV7_0_rrV7_0 &= vec_2x_2p30m1
-2x vec_uuV8_0_rrV8_0 += vec_carry
-
-2x vec_carry = vec_uuV8_0_rrV8_0 unsigned>> 30
-vec_uuV8_0_rrV8_0 &= vec_2x_2p30m1
-2x vec_uuV9_0_rrV9_0 += vec_carry
-
-2x vec_carry = vec_uuV9_0_rrV9_0 unsigned>> 30
-vec_uuV9_0_rrV9_0 &= vec_2x_2p30m1
-2x vec_uuV10_0_rrV10_0 += vec_carry
+reg128 vec_V0_V1_V0_V1
+reg128 vec_V2_V3_V2_V3
+reg128 vec_V4_V5_V4_V5
+reg128 vec_V6_V7_V6_V7
+reg128 vec_V8_V9_V8_V9
 
 
-# Reshape
+reg128 vec_4x_2p30m1
+reg128 vec_P0_P1_P0_P1
+4x vec_4x_2p30m1 = vec_2x_2p30m1[0/4]
+int64 eighteen
+reg128 vec_eighteen
+eighteen = 18
+2x vec_eighteen = eighteen
+2x vec_P0_P1_P0_P1 = vec_4x_2p30m1 - vec_eighteen
 
-reg128 vec_uuV0_uuV1_rrV0_rrV1
-2x vec_uuV1_0_rrV1_0 = vec_uuV1_0_rrV1_0 << 32
-vec_uuV0_uuV1_rrV0_rrV1 = vec_uuV0_0_rrV0_0 | vec_uuV1_0_rrV1_0
-reg128 vec_uuV2_uuV3_rrV2_rrV3
-2x vec_uuV3_0_rrV3_0 = vec_uuV3_0_rrV3_0 << 32
-vec_uuV2_uuV3_rrV2_rrV3 = vec_uuV2_0_rrV2_0 | vec_uuV3_0_rrV3_0
-reg128 vec_uuV4_uuV5_rrV4_rrV5
-2x vec_uuV5_0_rrV5_0 = vec_uuV5_0_rrV5_0 << 32
-vec_uuV4_uuV5_rrV4_rrV5 = vec_uuV4_0_rrV4_0 | vec_uuV5_0_rrV5_0
-reg128 vec_uuV6_uuV7_rrV6_rrV7
-2x vec_uuV7_0_rrV7_0 = vec_uuV7_0_rrV7_0 << 32
-vec_uuV6_uuV7_rrV6_rrV7 = vec_uuV6_0_rrV6_0 | vec_uuV7_0_rrV7_0
-reg128 vec_uuV8_uuV9_rrV8_rrV9
-2x vec_uuV9_0_rrV9_0 = vec_uuV9_0_rrV9_0 << 32
-vec_uuV8_uuV9_rrV8_rrV9 = vec_uuV8_0_rrV8_0 | vec_uuV9_0_rrV9_0
 
-# Reduce P once
+2x vec_V0_V1_V0_V1 zip= vec_V0_V1_S0_S1[0/2] vec_V0_V1_S0_S1[0/2]
+4x vec_buf = vec_P0_P1_P0_P1 - vec_V0_V1_V0_V1
+vec_buf &= vec_uuhat_rrhat
+4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_buf
+
+2x vec_V2_V3_V2_V3 zip= vec_V2_V3_S2_S3[0/2] vec_V2_V3_S2_S3[0/2]
+4x vec_buf = vec_4x_2p30m1 - vec_V2_V3_V2_V3
+vec_buf &= vec_uuhat_rrhat
+4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+
+2x vec_V4_V5_V4_V5 zip= vec_V4_V5_S4_S5[0/2] vec_V4_V5_S4_S5[0/2]
+4x vec_buf = vec_4x_2p30m1 - vec_V4_V5_V4_V5
+vec_buf &= vec_uuhat_rrhat
+4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+
+2x vec_V6_V7_V6_V7 zip= vec_V6_V7_S6_S7[0/2] vec_V6_V7_S6_S7[0/2]
+4x vec_buf = vec_4x_2p30m1 - vec_V6_V7_V6_V7
+vec_buf &= vec_uuhat_rrhat
+4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
+
+2x vec_V8_V9_V8_V9 zip= vec_V8_V9_S8_S9[0/2] vec_V8_V9_S8_S9[0/2]
+4x vec_buf = vec_2x_2p15m1 - vec_V8_V9_V8_V9
+vec_buf &= vec_uuhat_rrhat
+4x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
+
+
+# Borrow and carry propagation
+
+
+4x vec_buf = vec_Vp0_Vp1_Sp0_Sp1 >> 30
+2x vec_buf <<= 32
+4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_buf
+
+2x vec_buf = vec_Vp0_Vp1_Sp0_Sp1 >> 30
+2x vec_buf unsigned>>= 32
+
+# Clear the carries/borrows 
+vec_Vp0_Vp1_Sp0_Sp1 &= vec_4x_2p30m1
+
+2x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+4x vec_buf = vec_Vp2_Vp3_Sp2_Sp3 >> 30
+2x vec_buf <<= 32
+4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+
+2x vec_buf = vec_Vp2_Vp3_Sp2_Sp3 >> 30
+2x vec_buf unsigned>>= 32
+
+# Clear the carries/borrows 
+vec_Vp2_Vp3_Sp2_Sp3 &= vec_4x_2p30m1
+
+2x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+4x vec_buf = vec_Vp4_Vp5_Sp4_Sp5 >> 30
+2x vec_buf <<= 32
+4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+
+2x vec_buf = vec_Vp4_Vp5_Sp4_Sp5 >> 30
+2x vec_buf unsigned>>= 32
+
+# Clear the carries/borrows 
+vec_Vp4_Vp5_Sp4_Sp5 &= vec_4x_2p30m1
+
+
+2x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
+4x vec_buf = vec_Vp6_Vp7_Sp6_Sp7 >> 30
+2x vec_buf <<= 32
+4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
+
+2x vec_buf = vec_Vp6_Vp7_Sp6_Sp7 >> 30
+2x vec_buf unsigned>>= 32
+
+
+# Clear the carries/borrows 
+vec_Vp6_Vp7_Sp6_Sp7 &= vec_4x_2p30m1
+
+2x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
+
+
+4x vec_vvhat_sshat = vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[3/4] vec_uuhat_rrhat_vvhat_sshat[3/4]
+
+reg128 vec_S0_S1_S0_S1
+reg128 vec_S2_S3_S2_S3
+reg128 vec_S4_S5_S4_S5
+reg128 vec_S6_S7_S6_S7
+reg128 vec_S8_S9_S8_S9
+
+
+2x vec_S0_S1_S0_S1 zip= vec_V0_V1_S0_S1[1/2] vec_V0_V1_S0_S1[1/2]
+4x vec_buf = vec_P0_P1_P0_P1 - vec_S0_S1_S0_S1
+vec_buf &= vec_vvhat_sshat
+4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_buf
+
+2x vec_S2_S3_S2_S3 zip= vec_V2_V3_S2_S3[1/2] vec_V2_V3_S2_S3[1/2]
+4x vec_buf = vec_4x_2p30m1 - vec_S2_S3_S2_S3
+vec_buf &= vec_vvhat_sshat
+4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+
+2x vec_S4_S5_S4_S5 zip= vec_V4_V5_S4_S5[1/2] vec_V4_V5_S4_S5[1/2]
+4x vec_buf = vec_4x_2p30m1 - vec_S4_S5_S4_S5
+vec_buf &= vec_vvhat_sshat
+4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+
+2x vec_S6_S7_S6_S7 zip= vec_V6_V7_S6_S7[1/2] vec_V6_V7_S6_S7[1/2]
+4x vec_buf = vec_4x_2p30m1 - vec_S6_S7_S6_S7
+vec_buf &= vec_vvhat_sshat
+4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
+
+2x vec_S8_S9_S8_S9 zip= vec_V8_V9_S8_S9[1/2] vec_V8_V9_S8_S9[1/2]
+4x vec_buf = vec_2x_2p15m1 - vec_S8_S9_S8_S9
+vec_buf &= vec_vvhat_sshat
+4x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
+
+
+
+# Borrow and carry propagation
+
+
+4x vec_buf = vec_Vp0_Vp1_Sp0_Sp1 >> 30
+2x vec_buf <<= 32
+4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_buf
+
+2x vec_buf = vec_Vp0_Vp1_Sp0_Sp1 >> 30
+2x vec_buf unsigned>>= 32
+
+# Clear the carries/borrows 
+vec_Vp0_Vp1_Sp0_Sp1 &= vec_4x_2p30m1
+
+2x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+4x vec_buf = vec_Vp2_Vp3_Sp2_Sp3 >> 30
+2x vec_buf <<= 32
+4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+
+2x vec_buf = vec_Vp2_Vp3_Sp2_Sp3 >> 30
+2x vec_buf unsigned>>= 32
+
+# Clear the carries/borrows 
+vec_Vp2_Vp3_Sp2_Sp3 &= vec_4x_2p30m1
+
+2x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+4x vec_buf = vec_Vp4_Vp5_Sp4_Sp5 >> 30
+2x vec_buf <<= 32
+4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+
+2x vec_buf = vec_Vp4_Vp5_Sp4_Sp5 >> 30
+2x vec_buf unsigned>>= 32
+
+# Clear the carries/borrows 
+vec_Vp4_Vp5_Sp4_Sp5 &= vec_4x_2p30m1
+
+
+2x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
+4x vec_buf = vec_Vp6_Vp7_Sp6_Sp7 >> 30
+2x vec_buf <<= 32
+4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
+
+2x vec_buf = vec_Vp6_Vp7_Sp6_Sp7 >> 30
+2x vec_buf unsigned>>= 32
+
+
+# Clear the carries/borrows 
+vec_Vp6_Vp7_Sp6_Sp7 &= vec_4x_2p30m1
+
+2x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
+
+# Roughly Reduction P
 
 reg128 vec_small_tmp
-2x vec_small_tmp = 19
+2x vec_small_tmp = vec_Vp8_Vp9_Sp8_Sp9 >> 15
+vec_Vp8_Vp9_Sp8_Sp9 &= vec_2x_2p15m1
 
-2x vec_small_tmp = vec_small_tmp + vec_uuV2_0_rrV2_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV3_0_rrV3_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV4_0_rrV4_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV5_0_rrV5_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV6_0_rrV6_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV7_0_rrV7_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV8_0_rrV8_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV9_0_rrV9_0
-2x vec_small_tmp unsigned>>= 30
-2x vec_small_tmp = vec_small_tmp + vec_uuV10_0_rrV10_0
-
-# See if vec_small_tmp greater than or equal to 32767 = 2p15m1
-# vec_reductionhat will be set if greater than or equal
-# that means we have to minus vec_uuV[2:11]_0_rrV[2:11]_0 by P once
-
-reg128 vec_reductionhat
-
-2x vec_reductionhat = vec_2x_2p15m1 - vec_small_tmp
-2x vec_reductionhat = vec_reductionhat >> 31
-
-
-# conditional minus
-int64 _19
-reg128 vec_2x_19
-int64 _2p15
-reg128 vec_2x_2p15
-reg128 vec_tmp
-
-
-_19 = 19
-2x vec_2x_19 = _19
-_2p15 = 32768
-2x vec_2x_2p15 = _2p15
+4x vec_small_tmp = vec_small_tmp[0/4] vec_small_tmp[2/4] vec_small_tmp[0/4] vec_small_tmp[2/4]
 
 
 
-vec_tmp = vec_reductionhat & vec_2x_19
-2x vec_uuV2_0_rrV2_0 = vec_uuV2_0_rrV2_0 + vec_tmp
+reg128 vec_nineteen
+int64 nineteen
+nineteen = 19
+2x vec_nineteen = nineteen
+2x vec_Vp0_Vp1_Sp0_Sp1 += vec_small_tmp[0] unsigned* vec_nineteen[0/4]
 
-vec_tmp = vec_reductionhat & vec_2x_2p15
-2x vec_uuV10_0_rrV10_0 = vec_uuV10_0_rrV10_0 - vec_tmp
 
 
 
-# Carry Propagation
-2x vec_carry = vec_uuV2_0_rrV2_0 unsigned>> 30
-vec_uuV2_0_rrV2_0 &= vec_2x_2p30m1
-2x vec_uuV3_0_rrV3_0 += vec_carry
 
-2x vec_carry = vec_uuV3_0_rrV3_0 unsigned>> 30
-vec_uuV3_0_rrV3_0 &= vec_2x_2p30m1
-2x vec_uuV4_0_rrV4_0 += vec_carry
+# Reduction P once
 
-2x vec_carry = vec_uuV4_0_rrV4_0 unsigned>> 30
-vec_uuV4_0_rrV4_0 &= vec_2x_2p30m1
-2x vec_uuV5_0_rrV5_0 += vec_carry
+vec_small_tmp = vec_nineteen
 
-2x vec_carry = vec_uuV5_0_rrV5_0 unsigned>> 30
-vec_uuV5_0_rrV5_0 &= vec_2x_2p30m1
-2x vec_uuV6_0_rrV6_0 += vec_carry
+reg128 vec_4x_2p30a2p31
+reg128 vec_2x_2p30a2p31
+reg128 vec_2x_2p62a2p63
+reg128 vec_reduction_hat
+4x vec_4x_2p30a2p31 = 192 << 24
+2x vec_2x_2p30a2p31 = vec_4x_2p30a2p31 unsigned>> 32
+2x vec_2x_2p62a2p63 = vec_2x_2p30a2p31 << 32
 
-2x vec_carry = vec_uuV6_0_rrV6_0 unsigned>> 30
-vec_uuV6_0_rrV6_0 &= vec_2x_2p30m1
-2x vec_uuV7_0_rrV7_0 += vec_carry
+2x vec_small_tmp += vec_Vp0_Vp1_Sp0_Sp1 
+vec_small_tmp = vec_small_tmp & vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
 
-2x vec_carry = vec_uuV7_0_rrV7_0 unsigned>> 30
-vec_uuV7_0_rrV7_0 &= vec_2x_2p30m1
-2x vec_uuV8_0_rrV8_0 += vec_carry
+2x vec_small_tmp += vec_Vp0_Vp1_Sp0_Sp1 
+vec_small_tmp = vec_small_tmp & vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
 
-2x vec_carry = vec_uuV8_0_rrV8_0 unsigned>> 30
-vec_uuV8_0_rrV8_0 &= vec_2x_2p30m1
-2x vec_uuV9_0_rrV9_0 += vec_carry
 
-2x vec_carry = vec_uuV9_0_rrV9_0 unsigned>> 30
-vec_uuV9_0_rrV9_0 &= vec_2x_2p30m1
-2x vec_uuV10_0_rrV10_0 += vec_carry
+2x vec_small_tmp += vec_Vp2_Vp3_Sp2_Sp3 
+vec_small_tmp = vec_small_tmp & vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
 
- # vec_uuV[2:11]_0_rrV[2:11] += vec_uuhat_rrhat & (P-A) 
+2x vec_small_tmp += vec_Vp2_Vp3_Sp2_Sp3 
+vec_small_tmp = vec_small_tmp & vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
 
-vec_tmp = vec_uuhat_rrhat & vec_2x_2p30m19
-2x vec_uuV2_0_rrV2_0 += vec_tmp
 
-reg128 vec_V0_0_S0_0
+2x vec_small_tmp += vec_Vp4_Vp5_Sp4_Sp5
+vec_small_tmp = vec_small_tmp & vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
 
-vec_tmp = vec_uuhat_rrhat & vec_V0_V1_S0_S1
+2x vec_small_tmp += vec_Vp4_Vp5_Sp4_Sp5
+vec_small_tmp = vec_small_tmp & vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
 
+
+2x vec_small_tmp += vec_Vp6_Vp7_Sp6_Sp7
+vec_small_tmp = vec_small_tmp & vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
+
+2x vec_small_tmp += vec_Vp6_Vp7_Sp6_Sp7
+vec_small_tmp = vec_small_tmp & vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
+
+
+2x vec_small_tmp += vec_Vp8_Vp9_Sp8_Sp9
+2x vec_small_tmp = vec_2x_2p15m1 - vec_small_tmp
+2x vec_reduction_hat = vec_small_tmp >> 63
+
+# minus reduction_hat & P
+#   add Vp0, Sp0 by 19
+#   sub Vp0, Sp0 by 2^15
+
+int64 number
+reg128 vec_number
+number = 19
+2x vec_number = number
+vec_number &= vec_reduction_hat
+
+2x vec_Vp0_Vp1_Sp0_Sp1 += vec_number
+
+number = 32768
+2x vec_number = number
+vec_number &= vec_reduction_hat
+
+2x vec_Vp8_Vp9_Sp8_Sp9 -= vec_number
+
+
+
+# Unsigned Carry Propagation
+
+vec_small_tmp = vec_Vp0_Vp1_Sp0_Sp1 & vec_2x_2p30a2p31
+vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 & ~vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
+2x vec_Vp0_Vp1_Sp0_Sp1 += vec_small_tmp
+
+vec_small_tmp = vec_Vp0_Vp1_Sp0_Sp1 & vec_2x_2p62a2p63
+vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 & ~vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
+2x vec_Vp2_Vp3_Sp2_Sp3 += vec_small_tmp
+
+
+vec_small_tmp = vec_Vp2_Vp3_Sp2_Sp3 & vec_2x_2p30a2p31
+vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 & ~vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
+2x vec_Vp2_Vp3_Sp2_Sp3 += vec_small_tmp
+
+vec_small_tmp = vec_Vp2_Vp3_Sp2_Sp3 & vec_2x_2p62a2p63
+vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 & ~vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
+2x vec_Vp4_Vp5_Sp4_Sp5 += vec_small_tmp
+
+
+vec_small_tmp = vec_Vp4_Vp5_Sp4_Sp5 & vec_2x_2p30a2p31
+vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 & ~vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
+2x vec_Vp4_Vp5_Sp4_Sp5 += vec_small_tmp
+
+vec_small_tmp = vec_Vp4_Vp5_Sp4_Sp5 & vec_2x_2p62a2p63
+vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 & ~vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
+2x vec_Vp6_Vp7_Sp6_Sp7 += vec_small_tmp
+
+
+vec_small_tmp = vec_Vp6_Vp7_Sp6_Sp7 & vec_2x_2p30a2p31
+vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 & ~vec_2x_2p30a2p31
+2x vec_small_tmp <<= 2
+2x vec_Vp6_Vp7_Sp6_Sp7 += vec_small_tmp
+
+vec_small_tmp = vec_Vp6_Vp7_Sp6_Sp7 & vec_2x_2p62a2p63
+vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 & ~vec_2x_2p62a2p63
+2x vec_small_tmp unsigned>>= 62
+2x vec_Vp8_Vp9_Sp8_Sp9 += vec_small_tmp
+
+
+
+# Store the result
+
+reg128 vec_Vp0_Vp1_Vp2_Vp3
+reg128 vec_Sp0_Sp1_Sp2_Sp3
+2x vec_Vp0_Vp1_Vp2_Vp3 zip= vec_Vp0_Vp1_Sp0_Sp1[0/2] vec_Vp2_Vp3_Sp2_Sp3[0/2]
+2x vec_Sp0_Sp1_Sp2_Sp3 zip= vec_Vp0_Vp1_Sp0_Sp1[1/2] vec_Vp2_Vp3_Sp2_Sp3[1/2]
+
+reg128 vec_Vp4_Vp5_Vp6_Vp7
+reg128 vec_Sp4_Sp5_Sp6_Sp7
+2x vec_Vp4_Vp5_Vp6_Vp7 zip= vec_Vp4_Vp5_Sp4_Sp5[0/2] vec_Vp6_Vp7_Sp6_Sp7[0/2]
+2x vec_Sp4_Sp5_Sp6_Sp7 zip= vec_Vp4_Vp5_Sp4_Sp5[1/2] vec_Vp6_Vp7_Sp6_Sp7[1/2]
+
+mem256[pointerV] = vec_Vp0_Vp1_Vp2_Vp3, vec_Vp4_Vp5_Vp6_Vp7
+mem256[pointerS] = vec_Sp0_Sp1_Sp2_Sp3, vec_Sp4_Sp5_Sp6_Sp7
+# mem128[pointerV + 16] = vec_Vp4_Vp5_Vp6_Vp7
+# mem128[pointerS + 16] = vec_Sp4_Sp5_Sp6_Sp7
+
+int64 Vp8
+Vp8 = vec_Vp8_Vp9_Sp8_Sp9[0/2]
+mem32[pointerV+32] = Vp8
+int64 Sp8
+Sp8 = vec_Vp8_Vp9_Sp8_Sp9[1/2]
+mem32[pointerS+32] = Sp8
 
 pop2x8b calleesaved_v14, calleesaved_v15
 pop2x8b calleesaved_v12, calleesaved_v13
@@ -828,4 +766,25 @@ pop2xint64 calleesaved_x24, calleesaved_x25
 pop2xint64 calleesaved_x22, calleesaved_x23
 pop2xint64 calleesaved_x20, calleesaved_x21
 pop2xint64 calleesaved_x18, calleesaved_x19
+
+
+# Free out specified registers
+
+free vec_F0_F1_G0_G1
+free vec_F2_F3_G2_G3
+free vec_F4_F5_G4_G5
+free vec_F6_F7_G6_G7
+free vec_F8_F9_G8_G9
+
+free vec_V0_V1_S0_S1
+free vec_V2_V3_S2_S3
+free vec_V4_V5_S4_S5
+free vec_V6_V7_S6_S7
+free vec_V8_V9_S8_S9
+
+free vec_uu0_rr0_vv0_ss0
+free vec_uu1_rr1_vv1_ss1
+free vec_uuhat_rrhat_vvhat_sshat
+free vec_2x_2p30m1
+
 return

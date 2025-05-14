@@ -4,24 +4,24 @@
 #include "big30.h"
 
 
-// void print_u64x2(uint64x2_t vec) {
-//     uint64_t values[2];
-//     vst1q_u64(values, vec);  // 將 vec 的 4 個 lane 存到陣列
-//     printf("[ %llu, %llu ]\n",
-//            values[0], values[1]);
-// }
-// void print_u32x2(uint32x2_t vec) {
-//     uint32_t values[2];
-//     vst1_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
-//     printf("[ %u, %u ]\n",
-//            values[0], values[1]);
-// }
-// void print_vec_tmp(uint32x2_t *vec_tmp, int length) {
-//     for (int i = 0; i < length; i++) {
-//         printf("i = %d  ",i);
-//         print_u32x2(vec_tmp[i]);
-//     }
-// }
+void print_u64x2(uint64x2_t vec) {
+    uint64_t values[2];
+    vst1q_u64(values, vec);  // 將 vec 的 4 個 lane 存到陣列
+    printf("[ %llu, %llu ]\n",
+           values[0], values[1]);
+}
+void print_u32x2(uint32x2_t vec) {
+    uint32_t values[2];
+    vst1_u32(values, vec);  // 將 vec 的 4 個 lane 存到陣列
+    printf("[ %u, %u ]\n",
+           values[0], values[1]);
+}
+void print_vec_tmp(uint32x2_t *vec_tmp, int length) {
+    for (int i = 0; i < length; i++) {
+        printf("i = %d  ",i);
+        print_u32x2(vec_tmp[i]);
+    }
+}
 //
 // //
 // // void print_vec_tmp_as_mpz(uint32x2_t *vec_tmp) {
@@ -79,12 +79,36 @@ void update_VS_mont(
 
 
 
+    uint32x4_t vec_V0_V1_S0_S1 = {V->limb[0], V->limb[1], S->limb[0], S->limb[1]};
+    uint32x4_t vec_V2_V3_S2_S3 = {V->limb[2], V->limb[3], S->limb[2], S->limb[3]};
+    uint32x4_t vec_V4_V5_S4_S5 = {V->limb[4], V->limb[5], S->limb[4], S->limb[5]};
+    uint32x4_t vec_V6_V7_S6_S7 = {V->limb[6], V->limb[7], S->limb[6], S->limb[7]};
+    uint32x4_t vec_V8_V9_S8_S9 = {V->limb[8], 0, S->limb[8],0};
+    uint32x4_t vec_uu0_rr0_vv0_ss0 = {(*u) & ((1ULL << 30)-1), (*r) & ((1ULL << 30)-1), (*v) & ((1ULL << 30)-1), (*s) & ((1ULL << 30)-1) };
+    uint32x4_t vec_uu1_rr1_vv1_ss1 = {((*u) >> 30) & ((1ULL << 30)-1), ((*r) >> 30) & ((1ULL << 30)-1), ((*v) >> 30) & ((1ULL << 30)-1), ((*s) >> 30) & ((1ULL << 30)-1)};
+    uint32x4_t vec_uuhat_rrhat_vvhat_sshat = {(*u) >> 63, (*r) >> 63, (*v) >> 63, (*s) >> 63};
+
+  
+
+
+
+
+    
+    uint32x4_t vec_uuV0_uuV1_rrV0_rrV1;
+    uint32x4_t vec_uuV2_uuV3_rrV2_rrV3;
+    uint32x4_t vec_uuV4_uuV5_rrV4_rrV5;
+    uint32x4_t vec_uuV6_uuV7_rrV6_rrV7;
+    uint32x4_t vec_uuV8_uuV9_rrV8_rrV9;
+    uint32x4_t vec_uuV10_uuV11_rrV10_rrV11;
+
+
     uint32x2_t vec_V[9];
     for (int i = 0; i < 9; i++)
     {
         vec_V[i] =  vdup_n_u32(V->limb[i]);
     }
 
+    // Step []: vec_uuV_rrV[0..10] = initialize to zero
     uint32x2_t vec_uuV_rrV[11] = {0}; 
     for (int i = 0; i < 11; i++) {
         vec_uuV_rrV[i] = vdup_n_u32(0);
@@ -92,9 +116,10 @@ void update_VS_mont(
 
 
 
+    // Step [2]: Decompose inputs (u, r) into limb forms
     
 
-    // Step [1]: tmp += u0 * V
+    // Step [3]: tmp += u0 * V
     vec_prod = vdupq_n_u64(0);
     for (int i = 0; i < 9; i++){
         vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u0_r0 );
@@ -104,7 +129,7 @@ void update_VS_mont(
     vec_uuV_rrV[9] = vadd_u32(vec_uuV_rrV[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
     
-    // Step [2]: l0 = tmp[0] * M mod 2^30
+    // Step [4]: l0 = tmp[0] * M mod 2^30
     //            and tmp += l0 * P
     uint32x2_t vec_l0 = vmul_u32(vec_uuV_rrV[0], vec_M);
     vec_l0 = vand_u32(vec_l0 ,vec_u32_2p30m1);
@@ -131,9 +156,16 @@ void update_VS_mont(
     vec_uuV_rrV[9] = vadd_u32(vec_uuV_rrV[9], vmovn_u64( vandq_u64(vec_prod, vec_2p30m1)));
 
 
+    // Step [5]: carry propogation
+    // vec_carry = vdup_n_u32(0);
+    // for (int i = 0; i < 9; i++){
+    //     vec_carry = vshr_n_u32(vec_uuV_rrV[i], 30);
+    //     vec_uuV_rrV[i] = vand_u32(vec_uuV_rrV[i], vec_u32_2p30m1);
+    //     vec_uuV_rrV[i+1] = vadd_u32(vec_uuV_rrV[i+1], vec_carry);
+    // }
 
     
-    // Step [3]: tmp += u1 * V 
+    // Step [7]: tmp += u1 * V 
     vec_prod = vdupq_n_u64(0);
     for (int i = 0; i < 9; i++){
         vec_prod = vmlal_u32(vec_prod, vec_V[i], vec_u1_r1 );
@@ -145,7 +177,7 @@ void update_VS_mont(
 
 
 
-    // Step [4]: carry propogation
+    // Step [8]: carry propogation
     vec_carry = vdup_n_u32(0);
     for (int i = -1; i < 9; i++){
         // carry = tmp[i] >> 30;
