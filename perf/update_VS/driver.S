@@ -2,10 +2,10 @@
 .extern update_VS_mont
 
 _start:
-    ldr     x3, =1000      // ⇦ 改這行：載入迴圈次數
+    ldr     x20, =1000000      // ⇦ 改這行：載入迴圈次數
 loop:
     bl      update_VS_mont
-    subs    x3, x3, #1
+    subs    x20, x20, #1
     b.ne    loop
 
     // exit(0)
