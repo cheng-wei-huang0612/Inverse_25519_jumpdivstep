@@ -52,12 +52,13 @@ static void print_percentiles(const char *txt, uint64_t cyc[NTESTS])
 extern const int16_t zetas_layer12345[];
 extern const int16_t zetas_layer67[];
 // void ntt_asm(int16_t *, const int16_t *, const int16_t *);
-
+extern void update_VS_mont(big30_t *V, big30_t *S,
+                                const int64_t *uuvvrrss);
 
 static int bench(void)
 {
-  fe25519 a = {0};
-  uint256_t b = {0};
+  big30_t V, S;
+  int64_t uuvvrrss[4] = {0, 0, 0, 0};
   int i, j;
   uint64_t t0, t1;
   uint64_t cycles[NTESTS];
@@ -66,13 +67,13 @@ static int bench(void)
   {
     for (j = 0; j < NWARMUP; j++)
     {
-      fe25519_intmul_invert(&a, &a);
+      update_VS_mont(&V, &S, uuvvrrss);
     }
 
     t0 = get_cyclecounter();
     for (j = 0; j < NITERATIONS; j++)
     {
-      fe25519_intmul_invert(&a, &a);
+      update_VS_mont(&V, &S, uuvvrrss);
     }
     t1 = get_cyclecounter();
     cycles[i] = t1 - t0;
@@ -88,34 +89,6 @@ static int bench(void)
 
   print_percentiles("intmul_invert", cycles);
 
-
-  printf("\n\n\n\n");
-
-  for (i = 0; i < NTESTS; i++)
-  {
-    for (j = 0; j < NWARMUP; j++)
-    {
-      cpt_inv(&b, &b);
-    }
-
-    t0 = get_cyclecounter();
-    for (j = 0; j < NITERATIONS; j++)
-    {
-      cpt_inv(&b, &b);
-    }
-    t1 = get_cyclecounter();
-    cycles[i] = t1 - t0;
-  }
-
-  qsort(cycles, NTESTS, sizeof(uint64_t), cmp_uint64_t);
-
-  print_median("safegcd", cycles);
-
-  printf("\n");
-
-  print_percentile_legend();
-
-  print_percentiles("safegcd", cycles);
 
   return 0;
 }

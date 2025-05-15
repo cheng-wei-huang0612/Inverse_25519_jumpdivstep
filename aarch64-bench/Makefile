@@ -2,7 +2,7 @@
 .PHONY: all clean
 
 # ==== 目標 ====
-BIN     := bench bench_divstepx20
+BIN     := bench bench_divstepx20 bench_update_VS_mont
 
 # ==== Compiler / Linker ====
 CC ?= gcc
@@ -11,6 +11,7 @@ LD := $(CC)
 # ==== 檔案分類 ====
 BENCH_SRC          := bench.c
 BENCH_DIVSTEP_SRC  := bench_divstepx20.c
+BENCH_UPDATE_VS_MONT_SRC  := bench_update_VS_mont.c
 
 COMMON_SRC := \
   hal/hal.c \
@@ -26,7 +27,7 @@ COMMON_SRC := \
   ../src/j_loop_final/j_loop_final.S \
   ../src/final_adjustment/final_adjustment.S \
   ../src/update_FG/update_FG.S \
-  ../src/update_VS/update_VS_mont_neon.c
+  ../src/update_VS/update_VS_mont.S
 
 # ==== 把 .c / .S 各自換成 .o ====
 OBJ_COMMON         := \
@@ -35,6 +36,7 @@ OBJ_COMMON         := \
 
 OBJ_BENCH          := $(patsubst %.c,%.o,$(BENCH_SRC))
 OBJ_BENCH_DIVSTEP  := $(patsubst %.c,%.o,$(BENCH_DIVSTEP_SRC))
+OBJ_BENCH_UPDATE_VS_MONT   := $(patsubst %.c,%.o,$(BENCH_UPDATE_VS_MONT_SRC))
 # ==== 編譯旗標 ====
 CFLAGS := -Wall -Wextra -Werror -Wshadow -Wpointer-arith \
           -Wredundant-decls -Wno-long-long -Wno-unknown-pragmas \
@@ -63,6 +65,10 @@ bench: $(OBJ_COMMON) $(OBJ_BENCH)
 bench_divstepx20: $(OBJ_COMMON) $(OBJ_BENCH_DIVSTEP)
 	$(LD) $^ -o $@
 
+# bench_update_VS_mont
+bench_update_VS_mont: $(OBJ_COMMON) $(OBJ_BENCH_UPDATE_VS_MONT)
+	$(LD) $^ -o $@
+
 # ==== 通用規則 ====
 # .c → .o
 %.o: %.c
@@ -77,75 +83,6 @@ bench_divstepx20: $(OBJ_COMMON) $(OBJ_BENCH_DIVSTEP)
 
 # ==== 清理 ====
 clean:
-	$(RM) -f $(BIN) $(OBJ_COMMON) $(OBJ_BENCH) $(OBJ_BENCH_DIVSTEP) *.d
+	$(RM) -f $(BIN) $(OBJ_COMMON) $(OBJ_BENCH) \
+	       $(OBJ_BENCH_DIVSTEP) $(OBJ_BENCH_UPDATE_VS_MONT) *.d
 
-
-
-
-
-# # SPDX-License-Identifier: Apache-2.0
-#
-# .PHONY: clean
-#
-# TARGET = bench bench_divstepx20
-# CC  ?= gcc
-# LD  := $(CC)
-#
-# SOURCES = hal/hal.c \
-# 					bench.c \
-# 					bench_divstepx20.c \
-# 					../external/sole_inv25519/fe25519_intmul_invert.c \
-# 					../external/sole_inv25519/fe25519_intmul.S \
-# 					../external/sole_inv25519/fe25519_intmul_nsquare.S \
-# 					../external/sole_inv25519/fe25519_intmul_square.S \
-# 					../src/cpt_inv_func4.c \
-# 					../src/divstepx20/divstepx20.S \
-# 					../src/big30_and_uint256/big30_from_uint256.S \
-# 					../src/big30_and_uint256/uint256_from_big30.S \
-# 					../src/j_loop/j_loop.S \
-# 					../src/j_loop_final/j_loop_final.S \
-# 					../src/final_adjustment/final_adjustment.S \
-# 					../src/update_FG/update_FG.S \
-# 					../src/update_VS/update_VS_mont_neon.c \
-#
-# 	# -Wmissing-prototypes \
-#
-# CFLAGS := \
-# 	-Wall \
-# 	-Wextra \
-# 	-Werror=unused-result \
-# 	-Wpedantic \
-# 	-Werror \
-# 	-Wshadow \
-# 	-Wpointer-arith \
-# 	-Wredundant-decls \
-# 	-Wno-long-long \
-# 	-Wno-unknown-pragmas \
-# 	-Wno-unused-command-line-argument \
-# 	-O3 \
-# 	-fomit-frame-pointer \
-# 	-std=c99 \
-# 	-pedantic \
-# 	-Ihal \
-# 	-MMD \
-# 	$(CFLAGS)
-#
-# ifeq ($(CYCLES),PMU)
-# 	CFLAGS += -DPMU_CYCLES
-# endif
-#
-# ifeq ($(CYCLES),PERF)
-# 	CFLAGS += -DPERF_CYCLES
-# endif
-#
-# ifeq ($(CYCLES),MAC)
-# 	CFLAGS += -DMAC_CYCLES
-# endif
-#
-# all: $(TARGET)
-#
-# $(TARGET): $(SOURCES)
-# 	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET)
-#
-# clean:
-# 	-$(RM) -rf $(TARGET) *.d

@@ -429,6 +429,10 @@ vec_buf &= vec_uuhat_rrhat
 4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_buf
 
 
+4x vec_buf = vec_4x_2p30m1 - vec_V2_V3_V2_V3
+vec_buf &= vec_uuhat_rrhat
+4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+
                 ##### begin{carry/borrow propagation}
                 4x vec_carry = vec_Vp0_Vp1_Sp0_Sp1 >> 30
                 2x vec_carry <<= 32
@@ -439,9 +443,10 @@ vec_buf &= vec_uuhat_rrhat
                 ##### end{carry/borrow propagation}
 
 
-4x vec_buf = vec_4x_2p30m1 - vec_V2_V3_V2_V3
+
+4x vec_buf = vec_4x_2p30m1 - vec_V4_V5_V4_V5
 vec_buf &= vec_uuhat_rrhat
-4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
 
 
                 ##### begin{carry/borrow propagation}
@@ -457,10 +462,9 @@ vec_buf &= vec_uuhat_rrhat
 
 
 
-
-4x vec_buf = vec_4x_2p30m1 - vec_V4_V5_V4_V5
+4x vec_buf = vec_4x_2p30m1 - vec_V6_V7_V6_V7
 vec_buf &= vec_uuhat_rrhat
-4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
 
 
 
@@ -477,9 +481,12 @@ vec_buf &= vec_uuhat_rrhat
 
 
 
-4x vec_buf = vec_4x_2p30m1 - vec_V6_V7_V6_V7
+
+
+
+4x vec_buf = vec_2x_2p15m1 - vec_V8_V9_V8_V9
 vec_buf &= vec_uuhat_rrhat
-4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
+4x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
 
 
 
@@ -494,12 +501,6 @@ vec_buf &= vec_uuhat_rrhat
                 vec_Vp6_Vp7_Sp6_Sp7 &= vec_4x_2p30m1
                 ##### end{carry/borrow propagation}
 
-
-
-
-4x vec_buf = vec_2x_2p15m1 - vec_V8_V9_V8_V9
-vec_buf &= vec_uuhat_rrhat
-4x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
 
 
 
