@@ -293,8 +293,7 @@ vec_Vp0_Vp1_Sp0_Sp1 = vec_prod & vec_2x_2p30m1
 
 vec_buf = vec_prod & vec_2x_2p30m1
 2x vec_prod >>= 30
-2x vec_buf <<= 32
-vec_Vp0_Vp1_Sp0_Sp1 |= vec_buf
+2x vec_Vp0_Vp1_Sp0_Sp1 |= vec_buf << 32
 
 
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V4_V5_S4_S5[0/4]
@@ -324,8 +323,7 @@ vec_Vp2_Vp3_Sp2_Sp3 = vec_prod & vec_2x_2p30m1
 
 vec_buf = vec_prod & vec_2x_2p30m1
 2x vec_prod >>= 30
-2x vec_buf <<= 32
-vec_Vp2_Vp3_Sp2_Sp3 |= vec_buf
+2x vec_Vp2_Vp3_Sp2_Sp3 |= vec_buf << 32
 
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V6_V7_S6_S7[0/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V6_V7_S6_S7[2/4]
@@ -354,8 +352,7 @@ vec_Vp4_Vp5_Sp4_Sp5 = vec_prod & vec_2x_2p30m1
 
 vec_buf = vec_prod & vec_2x_2p30m1
 2x vec_prod >>= 30
-2x vec_buf <<= 32
-vec_Vp4_Vp5_Sp4_Sp5 |= vec_buf
+2x vec_Vp4_Vp5_Sp4_Sp5 |= vec_buf << 32
 
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] unsigned* vec_V8_V9_S8_S9[0/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] unsigned* vec_V8_V9_S8_S9[2/4]
@@ -381,8 +378,7 @@ vec_Vp6_Vp7_Sp6_Sp7 = vec_prod & vec_2x_2p30m1
 
 vec_buf = vec_prod & vec_2x_2p30m1
 2x vec_prod >>= 30
-2x vec_buf <<= 32
-vec_Vp6_Vp7_Sp6_Sp7 |= vec_buf
+2x vec_Vp6_Vp7_Sp6_Sp7 |= vec_buf << 32
 
 vec_Vp8_Vp9_Sp8_Sp9 = vec_prod & vec_2x_2p30m1
 
