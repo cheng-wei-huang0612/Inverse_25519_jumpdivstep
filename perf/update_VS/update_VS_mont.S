@@ -262,20 +262,20 @@ dup v13.2d, x3
 
 # qhasm: int64 V8V9
 
-@ # qhasm: V0V1, V2V3 = mem128[pointerV]
-@ # asm 1: ldp >V0V1=int64#5, >V2V3=int64#6, [<pointerV=int64#1]
-@ # asm 2: ldp >V0V1=x4, >V2V3=x5, [<pointerV=x0]
-@ # ldp x4, x5, [x0]
+# # qhasm: V0V1, V2V3 = mem128[pointerV]
+# # asm 1: ldp >V0V1=int64#5, >V2V3=int64#6, [<pointerV=int64#1]
+# # asm 2: ldp >V0V1=x4, >V2V3=x5, [<pointerV=x0]
+# # ldp x4, x5, [x0]
 
-@ # qhasm: V4V5, V6V7 = mem128[pointerV+16]
-@ # asm 1: ldp >V4V5=int64#7, >V6V7=int64#8, [<pointerV=int64#1, #16]
-@ # asm 2: ldp >V4V5=x6, >V6V7=x7, [<pointerV=x0, #16]
-@ ldp x6, x7, [x0, #16]
+# # qhasm: V4V5, V6V7 = mem128[pointerV+16]
+# # asm 1: ldp >V4V5=int64#7, >V6V7=int64#8, [<pointerV=int64#1, #16]
+# # asm 2: ldp >V4V5=x6, >V6V7=x7, [<pointerV=x0, #16]
+# ldp x6, x7, [x0, #16]
 
-@ # qhasm: V8V9 = mem32[pointerV+32]
-@ # asm 1: ldr >V8V9=int64#9%wregname, [<pointerV=int64#1, #32]
-@ # asm 2: ldr >V8V9=w8, [<pointerV=x0, #32]
-@ ldr w8, [x0, #32]
+# # qhasm: V8V9 = mem32[pointerV+32]
+# # asm 1: ldr >V8V9=int64#9%wregname, [<pointerV=int64#1, #32]
+# # asm 2: ldr >V8V9=w8, [<pointerV=x0, #32]
+# ldr w8, [x0, #32]
 
 # qhasm: int64 S0S1
 
@@ -287,20 +287,20 @@ dup v13.2d, x3
 
 # qhasm: int64 S8S9
 
-@ # qhasm: S0S1, S2S3 = mem128[pointerS]
-@ # asm 1: ldp >S0S1=int64#10, >S2S3=int64#11, [<pointerS=int64#2]
-@ # asm 2: ldp >S0S1=x9, >S2S3=x10, [<pointerS=x1]
-@ ldp x9, x10, [x1]
+# # qhasm: S0S1, S2S3 = mem128[pointerS]
+# # asm 1: ldp >S0S1=int64#10, >S2S3=int64#11, [<pointerS=int64#2]
+# # asm 2: ldp >S0S1=x9, >S2S3=x10, [<pointerS=x1]
+# ldp x9, x10, [x1]
 
-@ # qhasm: S4S5, S6S7 = mem128[pointerS+16]
-@ # asm 1: ldp >S4S5=int64#12, >S6S7=int64#13, [<pointerS=int64#2, #16]
-@ # asm 2: ldp >S4S5=x11, >S6S7=x12, [<pointerS=x1, #16]
-@ ldp x11, x12, [x1, #16]
+# # qhasm: S4S5, S6S7 = mem128[pointerS+16]
+# # asm 1: ldp >S4S5=int64#12, >S6S7=int64#13, [<pointerS=int64#2, #16]
+# # asm 2: ldp >S4S5=x11, >S6S7=x12, [<pointerS=x1, #16]
+# ldp x11, x12, [x1, #16]
 
-@ # qhasm: S8S9 = mem32[pointerS+32]
-@ # asm 1: ldr >S8S9=int64#14%wregname, [<pointerS=int64#2, #32]
-@ # asm 2: ldr >S8S9=w13, [<pointerS=x1, #32]
-@ ldr w13, [x1, #32]
+# # qhasm: S8S9 = mem32[pointerS+32]
+# # asm 1: ldr >S8S9=int64#14%wregname, [<pointerS=int64#2, #32]
+# # asm 2: ldr >S8S9=w13, [<pointerS=x1, #32]
+# ldr w13, [x1, #32]
 
 # qhasm: vec_V0_V1_S0_S1[0/2] = V0V1 
 # asm 1: ins <vec_V0_V1_S0_S1=reg128#6.d[0], <V0V1=int64#5
@@ -360,15 +360,15 @@ ins v9.d[1], x13
 
 # qhasm: int64 ss
 
-@ # qhasm: uu, vv = mem128[pointeruuvvrrss + 0]
-@ # asm 1: ldp >uu=int64#5, >vv=int64#6, [<pointeruuvvrrss=int64#3, #0]
-@ # asm 2: ldp >uu=x4, >vv=x5, [<pointeruuvvrrss=x2, #0]
-@ ldp x4, x5, [x2, #0]
+# # qhasm: uu, vv = mem128[pointeruuvvrrss + 0]
+# # asm 1: ldp >uu=int64#5, >vv=int64#6, [<pointeruuvvrrss=int64#3, #0]
+# # asm 2: ldp >uu=x4, >vv=x5, [<pointeruuvvrrss=x2, #0]
+# ldp x4, x5, [x2, #0]
 
-@ # qhasm: rr, ss = mem128[pointeruuvvrrss + 16]
-@ # asm 1: ldp >rr=int64#3, >ss=int64#7, [<pointeruuvvrrss=int64#3, #16]
-@ # asm 2: ldp >rr=x2, >ss=x6, [<pointeruuvvrrss=x2, #16]
-@ ldp x2, x6, [x2, #16]
+# # qhasm: rr, ss = mem128[pointeruuvvrrss + 16]
+# # asm 1: ldp >rr=int64#3, >ss=int64#7, [<pointeruuvvrrss=int64#3, #16]
+# # asm 2: ldp >rr=x2, >ss=x6, [<pointeruuvvrrss=x2, #16]
+# ldp x2, x6, [x2, #16]
 
 # qhasm: int64 uu0
 
