@@ -38,12 +38,12 @@ extern void update_VS_mont    (big30_t *V, big30_t *S,
 
 
 
-#define STR_V  "1"
-#define STR_S  "1"
-#define STR_U  "1"
-#define STR_VV "-1"
-#define STR_R  "1"
-#define STR_SS "-1"
+#define STR_V  "1766847064778384329583297500742918515827483896875618958121606201292619776"
+#define STR_S  "1766847064778384329583297500742918515827483896875618958121606201292619777"
+#define STR_U  "-1"
+#define STR_VV "0"
+#define STR_R  "0"
+#define STR_SS "0"
 
 /* ------------------------------------------------------------- */
 

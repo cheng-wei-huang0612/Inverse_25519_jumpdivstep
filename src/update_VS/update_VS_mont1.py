@@ -1,5 +1,8 @@
-enter update_VS_mont
+code = ""
 
+
+code += "enter update_VS_mont\n"
+code += """
 int64 pointerV
 int64 pointerS
 int64 pointeruuvvrrss
@@ -7,22 +10,27 @@ int64 pointeruuvvrrss
 input pointerV
 input pointerS
 input pointeruuvvrrss
+"""
 
+code += """
 # Calling Convention
 
-caller calleesaved_v8
-caller calleesaved_v9
-caller calleesaved_v10
-caller calleesaved_v11
-caller calleesaved_v12
-caller calleesaved_v13
-caller calleesaved_v14
-caller calleesaved_v15
-push2x8b calleesaved_v8, calleesaved_v9
-push2x8b calleesaved_v10, calleesaved_v11
-push2x8b calleesaved_v12, calleesaved_v13
-push2x8b calleesaved_v14, calleesaved_v15
+"""
 
+
+# for i in range(18, 29+1,1):
+#     code += f"caller calleesaved_x{i}\n"
+for i in range(8, 15+1,1):
+    code += f"caller calleesaved_v{i}\n"
+
+# for i in range(18, 29+1,2):
+#     code += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
+
+for i in range(8, 15+1,2):
+    code += f"push2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
+
+
+code += """
 # register initialization and specification
 
 
@@ -64,51 +72,42 @@ int64 2p30m1
 2p30m1 = 1073741823
 2x vec_2x_2p30m1 = 2p30m1
 
+"""
 
+code += """
 
 # V, S Data Layout Configuration
 
-int64 V0V1
-int64 V2V3
-int64 V4V5
-int64 V6V7
-int64 V8V9
+"""
 
-V0V1, V2V3 = mem128[pointerV]
-V4V5, V6V7 = mem128[pointerV+16]
-V8V9 = mem32[pointerV+32]
-
-int64 S0S1
-int64 S2S3
-int64 S4S5
-int64 S6S7
-int64 S8S9
-
-S0S1, S2S3 = mem128[pointerS]
-S4S5, S6S7 = mem128[pointerS+16]
-S8S9 = mem32[pointerS+32]
+for symbol in ["V","S"]:
+    
+    code += f"int64 {symbol}0{symbol}1\n"
+    code += f"int64 {symbol}2{symbol}3\n"
+    code += f"int64 {symbol}4{symbol}5\n"
+    code += f"int64 {symbol}6{symbol}7\n"
+    code += f"int64 {symbol}8{symbol}9\n"
+    code += "\n"
+    code += f"{symbol}0{symbol}1, {symbol}2{symbol}3 = mem128[pointer{symbol}]\n"
+    code += f"{symbol}4{symbol}5, {symbol}6{symbol}7 = mem128[pointer{symbol}+16]\n"
+    code += f"{symbol}8{symbol}9 = mem32[pointer{symbol}+32]\n"
+    code += "\n"
 
 
-vec_V0_V1_S0_S1[0/2] = V0V1 
-vec_V0_V1_S0_S1[1/2] = S0S1 
 
 
-vec_V2_V3_S2_S3[0/2] = V2V3 
-vec_V2_V3_S2_S3[1/2] = S2S3 
+for i in range(0,10,2):
+    # code += f"reg128 vec_V{i}_V{i+1}_S{i}_S{i+1} \n"
+    code += "\n"
+    code += f"vec_V{i}_V{i+1}_S{i}_S{i+1}[0/2] = V{i}V{i+1} \n"
+    code += f"vec_V{i}_V{i+1}_S{i}_S{i+1}[1/2] = S{i}S{i+1} \n"
+    code += "\n"
 
 
-vec_V4_V5_S4_S5[0/2] = V4V5 
-vec_V4_V5_S4_S5[1/2] = S4S5 
 
 
-vec_V6_V7_S6_S7[0/2] = V6V7 
-vec_V6_V7_S6_S7[1/2] = S6S7 
 
-
-vec_V8_V9_S8_S9[0/2] = V8V9 
-vec_V8_V9_S8_S9[1/2] = S8S9 
-
-
+code += """
 
 # At this function, the uu, vv, rr, ss are already in neon registers
 
@@ -120,39 +119,32 @@ int64 ss
 uu, vv = mem128[pointeruuvvrrss + 0]
 rr, ss = mem128[pointeruuvvrrss + 16]
 
-int64 uu0
-int64 uu1
-uu0 = uu & ((1 << 30)-1)
-uu1 = (uu >> 30) & ((1 << 32)-1)
-
-int64 vv0
-int64 vv1
-vv0 = vv & ((1 << 30)-1)
-vv1 = (vv >> 30) & ((1 << 32)-1)
-
-int64 rr0
-int64 rr1
-rr0 = rr & ((1 << 30)-1)
-rr1 = (rr >> 30) & ((1 << 32)-1)
-
-int64 ss0
-int64 ss1
-ss0 = ss & ((1 << 30)-1)
-ss1 = (ss >> 30) & ((1 << 32)-1)
+"""
 
 
-vec_uu0_rr0_vv0_ss0[0/4] = uu0
-vec_uu0_rr0_vv0_ss0[1/4] = rr0
-vec_uu0_rr0_vv0_ss0[2/4] = vv0
-vec_uu0_rr0_vv0_ss0[3/4] = ss0
+# Data initialization, we do not need optimization
+# make vec_F0_F1_G0_G1, ... 
+
+for symbol in ["uu","vv","rr","ss"]:
+
+    code += f"int64 {symbol}0\n"
+    code += f"int64 {symbol}1\n"
+    code += f"{symbol}0 = {symbol} & ((1 << 30)-1)\n"
+    code += f"{symbol}1 = ({symbol} >> 30) & ((1 << 32)-1)\n"
+    code += "\n"
 
 
-vec_uu1_rr1_vv1_ss1[0/4] = uu1
-vec_uu1_rr1_vv1_ss1[1/4] = rr1
-vec_uu1_rr1_vv1_ss1[2/4] = vv1
-vec_uu1_rr1_vv1_ss1[3/4] = ss1
+for j in range(2):
+    # code += f"reg128 vec_uu{j}_rr{j}_vv{j}_ss{j}\n"
+    code += "\n"
+    for (i, symbol) in enumerate(["uu", "rr", "vv", "ss"]):
+        code += f"vec_uu{j}_rr{j}_vv{j}_ss{j}[{i}/4] = {symbol}{j}\n"
+
+    code += "\n"
 
 
+
+code += """
 
 
 
@@ -164,7 +156,11 @@ reg128 front_vec_4x_2p30a2p31
 vec_uu1_rr1_vv1_ss1 &= ~front_vec_4x_2p30a2p31
 
 
+"""
 
+
+
+code += """
 
 # Now we do vec_uuV[0:9]_0_rrV[0:9]_0 = [uu0 * V, rr0 * V]
 
@@ -200,7 +196,11 @@ reg128 vec_M
 
 
 
+"""
 
+
+
+code += """
 reg128 vec_l0_V
 reg128 vec_l0_S
 reg128 vec_l1_V
@@ -383,7 +383,13 @@ vec_buf = vec_prod & vec_2x_2p30m1
 vec_Vp8_Vp9_Sp8_Sp9 = vec_prod & vec_2x_2p30m1
 
 
-  
+"""
+
+
+
+# Branchless minus [uuhat, rrhat] & V
+#                  [vvhat, sshat] & S
+code += """  
 # Branchless minus [uuhat, rrhat] & P-V
 #                  [vvhat, sshat] & P-S
 # Interleaved with carry/borrow propagation
@@ -501,7 +507,16 @@ vec_buf &= vec_uuhat_rrhat
                 2x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_carry
                 ##### end{carry/borrow propagation}
 
+"""
 
+
+
+
+
+
+
+
+code +="""
 
 4x vec_vvhat_sshat = vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[3/4] vec_uuhat_rrhat_vvhat_sshat[3/4]
 
@@ -538,7 +553,10 @@ vec_buf &= vec_vvhat_sshat
 4x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
 
 
+"""
 
+
+code += """
 # Borrow and carry propagation
 
 
@@ -588,7 +606,12 @@ vec_Vp4_Vp5_Sp4_Sp5 &= vec_4x_2p30m1
 vec_Vp6_Vp7_Sp6_Sp7 &= vec_4x_2p30m1
 
 2x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
+"""
 
+
+
+# Roughly Reduction P 
+code += """
 # Roughly Reduction P
 
 reg128 vec_small_tmp
@@ -607,7 +630,11 @@ nineteen = 19
 
 
 
+"""
 
+# Reduction P once
+
+code += """
 
 # Reduction P once
 
@@ -680,7 +707,12 @@ vec_number &= vec_reduction_hat
 2x vec_Vp8_Vp9_Sp8_Sp9 -= vec_number
 
 
+"""
 
+
+
+# Unsigned Carry Propagation
+code += """
 # Unsigned Carry Propagation
 
 vec_small_tmp = vec_Vp0_Vp1_Sp0_Sp1 & vec_2x_2p30a2p31
@@ -727,7 +759,20 @@ vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 & ~vec_2x_2p62a2p63
 2x vec_Vp8_Vp9_Sp8_Sp9 += vec_small_tmp
 
 
+"""
 
+
+
+
+
+
+
+
+
+
+
+# Store the result
+code += """
 # Store the result
 
 reg128 vec_Vp0_Vp1_Vp2_Vp3
@@ -752,11 +797,25 @@ int64 Sp8
 Sp8 = vec_Vp8_Vp9_Sp8_Sp9[1/2]
 mem32[pointerS+32] = Sp8
 
-pop2x8b calleesaved_v14, calleesaved_v15
-pop2x8b calleesaved_v12, calleesaved_v13
-pop2x8b calleesaved_v10, calleesaved_v11
-pop2x8b calleesaved_v8, calleesaved_v9
+"""
 
+
+
+
+
+
+
+
+
+for i in range(15-1, 8-1,-2):
+    code += f"pop2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
+# for i in range(29, 18-1,-2):
+#     code += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
+
+
+
+
+code += """
 
 # Free out specified registers
 
@@ -777,4 +836,15 @@ free vec_uu1_rr1_vv1_ss1
 free vec_uuhat_rrhat_vvhat_sshat
 free vec_2x_2p30m1
 
-return
+"""
+
+code += "return"
+
+# ----
+with open("update_VS_mont.q", "w") as f:
+    f.write(code)
+
+import os
+os.system("qhasm-aarch64-align < update_VS_mont.q > update_VS_mont.S")
+
+

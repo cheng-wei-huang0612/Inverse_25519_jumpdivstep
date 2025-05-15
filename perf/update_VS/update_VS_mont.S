@@ -94,30 +94,6 @@ update_VS_mont:
 
 # qhasm: input pointeruuvvrrss
 
-# qhasm: caller calleesaved_x18
-
-# qhasm: caller calleesaved_x19
-
-# qhasm: caller calleesaved_x20
-
-# qhasm: caller calleesaved_x21
-
-# qhasm: caller calleesaved_x22
-
-# qhasm: caller calleesaved_x23
-
-# qhasm: caller calleesaved_x24
-
-# qhasm: caller calleesaved_x25
-
-# qhasm: caller calleesaved_x26
-
-# qhasm: caller calleesaved_x27
-
-# qhasm: caller calleesaved_x28
-
-# qhasm: caller calleesaved_x29
-
 # qhasm: caller calleesaved_v8
 
 # qhasm: caller calleesaved_v9
@@ -133,8 +109,6 @@ update_VS_mont:
 # qhasm: caller calleesaved_v14
 
 # qhasm: caller calleesaved_v15
-
-
 
 # qhasm: push2x8b calleesaved_v8, calleesaved_v9
 # asm 1: stp <calleesaved_v8=reg128#9%dregname,<calleesaved_v9=reg128#10%dregname,[sp,#-16]!
@@ -235,6 +209,7 @@ dup v13.2d, x3
 # qhasm: int64 V8V9
 
 
+
 # qhasm: vec_V0_V1_S0_S1[0/2] = V0V1 
 # asm 1: ins <vec_V0_V1_S0_S1=reg128#6.d[0], <V0V1=int64#5
 # asm 2: ins <vec_V0_V1_S0_S1=v5.d[0], <V0V1=x4
@@ -292,6 +267,7 @@ ins v9.d[1], x13
 # qhasm: int64 rr
 
 # qhasm: int64 ss
+
 
 
 # qhasm: int64 uu0
@@ -977,6 +953,8 @@ sli v14.2d,v16.2d,#32
 # asm 2: and >vec_Vp8_Vp9_Sp8_Sp9=v16.16b, <vec_prod=v17.16b, <vec_2x_2p30m1=v13.16b
 and v16.16b, v17.16b, v13.16b
 
+# qhasm: reg128 vec_carry
+
 # qhasm: reg128 vec_uuhat_rrhat
 
 # qhasm: reg128 vec_vvhat_sshat
@@ -1029,6 +1007,26 @@ sub v22.2d,v21.2d,v22.2d
 # asm 2: zip1 >vec_V0_V1_V0_V1=v23.2d, <vec_V0_V1_S0_S1=v5.2d, <vec_V0_V1_S0_S1=v5.2d
 zip1 v23.2d, v5.2d, v5.2d
 
+# qhasm: 2x vec_V2_V3_V2_V3 zip= vec_V2_V3_S2_S3[0/2] vec_V2_V3_S2_S3[0/2]
+# asm 1: zip1 >vec_V2_V3_V2_V3=reg128#25.2d, <vec_V2_V3_S2_S3=reg128#7.2d, <vec_V2_V3_S2_S3=reg128#7.2d
+# asm 2: zip1 >vec_V2_V3_V2_V3=v24.2d, <vec_V2_V3_S2_S3=v6.2d, <vec_V2_V3_S2_S3=v6.2d
+zip1 v24.2d, v6.2d, v6.2d
+
+# qhasm: 2x vec_V4_V5_V4_V5 zip= vec_V4_V5_S4_S5[0/2] vec_V4_V5_S4_S5[0/2]
+# asm 1: zip1 >vec_V4_V5_V4_V5=reg128#26.2d, <vec_V4_V5_S4_S5=reg128#8.2d, <vec_V4_V5_S4_S5=reg128#8.2d
+# asm 2: zip1 >vec_V4_V5_V4_V5=v25.2d, <vec_V4_V5_S4_S5=v7.2d, <vec_V4_V5_S4_S5=v7.2d
+zip1 v25.2d, v7.2d, v7.2d
+
+# qhasm: 2x vec_V6_V7_V6_V7 zip= vec_V6_V7_S6_S7[0/2] vec_V6_V7_S6_S7[0/2]
+# asm 1: zip1 >vec_V6_V7_V6_V7=reg128#27.2d, <vec_V6_V7_S6_S7=reg128#9.2d, <vec_V6_V7_S6_S7=reg128#9.2d
+# asm 2: zip1 >vec_V6_V7_V6_V7=v26.2d, <vec_V6_V7_S6_S7=v8.2d, <vec_V6_V7_S6_S7=v8.2d
+zip1 v26.2d, v8.2d, v8.2d
+
+# qhasm: 2x vec_V8_V9_V8_V9 zip= vec_V8_V9_S8_S9[0/2] vec_V8_V9_S8_S9[0/2]
+# asm 1: zip1 >vec_V8_V9_V8_V9=reg128#28.2d, <vec_V8_V9_S8_S9=reg128#10.2d, <vec_V8_V9_S8_S9=reg128#10.2d
+# asm 2: zip1 >vec_V8_V9_V8_V9=v27.2d, <vec_V8_V9_S8_S9=v9.2d, <vec_V8_V9_S8_S9=v9.2d
+zip1 v27.2d, v9.2d, v9.2d
+
 # qhasm: 4x vec_buf = vec_P0_P1_P0_P1 - vec_V0_V1_V0_V1
 # asm 1: sub >vec_buf=reg128#24.4s,<vec_P0_P1_P0_P1=reg128#23.4s,<vec_V0_V1_V0_V1=reg128#24.4s
 # asm 2: sub >vec_buf=v23.4s,<vec_P0_P1_P0_P1=v22.4s,<vec_V0_V1_V0_V1=v23.4s
@@ -1044,225 +1042,205 @@ and v23.16b, v23.16b, v17.16b
 # asm 2: add >vec_Vp0_Vp1_Sp0_Sp1=v18.4s, <vec_Vp0_Vp1_Sp0_Sp1=v18.4s, <vec_buf=v23.4s
 add v18.4s, v18.4s, v23.4s
 
-# qhasm: 2x vec_V2_V3_V2_V3 zip= vec_V2_V3_S2_S3[0/2] vec_V2_V3_S2_S3[0/2]
-# asm 1: zip1 >vec_V2_V3_V2_V3=reg128#24.2d, <vec_V2_V3_S2_S3=reg128#7.2d, <vec_V2_V3_S2_S3=reg128#7.2d
-# asm 2: zip1 >vec_V2_V3_V2_V3=v23.2d, <vec_V2_V3_S2_S3=v6.2d, <vec_V2_V3_S2_S3=v6.2d
-zip1 v23.2d, v6.2d, v6.2d
-
-# qhasm: 4x vec_buf = vec_4x_2p30m1 - vec_V2_V3_V2_V3
-# asm 1: sub >vec_buf=reg128#24.4s,<vec_4x_2p30m1=reg128#22.4s,<vec_V2_V3_V2_V3=reg128#24.4s
-# asm 2: sub >vec_buf=v23.4s,<vec_4x_2p30m1=v21.4s,<vec_V2_V3_V2_V3=v23.4s
-sub v23.4s,v21.4s,v23.4s
-
-# qhasm: vec_buf &= vec_uuhat_rrhat
-# asm 1: and <vec_buf=reg128#24.16b, <vec_buf=reg128#24.16b, <vec_uuhat_rrhat=reg128#18.16b
-# asm 2: and <vec_buf=v23.16b, <vec_buf=v23.16b, <vec_uuhat_rrhat=v17.16b
-and v23.16b, v23.16b, v17.16b
-
-# qhasm: 4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
-# asm 1: add >vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_buf=reg128#24.4s
-# asm 2: add >vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_buf=v23.4s
-add v19.4s, v19.4s, v23.4s
-
-# qhasm: 2x vec_V4_V5_V4_V5 zip= vec_V4_V5_S4_S5[0/2] vec_V4_V5_S4_S5[0/2]
-# asm 1: zip1 >vec_V4_V5_V4_V5=reg128#24.2d, <vec_V4_V5_S4_S5=reg128#8.2d, <vec_V4_V5_S4_S5=reg128#8.2d
-# asm 2: zip1 >vec_V4_V5_V4_V5=v23.2d, <vec_V4_V5_S4_S5=v7.2d, <vec_V4_V5_S4_S5=v7.2d
-zip1 v23.2d, v7.2d, v7.2d
-
-# qhasm: 4x vec_buf = vec_4x_2p30m1 - vec_V4_V5_V4_V5
-# asm 1: sub >vec_buf=reg128#24.4s,<vec_4x_2p30m1=reg128#22.4s,<vec_V4_V5_V4_V5=reg128#24.4s
-# asm 2: sub >vec_buf=v23.4s,<vec_4x_2p30m1=v21.4s,<vec_V4_V5_V4_V5=v23.4s
-sub v23.4s,v21.4s,v23.4s
-
-# qhasm: vec_buf &= vec_uuhat_rrhat
-# asm 1: and <vec_buf=reg128#24.16b, <vec_buf=reg128#24.16b, <vec_uuhat_rrhat=reg128#18.16b
-# asm 2: and <vec_buf=v23.16b, <vec_buf=v23.16b, <vec_uuhat_rrhat=v17.16b
-and v23.16b, v23.16b, v17.16b
-
-# qhasm: 4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
-# asm 1: add >vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_buf=reg128#24.4s
-# asm 2: add >vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_buf=v23.4s
-add v20.4s, v20.4s, v23.4s
-
-# qhasm: 2x vec_V6_V7_V6_V7 zip= vec_V6_V7_S6_S7[0/2] vec_V6_V7_S6_S7[0/2]
-# asm 1: zip1 >vec_V6_V7_V6_V7=reg128#24.2d, <vec_V6_V7_S6_S7=reg128#9.2d, <vec_V6_V7_S6_S7=reg128#9.2d
-# asm 2: zip1 >vec_V6_V7_V6_V7=v23.2d, <vec_V6_V7_S6_S7=v8.2d, <vec_V6_V7_S6_S7=v8.2d
-zip1 v23.2d, v8.2d, v8.2d
-
-# qhasm: 4x vec_buf = vec_4x_2p30m1 - vec_V6_V7_V6_V7
-# asm 1: sub >vec_buf=reg128#24.4s,<vec_4x_2p30m1=reg128#22.4s,<vec_V6_V7_V6_V7=reg128#24.4s
-# asm 2: sub >vec_buf=v23.4s,<vec_4x_2p30m1=v21.4s,<vec_V6_V7_V6_V7=v23.4s
-sub v23.4s,v21.4s,v23.4s
-
-# qhasm: vec_buf &= vec_uuhat_rrhat
-# asm 1: and <vec_buf=reg128#24.16b, <vec_buf=reg128#24.16b, <vec_uuhat_rrhat=reg128#18.16b
-# asm 2: and <vec_buf=v23.16b, <vec_buf=v23.16b, <vec_uuhat_rrhat=v17.16b
-and v23.16b, v23.16b, v17.16b
-
-# qhasm: 4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
-# asm 1: add >vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_buf=reg128#24.4s
-# asm 2: add >vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_buf=v23.4s
-add v14.4s, v14.4s, v23.4s
-
-# qhasm: 2x vec_V8_V9_V8_V9 zip= vec_V8_V9_S8_S9[0/2] vec_V8_V9_S8_S9[0/2]
-# asm 1: zip1 >vec_V8_V9_V8_V9=reg128#24.2d, <vec_V8_V9_S8_S9=reg128#10.2d, <vec_V8_V9_S8_S9=reg128#10.2d
-# asm 2: zip1 >vec_V8_V9_V8_V9=v23.2d, <vec_V8_V9_S8_S9=v9.2d, <vec_V8_V9_S8_S9=v9.2d
-zip1 v23.2d, v9.2d, v9.2d
-
-# qhasm: 4x vec_buf = vec_2x_2p15m1 - vec_V8_V9_V8_V9
-# asm 1: sub >vec_buf=reg128#24.4s,<vec_2x_2p15m1=reg128#16.4s,<vec_V8_V9_V8_V9=reg128#24.4s
-# asm 2: sub >vec_buf=v23.4s,<vec_2x_2p15m1=v15.4s,<vec_V8_V9_V8_V9=v23.4s
-sub v23.4s,v15.4s,v23.4s
-
-# qhasm: vec_buf &= vec_uuhat_rrhat
-# asm 1: and <vec_buf=reg128#24.16b, <vec_buf=reg128#24.16b, <vec_uuhat_rrhat=reg128#18.16b
-# asm 2: and <vec_buf=v23.16b, <vec_buf=v23.16b, <vec_uuhat_rrhat=v17.16b
-and v23.16b, v23.16b, v17.16b
-
-# qhasm: 4x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
-# asm 1: add >vec_Vp8_Vp9_Sp8_Sp9=reg128#17.4s, <vec_Vp8_Vp9_Sp8_Sp9=reg128#17.4s, <vec_buf=reg128#24.4s
-# asm 2: add >vec_Vp8_Vp9_Sp8_Sp9=v16.4s, <vec_Vp8_Vp9_Sp8_Sp9=v16.4s, <vec_buf=v23.4s
-add v16.4s, v16.4s, v23.4s
-
-# qhasm: 4x vec_buf = vec_Vp0_Vp1_Sp0_Sp1 >> 30
-# asm 1: sshr <vec_buf=reg128#24.4s, <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.4s, #30
-# asm 2: sshr <vec_buf=v23.4s, <vec_Vp0_Vp1_Sp0_Sp1=v18.4s, #30
+# qhasm:                 4x vec_carry = vec_Vp0_Vp1_Sp0_Sp1 >> 30
+# asm 1: sshr <vec_carry=reg128#24.4s, <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.4s, #30
+# asm 2: sshr <vec_carry=v23.4s, <vec_Vp0_Vp1_Sp0_Sp1=v18.4s, #30
 sshr v23.4s, v18.4s, #30
 
-# qhasm: 2x vec_buf <<= 32
-# asm 1: shl >vec_buf=reg128#18.2d, <vec_buf=reg128#24.2d, #32
-# asm 2: shl >vec_buf=v17.2d, <vec_buf=v23.2d, #32
-shl v17.2d, v23.2d, #32
+# qhasm:                 2x vec_carry <<= 32
+# asm 1: shl >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: shl >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+shl v23.2d, v23.2d, #32
 
-# qhasm: 4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_buf
-# asm 1: add >vec_Vp0_Vp1_Sp0_Sp1=reg128#19.4s, <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.4s, <vec_buf=reg128#18.4s
-# asm 2: add >vec_Vp0_Vp1_Sp0_Sp1=v18.4s, <vec_Vp0_Vp1_Sp0_Sp1=v18.4s, <vec_buf=v17.4s
-add v18.4s, v18.4s, v17.4s
+# qhasm:                 4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_carry
+# asm 1: add >vec_Vp0_Vp1_Sp0_Sp1=reg128#19.4s, <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.4s, <vec_carry=reg128#24.4s
+# asm 2: add >vec_Vp0_Vp1_Sp0_Sp1=v18.4s, <vec_Vp0_Vp1_Sp0_Sp1=v18.4s, <vec_carry=v23.4s
+add v18.4s, v18.4s, v23.4s
 
-# qhasm: 2x vec_buf = vec_Vp0_Vp1_Sp0_Sp1 >> 30
-# asm 1: sshr <vec_buf=reg128#18.2d, <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.2d, #30
-# asm 2: sshr <vec_buf=v17.2d, <vec_Vp0_Vp1_Sp0_Sp1=v18.2d, #30
-sshr v17.2d, v18.2d, #30
+# qhasm:                 2x vec_carry = vec_Vp0_Vp1_Sp0_Sp1 >> 30
+# asm 1: sshr <vec_carry=reg128#24.2d, <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.2d, #30
+# asm 2: sshr <vec_carry=v23.2d, <vec_Vp0_Vp1_Sp0_Sp1=v18.2d, #30
+sshr v23.2d, v18.2d, #30
 
-# qhasm: 2x vec_buf unsigned>>= 32
-# asm 1: ushr >vec_buf=reg128#18.2d, <vec_buf=reg128#18.2d, #32
-# asm 2: ushr >vec_buf=v17.2d, <vec_buf=v17.2d, #32
-ushr v17.2d, v17.2d, #32
+# qhasm:                 2x vec_carry unsigned>>= 32
+# asm 1: ushr >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: ushr >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+ushr v23.2d, v23.2d, #32
 
-# qhasm: vec_Vp0_Vp1_Sp0_Sp1 &= vec_4x_2p30m1
+# qhasm:                 vec_Vp0_Vp1_Sp0_Sp1 &= vec_4x_2p30m1
 # asm 1: and <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.16b, <vec_Vp0_Vp1_Sp0_Sp1=reg128#19.16b, <vec_4x_2p30m1=reg128#22.16b
 # asm 2: and <vec_Vp0_Vp1_Sp0_Sp1=v18.16b, <vec_Vp0_Vp1_Sp0_Sp1=v18.16b, <vec_4x_2p30m1=v21.16b
 and v18.16b, v18.16b, v21.16b
 
-# qhasm: 2x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
-# asm 1: add >vec_Vp2_Vp3_Sp2_Sp3=reg128#20.2d, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.2d, <vec_buf=reg128#18.2d
-# asm 2: add >vec_Vp2_Vp3_Sp2_Sp3=v19.2d, <vec_Vp2_Vp3_Sp2_Sp3=v19.2d, <vec_buf=v17.2d
-add v19.2d, v19.2d, v17.2d
+# qhasm: 4x vec_buf = vec_4x_2p30m1 - vec_V2_V3_V2_V3
+# asm 1: sub >vec_buf=reg128#25.4s,<vec_4x_2p30m1=reg128#22.4s,<vec_V2_V3_V2_V3=reg128#25.4s
+# asm 2: sub >vec_buf=v24.4s,<vec_4x_2p30m1=v21.4s,<vec_V2_V3_V2_V3=v24.4s
+sub v24.4s,v21.4s,v24.4s
 
-# qhasm: 4x vec_buf = vec_Vp2_Vp3_Sp2_Sp3 >> 30
-# asm 1: sshr <vec_buf=reg128#18.4s, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, #30
-# asm 2: sshr <vec_buf=v17.4s, <vec_Vp2_Vp3_Sp2_Sp3=v19.4s, #30
-sshr v17.4s, v19.4s, #30
-
-# qhasm: 2x vec_buf <<= 32
-# asm 1: shl >vec_buf=reg128#18.2d, <vec_buf=reg128#18.2d, #32
-# asm 2: shl >vec_buf=v17.2d, <vec_buf=v17.2d, #32
-shl v17.2d, v17.2d, #32
+# qhasm: vec_buf &= vec_uuhat_rrhat
+# asm 1: and <vec_buf=reg128#25.16b, <vec_buf=reg128#25.16b, <vec_uuhat_rrhat=reg128#18.16b
+# asm 2: and <vec_buf=v24.16b, <vec_buf=v24.16b, <vec_uuhat_rrhat=v17.16b
+and v24.16b, v24.16b, v17.16b
 
 # qhasm: 4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
-# asm 1: add >vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_buf=reg128#18.4s
-# asm 2: add >vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_buf=v17.4s
-add v19.4s, v19.4s, v17.4s
+# asm 1: add >vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_buf=reg128#25.4s
+# asm 2: add >vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_buf=v24.4s
+add v19.4s, v19.4s, v24.4s
 
-# qhasm: 2x vec_buf = vec_Vp2_Vp3_Sp2_Sp3 >> 30
-# asm 1: sshr <vec_buf=reg128#18.2d, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.2d, #30
-# asm 2: sshr <vec_buf=v17.2d, <vec_Vp2_Vp3_Sp2_Sp3=v19.2d, #30
-sshr v17.2d, v19.2d, #30
+# qhasm:                 2x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_carry
+# asm 1: add >vec_Vp2_Vp3_Sp2_Sp3=reg128#20.2d, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.2d, <vec_carry=reg128#24.2d
+# asm 2: add >vec_Vp2_Vp3_Sp2_Sp3=v19.2d, <vec_Vp2_Vp3_Sp2_Sp3=v19.2d, <vec_carry=v23.2d
+add v19.2d, v19.2d, v23.2d
 
-# qhasm: 2x vec_buf unsigned>>= 32
-# asm 1: ushr >vec_buf=reg128#18.2d, <vec_buf=reg128#18.2d, #32
-# asm 2: ushr >vec_buf=v17.2d, <vec_buf=v17.2d, #32
-ushr v17.2d, v17.2d, #32
+# qhasm:                 4x vec_carry = vec_Vp2_Vp3_Sp2_Sp3 >> 30
+# asm 1: sshr <vec_carry=reg128#24.4s, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, #30
+# asm 2: sshr <vec_carry=v23.4s, <vec_Vp2_Vp3_Sp2_Sp3=v19.4s, #30
+sshr v23.4s, v19.4s, #30
 
-# qhasm: vec_Vp2_Vp3_Sp2_Sp3 &= vec_4x_2p30m1
+# qhasm:                 2x vec_carry <<= 32
+# asm 1: shl >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: shl >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+shl v23.2d, v23.2d, #32
+
+# qhasm:                 4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_carry
+# asm 1: add >vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.4s, <vec_carry=reg128#24.4s
+# asm 2: add >vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_Vp2_Vp3_Sp2_Sp3=v19.4s, <vec_carry=v23.4s
+add v19.4s, v19.4s, v23.4s
+
+# qhasm:                 2x vec_carry = vec_Vp2_Vp3_Sp2_Sp3 >> 30
+# asm 1: sshr <vec_carry=reg128#24.2d, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.2d, #30
+# asm 2: sshr <vec_carry=v23.2d, <vec_Vp2_Vp3_Sp2_Sp3=v19.2d, #30
+sshr v23.2d, v19.2d, #30
+
+# qhasm:                 2x vec_carry unsigned>>= 32
+# asm 1: ushr >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: ushr >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+ushr v23.2d, v23.2d, #32
+
+# qhasm:                 vec_Vp2_Vp3_Sp2_Sp3 &= vec_4x_2p30m1
 # asm 1: and <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.16b, <vec_Vp2_Vp3_Sp2_Sp3=reg128#20.16b, <vec_4x_2p30m1=reg128#22.16b
 # asm 2: and <vec_Vp2_Vp3_Sp2_Sp3=v19.16b, <vec_Vp2_Vp3_Sp2_Sp3=v19.16b, <vec_4x_2p30m1=v21.16b
 and v19.16b, v19.16b, v21.16b
 
-# qhasm: 2x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
-# asm 1: add >vec_Vp4_Vp5_Sp4_Sp5=reg128#21.2d, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.2d, <vec_buf=reg128#18.2d
-# asm 2: add >vec_Vp4_Vp5_Sp4_Sp5=v20.2d, <vec_Vp4_Vp5_Sp4_Sp5=v20.2d, <vec_buf=v17.2d
-add v20.2d, v20.2d, v17.2d
+# qhasm: 4x vec_buf = vec_4x_2p30m1 - vec_V4_V5_V4_V5
+# asm 1: sub >vec_buf=reg128#25.4s,<vec_4x_2p30m1=reg128#22.4s,<vec_V4_V5_V4_V5=reg128#26.4s
+# asm 2: sub >vec_buf=v24.4s,<vec_4x_2p30m1=v21.4s,<vec_V4_V5_V4_V5=v25.4s
+sub v24.4s,v21.4s,v25.4s
 
-# qhasm: 4x vec_buf = vec_Vp4_Vp5_Sp4_Sp5 >> 30
-# asm 1: sshr <vec_buf=reg128#18.4s, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, #30
-# asm 2: sshr <vec_buf=v17.4s, <vec_Vp4_Vp5_Sp4_Sp5=v20.4s, #30
-sshr v17.4s, v20.4s, #30
-
-# qhasm: 2x vec_buf <<= 32
-# asm 1: shl >vec_buf=reg128#18.2d, <vec_buf=reg128#18.2d, #32
-# asm 2: shl >vec_buf=v17.2d, <vec_buf=v17.2d, #32
-shl v17.2d, v17.2d, #32
+# qhasm: vec_buf &= vec_uuhat_rrhat
+# asm 1: and <vec_buf=reg128#25.16b, <vec_buf=reg128#25.16b, <vec_uuhat_rrhat=reg128#18.16b
+# asm 2: and <vec_buf=v24.16b, <vec_buf=v24.16b, <vec_uuhat_rrhat=v17.16b
+and v24.16b, v24.16b, v17.16b
 
 # qhasm: 4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
-# asm 1: add >vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_buf=reg128#18.4s
-# asm 2: add >vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_buf=v17.4s
-add v20.4s, v20.4s, v17.4s
+# asm 1: add >vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_buf=reg128#25.4s
+# asm 2: add >vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_buf=v24.4s
+add v20.4s, v20.4s, v24.4s
 
-# qhasm: 2x vec_buf = vec_Vp4_Vp5_Sp4_Sp5 >> 30
-# asm 1: sshr <vec_buf=reg128#18.2d, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.2d, #30
-# asm 2: sshr <vec_buf=v17.2d, <vec_Vp4_Vp5_Sp4_Sp5=v20.2d, #30
-sshr v17.2d, v20.2d, #30
+# qhasm:                 2x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_carry
+# asm 1: add >vec_Vp4_Vp5_Sp4_Sp5=reg128#21.2d, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.2d, <vec_carry=reg128#24.2d
+# asm 2: add >vec_Vp4_Vp5_Sp4_Sp5=v20.2d, <vec_Vp4_Vp5_Sp4_Sp5=v20.2d, <vec_carry=v23.2d
+add v20.2d, v20.2d, v23.2d
 
-# qhasm: 2x vec_buf unsigned>>= 32
-# asm 1: ushr >vec_buf=reg128#18.2d, <vec_buf=reg128#18.2d, #32
-# asm 2: ushr >vec_buf=v17.2d, <vec_buf=v17.2d, #32
-ushr v17.2d, v17.2d, #32
+# qhasm:                 4x vec_carry = vec_Vp4_Vp5_Sp4_Sp5 >> 30
+# asm 1: sshr <vec_carry=reg128#24.4s, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, #30
+# asm 2: sshr <vec_carry=v23.4s, <vec_Vp4_Vp5_Sp4_Sp5=v20.4s, #30
+sshr v23.4s, v20.4s, #30
 
-# qhasm: vec_Vp4_Vp5_Sp4_Sp5 &= vec_4x_2p30m1
+# qhasm:                 2x vec_carry <<= 32
+# asm 1: shl >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: shl >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+shl v23.2d, v23.2d, #32
+
+# qhasm:                 4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_carry
+# asm 1: add >vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.4s, <vec_carry=reg128#24.4s
+# asm 2: add >vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_Vp4_Vp5_Sp4_Sp5=v20.4s, <vec_carry=v23.4s
+add v20.4s, v20.4s, v23.4s
+
+# qhasm:                 2x vec_carry = vec_Vp4_Vp5_Sp4_Sp5 >> 30
+# asm 1: sshr <vec_carry=reg128#24.2d, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.2d, #30
+# asm 2: sshr <vec_carry=v23.2d, <vec_Vp4_Vp5_Sp4_Sp5=v20.2d, #30
+sshr v23.2d, v20.2d, #30
+
+# qhasm:                 2x vec_carry unsigned>>= 32
+# asm 1: ushr >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: ushr >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+ushr v23.2d, v23.2d, #32
+
+# qhasm:                 vec_Vp4_Vp5_Sp4_Sp5 &= vec_4x_2p30m1
 # asm 1: and <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.16b, <vec_Vp4_Vp5_Sp4_Sp5=reg128#21.16b, <vec_4x_2p30m1=reg128#22.16b
 # asm 2: and <vec_Vp4_Vp5_Sp4_Sp5=v20.16b, <vec_Vp4_Vp5_Sp4_Sp5=v20.16b, <vec_4x_2p30m1=v21.16b
 and v20.16b, v20.16b, v21.16b
 
-# qhasm: 2x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
-# asm 1: add >vec_Vp6_Vp7_Sp6_Sp7=reg128#15.2d, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.2d, <vec_buf=reg128#18.2d
-# asm 2: add >vec_Vp6_Vp7_Sp6_Sp7=v14.2d, <vec_Vp6_Vp7_Sp6_Sp7=v14.2d, <vec_buf=v17.2d
-add v14.2d, v14.2d, v17.2d
+# qhasm: 4x vec_buf = vec_4x_2p30m1 - vec_V6_V7_V6_V7
+# asm 1: sub >vec_buf=reg128#25.4s,<vec_4x_2p30m1=reg128#22.4s,<vec_V6_V7_V6_V7=reg128#27.4s
+# asm 2: sub >vec_buf=v24.4s,<vec_4x_2p30m1=v21.4s,<vec_V6_V7_V6_V7=v26.4s
+sub v24.4s,v21.4s,v26.4s
 
-# qhasm: 4x vec_buf = vec_Vp6_Vp7_Sp6_Sp7 >> 30
-# asm 1: sshr <vec_buf=reg128#18.4s, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, #30
-# asm 2: sshr <vec_buf=v17.4s, <vec_Vp6_Vp7_Sp6_Sp7=v14.4s, #30
-sshr v17.4s, v14.4s, #30
-
-# qhasm: 2x vec_buf <<= 32
-# asm 1: shl >vec_buf=reg128#18.2d, <vec_buf=reg128#18.2d, #32
-# asm 2: shl >vec_buf=v17.2d, <vec_buf=v17.2d, #32
-shl v17.2d, v17.2d, #32
+# qhasm: vec_buf &= vec_uuhat_rrhat
+# asm 1: and <vec_buf=reg128#25.16b, <vec_buf=reg128#25.16b, <vec_uuhat_rrhat=reg128#18.16b
+# asm 2: and <vec_buf=v24.16b, <vec_buf=v24.16b, <vec_uuhat_rrhat=v17.16b
+and v24.16b, v24.16b, v17.16b
 
 # qhasm: 4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
-# asm 1: add >vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_buf=reg128#18.4s
-# asm 2: add >vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_buf=v17.4s
-add v14.4s, v14.4s, v17.4s
+# asm 1: add >vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_buf=reg128#25.4s
+# asm 2: add >vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_buf=v24.4s
+add v14.4s, v14.4s, v24.4s
 
-# qhasm: 2x vec_buf = vec_Vp6_Vp7_Sp6_Sp7 >> 30
-# asm 1: sshr <vec_buf=reg128#18.2d, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.2d, #30
-# asm 2: sshr <vec_buf=v17.2d, <vec_Vp6_Vp7_Sp6_Sp7=v14.2d, #30
-sshr v17.2d, v14.2d, #30
+# qhasm:                 2x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_carry
+# asm 1: add >vec_Vp6_Vp7_Sp6_Sp7=reg128#15.2d, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.2d, <vec_carry=reg128#24.2d
+# asm 2: add >vec_Vp6_Vp7_Sp6_Sp7=v14.2d, <vec_Vp6_Vp7_Sp6_Sp7=v14.2d, <vec_carry=v23.2d
+add v14.2d, v14.2d, v23.2d
 
-# qhasm: 2x vec_buf unsigned>>= 32
-# asm 1: ushr >vec_buf=reg128#18.2d, <vec_buf=reg128#18.2d, #32
-# asm 2: ushr >vec_buf=v17.2d, <vec_buf=v17.2d, #32
-ushr v17.2d, v17.2d, #32
+# qhasm:                 4x vec_carry = vec_Vp6_Vp7_Sp6_Sp7 >> 30
+# asm 1: sshr <vec_carry=reg128#24.4s, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, #30
+# asm 2: sshr <vec_carry=v23.4s, <vec_Vp6_Vp7_Sp6_Sp7=v14.4s, #30
+sshr v23.4s, v14.4s, #30
 
-# qhasm: vec_Vp6_Vp7_Sp6_Sp7 &= vec_4x_2p30m1
+# qhasm:                 2x vec_carry <<= 32
+# asm 1: shl >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: shl >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+shl v23.2d, v23.2d, #32
+
+# qhasm:                 4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_carry
+# asm 1: add >vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.4s, <vec_carry=reg128#24.4s
+# asm 2: add >vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_Vp6_Vp7_Sp6_Sp7=v14.4s, <vec_carry=v23.4s
+add v14.4s, v14.4s, v23.4s
+
+# qhasm:                 2x vec_carry = vec_Vp6_Vp7_Sp6_Sp7 >> 30
+# asm 1: sshr <vec_carry=reg128#24.2d, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.2d, #30
+# asm 2: sshr <vec_carry=v23.2d, <vec_Vp6_Vp7_Sp6_Sp7=v14.2d, #30
+sshr v23.2d, v14.2d, #30
+
+# qhasm:                 2x vec_carry unsigned>>= 32
+# asm 1: ushr >vec_carry=reg128#24.2d, <vec_carry=reg128#24.2d, #32
+# asm 2: ushr >vec_carry=v23.2d, <vec_carry=v23.2d, #32
+ushr v23.2d, v23.2d, #32
+
+# qhasm:                 vec_Vp6_Vp7_Sp6_Sp7 &= vec_4x_2p30m1
 # asm 1: and <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.16b, <vec_Vp6_Vp7_Sp6_Sp7=reg128#15.16b, <vec_4x_2p30m1=reg128#22.16b
 # asm 2: and <vec_Vp6_Vp7_Sp6_Sp7=v14.16b, <vec_Vp6_Vp7_Sp6_Sp7=v14.16b, <vec_4x_2p30m1=v21.16b
 and v14.16b, v14.16b, v21.16b
 
-# qhasm: 2x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
-# asm 1: add >vec_Vp8_Vp9_Sp8_Sp9=reg128#17.2d, <vec_Vp8_Vp9_Sp8_Sp9=reg128#17.2d, <vec_buf=reg128#18.2d
-# asm 2: add >vec_Vp8_Vp9_Sp8_Sp9=v16.2d, <vec_Vp8_Vp9_Sp8_Sp9=v16.2d, <vec_buf=v17.2d
-add v16.2d, v16.2d, v17.2d
+# qhasm: 4x vec_buf = vec_2x_2p15m1 - vec_V8_V9_V8_V9
+# asm 1: sub >vec_buf=reg128#25.4s,<vec_2x_2p15m1=reg128#16.4s,<vec_V8_V9_V8_V9=reg128#28.4s
+# asm 2: sub >vec_buf=v24.4s,<vec_2x_2p15m1=v15.4s,<vec_V8_V9_V8_V9=v27.4s
+sub v24.4s,v15.4s,v27.4s
+
+# qhasm: vec_buf &= vec_uuhat_rrhat
+# asm 1: and <vec_buf=reg128#25.16b, <vec_buf=reg128#25.16b, <vec_uuhat_rrhat=reg128#18.16b
+# asm 2: and <vec_buf=v24.16b, <vec_buf=v24.16b, <vec_uuhat_rrhat=v17.16b
+and v24.16b, v24.16b, v17.16b
+
+# qhasm: 4x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_buf
+# asm 1: add >vec_Vp8_Vp9_Sp8_Sp9=reg128#17.4s, <vec_Vp8_Vp9_Sp8_Sp9=reg128#17.4s, <vec_buf=reg128#25.4s
+# asm 2: add >vec_Vp8_Vp9_Sp8_Sp9=v16.4s, <vec_Vp8_Vp9_Sp8_Sp9=v16.4s, <vec_buf=v24.4s
+add v16.4s, v16.4s, v24.4s
+
+# qhasm:                 2x vec_Vp8_Vp9_Sp8_Sp9 = vec_Vp8_Vp9_Sp8_Sp9 + vec_carry
+# asm 1: add >vec_Vp8_Vp9_Sp8_Sp9=reg128#17.2d, <vec_Vp8_Vp9_Sp8_Sp9=reg128#17.2d, <vec_carry=reg128#24.2d
+# asm 2: add >vec_Vp8_Vp9_Sp8_Sp9=v16.2d, <vec_Vp8_Vp9_Sp8_Sp9=v16.2d, <vec_carry=v23.2d
+add v16.2d, v16.2d, v23.2d
 
 # qhasm: 4x vec_vvhat_sshat = vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[2/4] vec_uuhat_rrhat_vvhat_sshat[3/4] vec_uuhat_rrhat_vvhat_sshat[3/4]
 # asm 1: zip2 >vec_vvhat_sshat=reg128#18.4s, <vec_uuhat_rrhat_vvhat_sshat=reg128#13.4s, <vec_uuhat_rrhat_vvhat_sshat=reg128#13.4s
@@ -1927,6 +1905,7 @@ add v16.2d, v16.2d, v15.2d
 # qhasm: reg128 vec_Sp0_Sp1_Sp2_Sp3
 
 
+
 # qhasm: pop2x8b calleesaved_v14, calleesaved_v15
 # asm 1: ldp >calleesaved_v14=reg128#15%dregname,>calleesaved_v15=reg128#16%dregname,[sp],#16
 # asm 2: ldp >calleesaved_v14=d14,>calleesaved_v15=d15,[sp],#16
@@ -1946,7 +1925,6 @@ ldp d18,d19,[sp],#16
 # asm 1: ldp >calleesaved_v8=reg128#21%dregname,>calleesaved_v9=reg128#22%dregname,[sp],#16
 # asm 2: ldp >calleesaved_v8=d20,>calleesaved_v9=d21,[sp],#16
 ldp d20,d21,[sp],#16
-
 
 # qhasm: free vec_F0_F1_G0_G1
 
