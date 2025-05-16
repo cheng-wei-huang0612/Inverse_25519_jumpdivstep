@@ -19,7 +19,8 @@ COMMON_SRC := \
   ../external/sole_inv25519/fe25519_intmul.S \
   ../external/sole_inv25519/fe25519_intmul_nsquare.S \
   ../external/sole_inv25519/fe25519_intmul_square.S \
-  ../src/cpt_inv_func4.c \
+  ../src/cpt_inv_func5.c \
+  ../src/i_loop/i_loop.S \
   ../src/divstepx20/divstepx20.S \
   ../src/big30_and_uint256/big30_from_uint256.S \
   ../src/big30_and_uint256/uint256_from_big30.S \
