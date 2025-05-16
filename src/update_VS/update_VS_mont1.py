@@ -395,6 +395,7 @@ code += """
 # Interleaved with carry/borrow propagation
 
 reg128 vec_carry
+reg128 vec_buf2
 reg128 vec_uuhat_rrhat
 reg128 vec_vvhat_sshat
 4x vec_uuhat_rrhat = vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[0/4] vec_uuhat_rrhat_vvhat_sshat[1/4] vec_uuhat_rrhat_vvhat_sshat[1/4]
@@ -425,13 +426,13 @@ eighteen = 18
 
 
 4x vec_buf = vec_P0_P1_P0_P1 - vec_V0_V1_V0_V1
+4x vec_buf2 = vec_4x_2p30m1 - vec_V2_V3_V2_V3
+
 vec_buf &= vec_uuhat_rrhat
+vec_buf2 &= vec_uuhat_rrhat
+
 4x vec_Vp0_Vp1_Sp0_Sp1 = vec_Vp0_Vp1_Sp0_Sp1 + vec_buf
-
-
-4x vec_buf = vec_4x_2p30m1 - vec_V2_V3_V2_V3
-vec_buf &= vec_uuhat_rrhat
-4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf
+4x vec_Vp2_Vp3_Sp2_Sp3 = vec_Vp2_Vp3_Sp2_Sp3 + vec_buf2
 
                 ##### begin{carry/borrow propagation}
                 4x vec_carry = vec_Vp0_Vp1_Sp0_Sp1 >> 30
@@ -445,8 +446,14 @@ vec_buf &= vec_uuhat_rrhat
 
 
 4x vec_buf = vec_4x_2p30m1 - vec_V4_V5_V4_V5
+4x vec_buf2 = vec_4x_2p30m1 - vec_V6_V7_V6_V7
 vec_buf &= vec_uuhat_rrhat
+vec_buf2 &= vec_uuhat_rrhat
+
+
 4x vec_Vp4_Vp5_Sp4_Sp5 = vec_Vp4_Vp5_Sp4_Sp5 + vec_buf
+4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf2
+
 
 
                 ##### begin{carry/borrow propagation}
@@ -462,9 +469,6 @@ vec_buf &= vec_uuhat_rrhat
 
 
 
-4x vec_buf = vec_4x_2p30m1 - vec_V6_V7_V6_V7
-vec_buf &= vec_uuhat_rrhat
-4x vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 + vec_buf
 
 
 
@@ -760,6 +764,13 @@ vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 & ~vec_2x_2p62a2p63
 2x vec_Vp8_Vp9_Sp8_Sp9 += vec_small_tmp
 
 
+vec_V0_V1_S0_S1 = vec_Vp0_Vp1_Sp0_Sp1
+vec_V2_V3_S2_S3 = vec_Vp2_Vp3_Sp2_Sp3
+vec_V4_V5_S4_S5 = vec_Vp4_Vp5_Sp4_Sp5
+vec_V6_V7_S6_S7 = vec_Vp6_Vp7_Sp6_Sp7
+vec_V8_V9_S8_S9 = vec_Vp8_Vp9_Sp8_Sp9
+
+
 """
 
 
@@ -776,26 +787,37 @@ vec_Vp6_Vp7_Sp6_Sp7 = vec_Vp6_Vp7_Sp6_Sp7 & ~vec_2x_2p62a2p63
 code += """
 # Store the result
 
-reg128 vec_Vp0_Vp1_Vp2_Vp3
-reg128 vec_Sp0_Sp1_Sp2_Sp3
-2x vec_Vp0_Vp1_Vp2_Vp3 zip= vec_Vp0_Vp1_Sp0_Sp1[0/2] vec_Vp2_Vp3_Sp2_Sp3[0/2]
-2x vec_Sp0_Sp1_Sp2_Sp3 zip= vec_Vp0_Vp1_Sp0_Sp1[1/2] vec_Vp2_Vp3_Sp2_Sp3[1/2]
 
-reg128 vec_Vp4_Vp5_Vp6_Vp7
-reg128 vec_Sp4_Sp5_Sp6_Sp7
-2x vec_Vp4_Vp5_Vp6_Vp7 zip= vec_Vp4_Vp5_Sp4_Sp5[0/2] vec_Vp6_Vp7_Sp6_Sp7[0/2]
-2x vec_Sp4_Sp5_Sp6_Sp7 zip= vec_Vp4_Vp5_Sp4_Sp5[1/2] vec_Vp6_Vp7_Sp6_Sp7[1/2]
 
-mem256[pointerV] = vec_Vp0_Vp1_Vp2_Vp3, vec_Vp4_Vp5_Vp6_Vp7
-mem256[pointerS] = vec_Sp0_Sp1_Sp2_Sp3, vec_Sp4_Sp5_Sp6_Sp7
-# mem128[pointerV + 16] = vec_Vp4_Vp5_Vp6_Vp7
-# mem128[pointerS + 16] = vec_Sp4_Sp5_Sp6_Sp7
+
+
+reg128 store_back_vec_V0_V1_V2_V3
+reg128 store_back_vec_V4_V5_V6_V7
+reg128 store_back_vec_S0_S1_S2_S3
+reg128 store_back_vec_S4_S5_S6_S7
+reg128 store_back_vec_V8_V9_S8_S9
+
+
+
+
+2x store_back_vec_V0_V1_V2_V3 zip= vec_V0_V1_S0_S1[0/2] vec_V2_V3_S2_S3[0/2]
+2x store_back_vec_S0_S1_S2_S3 zip= vec_V0_V1_S0_S1[1/2] vec_V2_V3_S2_S3[1/2]
+
+2x store_back_vec_V4_V5_V6_V7 zip= vec_V4_V5_S4_S5[0/2] vec_V6_V7_S6_S7[0/2]
+2x store_back_vec_S4_S5_S6_S7 zip= vec_V4_V5_S4_S5[1/2] vec_V6_V7_S6_S7[1/2]
+
+store_back_vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9
+
+mem256[pointerV] = store_back_vec_V0_V1_V2_V3, store_back_vec_V4_V5_V6_V7
+mem256[pointerS] = store_back_vec_S0_S1_S2_S3, store_back_vec_S4_S5_S6_S7
+
+
 
 int64 Vp8
-Vp8 = vec_Vp8_Vp9_Sp8_Sp9[0/2]
+Vp8 = store_back_vec_V8_V9_S8_S9[0/2]
 mem32[pointerV+32] = Vp8
 int64 Sp8
-Sp8 = vec_Vp8_Vp9_Sp8_Sp9[1/2]
+Sp8 = store_back_vec_V8_V9_S8_S9[1/2]
 mem32[pointerS+32] = Sp8
 
 """

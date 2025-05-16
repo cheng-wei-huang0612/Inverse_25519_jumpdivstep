@@ -63,8 +63,8 @@ int64 z
 int64 minus_one
 int64 delta_new
 
-minus_one = 1
-minus_one = -minus_one
+
+
 
 
 int64 h
