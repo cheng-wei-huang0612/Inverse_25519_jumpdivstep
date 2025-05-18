@@ -26,7 +26,7 @@ big30_t P = {{
 
 
 
-void cpt_inv(uint256_t *x, uint256_t *inv){
+void cpt_inv(uint256_t *x, uint256_t *inv) {
     //printf("Hello from cpt_inv5\n");
 
     big30_t F, G, V, S;
