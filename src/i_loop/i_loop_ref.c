@@ -18,6 +18,11 @@ void i_loop(
 ) {
     int64_t f, g;
 
+    
+    update_FG(F, G, uuvvrrss);
+    update_VS_mont(V, S, uuvvrrss);
+
+
     f = (int64_t) F->limb[1];
     g = (int64_t) G->limb[1];
     f = (f << 30);
@@ -33,8 +38,5 @@ void i_loop(
     j_loop(delta, &f, &g, uuvvrrss);
     j_loop(delta, &f, &g, uuvvrrss);
     j_loop_final(delta, &f, &g, uuvvrrss);
-
-    update_FG(F, G, uuvvrrss);
-    update_VS_mont(V, S, uuvvrrss);
 
 }

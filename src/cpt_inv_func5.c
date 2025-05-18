@@ -44,18 +44,71 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
         S.limb[i] = 0;
     }
     S.limb[0] = 1;
-
-
+    int64_t f, g;
     int64_t uuvvrrss[4];
-    for (int i = 0; i < 10; i++) {
+
+    f = (int64_t) F.limb[1];
+    g = (int64_t) G.limb[1];
+    f = (f << 30);
+    g = (g << 30);
+    f = f + (int64_t)F.limb[0];
+    g = g + (int64_t)G.limb[0];
+
+    uuvvrrss[0] = 1;
+    uuvvrrss[1] = 0;
+    uuvvrrss[2] = 0;
+    uuvvrrss[3] = 1;
+
+    j_loop(&delta, &f, &g, uuvvrrss);
+    j_loop(&delta, &f, &g, uuvvrrss);
+    j_loop_final(&delta, &f, &g, uuvvrrss);
+
+    for (int i = 0; i < 9; i++) {
+
+        // // Print every limb of F only if i == 0
+        // if (i == 0) {
+        //     for (int j = 0; j < 9; j++) {
+        //     printf("V.limb[%d] = %d\n", j, V.limb[j]);
+        //     }
+        // }
+
 
 
 
         i_loop(&delta, &F, &G, &V, &S, uuvvrrss);
+        // update_VS_mont(&V, &S, uuvvrrss);
+
+
+        // f = (int64_t) F.limb[1];
+        // g = (int64_t) G.limb[1];
+        // f = (f << 30);
+        // g = (g << 30);
+        // f = f + (int64_t)F.limb[0];
+        // g = g + (int64_t)G.limb[0];
+
+        // uuvvrrss[0] = 1;
+        // uuvvrrss[1] = 0;
+        // uuvvrrss[2] = 0;
+        // uuvvrrss[3] = 1;
+        // j_loop(&delta, &f, &g, uuvvrrss);
+        // j_loop(&delta, &f, &g, uuvvrrss);
+        // j_loop_final(&delta, &f, &g, uuvvrrss);
+
+
+        // if (i == 0) {
+        //     for (int j = 0; j < 9; j++) {
+        //     printf("V.limb[%d] = %d\n", j, V.limb[j]);
+        //     }
+        // }
+
+
+
+
 
 
     }
-    
+    update_FG(&F, &G, uuvvrrss);
+    update_VS_mont(&V, &S, uuvvrrss);
     final_adjustment(inv, &F, &V);
 
 }

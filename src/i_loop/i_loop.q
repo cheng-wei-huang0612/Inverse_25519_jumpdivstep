@@ -41,1243 +41,18 @@ int64 pointer_F
 int64 pointer_G
 int64 pointer_V
 int64 pointer_S
-#int64 pointer_uuvvrrss
+int64 pointer_uuvvrrss
 
 input pointer_delta
 input pointer_F
 input pointer_G
 input pointer_V
 input pointer_S
-#input pointer_uuvvrrss
-
-
-
-int64 f
-int64 g
+input pointer_uuvvrrss
 int64 uu
 int64 vv
 int64 rr
 int64 ss
-
-int64 f_hi
-int64 g_hi
-
-f_hi = mem32[pointer_F + 4]
-g_hi = mem32[pointer_G + 4]
-
-f_hi = f_hi << 30
-g_hi = g_hi << 30
-
-
-f = mem32[pointer_F]
-g = mem32[pointer_G]
-
-f = f + f_hi
-g = g + g_hi
-
-uu = 1
-vv = 0
-rr = 0
-ss = 1
-
-
-
-# Before j_loop s
-
-int64 m
-m = mem64[pointer_delta]
-
-int64 fuv
-int64 grs
-
-
-
-int64 g0_and_1
-int64 c_mask
-
-int64 fuv_new
-int64 grs_new
-int64 grs_final
-int64 neg_fuv
-int64 neg_delta
-
-int64 oldG
-int64 z
-int64 minus_one
-int64 delta_new
-
-
-int64 h
-int64 hh
-int64 m1
-int64 ff
-
-int64 tmp
-int64 prod_lo
-int64 prod_hi
-int64 new_f
-int64 new_g
-int64 new_uu
-int64 new_vv
-int64 new_rr
-int64 new_ss
-
-int64 2p41
-2p41 = 1
-2p41 = 2p41 << 41
-
-int64 2p62
-2p62 = 1
-2p62 = 2p62 << 62
-
-
-# Perform first j_loop
-
-fuv = f & 1048575
-grs = g & 1048575
-fuv -= 2p41
-grs -= 2p62
-
-
-
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-# Extraction
-int64 u
-int64 v
-int64 r
-int64 s
-
-v = fuv
-v = v + 1048576
-v = v + 2p41
-v = v signed>> 42
-
-u = fuv + 1048576
-u = u << 22
-u = u signed>> 43
-
-
-s = grs
-s = s + 1048576
-s = s + 2p41
-s = s signed>> 42
-
-r = grs + 1048576
-r = r << 22
-r = r signed>> 43
-
-
-
-# inner update
-
-
-prod_lo = u * f
-prod_hi = u signed* f (hi)
-
-tmp = v * g
-prod_lo += tmp !
-
-tmp = v signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
-
-prod_lo = prod_lo unsigned>> 20
-prod_hi = prod_hi << 44
-new_f = prod_lo | prod_hi
-
-
-
-
-prod_lo = r * f
-prod_hi = r signed* f (hi)
-
-tmp = s * g
-prod_lo += tmp !
-
-tmp = s signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
-
-prod_lo = prod_lo unsigned>> 20
-prod_hi = prod_hi << 44
-new_g = prod_lo | prod_hi
-
-f = new_f
-g = new_g
-
-tmp = u * uu
-new_uu = tmp + v * rr
-
-tmp = r * uu
-new_rr = tmp + s * rr
-
-tmp = u * vv
-new_vv = tmp + v * ss
-
-tmp = r * vv
-new_ss = tmp + s * ss
-
-uu = new_uu
-vv = new_vv
-
-rr = new_rr
-ss = new_ss
-
-
-
-
-# Perform second j_loop
-
-fuv = f & 1048575
-grs = g & 1048575
-fuv -= 2p41
-grs -= 2p62
-
-
-
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-# Extraction
-
-
-v = fuv
-v = v + 1048576
-v = v + 2p41
-v = v signed>> 42
-
-u = fuv + 1048576
-u = u << 22
-u = u signed>> 43
-
-
-s = grs
-s = s + 1048576
-s = s + 2p41
-s = s signed>> 42
-
-r = grs + 1048576
-r = r << 22
-r = r signed>> 43
-
-
-
-# inner update
-
-
-prod_lo = u * f
-prod_hi = u signed* f (hi)
-
-tmp = v * g
-prod_lo += tmp !
-
-tmp = v signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
-
-prod_lo = prod_lo unsigned>> 20
-prod_hi = prod_hi << 44
-new_f = prod_lo | prod_hi
-
-
-prod_lo = r * f
-prod_hi = r signed* f (hi)
-
-tmp = s * g
-prod_lo += tmp !
-
-tmp = s signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
-
-prod_lo = prod_lo unsigned>> 20
-prod_hi = prod_hi << 44
-new_g = prod_lo | prod_hi
-
-f = new_f
-g = new_g
-
-tmp = u * uu
-new_uu = tmp + v * rr
-
-tmp = r * uu
-new_rr = tmp + s * rr
-
-tmp = u * vv
-new_vv = tmp + v * ss
-
-tmp = r * vv
-new_ss = tmp + s * ss
-
-uu = new_uu
-vv = new_vv
-
-rr = new_rr
-ss = new_ss
-
-
-
-
-# Perform final (third) j_loop_final
-
-
-fuv = f & 1048575
-grs = g & 1048575
-fuv -= 2p41
-grs -= 2p62
-
-
-
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
-
-    
-
-
-# Extraction
-
-
-v = fuv
-v = v + 1048576
-v = v + 2p41
-v = v signed>> 42
-
-u = fuv + 1048576
-u = u << 22
-u = u signed>> 43
-
-
-s = grs
-s = s + 1048576
-s = s + 2p41
-s = s signed>> 42
-
-r = grs + 1048576
-r = r << 22
-r = r signed>> 43
-
-
-
-# inner update
-
-
-tmp = u * uu
-new_uu = tmp + v * rr
-
-tmp = r * uu
-new_rr = tmp + s * rr
-
-tmp = u * vv
-new_vv = tmp + v * ss
-
-tmp = r * vv
-new_ss = tmp + s * ss
-
-uu = new_uu
-vv = new_vv
-
-rr = new_rr
-ss = new_ss
-
-
-
-
-
-mem64[pointer_delta] = m
-#mem128[pointer_uuvvrrss] = uu, vv
-#mem128[pointer_uuvvrrss + 16] = rr, ss
-
-
 
 
 # F, G Data Layout Configuration
@@ -1326,6 +101,21 @@ vec_F6_F7_G6_G7[1/2] = G6G7
 reg128 vec_F8_0_G8_0
 vec_F8_0_G8_0[0/2] = F8
 vec_F8_0_G8_0[1/2] = G8
+
+
+# uu, vv, rr, ss 
+# They are obtained in general-purpose register
+# The method to move them into Neon register matters
+
+# Simulating that they are given in the general-purpose register
+# int64 uu
+# int64 vv
+# int64 rr
+# int64 ss
+
+uu, vv = mem128[pointer_uuvvrrss + 0]
+rr, ss = mem128[pointer_uuvvrrss + 16]
+
 int64 uu0
 int64 uu1
 uu0 = uu & ((1 << 30)-1)
@@ -1923,7 +713,7 @@ reg128 vec_V8_V9_S8_S9
 #assign v9 to vec_V8_V9_S8_S9
 # The V9, S9 are always 0, we put them here for easy program writing
 
-# reg128 vec_uu0_rr0_vv0_ss0
+#reg128 vec_uu0_rr0_vv0_ss0
 # assign v10 to vec_uu0_rr0_vv0_ss0
 # reg128 vec_uu1_rr1_vv1_ss1
 # assign v11 to vec_uu1_rr1_vv1_ss1
@@ -1931,7 +721,7 @@ reg128 vec_V8_V9_S8_S9
 # assign v12 to vec_uuhat_rrhat_vvhat_sshat
 
 reg128 vec_2x_2p30m1
-# assign v13 to vec_2x_2p30m1
+#assign v13 to vec_2x_2p30m1
 
 int64 2p30m1
 2p30m1 = 1073741823
@@ -1980,6 +770,18 @@ vec_V6_V7_S6_S7[1/2] = S6S7
 
 vec_V8_V9_S8_S9[0/2] = V8V9 
 vec_V8_V9_S8_S9[1/2] = S8S9 
+
+
+
+# At this function, the uu, vv, rr, ss are already in neon registers
+
+# int64 uu
+# int64 vv
+# int64 rr
+# int64 ss
+
+uu, vv = mem128[pointer_uuvvrrss + 0]
+rr, ss = mem128[pointer_uuvvrrss + 16]
 
 
 
@@ -2562,6 +1364,1396 @@ mem32[pointer_V+32] = Vp8
 int64 Sp8
 Sp8 = vec_Vp8_Vp9_Sp8_Sp9[1/2]
 mem32[pointer_S+32] = Sp8
+
+
+
+int64 f_hi
+int64 f
+int64 g_hi
+int64 g
+
+f_hi = mem32[pointer_F+4]
+f = mem32[pointer_F]
+g_hi = mem32[pointer_G+4]
+g = mem32[pointer_G]
+f = f + f_hi << 30
+g = g + g_hi << 30
+
+int64 m
+m = mem64[pointer_delta]
+
+
+uu = 1
+vv = 0
+rr = 0
+ss = 1
+int64 2p41
+2p41 = 1
+2p41 = 2p41 << 41
+
+int64 2p62
+2p62 = 1
+2p62 = 2p62 << 62
+int64 fuv
+int64 grs
+
+int64 g1
+int64 hh
+int64 h
+int64 m1
+
+
+fuv = f & 1048575
+grs = g & 1048575
+fuv -= 2p41
+grs -= 2p62
+
+
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+#mem64[pointer_delta] = m
+
+# Extraction
+int64 u
+int64 v
+int64 r
+int64 s
+
+v = fuv
+v = v + 1048576
+v = v + 2p41
+v = v signed>> 42
+
+u = fuv + 1048576
+u = u << 22
+u = u signed>> 43
+
+
+s = grs
+s = s + 1048576
+s = s + 2p41
+s = s signed>> 42
+
+r = grs + 1048576
+r = r << 22
+r = r signed>> 43
+
+
+
+int64 tmp
+int64 prod_lo
+int64 prod_hi
+int64 new_f
+int64 new_g
+int64 new_uu
+int64 new_vv
+int64 new_rr
+int64 new_ss
+prod_lo = u * f
+prod_hi = u signed* f (hi)
+
+tmp = v * g
+prod_lo += tmp !
+
+tmp = v signed* g (hi)
+prod_hi = prod_hi + tmp + carry 
+
+prod_lo = prod_lo unsigned>> 20
+prod_hi = prod_hi << 44
+new_f = prod_lo | prod_hi
+
+
+
+
+prod_lo = r * f
+prod_hi = r signed* f (hi)
+
+tmp = s * g
+prod_lo += tmp !
+
+tmp = s signed* g (hi)
+prod_hi = prod_hi + tmp + carry 
+
+prod_lo = prod_lo unsigned>> 20
+prod_hi = prod_hi << 44
+new_g = prod_lo | prod_hi
+
+#mem64[pointer_f] = new_f
+#mem64[pointer_g] = new_g
+
+f = new_f
+g = new_g
+
+
+
+
+
+tmp = u * uu
+new_uu = tmp + v * rr
+
+tmp = r * uu
+new_rr = tmp + s * rr
+
+tmp = u * vv
+new_vv = tmp + v * ss
+
+tmp = r * vv
+new_ss = tmp + s * ss
+
+
+#mem128[pointer_uuvvrrss] = new_uu, new_vv
+#mem128[pointer_uuvvrrss + 16] = new_rr, new_ss
+
+
+uu = new_uu
+vv = new_vv
+rr = new_rr
+ss = new_ss
+
+
+
+# The second j_loop
+
+fuv = f & 1048575
+grs = g & 1048575
+fuv -= 2p41
+grs -= 2p62
+
+
+
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+mem64[pointer_delta] = m
+
+# Extraction
+# int64 u
+# int64 v
+# int64 r
+# int64 s
+
+v = fuv
+v = v + 1048576
+v = v + 2p41
+v = v signed>> 42
+
+u = fuv + 1048576
+u = u << 22
+u = u signed>> 43
+
+
+s = grs
+s = s + 1048576
+s = s + 2p41
+s = s signed>> 42
+
+r = grs + 1048576
+r = r << 22
+r = r signed>> 43
+
+
+
+# int64 tmp
+# int64 prod_lo
+# int64 prod_hi
+# int64 new_f
+# int64 new_g
+# int64 new_uu
+# int64 new_vv
+# int64 new_rr
+# int64 new_ss
+prod_lo = u * f
+prod_hi = u signed* f (hi)
+
+tmp = v * g
+prod_lo += tmp !
+
+tmp = v signed* g (hi)
+prod_hi = prod_hi + tmp + carry 
+
+prod_lo = prod_lo unsigned>> 20
+prod_hi = prod_hi << 44
+new_f = prod_lo | prod_hi
+
+
+
+
+prod_lo = r * f
+prod_hi = r signed* f (hi)
+
+tmp = s * g
+prod_lo += tmp !
+
+tmp = s signed* g (hi)
+prod_hi = prod_hi + tmp + carry 
+
+prod_lo = prod_lo unsigned>> 20
+prod_hi = prod_hi << 44
+new_g = prod_lo | prod_hi
+
+#mem64[pointer_f] = new_f
+#mem64[pointer_g] = new_g
+
+f = new_f
+g = new_g
+
+
+
+
+
+tmp = u * uu
+new_uu = tmp + v * rr
+
+tmp = r * uu
+new_rr = tmp + s * rr
+
+tmp = u * vv
+new_vv = tmp + v * ss
+
+tmp = r * vv
+new_ss = tmp + s * ss
+
+
+#mem128[pointer_uuvvrrss] = new_uu, new_vv
+#mem128[pointer_uuvvrrss + 16] = new_rr, new_ss
+
+
+uu = new_uu
+vv = new_vv
+rr = new_rr
+ss = new_ss
+
+
+
+# The second j_loop
+
+fuv = f & 1048575
+grs = g & 1048575
+fuv -= 2p41
+grs -= 2p62
+
+
+
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+    
+mem64[pointer_delta] = m
+
+# Extraction
+# int64 u
+# int64 v
+# int64 r
+# int64 s
+
+v = fuv
+v = v + 1048576
+v = v + 2p41
+v = v signed>> 42
+
+u = fuv + 1048576
+u = u << 22
+u = u signed>> 43
+
+
+s = grs
+s = s + 1048576
+s = s + 2p41
+s = s signed>> 42
+
+r = grs + 1048576
+r = r << 22
+r = r signed>> 43
+
+
+
+# int64 tmp
+# int64 prod_lo
+# int64 prod_hi
+# int64 new_f
+# int64 new_g
+# int64 new_uu
+# int64 new_vv
+# int64 new_rr
+# int64 new_ss
+# prod_lo = u * f
+# prod_hi = u signed* f (hi)
+
+# tmp = v * g
+# prod_lo += tmp !
+
+# tmp = v signed* g (hi)
+# prod_hi = prod_hi + tmp + carry 
+
+# prod_lo = prod_lo unsigned>> 20
+# prod_hi = prod_hi << 44
+# new_f = prod_lo | prod_hi
+
+
+
+
+# prod_lo = r * f
+# prod_hi = r signed* f (hi)
+
+# tmp = s * g
+# prod_lo += tmp !
+
+# tmp = s signed* g (hi)
+# prod_hi = prod_hi + tmp + carry 
+
+# prod_lo = prod_lo unsigned>> 20
+# prod_hi = prod_hi << 44
+# new_g = prod_lo | prod_hi
+
+# #mem64[pointer_f] = new_f
+# #mem64[pointer_g] = new_g
+
+# f = new_f
+# g = new_g
+
+
+
+
+
+tmp = u * uu
+new_uu = tmp + v * rr
+
+tmp = r * uu
+new_rr = tmp + s * rr
+
+tmp = u * vv
+new_vv = tmp + v * ss
+
+tmp = r * vv
+new_ss = tmp + s * ss
+
+
+#mem128[pointer_uuvvrrss] = new_uu, new_vv
+#mem128[pointer_uuvvrrss + 16] = new_rr, new_ss
+
+
+uu = new_uu
+vv = new_vv
+rr = new_rr
+ss = new_ss
+
+
+
+
+
+mem128[pointer_uuvvrrss] = uu, vv
+mem128[pointer_uuvvrrss + 16] = rr, ss
 
 pop2x8b calleesaved_v14, calleesaved_v15
 pop2x8b calleesaved_v12, calleesaved_v13
