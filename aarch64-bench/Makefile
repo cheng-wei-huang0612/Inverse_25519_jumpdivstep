@@ -12,6 +12,7 @@ LD := $(CC)
 BENCH_SRC          := bench.c
 BENCH_DIVSTEP_SRC  := bench_divstepx20.c
 BENCH_UPDATE_VS_MONT_SRC  := bench_update_VS_mont.c
+BENCH_UPDATE_FG_SRC  := bench_update_FG.c
 
 COMMON_SRC := \
   hal/hal.c \
@@ -38,6 +39,7 @@ OBJ_COMMON         := \
 OBJ_BENCH          := $(patsubst %.c,%.o,$(BENCH_SRC))
 OBJ_BENCH_DIVSTEP  := $(patsubst %.c,%.o,$(BENCH_DIVSTEP_SRC))
 OBJ_BENCH_UPDATE_VS_MONT   := $(patsubst %.c,%.o,$(BENCH_UPDATE_VS_MONT_SRC))
+OBJ_BENCH_UPDATE_FG   := $(patsubst %.c,%.o,$(BENCH_UPDATE_FG_SRC))
 # ==== 編譯旗標 ====
 CFLAGS := -Wall -Wextra -Werror -Wshadow -Wpointer-arith \
           -Wredundant-decls -Wno-long-long -Wno-unknown-pragmas \
@@ -68,6 +70,10 @@ bench_divstepx20: $(OBJ_COMMON) $(OBJ_BENCH_DIVSTEP)
 
 # bench_update_VS_mont
 bench_update_VS_mont: $(OBJ_COMMON) $(OBJ_BENCH_UPDATE_VS_MONT)
+	$(LD) $^ -o $@
+
+# bench_update_FG
+bench_update_FG: $(OBJ_COMMON) $(OBJ_BENCH_UPDATE_FG)
 	$(LD) $^ -o $@
 
 # ==== 通用規則 ====

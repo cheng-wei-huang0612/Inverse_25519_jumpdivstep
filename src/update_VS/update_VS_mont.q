@@ -290,33 +290,33 @@ vec_V8_V9_S8_S9 = vec_prod & vec_2x_2p15m1
 
 
 
-reg128 store_back_vec_V0_V1_V2_V3
-reg128 store_back_vec_V4_V5_V6_V7
-reg128 store_back_vec_S0_S1_S2_S3
-reg128 store_back_vec_S4_S5_S6_S7
-reg128 store_back_vec_V8_V9_S8_S9
+reg128 vec_V0_V1_V2_V3
+reg128 vec_V4_V5_V6_V7
+reg128 vec_S0_S1_S2_S3
+reg128 vec_S4_S5_S6_S7
 
 
 
 
-2x store_back_vec_V0_V1_V2_V3 zip= vec_V0_V1_S0_S1[0/2] vec_V2_V3_S2_S3[0/2]
-2x store_back_vec_S0_S1_S2_S3 zip= vec_V0_V1_S0_S1[1/2] vec_V2_V3_S2_S3[1/2]
 
-2x store_back_vec_V4_V5_V6_V7 zip= vec_V4_V5_S4_S5[0/2] vec_V6_V7_S6_S7[0/2]
-2x store_back_vec_S4_S5_S6_S7 zip= vec_V4_V5_S4_S5[1/2] vec_V6_V7_S6_S7[1/2]
+2x vec_V0_V1_V2_V3 zip= vec_V0_V1_S0_S1[0/2] vec_V2_V3_S2_S3[0/2]
+2x vec_S0_S1_S2_S3 zip= vec_V0_V1_S0_S1[1/2] vec_V2_V3_S2_S3[1/2]
 
-store_back_vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9
+2x vec_V4_V5_V6_V7 zip= vec_V4_V5_S4_S5[0/2] vec_V6_V7_S6_S7[0/2]
+2x vec_S4_S5_S6_S7 zip= vec_V4_V5_S4_S5[1/2] vec_V6_V7_S6_S7[1/2]
 
-mem256[pointer_V] = store_back_vec_V0_V1_V2_V3, store_back_vec_V4_V5_V6_V7
-mem256[pointer_S] = store_back_vec_S0_S1_S2_S3, store_back_vec_S4_S5_S6_S7
+
+
+mem256[pointer_V] = vec_V0_V1_V2_V3, vec_V4_V5_V6_V7
+mem256[pointer_S] = vec_S0_S1_S2_S3, vec_S4_S5_S6_S7
 
 
 
 int64 V8
-V8 = store_back_vec_V8_V9_S8_S9[0/2]
+V8 = vec_V8_V9_S8_S9[0/2]
 mem32[pointer_V+32] = V8
 int64 S8
-S8 = store_back_vec_V8_V9_S8_S9[1/2]
+S8 = vec_V8_V9_S8_S9[1/2]
 mem32[pointer_S+32] = S8
 
 pop2x8b calleesaved_v14, calleesaved_v15

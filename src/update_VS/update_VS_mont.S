@@ -824,56 +824,49 @@ smull v0.2d,v2.2s,v0.2s
 # asm 2: add <vec_V0_V1_S0_S1=v3.2d, <vec_V0_V1_S0_S1=v3.2d, <vec_buffer=v0.2d
 add v3.2d, v3.2d, v0.2d
 
-# qhasm: reg128 store_back_vec_V0_V1_V2_V3
+# qhasm: reg128 vec_V0_V1_V2_V3
 
-# qhasm: reg128 store_back_vec_V4_V5_V6_V7
+# qhasm: reg128 vec_V4_V5_V6_V7
 
-# qhasm: reg128 store_back_vec_S0_S1_S2_S3
+# qhasm: reg128 vec_S0_S1_S2_S3
 
-# qhasm: reg128 store_back_vec_S4_S5_S6_S7
+# qhasm: reg128 vec_S4_S5_S6_S7
 
-# qhasm: reg128 store_back_vec_V8_V9_S8_S9
-
-# qhasm: 2x store_back_vec_V0_V1_V2_V3 zip= vec_V0_V1_S0_S1[0/2] vec_V2_V3_S2_S3[0/2]
-# asm 1: zip1 >store_back_vec_V0_V1_V2_V3=reg128#1.2d, <vec_V0_V1_S0_S1=reg128#4.2d, <vec_V2_V3_S2_S3=reg128#5.2d
-# asm 2: zip1 >store_back_vec_V0_V1_V2_V3=v0.2d, <vec_V0_V1_S0_S1=v3.2d, <vec_V2_V3_S2_S3=v4.2d
+# qhasm: 2x vec_V0_V1_V2_V3 zip= vec_V0_V1_S0_S1[0/2] vec_V2_V3_S2_S3[0/2]
+# asm 1: zip1 >vec_V0_V1_V2_V3=reg128#1.2d, <vec_V0_V1_S0_S1=reg128#4.2d, <vec_V2_V3_S2_S3=reg128#5.2d
+# asm 2: zip1 >vec_V0_V1_V2_V3=v0.2d, <vec_V0_V1_S0_S1=v3.2d, <vec_V2_V3_S2_S3=v4.2d
 zip1 v0.2d, v3.2d, v4.2d
 
-# qhasm: 2x store_back_vec_S0_S1_S2_S3 zip= vec_V0_V1_S0_S1[1/2] vec_V2_V3_S2_S3[1/2]
-# asm 1: zip2 >store_back_vec_S0_S1_S2_S3=reg128#3.2d, <vec_V0_V1_S0_S1=reg128#4.2d, <vec_V2_V3_S2_S3=reg128#5.2d
-# asm 2: zip2 >store_back_vec_S0_S1_S2_S3=v2.2d, <vec_V0_V1_S0_S1=v3.2d, <vec_V2_V3_S2_S3=v4.2d
+# qhasm: 2x vec_S0_S1_S2_S3 zip= vec_V0_V1_S0_S1[1/2] vec_V2_V3_S2_S3[1/2]
+# asm 1: zip2 >vec_S0_S1_S2_S3=reg128#3.2d, <vec_V0_V1_S0_S1=reg128#4.2d, <vec_V2_V3_S2_S3=reg128#5.2d
+# asm 2: zip2 >vec_S0_S1_S2_S3=v2.2d, <vec_V0_V1_S0_S1=v3.2d, <vec_V2_V3_S2_S3=v4.2d
 zip2 v2.2d, v3.2d, v4.2d
 
-# qhasm: 2x store_back_vec_V4_V5_V6_V7 zip= vec_V4_V5_S4_S5[0/2] vec_V6_V7_S6_S7[0/2]
-# asm 1: zip1 >store_back_vec_V4_V5_V6_V7=reg128#4.2d, <vec_V4_V5_S4_S5=reg128#6.2d, <vec_V6_V7_S6_S7=reg128#7.2d
-# asm 2: zip1 >store_back_vec_V4_V5_V6_V7=v3.2d, <vec_V4_V5_S4_S5=v5.2d, <vec_V6_V7_S6_S7=v6.2d
+# qhasm: 2x vec_V4_V5_V6_V7 zip= vec_V4_V5_S4_S5[0/2] vec_V6_V7_S6_S7[0/2]
+# asm 1: zip1 >vec_V4_V5_V6_V7=reg128#4.2d, <vec_V4_V5_S4_S5=reg128#6.2d, <vec_V6_V7_S6_S7=reg128#7.2d
+# asm 2: zip1 >vec_V4_V5_V6_V7=v3.2d, <vec_V4_V5_S4_S5=v5.2d, <vec_V6_V7_S6_S7=v6.2d
 zip1 v3.2d, v5.2d, v6.2d
 
-# qhasm: 2x store_back_vec_S4_S5_S6_S7 zip= vec_V4_V5_S4_S5[1/2] vec_V6_V7_S6_S7[1/2]
-# asm 1: zip2 >store_back_vec_S4_S5_S6_S7=reg128#5.2d, <vec_V4_V5_S4_S5=reg128#6.2d, <vec_V6_V7_S6_S7=reg128#7.2d
-# asm 2: zip2 >store_back_vec_S4_S5_S6_S7=v4.2d, <vec_V4_V5_S4_S5=v5.2d, <vec_V6_V7_S6_S7=v6.2d
+# qhasm: 2x vec_S4_S5_S6_S7 zip= vec_V4_V5_S4_S5[1/2] vec_V6_V7_S6_S7[1/2]
+# asm 1: zip2 >vec_S4_S5_S6_S7=reg128#5.2d, <vec_V4_V5_S4_S5=reg128#6.2d, <vec_V6_V7_S6_S7=reg128#7.2d
+# asm 2: zip2 >vec_S4_S5_S6_S7=v4.2d, <vec_V4_V5_S4_S5=v5.2d, <vec_V6_V7_S6_S7=v6.2d
 zip2 v4.2d, v5.2d, v6.2d
 
-# qhasm: store_back_vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9
-# asm 1: mov >store_back_vec_V8_V9_S8_S9=reg128#2.16b, <vec_V8_V9_S8_S9=reg128#2.16b
-# asm 2: mov >store_back_vec_V8_V9_S8_S9=v1.16b, <vec_V8_V9_S8_S9=v1.16b
-mov v1.16b, v1.16b
-
-# qhasm: mem256[pointer_V] = store_back_vec_V0_V1_V2_V3, store_back_vec_V4_V5_V6_V7
-# asm 1: stp <store_back_vec_V0_V1_V2_V3=reg128#1%qregname, <store_back_vec_V4_V5_V6_V7=reg128#4%qregname, [<pointer_V=int64#1]
-# asm 2: stp <store_back_vec_V0_V1_V2_V3=q0, <store_back_vec_V4_V5_V6_V7=q3, [<pointer_V=x0]
+# qhasm: mem256[pointer_V] = vec_V0_V1_V2_V3, vec_V4_V5_V6_V7
+# asm 1: stp <vec_V0_V1_V2_V3=reg128#1%qregname, <vec_V4_V5_V6_V7=reg128#4%qregname, [<pointer_V=int64#1]
+# asm 2: stp <vec_V0_V1_V2_V3=q0, <vec_V4_V5_V6_V7=q3, [<pointer_V=x0]
 stp q0, q3, [x0]
 
-# qhasm: mem256[pointer_S] = store_back_vec_S0_S1_S2_S3, store_back_vec_S4_S5_S6_S7
-# asm 1: stp <store_back_vec_S0_S1_S2_S3=reg128#3%qregname, <store_back_vec_S4_S5_S6_S7=reg128#5%qregname, [<pointer_S=int64#2]
-# asm 2: stp <store_back_vec_S0_S1_S2_S3=q2, <store_back_vec_S4_S5_S6_S7=q4, [<pointer_S=x1]
+# qhasm: mem256[pointer_S] = vec_S0_S1_S2_S3, vec_S4_S5_S6_S7
+# asm 1: stp <vec_S0_S1_S2_S3=reg128#3%qregname, <vec_S4_S5_S6_S7=reg128#5%qregname, [<pointer_S=int64#2]
+# asm 2: stp <vec_S0_S1_S2_S3=q2, <vec_S4_S5_S6_S7=q4, [<pointer_S=x1]
 stp q2, q4, [x1]
 
 # qhasm: int64 V8
 
-# qhasm: V8 = store_back_vec_V8_V9_S8_S9[0/2]
-# asm 1: umov >V8=int64#3, <store_back_vec_V8_V9_S8_S9=reg128#2.d[0]
-# asm 2: umov >V8=x2, <store_back_vec_V8_V9_S8_S9=v1.d[0]
+# qhasm: V8 = vec_V8_V9_S8_S9[0/2]
+# asm 1: umov >V8=int64#3, <vec_V8_V9_S8_S9=reg128#2.d[0]
+# asm 2: umov >V8=x2, <vec_V8_V9_S8_S9=v1.d[0]
 umov x2, v1.d[0]
 
 # qhasm: mem32[pointer_V+32] = V8
@@ -883,9 +876,9 @@ str w2, [x0, #32]
 
 # qhasm: int64 S8
 
-# qhasm: S8 = store_back_vec_V8_V9_S8_S9[1/2]
-# asm 1: umov >S8=int64#1, <store_back_vec_V8_V9_S8_S9=reg128#2.d[1]
-# asm 2: umov >S8=x0, <store_back_vec_V8_V9_S8_S9=v1.d[1]
+# qhasm: S8 = vec_V8_V9_S8_S9[1/2]
+# asm 1: umov >S8=int64#1, <vec_V8_V9_S8_S9=reg128#2.d[1]
+# asm 2: umov >S8=x0, <vec_V8_V9_S8_S9=v1.d[1]
 umov x0, v1.d[1]
 
 # qhasm: mem32[pointer_S+32] = S8

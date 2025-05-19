@@ -54,6 +54,8 @@ extern const int16_t zetas_layer67[];
 // void ntt_asm(int16_t *, const int16_t *, const int16_t *);
 extern void update_VS_mont(big30_t *V, big30_t *S,
                                 const int64_t *uuvvrrss);
+extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
+
 
 static int bench(void)
 {
@@ -67,13 +69,13 @@ static int bench(void)
   {
     for (j = 0; j < NWARMUP; j++)
     {
-      update_VS_mont(&V, &S, uuvvrrss);
+      update_FG(&V, &S, uuvvrrss);
     }
 
     t0 = get_cyclecounter();
     for (j = 0; j < NITERATIONS; j++)
     {
-      update_VS_mont(&V, &S, uuvvrrss);
+      update_FG(&V, &S, uuvvrrss);
     }
     t1 = get_cyclecounter();
     cycles[i] = t1 - t0;
