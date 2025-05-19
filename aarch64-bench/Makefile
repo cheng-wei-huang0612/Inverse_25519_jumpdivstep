@@ -2,7 +2,7 @@
 .PHONY: all clean
 
 # ==== 目標 ====
-BIN     := bench bench_divstepx20 bench_update_VS_mont
+BIN     := bench bench_divstepx20 bench_update_VS_mont bench_update_FG
 
 # ==== Compiler / Linker ====
 CC ?= gcc
@@ -91,5 +91,5 @@ bench_update_FG: $(OBJ_COMMON) $(OBJ_BENCH_UPDATE_FG)
 # ==== 清理 ====
 clean:
 	$(RM) -f $(BIN) $(OBJ_COMMON) $(OBJ_BENCH) \
-	       $(OBJ_BENCH_DIVSTEP) $(OBJ_BENCH_UPDATE_VS_MONT) *.d
+	       $(OBJ_BENCH_DIVSTEP) $(OBJ_BENCH_UPDATE_VS_MONT) $(OBJ_BENCH_UPDATE_FG) *.d
 
