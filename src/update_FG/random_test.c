@@ -13,6 +13,16 @@
 extern void update_FG(big30_t *F, big30_t *G, const int64_t *uuvvrrss);
 extern void gmp_update_FG(big30_t *F, big30_t *G, const int64_t *uuvvrrss);
 
+static void print_big30(const char *tag, const big30_t *B)
+{
+    printf("    %s = [limb0 = %d, limb1 = %d, limb2 = %d, limb3 = %d\n"
+           "           limb4 = %d, limb5 = %d, limb6 = %d, limb7 = %d\n"
+           "           limb8 = %d]\n",
+           tag,
+           B->limb[0], B->limb[1], B->limb[2], B->limb[3],
+           B->limb[4], B->limb[5], B->limb[6], B->limb[7], B->limb[8]);
+}
+
 #define NUMBEROFTEST 100
 
 int main(void)
@@ -59,8 +69,18 @@ int main(void)
 
         if (mpz_cmp(a1, a2) || mpz_cmp(b1, b2)) {
             fprintf(stderr, "\n!! MISMATCH at test %d !!\n", t);
-            mpz_out_str(stderr, 16, mpF); fputc('\n', stderr);
-            mpz_out_str(stderr, 16, mpG); fputc('\n', stderr);
+
+            puts("\n--- Input --------------------------------------------------");
+            print_big30("F0", &F0);
+            print_big30("G0", &G0);
+
+            puts("\n--- After update_FG (ASM) ---------------------------------");
+            print_big30("F_asm", &F1);
+            print_big30("G_asm", &G1);
+
+            puts("\n--- After gmp_update_FG (reference) -----------------------");
+            print_big30("F_ref", &F2);
+            print_big30("G_ref", &G2);
             exit(EXIT_FAILURE);
         }
 

@@ -1,4 +1,9 @@
-enter update_FG
+
+code = """enter update_FG"""
+
+
+
+code += """
 int64 pointer_F
 int64 pointer_G
 int64 pointer_uuvvrrss
@@ -6,89 +11,58 @@ int64 pointer_uuvvrrss
 input pointer_F
 input pointer_G
 input pointer_uuvvrrss
+"""
 
+code += """
 # Calling Convention
 
-caller calleesaved_x18
-caller calleesaved_x19
-caller calleesaved_x20
-caller calleesaved_x21
-caller calleesaved_x22
-caller calleesaved_x23
-caller calleesaved_x24
-caller calleesaved_x25
-caller calleesaved_x26
-caller calleesaved_x27
-caller calleesaved_x28
-caller calleesaved_x29
-caller calleesaved_v8
-caller calleesaved_v9
-caller calleesaved_v10
-caller calleesaved_v11
-caller calleesaved_v12
-caller calleesaved_v13
-caller calleesaved_v14
-caller calleesaved_v15
-push2xint64 calleesaved_x18, calleesaved_x19
-push2xint64 calleesaved_x20, calleesaved_x21
-push2xint64 calleesaved_x22, calleesaved_x23
-push2xint64 calleesaved_x24, calleesaved_x25
-push2xint64 calleesaved_x26, calleesaved_x27
-push2xint64 calleesaved_x28, calleesaved_x29
-push2x8b calleesaved_v8, calleesaved_v9
-push2x8b calleesaved_v10, calleesaved_v11
-push2x8b calleesaved_v12, calleesaved_v13
-push2x8b calleesaved_v14, calleesaved_v15
+"""
 
+
+for i in range(18, 29+1,1):
+    code += f"caller calleesaved_x{i}\n"
+for i in range(8, 15+1,1):
+    code += f"caller calleesaved_v{i}\n"
+
+for i in range(18, 29+1,2):
+    code += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
+
+for i in range(8, 15+1,2):
+    code += f"push2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
+
+
+code += """
 
 # F, G Data Layout Configuration
 
-int64 F0F1
-int64 F2F3
-int64 F4F5
-int64 F6F7
-int64 F8F9
+"""
 
-F0F1, F2F3 = mem128[pointer_F]
-F4F5, F6F7 = mem128[pointer_F+16]
-F8F9 = mem32[pointer_F+32]
-
-int64 G0G1
-int64 G2G3
-int64 G4G5
-int64 G6G7
-int64 G8G9
-
-G0G1, G2G3 = mem128[pointer_G]
-G4G5, G6G7 = mem128[pointer_G+16]
-G8G9 = mem32[pointer_G+32]
-
-reg128 vec_F0_F1_G0_G1 
-
-vec_F0_F1_G0_G1[0/2] = F0F1 
-vec_F0_F1_G0_G1[1/2] = G0G1 
-
-reg128 vec_F2_F3_G2_G3 
-
-vec_F2_F3_G2_G3[0/2] = F2F3 
-vec_F2_F3_G2_G3[1/2] = G2G3 
-
-reg128 vec_F4_F5_G4_G5 
-
-vec_F4_F5_G4_G5[0/2] = F4F5 
-vec_F4_F5_G4_G5[1/2] = G4G5 
-
-reg128 vec_F6_F7_G6_G7 
-
-vec_F6_F7_G6_G7[0/2] = F6F7 
-vec_F6_F7_G6_G7[1/2] = G6G7 
-
-reg128 vec_F8_F9_G8_G9 
-
-vec_F8_F9_G8_G9[0/2] = F8F9 
-vec_F8_F9_G8_G9[1/2] = G8G9 
+for symbol in ["F","G"]:
+    
+    code += f"int64 {symbol}0{symbol}1\n"
+    code += f"int64 {symbol}2{symbol}3\n"
+    code += f"int64 {symbol}4{symbol}5\n"
+    code += f"int64 {symbol}6{symbol}7\n"
+    code += f"int64 {symbol}8{symbol}9\n"
+    code += "\n"
+    code += f"{symbol}0{symbol}1, {symbol}2{symbol}3 = mem128[pointer_{symbol}]\n"
+    code += f"{symbol}4{symbol}5, {symbol}6{symbol}7 = mem128[pointer_{symbol}+16]\n"
+    code += f"{symbol}8{symbol}9 = mem32[pointer_{symbol}+32]\n"
+    code += "\n"
 
 
+
+
+for i in range(0,10,2):
+    code += f"reg128 vec_F{i}_F{i+1}_G{i}_G{i+1} \n"
+    code += "\n"
+    code += f"vec_F{i}_F{i+1}_G{i}_G{i+1}[0/2] = F{i}F{i+1} \n"
+    code += f"vec_F{i}_F{i+1}_G{i}_G{i+1}[1/2] = G{i}G{i+1} \n"
+    code += "\n"
+
+
+
+code += """
 
 # uu, vv, rr, ss 
 # They are obtained in general-purpose register
@@ -103,41 +77,35 @@ int64 ss
 uu, vv = mem128[pointer_uuvvrrss + 0]
 rr, ss = mem128[pointer_uuvvrrss + 16]
 
-int64 uu0
-int64 uu1
-uu0 = uu & ((1 << 30)-1)
-uu1 = (uu >> 30) & ((1 << 32)-1)
-
-int64 vv0
-int64 vv1
-vv0 = vv & ((1 << 30)-1)
-vv1 = (vv >> 30) & ((1 << 32)-1)
-
-int64 rr0
-int64 rr1
-rr0 = rr & ((1 << 30)-1)
-rr1 = (rr >> 30) & ((1 << 32)-1)
-
-int64 ss0
-int64 ss1
-ss0 = ss & ((1 << 30)-1)
-ss1 = (ss >> 30) & ((1 << 32)-1)
-
-reg128 vec_uu0_rr0_vv0_ss0
-
-vec_uu0_rr0_vv0_ss0[0/4] = uu0
-vec_uu0_rr0_vv0_ss0[1/4] = rr0
-vec_uu0_rr0_vv0_ss0[2/4] = vv0
-vec_uu0_rr0_vv0_ss0[3/4] = ss0
-
-reg128 vec_uu1_rr1_vv1_ss1
-
-vec_uu1_rr1_vv1_ss1[0/4] = uu1
-vec_uu1_rr1_vv1_ss1[1/4] = rr1
-vec_uu1_rr1_vv1_ss1[2/4] = vv1
-vec_uu1_rr1_vv1_ss1[3/4] = ss1
+"""
 
 
+# Data initialization, we do not need optimization
+# make vec_F0_F1_G0_G1, ... 
+
+for symbol in ["uu","vv","rr","ss"]:
+
+    code += f"int64 {symbol}0\n"
+    code += f"int64 {symbol}1\n"
+    code += f"{symbol}0 = {symbol} & ((1 << 30)-1)\n"
+    code += f"{symbol}1 = ({symbol} >> 30) & ((1 << 32)-1)\n"
+    code += "\n"
+
+
+for j in range(2):
+    code += f"reg128 vec_uu{j}_rr{j}_vv{j}_ss{j}\n"
+    code += "\n"
+    for (i, symbol) in enumerate(["uu", "rr", "vv", "ss"]):
+        code += f"vec_uu{j}_rr{j}_vv{j}_ss{j}[{i}/4] = {symbol}{j}\n"
+
+    code += "\n"
+
+
+
+
+
+
+code += """
 # Initialize some constants
 
 reg128 vec_2x_2p30m1
@@ -147,12 +115,18 @@ reg128 vec_2x_2p32m1
 2x vec_2x_2p32m1 = 0xFFFFFFFF
 2x vec_2x_2p30m1 = vec_2x_2p32m1 unsigned>> 2
 
+"""
 
+code += """
 reg128 vec_buffer
 reg128 vec_prod
 
 2x vec_prod = vec_uu0_rr0_vv0_ss0[0] * vec_F0_F1_G0_G1[0/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F0_F1_G0_G1[2/4]
+
+
+
+
 2x vec_prod >>= 30
 
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F0_F1_G0_G1[1/4]
@@ -241,7 +215,13 @@ vec_F6_F7_G6_G7 |= vec_buffer
 
 vec_F8_F9_G8_G9 = vec_prod
 
+"""
 
+
+
+
+
+code += """
 
 # Now we store the results back to memory
 
@@ -267,17 +247,27 @@ int64 G8
 G8 = vec_F8_F9_G8_G9[1/2]
 mem32[pointer_G+32] = G8
 
-pop2x8b calleesaved_v14, calleesaved_v15
-pop2x8b calleesaved_v12, calleesaved_v13
-pop2x8b calleesaved_v10, calleesaved_v11
-pop2x8b calleesaved_v8, calleesaved_v9
-pop2xint64 calleesaved_x28, calleesaved_x29
-pop2xint64 calleesaved_x26, calleesaved_x27
-pop2xint64 calleesaved_x24, calleesaved_x25
-pop2xint64 calleesaved_x22, calleesaved_x23
-pop2xint64 calleesaved_x20, calleesaved_x21
-pop2xint64 calleesaved_x18, calleesaved_x19
+"""
 
+
+
+
+
+
+for i in range(15-1, 8-1,-2):
+    code += f"pop2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
+for i in range(29, 18-1,-2):
+    code += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
+
+
+
+code += """
 
 return
 
+"""
+with open("update_FG.q", "w") as f:
+    f.write(code)
+
+import os
+os.system("qhasm-aarch64-align < update_FG.q > update_FG.S")

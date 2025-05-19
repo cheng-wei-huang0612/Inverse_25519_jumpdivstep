@@ -104,8 +104,6 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
 
 
 
-
-
     }
     update_FG(&F, &G, uuvvrrss);
     update_VS_mont(&V, &S, uuvvrrss);
