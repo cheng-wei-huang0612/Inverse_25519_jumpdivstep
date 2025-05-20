@@ -65,39 +65,39 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
 
         update_FG(&F, &G, uuvvrrss);
 
-#define I_TE 2
-        if (i == I_TE) {
-            printf("V: ");
-            for (int j = 0; j < 9; j++) {
-            printf("%ld, ", (long)V.limb[j]);
-            }
-            printf("\nS: ");
-            for (int j = 0; j < 9; j++) {
-            printf("%ld, ", (long)S.limb[j]);
-            }
-            printf("\nuuvvrrss: ");
-            for (int j = 0; j < 4; j++) {
-            printf("%lld, ", uuvvrrss[j]);
-            }
-            printf("\n");
-        }
+// #define I_TE 2
+//         if (i == I_TE) {
+//             printf("V: ");
+//             for (int j = 0; j < 9; j++) {
+//             printf("%ld, ", (long)V.limb[j]);
+//             }
+//             printf("\nS: ");
+//             for (int j = 0; j < 9; j++) {
+//             printf("%ld, ", (long)S.limb[j]);
+//             }
+//             printf("\nuuvvrrss: ");
+//             for (int j = 0; j < 4; j++) {
+//             printf("%lld, ", uuvvrrss[j]);
+//             }
+//             printf("\n");
+//         }
         update_VS_mont(&V, &S, uuvvrrss);
 
-        if (i == I_TE) {
-            printf("V: ");
-            for (int j = 0; j < 9; j++) {
-            printf("%ld, ", (long)V.limb[j]);
-            }
-            printf("\nS: ");
-            for (int j = 0; j < 9; j++) {
-            printf("%ld, ", (long)S.limb[j]);
-            }
-            printf("\nuuvvrrss: ");
-            for (int j = 0; j < 4; j++) {
-            printf("%lld, ", uuvvrrss[j]);
-            }
-            printf("\n");
-        }
+        // if (i == I_TE) {
+        //     printf("V: ");
+        //     for (int j = 0; j < 9; j++) {
+        //     printf("%ld, ", (long)V.limb[j]);
+        //     }
+        //     printf("\nS: ");
+        //     for (int j = 0; j < 9; j++) {
+        //     printf("%ld, ", (long)S.limb[j]);
+        //     }
+        //     printf("\nuuvvrrss: ");
+        //     for (int j = 0; j < 4; j++) {
+        //     printf("%lld, ", uuvvrrss[j]);
+        //     }
+        //     printf("\n");
+        // }
 
     }
     
