@@ -294,23 +294,6 @@ vec_buffer &= vec_2x_2p32m1
 
 
 
-reg128 vec_4x_2p30m1
-2x vec_4x_2p30m1 = vec_2x_2p30m1 << 32
-vec_4x_2p30m1 |= vec_2x_2p30m1
-
-
-
-4x vec_carry = vec_V0_V1_S0_S1 >> 30
-2x vec_carry = vec_carry << 32
-4x vec_V0_V1_S0_S1 += vec_carry
-4x vec_carry = vec_V0_V1_S0_S1 >> 30
-2x vec_carry = vec_carry unsigned>> 32
-vec_V0_V1_S0_S1 &= vec_4x_2p30m1
-
-4x vec_V2_V3_S2_S3 += vec_carry
-
-
-
 # Store the result
 
 

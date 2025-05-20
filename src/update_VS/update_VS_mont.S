@@ -800,16 +800,16 @@ sshr v1.2d, v8.2d, #30
 sshr v7.2d, v0.2d, #15
 
 # qhasm: 2x vec_2x_2p32m1 = 0xFFFFFFFF
-# asm 1: movi <vec_2x_2p32m1=reg128#9.2d, #0xFFFFFFFF
-# asm 2: movi <vec_2x_2p32m1=v8.2d, #0xFFFFFFFF
-movi v8.2d, #0xFFFFFFFF
+# asm 1: movi <vec_2x_2p32m1=reg128#1.2d, #0xFFFFFFFF
+# asm 2: movi <vec_2x_2p32m1=v0.2d, #0xFFFFFFFF
+movi v0.2d, #0xFFFFFFFF
 
 # qhasm: reg128 vec_carry
 
 # qhasm: 2x vec_carry = vec_prod >> 15
-# asm 1: sshr <vec_carry=reg128#10.2d, <vec_prod=reg128#2.2d, #15
-# asm 2: sshr <vec_carry=v9.2d, <vec_prod=v1.2d, #15
-sshr v9.2d, v1.2d, #15
+# asm 1: sshr <vec_carry=reg128#9.2d, <vec_prod=reg128#2.2d, #15
+# asm 2: sshr <vec_carry=v8.2d, <vec_prod=v1.2d, #15
+sshr v8.2d, v1.2d, #15
 
 # qhasm: vec_V8_V9_S8_S9 = vec_prod & vec_2x_2p15m1
 # asm 1: and >vec_V8_V9_S8_S9=reg128#2.16b, <vec_prod=reg128#2.16b, <vec_2x_2p15m1=reg128#8.16b
@@ -817,66 +817,19 @@ sshr v9.2d, v1.2d, #15
 and v1.16b, v1.16b, v7.16b
 
 # qhasm: 4x vec_buffer = vec_4x_19 * vec_carry
-# asm 1: mul >vec_buffer=reg128#3.4s,<vec_4x_19=reg128#3.4s,<vec_carry=reg128#10.4s
-# asm 2: mul >vec_buffer=v2.4s,<vec_4x_19=v2.4s,<vec_carry=v9.4s
-mul v2.4s,v2.4s,v9.4s
+# asm 1: mul >vec_buffer=reg128#3.4s,<vec_4x_19=reg128#3.4s,<vec_carry=reg128#9.4s
+# asm 2: mul >vec_buffer=v2.4s,<vec_4x_19=v2.4s,<vec_carry=v8.4s
+mul v2.4s,v2.4s,v8.4s
 
 # qhasm: vec_buffer &= vec_2x_2p32m1
-# asm 1: and <vec_buffer=reg128#3.16b, <vec_buffer=reg128#3.16b, <vec_2x_2p32m1=reg128#9.16b
-# asm 2: and <vec_buffer=v2.16b, <vec_buffer=v2.16b, <vec_2x_2p32m1=v8.16b
-and v2.16b, v2.16b, v8.16b
+# asm 1: and <vec_buffer=reg128#3.16b, <vec_buffer=reg128#3.16b, <vec_2x_2p32m1=reg128#1.16b
+# asm 2: and <vec_buffer=v2.16b, <vec_buffer=v2.16b, <vec_2x_2p32m1=v0.16b
+and v2.16b, v2.16b, v0.16b
 
 # qhasm: 4x vec_V0_V1_S0_S1 += vec_buffer
 # asm 1: add <vec_V0_V1_S0_S1=reg128#4.4s, <vec_V0_V1_S0_S1=reg128#4.4s, <vec_buffer=reg128#3.4s
 # asm 2: add <vec_V0_V1_S0_S1=v3.4s, <vec_V0_V1_S0_S1=v3.4s, <vec_buffer=v2.4s
 add v3.4s, v3.4s, v2.4s
-
-# qhasm: reg128 vec_4x_2p30m1
-
-# qhasm: 2x vec_4x_2p30m1 = vec_2x_2p30m1 << 32
-# asm 1: shl >vec_4x_2p30m1=reg128#3.2d, <vec_2x_2p30m1=reg128#1.2d, #32
-# asm 2: shl >vec_4x_2p30m1=v2.2d, <vec_2x_2p30m1=v0.2d, #32
-shl v2.2d, v0.2d, #32
-
-# qhasm: vec_4x_2p30m1 |= vec_2x_2p30m1
-# asm 1: orr <vec_4x_2p30m1=reg128#3.16b, <vec_4x_2p30m1=reg128#3.16b, <vec_2x_2p30m1=reg128#1.16b
-# asm 2: orr <vec_4x_2p30m1=v2.16b, <vec_4x_2p30m1=v2.16b, <vec_2x_2p30m1=v0.16b
-orr v2.16b, v2.16b, v0.16b
-
-# qhasm: 4x vec_carry = vec_V0_V1_S0_S1 >> 30
-# asm 1: sshr <vec_carry=reg128#10.4s, <vec_V0_V1_S0_S1=reg128#4.4s, #30
-# asm 2: sshr <vec_carry=v9.4s, <vec_V0_V1_S0_S1=v3.4s, #30
-sshr v9.4s, v3.4s, #30
-
-# qhasm: 2x vec_carry = vec_carry << 32
-# asm 1: shl >vec_carry=reg128#1.2d, <vec_carry=reg128#10.2d, #32
-# asm 2: shl >vec_carry=v0.2d, <vec_carry=v9.2d, #32
-shl v0.2d, v9.2d, #32
-
-# qhasm: 4x vec_V0_V1_S0_S1 += vec_carry
-# asm 1: add <vec_V0_V1_S0_S1=reg128#4.4s, <vec_V0_V1_S0_S1=reg128#4.4s, <vec_carry=reg128#1.4s
-# asm 2: add <vec_V0_V1_S0_S1=v3.4s, <vec_V0_V1_S0_S1=v3.4s, <vec_carry=v0.4s
-add v3.4s, v3.4s, v0.4s
-
-# qhasm: 4x vec_carry = vec_V0_V1_S0_S1 >> 30
-# asm 1: sshr <vec_carry=reg128#1.4s, <vec_V0_V1_S0_S1=reg128#4.4s, #30
-# asm 2: sshr <vec_carry=v0.4s, <vec_V0_V1_S0_S1=v3.4s, #30
-sshr v0.4s, v3.4s, #30
-
-# qhasm: 2x vec_carry = vec_carry unsigned>> 32
-# asm 1: ushr >vec_carry=reg128#1.2d, <vec_carry=reg128#1.2d, #32
-# asm 2: ushr >vec_carry=v0.2d, <vec_carry=v0.2d, #32
-ushr v0.2d, v0.2d, #32
-
-# qhasm: vec_V0_V1_S0_S1 &= vec_4x_2p30m1
-# asm 1: and <vec_V0_V1_S0_S1=reg128#4.16b, <vec_V0_V1_S0_S1=reg128#4.16b, <vec_4x_2p30m1=reg128#3.16b
-# asm 2: and <vec_V0_V1_S0_S1=v3.16b, <vec_V0_V1_S0_S1=v3.16b, <vec_4x_2p30m1=v2.16b
-and v3.16b, v3.16b, v2.16b
-
-# qhasm: 4x vec_V2_V3_S2_S3 += vec_carry
-# asm 1: add <vec_V2_V3_S2_S3=reg128#5.4s, <vec_V2_V3_S2_S3=reg128#5.4s, <vec_carry=reg128#1.4s
-# asm 2: add <vec_V2_V3_S2_S3=v4.4s, <vec_V2_V3_S2_S3=v4.4s, <vec_carry=v0.4s
-add v4.4s, v4.4s, v0.4s
 
 # qhasm: reg128 vec_V0_V1_V2_V3
 
