@@ -152,6 +152,7 @@ vec_l0 &= vec_2x_2p30m1
 2x vec_prod -= vec_l0[0] * vec_4x_19[0]
 2x final_add_0 = vec_l0[0] << 15
 
+
 2x vec_prod >>= 30
 
 
@@ -168,6 +169,7 @@ vec_l1 &= vec_2x_2p30m1
 2x vec_prod -= vec_l1[0] * vec_4x_19[0]
 2x final_add_1 = vec_l1[0] << 15
 
+
 2x vec_prod >>= 30
 
 
@@ -183,6 +185,7 @@ vec_V0_V1_S0_S1 = vec_prod & vec_2x_2p30m1
 
 
 
+
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_V2_V3_S2_S3[1/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_V2_V3_S2_S3[3/4]
 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_V2_V3_S2_S3[0/4]
@@ -192,6 +195,7 @@ vec_buffer = vec_prod & vec_2x_2p30m1
 2x vec_prod >>= 30
 2x vec_buffer <<= 32
 vec_V0_V1_S0_S1 |= vec_buffer
+
 
 
 
@@ -264,18 +268,41 @@ vec_V6_V7_S6_S7 |= vec_buffer
 2x vec_prod >>= 30
 
 reg128 vec_2x_2p15m1
+reg128 vec_2x_2p32m1
 2x vec_2x_2p15m1 = vec_2x_2p30m1 >> 15
-
+2x vec_2x_2p32m1 = 0xFFFFFFFF
 
 reg128 vec_carry
 2x vec_carry = vec_prod >> 15
-4x vec_carry = vec_carry[0/4] vec_carry[2/4] vec_carry[0/4] vec_carry[2/4]
+
+#4x vec_carry = vec_carry[0/4] vec_carry[2/4] vec_carry[0/4] vec_carry[2/4]
+#vec_V8_V9_S8_S9 = vec_prod 
 vec_V8_V9_S8_S9 = vec_prod & vec_2x_2p15m1
-2x vec_buffer = vec_4x_19[0] * vec_carry[0]
+4x vec_buffer = vec_4x_19 * vec_carry
+vec_buffer &= vec_2x_2p32m1
 
-2x vec_V0_V1_S0_S1 += vec_buffer
+4x vec_V0_V1_S0_S1 += vec_buffer
 
 
+"""
+
+
+# Carry propagation
+code += """
+reg128 vec_4x_2p30m1
+2x vec_4x_2p30m1 = vec_2x_2p30m1 << 32
+vec_4x_2p30m1 |= vec_2x_2p30m1
+
+
+
+4x vec_carry = vec_V0_V1_S0_S1 >> 30
+2x vec_carry = vec_carry << 32
+4x vec_V0_V1_S0_S1 += vec_carry
+4x vec_carry = vec_V0_V1_S0_S1 >> 30
+2x vec_carry = vec_carry unsigned>> 32
+vec_V0_V1_S0_S1 &= vec_4x_2p30m1
+
+4x vec_V2_V3_S2_S3 += vec_carry
 """
 
 

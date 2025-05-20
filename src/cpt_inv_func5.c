@@ -66,9 +66,13 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
     for (int i = 0; i < 9; i++) {
 
         // // Print every limb of F only if i == 0
-        // if (i == 0) {
-        //     for (int j = 0; j < 9; j++) {
-        //     printf("V.limb[%d] = %d\n", j, V.limb[j]);
+        // if (i <5) {
+        //     // for (int j = 0; j < 9; j++) {
+        //     // printf("V.limb[%d] = %d\n", j, V.limb[j]);
+        //     // }
+
+        //     for (int k = 0; k < 4; k++) {
+        //         printf("uuvvrrss[%d] = %lld\n", k, uuvvrrss[k]);
         //     }
         // }
 
@@ -95,11 +99,15 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
         // j_loop_final(&delta, &f, &g, uuvvrrss);
 
 
-        // if (i == 0) {
-        //     for (int j = 0; j < 9; j++) {
-        //     printf("V.limb[%d] = %d\n", j, V.limb[j]);
+        // if (i < 5) {
+        //     // for (int j = 0; j < 9; j++) {
+        //     // printf("V.limb[%d] = %d\n", j, V.limb[j]);
+        //     // }
+        //     for (int k = 0; k < 4; k++) {
+        //         printf("uuvvrrss[%d] = %lld\n", k, uuvvrrss[k]);
         //     }
         // }
+
 
 
 
