@@ -1,12 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "big30.h"
-#include "divstep.h"
-#include "uv_extraction.h"
-#include "update_FG.h"
-#include "update_VS_mont.h"
-#include "inner_update.h"
-#include "sign_adjustment.h"
+
 #include <gmp.h>
 
 

@@ -12,8 +12,8 @@ for i in range(18, 29+1,1):
 for i in range(8, 15+1,1):
     code += f"caller calleesaved_v{i}\n"
 
-# for i in range(18, 29+1,2):
-#     code += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
+for i in range(18, 29+1,2):
+    code += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
 
 for i in range(8, 15+1,2):
     code += f"push2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
@@ -40,6 +40,12 @@ int64 uu
 int64 vv
 int64 rr
 int64 ss
+
+
+# int64 ITERATION
+# ITERATION = 9
+
+# main_i_loop:
 """
 
 
@@ -573,10 +579,7 @@ m = mem64[pointer_delta]
 
 code += """
 
-uu = 1
-vv = 0
-rr = 0
-ss = 1
+
 int64 2p41
 2p41 = 1
 2p41 = 2p41 << 41
@@ -628,29 +631,26 @@ code += """
 
 
 # Extraction
-int64 u
-int64 v
-int64 r
-int64 s
-
-v = fuv
-v = v + 1048576
-v = v + 2p41
-v = v signed>> 42
-
-u = fuv + 1048576
-u = u << 22
-u = u signed>> 43
 
 
-s = grs
-s = s + 1048576
-s = s + 2p41
-s = s signed>> 42
+vv = fuv
+vv = vv + 1048576
+vv = vv + 2p41
+vv = vv signed>> 42
 
-r = grs + 1048576
-r = r << 22
-r = r signed>> 43
+uu = fuv + 1048576
+uu = uu << 22
+uu = uu signed>> 43
+
+
+ss = grs
+ss = ss + 1048576
+ss = ss + 2p41
+ss = ss signed>> 42
+
+rr = grs + 1048576
+rr = rr << 22
+rr = rr signed>> 43
 
 
 """
@@ -665,13 +665,14 @@ int64 new_uu
 int64 new_vv
 int64 new_rr
 int64 new_ss
-prod_lo = u * f
-prod_hi = u signed* f (hi)
 
-tmp = v * g
+prod_lo = uu * f
+prod_hi = uu signed* f (hi)
+
+tmp = vv * g
 prod_lo += tmp !
 
-tmp = v signed* g (hi)
+tmp = vv signed* g (hi)
 prod_hi = prod_hi + tmp + carry 
 
 prod_lo = prod_lo unsigned>> 20
@@ -681,48 +682,20 @@ new_f = prod_lo | prod_hi
 
 
 
-prod_lo = r * f
-prod_hi = r signed* f (hi)
+prod_lo = rr * f
+prod_hi = rr signed* f (hi)
 
-tmp = s * g
+tmp = ss * g
 prod_lo += tmp !
 
-tmp = s signed* g (hi)
+tmp = ss signed* g (hi)
 prod_hi = prod_hi + tmp + carry 
 
 prod_lo = prod_lo unsigned>> 20
 prod_hi = prod_hi << 44
-new_g = prod_lo | prod_hi
-
-
-
+g = prod_lo | prod_hi
 f = new_f
-g = new_g
 
-
-
-
-
-tmp = u * uu
-new_uu = tmp + v * rr
-
-tmp = r * uu
-new_rr = tmp + s * rr
-
-tmp = u * vv
-new_vv = tmp + v * ss
-
-tmp = r * vv
-new_ss = tmp + s * ss
-
-
-
-
-
-uu = new_uu
-vv = new_vv
-rr = new_rr
-ss = new_ss
 
 
 """
@@ -762,10 +735,10 @@ code += """
 
 
 # Extraction
-# int64 u
-# int64 v
-# int64 r
-# int64 s
+int64 u
+int64 v
+int64 r
+int64 s
 
 v = fuv
 v = v + 1048576
@@ -1001,6 +974,10 @@ ss = new_ss
 mem128[pointer_uuvvrrss] = uu, vv
 mem128[pointer_uuvvrrss + 16] = rr, ss
 
+
+#ITERATION -= 1 !
+#goto main_i_loop if unsigned>= 
+
 """
 
 
@@ -1015,8 +992,8 @@ mem128[pointer_uuvvrrss + 16] = rr, ss
 
 for i in range(15-1, 8-1,-2):
     code += f"pop2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
-# for i in range(29, 18-1,-2):
-#     code += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
+for i in range(29, 18-1,-2):
+    code += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
 
 
 

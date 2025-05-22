@@ -1,12 +1,13 @@
 #include<stdint.h>
 //#include<stdio.h>
-#include"mybig30.h"
+#include"big30.h"
+#include"big30_mpz.h"
 #include<gmp.h>
 
 
 void cpt_inv(uint256_t *x, uint256_t *inv){
 
-    big30_9 F, G, V, S;
+    big30_t F, G, V, S;
     int64_t f, g;
     int64_t delta = 1;
     int64_t fuv, grs;
@@ -26,7 +27,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
     
     uint256_to_big30_9(&G, x);
     for (size_t i = 0; i < 9; i++) {
-        F.limb[i] = P.limb[i];
+                    F.limb[i] = P.limb[i];
         V.limb[i] = 0;
         S.limb[i] = 0;
     }
