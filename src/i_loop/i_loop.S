@@ -660,6 +660,9 @@ ins v18.s[3], w12
 
 # qhasm: reg128 vec_prod
 
+
+# CHUNK
+
 # qhasm: 2x vec_prod = vec_uu0_rr0_vv0_ss0[0] * vec_F0_F1_G0_G1[0/4]
 # asm 1: smull >vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F0_F1_G0_G1=reg128#6.s[0]
 # asm 2: smull >vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F0_F1_G0_G1=v5.s[0]
@@ -775,6 +778,156 @@ shl v20.2d, v20.2d, #32
 # asm 2: orr <vec_F0_F1_G0_G1=v5.16b, <vec_F0_F1_G0_G1=v5.16b, <vec_buffer=v20.16b
 orr v5.16b, v5.16b, v20.16b
 
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[0/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F4_F5_G4_G5=reg128#8.s[0]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F4_F5_G4_G5=v7.s[0]
+smlal v19.2d,v17.2s,v7.s[0]
+
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F4_F5_G4_G5[2/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F4_F5_G4_G5=reg128#8.s[2]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F4_F5_G4_G5=v7.s[2]
+smlal2 v19.2d,v17.4s,v7.s[2]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F2_F3_G2_G3[1/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F2_F3_G2_G3=reg128#7.s[1]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F2_F3_G2_G3=v6.s[1]
+smlal v19.2d,v18.2s,v6.s[1]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F2_F3_G2_G3[3/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F2_F3_G2_G3=reg128#7.s[3]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F2_F3_G2_G3=v6.s[3]
+smlal2 v19.2d,v18.4s,v6.s[3]
+
+# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
+# asm 1: and >vec_buffer=reg128#7.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
+# asm 2: and >vec_buffer=v6.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
+and v6.16b, v19.16b, v1.16b
+
+# qhasm: 2x vec_prod >>= 30
+# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
+# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
+sshr v19.2d, v19.2d, #30
+
+# qhasm: vec_F2_F3_G2_G3 = vec_buffer
+# asm 1: mov >vec_F2_F3_G2_G3=reg128#7.16b, <vec_buffer=reg128#7.16b
+# asm 2: mov >vec_F2_F3_G2_G3=v6.16b, <vec_buffer=v6.16b
+mov v6.16b, v6.16b
+
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[1/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F4_F5_G4_G5=reg128#8.s[1]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F4_F5_G4_G5=v7.s[1]
+smlal v19.2d,v17.2s,v7.s[1]
+
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F4_F5_G4_G5[3/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F4_F5_G4_G5=reg128#8.s[3]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F4_F5_G4_G5=v7.s[3]
+smlal2 v19.2d,v17.4s,v7.s[3]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F4_F5_G4_G5[0/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F4_F5_G4_G5=reg128#8.s[0]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F4_F5_G4_G5=v7.s[0]
+smlal v19.2d,v18.2s,v7.s[0]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F4_F5_G4_G5[2/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F4_F5_G4_G5=reg128#8.s[2]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F4_F5_G4_G5=v7.s[2]
+smlal2 v19.2d,v18.4s,v7.s[2]
+
+# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
+# asm 1: and >vec_buffer=reg128#21.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
+# asm 2: and >vec_buffer=v20.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
+and v20.16b, v19.16b, v1.16b
+
+# qhasm: 2x vec_prod >>= 30
+# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
+# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
+sshr v19.2d, v19.2d, #30
+
+# qhasm: 2x vec_buffer <<= 32
+# asm 1: shl >vec_buffer=reg128#21.2d, <vec_buffer=reg128#21.2d, #32
+# asm 2: shl >vec_buffer=v20.2d, <vec_buffer=v20.2d, #32
+shl v20.2d, v20.2d, #32
+
+# qhasm: vec_F2_F3_G2_G3 |= vec_buffer
+# asm 1: orr <vec_F2_F3_G2_G3=reg128#7.16b, <vec_F2_F3_G2_G3=reg128#7.16b, <vec_buffer=reg128#21.16b
+# asm 2: orr <vec_F2_F3_G2_G3=v6.16b, <vec_F2_F3_G2_G3=v6.16b, <vec_buffer=v20.16b
+orr v6.16b, v6.16b, v20.16b
+
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F6_F7_G6_G7[0/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F6_F7_G6_G7=reg128#9.s[0]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F6_F7_G6_G7=v8.s[0]
+smlal v19.2d,v17.2s,v8.s[0]
+
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F6_F7_G6_G7[2/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F6_F7_G6_G7=reg128#9.s[2]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F6_F7_G6_G7=v8.s[2]
+smlal2 v19.2d,v17.4s,v8.s[2]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F4_F5_G4_G5[1/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F4_F5_G4_G5=reg128#8.s[1]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F4_F5_G4_G5=v7.s[1]
+smlal v19.2d,v18.2s,v7.s[1]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F4_F5_G4_G5[3/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F4_F5_G4_G5=reg128#8.s[3]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F4_F5_G4_G5=v7.s[3]
+smlal2 v19.2d,v18.4s,v7.s[3]
+
+# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
+# asm 1: and >vec_buffer=reg128#8.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
+# asm 2: and >vec_buffer=v7.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
+and v7.16b, v19.16b, v1.16b
+
+# qhasm: 2x vec_prod >>= 30
+# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
+# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
+sshr v19.2d, v19.2d, #30
+
+# qhasm: vec_F4_F5_G4_G5 = vec_buffer
+# asm 1: mov >vec_F4_F5_G4_G5=reg128#8.16b, <vec_buffer=reg128#8.16b
+# asm 2: mov >vec_F4_F5_G4_G5=v7.16b, <vec_buffer=v7.16b
+mov v7.16b, v7.16b
+
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F6_F7_G6_G7[1/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F6_F7_G6_G7=reg128#9.s[1]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F6_F7_G6_G7=v8.s[1]
+smlal v19.2d,v17.2s,v8.s[1]
+
+# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F6_F7_G6_G7[3/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F6_F7_G6_G7=reg128#9.s[3]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F6_F7_G6_G7=v8.s[3]
+smlal2 v19.2d,v17.4s,v8.s[3]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F6_F7_G6_G7[0/4]
+# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F6_F7_G6_G7=reg128#9.s[0]
+# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F6_F7_G6_G7=v8.s[0]
+smlal v19.2d,v18.2s,v8.s[0]
+
+# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F6_F7_G6_G7[2/4]
+# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F6_F7_G6_G7=reg128#9.s[2]
+# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F6_F7_G6_G7=v8.s[2]
+smlal2 v19.2d,v18.4s,v8.s[2]
+
+# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
+# asm 1: and >vec_buffer=reg128#21.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
+# asm 2: and >vec_buffer=v20.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
+and v20.16b, v19.16b, v1.16b
+
+# qhasm: 2x vec_prod >>= 30
+# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
+# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
+sshr v19.2d, v19.2d, #30
+
+# qhasm: 2x vec_buffer <<= 32
+# asm 1: shl >vec_buffer=reg128#21.2d, <vec_buffer=reg128#21.2d, #32
+# asm 2: shl >vec_buffer=v20.2d, <vec_buffer=v20.2d, #32
+shl v20.2d, v20.2d, #32
+
+# qhasm: vec_F4_F5_G4_G5 |= vec_buffer
+# asm 1: orr <vec_F4_F5_G4_G5=reg128#8.16b, <vec_F4_F5_G4_G5=reg128#8.16b, <vec_buffer=reg128#21.16b
+# asm 2: orr <vec_F4_F5_G4_G5=v7.16b, <vec_F4_F5_G4_G5=v7.16b, <vec_buffer=v20.16b
+orr v7.16b, v7.16b, v20.16b
+
 # qhasm:             f_hi = vec_F0_F1_G0_G1[1/4]
 # asm 1: smov >f_hi=int64#10, <vec_F0_F1_G0_G1=reg128#6.s[1]
 # asm 2: smov >f_hi=x9, <vec_F0_F1_G0_G1=v5.s[1]
@@ -825,25 +978,54 @@ sub x11,x11,x7
 # asm 2: sub <grs=x12,<grs=x12,<2p62=x8
 sub x12,x12,x8
 
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[0/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F4_F5_G4_G5=reg128#8.s[0]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F4_F5_G4_G5=v7.s[0]
-smlal v19.2d,v17.2s,v7.s[0]
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
 
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F4_F5_G4_G5[2/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F4_F5_G4_G5=reg128#8.s[2]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F4_F5_G4_G5=v7.s[2]
-smlal2 v19.2d,v17.4s,v7.s[2]
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
 
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F2_F3_G2_G3[1/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F2_F3_G2_G3=reg128#7.s[1]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F2_F3_G2_G3=v6.s[1]
-smlal v19.2d,v18.2s,v6.s[1]
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
 
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F2_F3_G2_G3[3/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F2_F3_G2_G3=reg128#7.s[3]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F2_F3_G2_G3=v6.s[3]
-smlal2 v19.2d,v18.4s,v6.s[3]
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
 
 # qhasm:             m1 = m - 1 
 # asm 1: sub >m1=int64#15,<m=int64#14,#1
@@ -894,40 +1076,54 @@ asr x12, x12, #1
 
 # qhasm:             free ff
 
-# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
-# asm 1: and >vec_buffer=reg128#7.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
-# asm 2: and >vec_buffer=v6.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
-and v6.16b, v19.16b, v1.16b
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
 
-# qhasm: 2x vec_prod >>= 30
-# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
-# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
-sshr v19.2d, v19.2d, #30
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
 
-# qhasm: vec_F2_F3_G2_G3 = vec_buffer
-# asm 1: mov >vec_F2_F3_G2_G3=reg128#7.16b, <vec_buffer=reg128#7.16b
-# asm 2: mov >vec_F2_F3_G2_G3=v6.16b, <vec_buffer=v6.16b
-mov v6.16b, v6.16b
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
 
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[1/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F4_F5_G4_G5=reg128#8.s[1]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F4_F5_G4_G5=v7.s[1]
-smlal v19.2d,v17.2s,v7.s[1]
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
 
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F4_F5_G4_G5[3/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F4_F5_G4_G5=reg128#8.s[3]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F4_F5_G4_G5=v7.s[3]
-smlal2 v19.2d,v17.4s,v7.s[3]
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
 
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F4_F5_G4_G5[0/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F4_F5_G4_G5=reg128#8.s[0]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F4_F5_G4_G5=v7.s[0]
-smlal v19.2d,v18.2s,v7.s[0]
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
 
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F4_F5_G4_G5[2/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F4_F5_G4_G5=reg128#8.s[2]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F4_F5_G4_G5=v7.s[2]
-smlal2 v19.2d,v18.4s,v7.s[2]
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
 
 # qhasm:             m1 = m - 1 
 # asm 1: sub >m1=int64#15,<m=int64#14,#1
@@ -978,198 +1174,7 @@ asr x12, x12, #1
 
 # qhasm:             free ff
 
-# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
-# asm 1: and >vec_buffer=reg128#21.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
-# asm 2: and >vec_buffer=v20.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
-and v20.16b, v19.16b, v1.16b
-
-# qhasm: 2x vec_prod >>= 30
-# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
-# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
-sshr v19.2d, v19.2d, #30
-
-# qhasm: 2x vec_buffer <<= 32
-# asm 1: shl >vec_buffer=reg128#21.2d, <vec_buffer=reg128#21.2d, #32
-# asm 2: shl >vec_buffer=v20.2d, <vec_buffer=v20.2d, #32
-shl v20.2d, v20.2d, #32
-
-# qhasm: vec_F2_F3_G2_G3 |= vec_buffer
-# asm 1: orr <vec_F2_F3_G2_G3=reg128#7.16b, <vec_F2_F3_G2_G3=reg128#7.16b, <vec_buffer=reg128#21.16b
-# asm 2: orr <vec_F2_F3_G2_G3=v6.16b, <vec_F2_F3_G2_G3=v6.16b, <vec_buffer=v20.16b
-orr v6.16b, v6.16b, v20.16b
-
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F6_F7_G6_G7[0/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F6_F7_G6_G7=reg128#9.s[0]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F6_F7_G6_G7=v8.s[0]
-smlal v19.2d,v17.2s,v8.s[0]
-
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F6_F7_G6_G7[2/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F6_F7_G6_G7=reg128#9.s[2]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F6_F7_G6_G7=v8.s[2]
-smlal2 v19.2d,v17.4s,v8.s[2]
-
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F4_F5_G4_G5[1/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F4_F5_G4_G5=reg128#8.s[1]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F4_F5_G4_G5=v7.s[1]
-smlal v19.2d,v18.2s,v7.s[1]
-
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F4_F5_G4_G5[3/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F4_F5_G4_G5=reg128#8.s[3]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F4_F5_G4_G5=v7.s[3]
-smlal2 v19.2d,v18.4s,v7.s[3]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
-
-# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
-# asm 1: and >vec_buffer=reg128#8.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
-# asm 2: and >vec_buffer=v7.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
-and v7.16b, v19.16b, v1.16b
-
-# qhasm: 2x vec_prod >>= 30
-# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
-# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
-sshr v19.2d, v19.2d, #30
-
-# qhasm: vec_F4_F5_G4_G5 = vec_buffer
-# asm 1: mov >vec_F4_F5_G4_G5=reg128#8.16b, <vec_buffer=reg128#8.16b
-# asm 2: mov >vec_F4_F5_G4_G5=v7.16b, <vec_buffer=v7.16b
-mov v7.16b, v7.16b
-
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F6_F7_G6_G7[1/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F6_F7_G6_G7=reg128#9.s[1]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.2s,<vec_F6_F7_G6_G7=v8.s[1]
-smlal v19.2d,v17.2s,v8.s[1]
-
-# qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F6_F7_G6_G7[3/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_F6_F7_G6_G7=reg128#9.s[3]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_F6_F7_G6_G7=v8.s[3]
-smlal2 v19.2d,v17.4s,v8.s[3]
-
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F6_F7_G6_G7[0/4]
-# asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.2s,<vec_F6_F7_G6_G7=reg128#9.s[0]
-# asm 2: smlal <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.2s,<vec_F6_F7_G6_G7=v8.s[0]
-smlal v19.2d,v18.2s,v8.s[0]
-
-# qhasm: 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F6_F7_G6_G7[2/4]
-# asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F6_F7_G6_G7=reg128#9.s[2]
-# asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F6_F7_G6_G7=v8.s[2]
-smlal2 v19.2d,v18.4s,v8.s[2]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
-
-# qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
-# asm 1: and >vec_buffer=reg128#21.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
-# asm 2: and >vec_buffer=v20.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
-and v20.16b, v19.16b, v1.16b
-
-# qhasm: 2x vec_prod >>= 30
-# asm 1: sshr >vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, #30
-# asm 2: sshr >vec_prod=v19.2d, <vec_prod=v19.2d, #30
-sshr v19.2d, v19.2d, #30
-
-# qhasm: 2x vec_buffer <<= 32
-# asm 1: shl >vec_buffer=reg128#21.2d, <vec_buffer=reg128#21.2d, #32
-# asm 2: shl >vec_buffer=v20.2d, <vec_buffer=v20.2d, #32
-shl v20.2d, v20.2d, #32
-
-# qhasm: vec_F4_F5_G4_G5 |= vec_buffer
-# asm 1: orr <vec_F4_F5_G4_G5=reg128#8.16b, <vec_F4_F5_G4_G5=reg128#8.16b, <vec_buffer=reg128#21.16b
-# asm 2: orr <vec_F4_F5_G4_G5=v7.16b, <vec_F4_F5_G4_G5=v7.16b, <vec_buffer=v20.16b
-orr v7.16b, v7.16b, v20.16b
+# CHUNK
 
 # qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F8_F9_G8_G9[0/4]
 # asm 1: smlal <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.2s,<vec_F8_F9_G8_G9=reg128#10.s[0]
@@ -1190,55 +1195,6 @@ smlal v19.2d,v18.2s,v8.s[1]
 # asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F6_F7_G6_G7=reg128#9.s[3]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F6_F7_G6_G7=v8.s[3]
 smlal2 v19.2d,v18.4s,v8.s[3]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
 
 # qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_buffer=reg128#9.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
@@ -1264,55 +1220,6 @@ smlal v19.2d,v18.2s,v9.s[0]
 # asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_F8_F9_G8_G9=reg128#10.s[2]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_F8_F9_G8_G9=v9.s[2]
 smlal2 v19.2d,v18.4s,v9.s[2]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
 
 # qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_buffer=reg128#10.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
@@ -1352,55 +1259,6 @@ smull v19.2d,v17.2s,v10.s[0]
 # asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu0_rr0_vv0_ss0=reg128#18.4s,<vec_V0_V1_S0_S1=reg128#11.s[2]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu0_rr0_vv0_ss0=v17.4s,<vec_V0_V1_S0_S1=v10.s[2]
 smlal2 v19.2d,v17.4s,v10.s[2]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
 
 # qhasm: reg128 vec_l0
 
@@ -1454,55 +1312,6 @@ smlal v19.2d,v18.2s,v10.s[0]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V0_V1_S0_S1=v10.s[2]
 smlal2 v19.2d,v18.4s,v10.s[2]
 
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
-
 # qhasm: reg128 vec_l1
 
 # qhasm: 4x vec_l1 = vec_prod * vec_M
@@ -1555,55 +1364,6 @@ smlal v19.2d,v18.2s,v10.s[1]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V0_V1_S0_S1=v10.s[3]
 smlal2 v19.2d,v18.4s,v10.s[3]
 
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
-
 # qhasm: vec_V0_V1_S0_S1 = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_V0_V1_S0_S1=reg128#11.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
 # asm 2: and >vec_V0_V1_S0_S1=v10.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
@@ -1633,55 +1393,6 @@ smlal v19.2d,v18.2s,v11.s[0]
 # asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_V2_V3_S2_S3=reg128#12.s[2]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V2_V3_S2_S3=v11.s[2]
 smlal2 v19.2d,v18.4s,v11.s[2]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
 
 # qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_buffer=reg128#23.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
@@ -1723,55 +1434,6 @@ smlal v19.2d,v18.2s,v11.s[1]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V2_V3_S2_S3=v11.s[3]
 smlal2 v19.2d,v18.4s,v11.s[3]
 
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
-
 # qhasm: vec_V2_V3_S2_S3 = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_V2_V3_S2_S3=reg128#12.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
 # asm 2: and >vec_V2_V3_S2_S3=v11.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
@@ -1801,55 +1463,6 @@ smlal v19.2d,v18.2s,v12.s[0]
 # asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_V4_V5_S4_S5=reg128#13.s[2]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V4_V5_S4_S5=v12.s[2]
 smlal2 v19.2d,v18.4s,v12.s[2]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
 
 # qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_buffer=reg128#23.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
@@ -1891,55 +1504,6 @@ smlal v19.2d,v18.2s,v12.s[1]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V4_V5_S4_S5=v12.s[3]
 smlal2 v19.2d,v18.4s,v12.s[3]
 
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
-
 # qhasm: vec_V4_V5_S4_S5 = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_V4_V5_S4_S5=reg128#13.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
 # asm 2: and >vec_V4_V5_S4_S5=v12.16b, <vec_prod=v19.16b, <vec_2x_2p30m1=v1.16b
@@ -1969,55 +1533,6 @@ smlal v19.2d,v18.2s,v13.s[0]
 # asm 1: smlal2 <vec_prod=reg128#20.2d,<vec_uu1_rr1_vv1_ss1=reg128#19.4s,<vec_V6_V7_S6_S7=reg128#14.s[2]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V6_V7_S6_S7=v13.s[2]
 smlal2 v19.2d,v18.4s,v13.s[2]
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
 
 # qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_buffer=reg128#23.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
@@ -2059,55 +1574,6 @@ smlal v19.2d,v18.2s,v13.s[1]
 # asm 2: smlal2 <vec_prod=v19.2d,<vec_uu1_rr1_vv1_ss1=v18.4s,<vec_V6_V7_S6_S7=v13.s[3]
 smlal2 v19.2d,v18.4s,v13.s[3]
 
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
-
 # qhasm: 2x vec_prod += final_add_0
 # asm 1: add <vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, <final_add_0=reg128#21.2d
 # asm 2: add <vec_prod=v19.2d, <vec_prod=v19.2d, <final_add_0=v20.2d
@@ -2137,55 +1603,6 @@ smlal2 v19.2d,v18.4s,v14.s[2]
 # asm 1: add <vec_prod=reg128#20.2d, <vec_prod=reg128#20.2d, <final_add_1=reg128#22.2d
 # asm 2: add <vec_prod=v19.2d, <vec_prod=v19.2d, <final_add_1=v21.2d
 add v19.2d, v19.2d, v21.2d
-
-# qhasm:             m1 = m - 1 
-# asm 1: sub >m1=int64#15,<m=int64#14,#1
-# asm 2: sub >m1=x14,<m=x13,#1
-sub x14,x13,#1
-
-# qhasm:             grs & 1
-# asm 1: tst <grs=int64#13, #1
-# asm 2: tst <grs=x12, #1
-tst x12, #1
-
-# qhasm:             ff = fuv if Z=0 else 0
-# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
-# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
-csel x15, x11, xzr, ne
-
-# qhasm:             m1 & (grs >>> 1)
-# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
-# asm 2: tst <m1=x14, <grs=x12, ROR #1
-tst x14, x12, ROR #1
-
-# qhasm:             m = m1 if N=0 else -m
-# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
-# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
-csneg x13, x14, x13, pl
-
-# qhasm:             fuv = grs if N=1 else fuv
-# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
-# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
-csel x11, x12, x11, mi
-
-# qhasm:             ff = ff if N=0 else -ff
-# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
-# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
-csneg x15, x15, x15, pl
-
-# qhasm:             grs = grs + ff
-# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
-# asm 2: add >grs=x12,<grs=x12,<ff=x15
-add x12,x12,x15
-
-# qhasm:             grs = grs signed>> 1
-# asm 1: asr >grs=int64#13, <grs=int64#13, #1
-# asm 2: asr >grs=x12, <grs=x12, #1
-asr x12, x12, #1
-
-# qhasm:             free m1
-
-# qhasm:             free ff
 
 # qhasm: vec_buffer = vec_prod & vec_2x_2p30m1
 # asm 1: and >vec_buffer=reg128#15.16b, <vec_prod=reg128#20.16b, <vec_2x_2p30m1=reg128#2.16b
@@ -2285,6 +1702,643 @@ and v10.16b, v10.16b, v2.16b
 # asm 1: add <vec_V2_V3_S2_S3=reg128#12.4s, <vec_V2_V3_S2_S3=reg128#12.4s, <vec_carry=reg128#17.4s
 # asm 2: add <vec_V2_V3_S2_S3=v11.4s, <vec_V2_V3_S2_S3=v11.4s, <vec_carry=v16.4s
 add v11.4s, v11.4s, v16.4s
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
+
+# qhasm:             m1 = m - 1 
+# asm 1: sub >m1=int64#15,<m=int64#14,#1
+# asm 2: sub >m1=x14,<m=x13,#1
+sub x14,x13,#1
+
+# qhasm:             grs & 1
+# asm 1: tst <grs=int64#13, #1
+# asm 2: tst <grs=x12, #1
+tst x12, #1
+
+# qhasm:             ff = fuv if Z=0 else 0
+# asm 1: csel >ff=int64#16, <fuv=int64#12, xzr, ne
+# asm 2: csel >ff=x15, <fuv=x11, xzr, ne
+csel x15, x11, xzr, ne
+
+# qhasm:             m1 & (grs >>> 1)
+# asm 1: tst <m1=int64#15, <grs=int64#13, ROR #1
+# asm 2: tst <m1=x14, <grs=x12, ROR #1
+tst x14, x12, ROR #1
+
+# qhasm:             m = m1 if N=0 else -m
+# asm 1: csneg >m=int64#14, <m1=int64#15, <m=int64#14, pl
+# asm 2: csneg >m=x13, <m1=x14, <m=x13, pl
+csneg x13, x14, x13, pl
+
+# qhasm:             fuv = grs if N=1 else fuv
+# asm 1: csel >fuv=int64#12, <grs=int64#13, <fuv=int64#12, mi
+# asm 2: csel >fuv=x11, <grs=x12, <fuv=x11, mi
+csel x11, x12, x11, mi
+
+# qhasm:             ff = ff if N=0 else -ff
+# asm 1: csneg >ff=int64#16, <ff=int64#16, <ff=int64#16, pl
+# asm 2: csneg >ff=x15, <ff=x15, <ff=x15, pl
+csneg x15, x15, x15, pl
+
+# qhasm:             grs = grs + ff
+# asm 1: add >grs=int64#13,<grs=int64#13,<ff=int64#16
+# asm 2: add >grs=x12,<grs=x12,<ff=x15
+add x12,x12,x15
+
+# qhasm:             grs = grs signed>> 1
+# asm 1: asr >grs=int64#13, <grs=int64#13, #1
+# asm 2: asr >grs=x12, <grs=x12, #1
+asr x12, x12, #1
+
+# qhasm:             free m1
+
+# qhasm:             free ff
 
 # qhasm:             m1 = m - 1 
 # asm 1: sub >m1=int64#15,<m=int64#14,#1
