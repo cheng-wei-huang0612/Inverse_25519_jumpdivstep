@@ -204,6 +204,14 @@ stp d14,d15,[sp,#-16]!
 
 # qhasm: int64 ss
 
+# qhasm: int64 f_hi
+
+# qhasm: int64 f
+
+# qhasm: int64 g_hi
+
+# qhasm: int64 g
+
 # qhasm: int64 ITERATION
 
 # qhasm: ITERATION = 9
@@ -714,6 +722,36 @@ shl v19.2d, v19.2d, #32
 # asm 1: orr <vec_F0_F1_G0_G1=reg128#5.16b, <vec_F0_F1_G0_G1=reg128#5.16b, <vec_buffer=reg128#20.16b
 # asm 2: orr <vec_F0_F1_G0_G1=v4.16b, <vec_F0_F1_G0_G1=v4.16b, <vec_buffer=v19.16b
 orr v4.16b, v4.16b, v19.16b
+
+# qhasm: f_hi = vec_F0_F1_G0_G1[1/4]
+# asm 1: smov >f_hi=int64#8, <vec_F0_F1_G0_G1=reg128#5.s[1]
+# asm 2: smov >f_hi=x7, <vec_F0_F1_G0_G1=v4.s[1]
+smov x7, v4.s[1]
+
+# qhasm: f = vec_F0_F1_G0_G1[0/4]
+# asm 1: smov >f=int64#9, <vec_F0_F1_G0_G1=reg128#5.s[0]
+# asm 2: smov >f=x8, <vec_F0_F1_G0_G1=v4.s[0]
+smov x8, v4.s[0]
+
+# qhasm: g_hi = vec_F0_F1_G0_G1[3/4]
+# asm 1: smov >g_hi=int64#10, <vec_F0_F1_G0_G1=reg128#5.s[3]
+# asm 2: smov >g_hi=x9, <vec_F0_F1_G0_G1=v4.s[3]
+smov x9, v4.s[3]
+
+# qhasm: g = vec_F0_F1_G0_G1[2/4]
+# asm 1: smov >g=int64#11, <vec_F0_F1_G0_G1=reg128#5.s[2]
+# asm 2: smov >g=x10, <vec_F0_F1_G0_G1=v4.s[2]
+smov x10, v4.s[2]
+
+# qhasm: f = f + f_hi << 30
+# asm 1: add >f=int64#8,<f=int64#9,<f_hi=int64#8,LSL #30
+# asm 2: add >f=x7,<f=x8,<f_hi=x7,LSL #30
+add x7,x8,x7,LSL #30
+
+# qhasm: g = g + g_hi << 30
+# asm 1: add >g=int64#9,<g=int64#11,<g_hi=int64#10,LSL #30
+# asm 2: add >g=x8,<g=x10,<g_hi=x9,LSL #30
+add x8,x10,x9,LSL #30
 
 # qhasm: 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[0/4]
 # asm 1: smlal <vec_prod=reg128#19.2d,<vec_uu0_rr0_vv0_ss0=reg128#17.2s,<vec_F4_F5_G4_G5=reg128#7.s[0]
@@ -1356,44 +1394,6 @@ and v18.16b, v18.16b, v0.16b
 # asm 1: add <vec_V0_V1_S0_S1=reg128#10.4s, <vec_V0_V1_S0_S1=reg128#10.4s, <vec_buffer=reg128#19.4s
 # asm 2: add <vec_V0_V1_S0_S1=v9.4s, <vec_V0_V1_S0_S1=v9.4s, <vec_buffer=v18.4s
 add v9.4s, v9.4s, v18.4s
-
-# qhasm: int64 f_hi
-
-# qhasm: int64 f
-
-# qhasm: int64 g_hi
-
-# qhasm: int64 g
-
-# qhasm: f_hi = vec_F0_F1_G0_G1[1/4]
-# asm 1: smov >f_hi=int64#8, <vec_F0_F1_G0_G1=reg128#5.s[1]
-# asm 2: smov >f_hi=x7, <vec_F0_F1_G0_G1=v4.s[1]
-smov x7, v4.s[1]
-
-# qhasm: f = vec_F0_F1_G0_G1[0/4]
-# asm 1: smov >f=int64#9, <vec_F0_F1_G0_G1=reg128#5.s[0]
-# asm 2: smov >f=x8, <vec_F0_F1_G0_G1=v4.s[0]
-smov x8, v4.s[0]
-
-# qhasm: g_hi = vec_F0_F1_G0_G1[3/4]
-# asm 1: smov >g_hi=int64#10, <vec_F0_F1_G0_G1=reg128#5.s[3]
-# asm 2: smov >g_hi=x9, <vec_F0_F1_G0_G1=v4.s[3]
-smov x9, v4.s[3]
-
-# qhasm: g = vec_F0_F1_G0_G1[2/4]
-# asm 1: smov >g=int64#11, <vec_F0_F1_G0_G1=reg128#5.s[2]
-# asm 2: smov >g=x10, <vec_F0_F1_G0_G1=v4.s[2]
-smov x10, v4.s[2]
-
-# qhasm: f = f + f_hi << 30
-# asm 1: add >f=int64#8,<f=int64#9,<f_hi=int64#8,LSL #30
-# asm 2: add >f=x7,<f=x8,<f_hi=x7,LSL #30
-add x7,x8,x7,LSL #30
-
-# qhasm: g = g + g_hi << 30
-# asm 1: add >g=int64#9,<g=int64#11,<g_hi=int64#10,LSL #30
-# asm 2: add >g=x8,<g=x10,<g_hi=x9,LSL #30
-add x8,x10,x9,LSL #30
 
 # qhasm: int64 m
 

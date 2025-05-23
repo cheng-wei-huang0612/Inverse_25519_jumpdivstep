@@ -54,6 +54,10 @@ int64 vv
 int64 rr
 int64 ss
 
+int64 f_hi
+int64 f
+int64 g_hi
+int64 g
 
 int64 ITERATION
 ITERATION = 9
@@ -274,6 +278,15 @@ vec_buffer = vec_prod & vec_2x_2p30m1
 vec_F0_F1_G0_G1 |= vec_buffer
 
 
+f_hi = vec_F0_F1_G0_G1[1/4]
+f = vec_F0_F1_G0_G1[0/4]
+g_hi = vec_F0_F1_G0_G1[3/4]
+g = vec_F0_F1_G0_G1[2/4]
+f = f + f_hi << 30
+g = g + g_hi << 30
+
+
+
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[0/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F4_F5_G4_G5[2/4]
 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F2_F3_G2_G3[1/4]
@@ -492,17 +505,9 @@ vec_buffer &= vec_2x_2p32m1
 
 
 
-int64 f_hi
-int64 f
-int64 g_hi
-int64 g
 
-f_hi = vec_F0_F1_G0_G1[1/4]
-f = vec_F0_F1_G0_G1[0/4]
-g_hi = vec_F0_F1_G0_G1[3/4]
-g = vec_F0_F1_G0_G1[2/4]
-f = f + f_hi << 30
-g = g + g_hi << 30
+
+
 
 int64 m
 m = mem64[pointer_delta]
