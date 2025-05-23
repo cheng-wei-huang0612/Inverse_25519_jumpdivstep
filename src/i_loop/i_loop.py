@@ -66,6 +66,9 @@ reg128 vec_2x_2p32m1
 2x vec_2x_2p32m1 = 0xFFFFFFFF
 2x vec_2x_2p30m1 = vec_2x_2p32m1 unsigned>> 2
 
+reg128 vec_2x_2p15m1
+2x vec_2x_2p15m1 = vec_2x_2p30m1 >> 15
+
 reg128 vec_4x_2p30m1
 4x vec_4x_2p30m1 = vec_2x_2p30m1[0/4] vec_2x_2p30m1[2/4] vec_2x_2p30m1[0/4] vec_2x_2p30m1[2/4]
 
@@ -452,10 +455,7 @@ vec_V6_V7_S6_S7 |= vec_buffer
 
 2x vec_prod >>= 30
 
-reg128 vec_2x_2p15m1
-2x vec_2x_2p15m1 = vec_2x_2p30m1 >> 15
-2x vec_2x_2p15m1 = vec_2x_2p30m1 >> 15
-2x vec_2x_2p32m1 = 0xFFFFFFFF
+
 
 reg128 vec_carry
 2x vec_carry = vec_prod >> 15
