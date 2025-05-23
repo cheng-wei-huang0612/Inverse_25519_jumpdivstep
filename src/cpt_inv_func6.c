@@ -71,6 +71,15 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
 
 
     i_loop(&delta, &F, &G, &V, &S, uuvvrrss);
+
+
+    // for (int j = 0; j < 9; j++) {
+    // printf("V.limb[%d] = %d\n", j, V.limb[j]);
+    // }
+    // for (int k = 0; k < 4; k++) {
+    //     printf("uuvvrrss[%d] = %lld\n", k, uuvvrrss[k]);
+    // }
+
         
     update_FG(&F, &G, uuvvrrss);
     update_VS_mont(&V, &S, uuvvrrss);

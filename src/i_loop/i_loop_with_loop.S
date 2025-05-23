@@ -4754,6 +4754,14 @@ mov x9,x12
 # asm 2: mov >ss=x10,<new_ss=x10
 mov x10,x10
 
+# qhasm: ITERATION -= 1 !
+# asm 1: subs <ITERATION=int64#7,<ITERATION=int64#7,#1
+# asm 2: subs <ITERATION=x6,<ITERATION=x6,#1
+subs x6,x6,#1
+
+# qhasm: goto main_i_loop if unsigned>
+b.hi ._main_i_loop
+
 # qhasm: mem128[pointer_uuvvrrss] = uu, vv
 # asm 1: stp <uu=int64#8, <vv=int64#9, [<pointer_uuvvrrss=int64#6]
 # asm 2: stp <uu=x7, <vv=x8, [<pointer_uuvvrrss=x5]
@@ -4769,62 +4777,62 @@ stp x9, x10, [x5, #16]
 # qhasm: reg128 vec_G0_G1_G2_G3
 
 # qhasm: 2x vec_F0_F1_F2_F3 zip= vec_F0_F1_G0_G1[0/2] vec_F2_F3_G2_G3[0/2]
-# asm 1: zip1 >vec_F0_F1_F2_F3=reg128#19.2d, <vec_F0_F1_G0_G1=reg128#5.2d, <vec_F2_F3_G2_G3=reg128#6.2d
-# asm 2: zip1 >vec_F0_F1_F2_F3=v18.2d, <vec_F0_F1_G0_G1=v4.2d, <vec_F2_F3_G2_G3=v5.2d
-zip1 v18.2d, v4.2d, v5.2d
+# asm 1: zip1 >vec_F0_F1_F2_F3=reg128#1.2d, <vec_F0_F1_G0_G1=reg128#5.2d, <vec_F2_F3_G2_G3=reg128#6.2d
+# asm 2: zip1 >vec_F0_F1_F2_F3=v0.2d, <vec_F0_F1_G0_G1=v4.2d, <vec_F2_F3_G2_G3=v5.2d
+zip1 v0.2d, v4.2d, v5.2d
 
 # qhasm: 2x vec_G0_G1_G2_G3 zip= vec_F0_F1_G0_G1[1/2] vec_F2_F3_G2_G3[1/2]
-# asm 1: zip2 >vec_G0_G1_G2_G3=reg128#20.2d, <vec_F0_F1_G0_G1=reg128#5.2d, <vec_F2_F3_G2_G3=reg128#6.2d
-# asm 2: zip2 >vec_G0_G1_G2_G3=v19.2d, <vec_F0_F1_G0_G1=v4.2d, <vec_F2_F3_G2_G3=v5.2d
-zip2 v19.2d, v4.2d, v5.2d
+# asm 1: zip2 >vec_G0_G1_G2_G3=reg128#2.2d, <vec_F0_F1_G0_G1=reg128#5.2d, <vec_F2_F3_G2_G3=reg128#6.2d
+# asm 2: zip2 >vec_G0_G1_G2_G3=v1.2d, <vec_F0_F1_G0_G1=v4.2d, <vec_F2_F3_G2_G3=v5.2d
+zip2 v1.2d, v4.2d, v5.2d
 
 # qhasm: reg128 vec_F4_F5_F6_F7
 
 # qhasm: reg128 vec_G4_G5_G6_G7
 
 # qhasm: 2x vec_F4_F5_F6_F7 zip= vec_F4_F5_G4_G5[0/2] vec_F6_F7_G6_G7[0/2]
-# asm 1: zip1 >vec_F4_F5_F6_F7=reg128#21.2d, <vec_F4_F5_G4_G5=reg128#7.2d, <vec_F6_F7_G6_G7=reg128#8.2d
-# asm 2: zip1 >vec_F4_F5_F6_F7=v20.2d, <vec_F4_F5_G4_G5=v6.2d, <vec_F6_F7_G6_G7=v7.2d
-zip1 v20.2d, v6.2d, v7.2d
+# asm 1: zip1 >vec_F4_F5_F6_F7=reg128#3.2d, <vec_F4_F5_G4_G5=reg128#7.2d, <vec_F6_F7_G6_G7=reg128#8.2d
+# asm 2: zip1 >vec_F4_F5_F6_F7=v2.2d, <vec_F4_F5_G4_G5=v6.2d, <vec_F6_F7_G6_G7=v7.2d
+zip1 v2.2d, v6.2d, v7.2d
 
 # qhasm: 2x vec_G4_G5_G6_G7 zip= vec_F4_F5_G4_G5[1/2] vec_F6_F7_G6_G7[1/2]
-# asm 1: zip2 >vec_G4_G5_G6_G7=reg128#22.2d, <vec_F4_F5_G4_G5=reg128#7.2d, <vec_F6_F7_G6_G7=reg128#8.2d
-# asm 2: zip2 >vec_G4_G5_G6_G7=v21.2d, <vec_F4_F5_G4_G5=v6.2d, <vec_F6_F7_G6_G7=v7.2d
-zip2 v21.2d, v6.2d, v7.2d
+# asm 1: zip2 >vec_G4_G5_G6_G7=reg128#4.2d, <vec_F4_F5_G4_G5=reg128#7.2d, <vec_F6_F7_G6_G7=reg128#8.2d
+# asm 2: zip2 >vec_G4_G5_G6_G7=v3.2d, <vec_F4_F5_G4_G5=v6.2d, <vec_F6_F7_G6_G7=v7.2d
+zip2 v3.2d, v6.2d, v7.2d
 
 # qhasm: mem256[pointer_F] = vec_F0_F1_F2_F3, vec_F4_F5_F6_F7
-# asm 1: stp <vec_F0_F1_F2_F3=reg128#19%qregname, <vec_F4_F5_F6_F7=reg128#21%qregname, [<pointer_F=int64#2]
-# asm 2: stp <vec_F0_F1_F2_F3=q18, <vec_F4_F5_F6_F7=q20, [<pointer_F=x1]
-stp q18, q20, [x1]
+# asm 1: stp <vec_F0_F1_F2_F3=reg128#1%qregname, <vec_F4_F5_F6_F7=reg128#3%qregname, [<pointer_F=int64#2]
+# asm 2: stp <vec_F0_F1_F2_F3=q0, <vec_F4_F5_F6_F7=q2, [<pointer_F=x1]
+stp q0, q2, [x1]
 
 # qhasm: mem256[pointer_G] = vec_G0_G1_G2_G3, vec_G4_G5_G6_G7
-# asm 1: stp <vec_G0_G1_G2_G3=reg128#20%qregname, <vec_G4_G5_G6_G7=reg128#22%qregname, [<pointer_G=int64#3]
-# asm 2: stp <vec_G0_G1_G2_G3=q19, <vec_G4_G5_G6_G7=q21, [<pointer_G=x2]
-stp q19, q21, [x2]
+# asm 1: stp <vec_G0_G1_G2_G3=reg128#2%qregname, <vec_G4_G5_G6_G7=reg128#4%qregname, [<pointer_G=int64#3]
+# asm 2: stp <vec_G0_G1_G2_G3=q1, <vec_G4_G5_G6_G7=q3, [<pointer_G=x2]
+stp q1, q3, [x2]
 
 # qhasm: int64 F8
 
 # qhasm: F8 = vec_F8_F9_G8_G9[0/2]
-# asm 1: umov >F8=int64#12, <vec_F8_F9_G8_G9=reg128#9.d[0]
-# asm 2: umov >F8=x11, <vec_F8_F9_G8_G9=v8.d[0]
-umov x11, v8.d[0]
+# asm 1: umov >F8=int64#1, <vec_F8_F9_G8_G9=reg128#9.d[0]
+# asm 2: umov >F8=x0, <vec_F8_F9_G8_G9=v8.d[0]
+umov x0, v8.d[0]
 
 # qhasm: mem32[pointer_F+32] = F8
-# asm 1: str <F8=int64#12%wregname, [<pointer_F=int64#2, #32]
-# asm 2: str <F8=w11, [<pointer_F=x1, #32]
-str w11, [x1, #32]
+# asm 1: str <F8=int64#1%wregname, [<pointer_F=int64#2, #32]
+# asm 2: str <F8=w0, [<pointer_F=x1, #32]
+str w0, [x1, #32]
 
 # qhasm: int64 G8
 
 # qhasm: G8 = vec_F8_F9_G8_G9[1/2]
-# asm 1: umov >G8=int64#12, <vec_F8_F9_G8_G9=reg128#9.d[1]
-# asm 2: umov >G8=x11, <vec_F8_F9_G8_G9=v8.d[1]
-umov x11, v8.d[1]
+# asm 1: umov >G8=int64#1, <vec_F8_F9_G8_G9=reg128#9.d[1]
+# asm 2: umov >G8=x0, <vec_F8_F9_G8_G9=v8.d[1]
+umov x0, v8.d[1]
 
 # qhasm: mem32[pointer_G+32] = G8
-# asm 1: str <G8=int64#12%wregname, [<pointer_G=int64#3, #32]
-# asm 2: str <G8=w11, [<pointer_G=x2, #32]
-str w11, [x2, #32]
+# asm 1: str <G8=int64#1%wregname, [<pointer_G=int64#3, #32]
+# asm 2: str <G8=w0, [<pointer_G=x2, #32]
+str w0, [x2, #32]
 
 # qhasm: reg128 vec_V0_V1_V2_V3
 
@@ -4835,66 +4843,58 @@ str w11, [x2, #32]
 # qhasm: reg128 vec_S4_S5_S6_S7
 
 # qhasm: 2x vec_V0_V1_V2_V3 zip= vec_V0_V1_S0_S1[0/2] vec_V2_V3_S2_S3[0/2]
-# asm 1: zip1 >vec_V0_V1_V2_V3=reg128#19.2d, <vec_V0_V1_S0_S1=reg128#10.2d, <vec_V2_V3_S2_S3=reg128#11.2d
-# asm 2: zip1 >vec_V0_V1_V2_V3=v18.2d, <vec_V0_V1_S0_S1=v9.2d, <vec_V2_V3_S2_S3=v10.2d
-zip1 v18.2d, v9.2d, v10.2d
+# asm 1: zip1 >vec_V0_V1_V2_V3=reg128#1.2d, <vec_V0_V1_S0_S1=reg128#10.2d, <vec_V2_V3_S2_S3=reg128#11.2d
+# asm 2: zip1 >vec_V0_V1_V2_V3=v0.2d, <vec_V0_V1_S0_S1=v9.2d, <vec_V2_V3_S2_S3=v10.2d
+zip1 v0.2d, v9.2d, v10.2d
 
 # qhasm: 2x vec_S0_S1_S2_S3 zip= vec_V0_V1_S0_S1[1/2] vec_V2_V3_S2_S3[1/2]
-# asm 1: zip2 >vec_S0_S1_S2_S3=reg128#20.2d, <vec_V0_V1_S0_S1=reg128#10.2d, <vec_V2_V3_S2_S3=reg128#11.2d
-# asm 2: zip2 >vec_S0_S1_S2_S3=v19.2d, <vec_V0_V1_S0_S1=v9.2d, <vec_V2_V3_S2_S3=v10.2d
-zip2 v19.2d, v9.2d, v10.2d
+# asm 1: zip2 >vec_S0_S1_S2_S3=reg128#2.2d, <vec_V0_V1_S0_S1=reg128#10.2d, <vec_V2_V3_S2_S3=reg128#11.2d
+# asm 2: zip2 >vec_S0_S1_S2_S3=v1.2d, <vec_V0_V1_S0_S1=v9.2d, <vec_V2_V3_S2_S3=v10.2d
+zip2 v1.2d, v9.2d, v10.2d
 
 # qhasm: 2x vec_V4_V5_V6_V7 zip= vec_V4_V5_S4_S5[0/2] vec_V6_V7_S6_S7[0/2]
-# asm 1: zip1 >vec_V4_V5_V6_V7=reg128#21.2d, <vec_V4_V5_S4_S5=reg128#12.2d, <vec_V6_V7_S6_S7=reg128#13.2d
-# asm 2: zip1 >vec_V4_V5_V6_V7=v20.2d, <vec_V4_V5_S4_S5=v11.2d, <vec_V6_V7_S6_S7=v12.2d
-zip1 v20.2d, v11.2d, v12.2d
+# asm 1: zip1 >vec_V4_V5_V6_V7=reg128#3.2d, <vec_V4_V5_S4_S5=reg128#12.2d, <vec_V6_V7_S6_S7=reg128#13.2d
+# asm 2: zip1 >vec_V4_V5_V6_V7=v2.2d, <vec_V4_V5_S4_S5=v11.2d, <vec_V6_V7_S6_S7=v12.2d
+zip1 v2.2d, v11.2d, v12.2d
 
 # qhasm: 2x vec_S4_S5_S6_S7 zip= vec_V4_V5_S4_S5[1/2] vec_V6_V7_S6_S7[1/2]
-# asm 1: zip2 >vec_S4_S5_S6_S7=reg128#22.2d, <vec_V4_V5_S4_S5=reg128#12.2d, <vec_V6_V7_S6_S7=reg128#13.2d
-# asm 2: zip2 >vec_S4_S5_S6_S7=v21.2d, <vec_V4_V5_S4_S5=v11.2d, <vec_V6_V7_S6_S7=v12.2d
-zip2 v21.2d, v11.2d, v12.2d
+# asm 1: zip2 >vec_S4_S5_S6_S7=reg128#4.2d, <vec_V4_V5_S4_S5=reg128#12.2d, <vec_V6_V7_S6_S7=reg128#13.2d
+# asm 2: zip2 >vec_S4_S5_S6_S7=v3.2d, <vec_V4_V5_S4_S5=v11.2d, <vec_V6_V7_S6_S7=v12.2d
+zip2 v3.2d, v11.2d, v12.2d
 
 # qhasm: mem256[pointer_V] = vec_V0_V1_V2_V3, vec_V4_V5_V6_V7
-# asm 1: stp <vec_V0_V1_V2_V3=reg128#19%qregname, <vec_V4_V5_V6_V7=reg128#21%qregname, [<pointer_V=int64#4]
-# asm 2: stp <vec_V0_V1_V2_V3=q18, <vec_V4_V5_V6_V7=q20, [<pointer_V=x3]
-stp q18, q20, [x3]
+# asm 1: stp <vec_V0_V1_V2_V3=reg128#1%qregname, <vec_V4_V5_V6_V7=reg128#3%qregname, [<pointer_V=int64#4]
+# asm 2: stp <vec_V0_V1_V2_V3=q0, <vec_V4_V5_V6_V7=q2, [<pointer_V=x3]
+stp q0, q2, [x3]
 
 # qhasm: mem256[pointer_S] = vec_S0_S1_S2_S3, vec_S4_S5_S6_S7
-# asm 1: stp <vec_S0_S1_S2_S3=reg128#20%qregname, <vec_S4_S5_S6_S7=reg128#22%qregname, [<pointer_S=int64#5]
-# asm 2: stp <vec_S0_S1_S2_S3=q19, <vec_S4_S5_S6_S7=q21, [<pointer_S=x4]
-stp q19, q21, [x4]
+# asm 1: stp <vec_S0_S1_S2_S3=reg128#2%qregname, <vec_S4_S5_S6_S7=reg128#4%qregname, [<pointer_S=int64#5]
+# asm 2: stp <vec_S0_S1_S2_S3=q1, <vec_S4_S5_S6_S7=q3, [<pointer_S=x4]
+stp q1, q3, [x4]
 
 # qhasm: int64 V8
 
 # qhasm: V8 = vec_V8_V9_S8_S9[0/2]
-# asm 1: umov >V8=int64#12, <vec_V8_V9_S8_S9=reg128#14.d[0]
-# asm 2: umov >V8=x11, <vec_V8_V9_S8_S9=v13.d[0]
-umov x11, v13.d[0]
+# asm 1: umov >V8=int64#1, <vec_V8_V9_S8_S9=reg128#14.d[0]
+# asm 2: umov >V8=x0, <vec_V8_V9_S8_S9=v13.d[0]
+umov x0, v13.d[0]
 
 # qhasm: mem32[pointer_V+32] = V8
-# asm 1: str <V8=int64#12%wregname, [<pointer_V=int64#4, #32]
-# asm 2: str <V8=w11, [<pointer_V=x3, #32]
-str w11, [x3, #32]
+# asm 1: str <V8=int64#1%wregname, [<pointer_V=int64#4, #32]
+# asm 2: str <V8=w0, [<pointer_V=x3, #32]
+str w0, [x3, #32]
 
 # qhasm: int64 S8
 
 # qhasm: S8 = vec_V8_V9_S8_S9[1/2]
-# asm 1: umov >S8=int64#12, <vec_V8_V9_S8_S9=reg128#14.d[1]
-# asm 2: umov >S8=x11, <vec_V8_V9_S8_S9=v13.d[1]
-umov x11, v13.d[1]
+# asm 1: umov >S8=int64#1, <vec_V8_V9_S8_S9=reg128#14.d[1]
+# asm 2: umov >S8=x0, <vec_V8_V9_S8_S9=v13.d[1]
+umov x0, v13.d[1]
 
 # qhasm: mem32[pointer_S+32] = S8
-# asm 1: str <S8=int64#12%wregname, [<pointer_S=int64#5, #32]
-# asm 2: str <S8=w11, [<pointer_S=x4, #32]
-str w11, [x4, #32]
-
-# qhasm: ITERATION -= 1 !
-# asm 1: subs <ITERATION=int64#7,<ITERATION=int64#7,#1
-# asm 2: subs <ITERATION=x6,<ITERATION=x6,#1
-subs x6,x6,#1
-
-# qhasm: goto main_i_loop if unsigned>= 
-b.hs ._main_i_loop
+# asm 1: str <S8=int64#1%wregname, [<pointer_S=int64#5, #32]
+# asm 2: str <S8=w0, [<pointer_S=x4, #32]
+str w0, [x4, #32]
 
 # qhasm: pop2x8b calleesaved_v14, calleesaved_v15
 # asm 1: ldp >calleesaved_v14=reg128#15%dregname,>calleesaved_v15=reg128#16%dregname,[sp],#16

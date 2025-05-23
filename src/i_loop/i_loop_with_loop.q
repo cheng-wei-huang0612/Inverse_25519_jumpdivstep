@@ -1792,7 +1792,7 @@ ss = new_ss
 
 
 ITERATION -= 1 !
-goto main_i_loop if unsigned>= 
+goto main_i_loop if unsigned>
 
 mem128[pointer_uuvvrrss] = uu, vv
 mem128[pointer_uuvvrrss + 16] = rr, ss

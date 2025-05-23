@@ -83,15 +83,16 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
     // j_loop(&delta, &f, &g, uuvvrrss);
     // j_loop_final(&delta, &f, &g, uuvvrrss);
 
-    // if (i < 5) {
-    //     // for (int j = 0; j < 9; j++) {
-    //     // printf("V.limb[%d] = %d\n", j, V.limb[j]);
-    //     // }
+    // if (i == 1) {
+    //     for (int j = 0; j < 9; j++) {
+    //     printf("V.limb[%d] = %d\n", j, V.limb[j]);
+    //     }
     //     for (int k = 0; k < 4; k++) {
     //         printf("uuvvrrss[%d] = %lld\n", k, uuvvrrss[k]);
     //     }
     // }
   }
+  
   update_FG(&F, &G, uuvvrrss);
   update_VS_mont(&V, &S, uuvvrrss);
   final_adjustment(inv, &F, &V);
