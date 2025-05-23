@@ -66,6 +66,10 @@ reg128 vec_2x_2p32m1
 2x vec_2x_2p32m1 = 0xFFFFFFFF
 2x vec_2x_2p30m1 = vec_2x_2p32m1 unsigned>> 2
 
+reg128 vec_4x_2p30m1
+4x vec_4x_2p30m1 = vec_2x_2p30m1[0/4] vec_2x_2p30m1[2/4] vec_2x_2p30m1[0/4] vec_2x_2p30m1[2/4]
+
+
 # M = 678152731
 int64 M
 M = 0
@@ -466,6 +470,21 @@ vec_buffer &= vec_2x_2p32m1
 
 
 """
+
+
+# Carry propagation
+code += """
+
+4x vec_carry = vec_V0_V1_S0_S1 >> 30
+2x vec_carry = vec_carry << 32
+4x vec_V0_V1_S0_S1 += vec_carry
+4x vec_carry = vec_V0_V1_S0_S1 >> 30
+2x vec_carry = vec_carry unsigned>> 32
+vec_V0_V1_S0_S1 &= vec_4x_2p30m1
+
+4x vec_V2_V3_S2_S3 += vec_carry
+"""
+
 
 
 
@@ -909,8 +928,8 @@ return
 
 
 
-with open("i_loop.q", "w") as f:
+with open("i_loop_deinterleave.q", "w") as f:
     f.write(code)
 
 import os
-os.system("qhasm-aarch64-align < i_loop.q > i_loop.S")
+os.system("qhasm-aarch64-align < i_loop_deinterleave.q > i_loop.S")
