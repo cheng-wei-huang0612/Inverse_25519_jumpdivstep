@@ -9,7 +9,7 @@ LDFLAGS = -lgmp
 SRC = $(wildcard ../src/cpt_inv_func6.c \
  	  			 ../src/j_loop/j_loop.S \
  				 ../src/j_loop_final/j_loop_final.S \
- 				 ../src/i_loop/i_loop_with_loop.S \
+ 				 ../src/i_loop/i_loop.S \
  	             ../src/update_FG/update_FG.S \
  	             ../src/update_VS/update_VS_mont.S \
  				 ../src/big30_and_uint256/big30_from_uint256.S \
@@ -20,7 +20,7 @@ SRC = $(wildcard ../src/cpt_inv_func6.c \
 # SRC = $(wildcard ../src/cpt_inv_func5.c \
 # 	  			 ../src/j_loop/j_loop.S \
 # 				 ../src/j_loop_final/j_loop_final.S \
-# 				 ../src/i_loop/i_loop.S \
+# 				 ../src/single_i_loop/i_loop.S \
 # 	             ../src/update_FG/update_FG.S \
 # 	             ../src/update_VS/update_VS_mont.S \
 # 				 ../src/big30_and_uint256/big30_from_uint256.S \
