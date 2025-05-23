@@ -344,6 +344,21 @@ grs -= 2p62
 
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[1/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F4_F5_G4_G5[3/4]
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F4_F5_G4_G5[0/4]
 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_F4_F5_G4_G5[2/4]
 vec_buffer = vec_prod & vec_2x_2p30m1
@@ -787,19 +802,7 @@ vec_buffer &= vec_2x_2p32m1
 
     
 
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
-    m1 = m - 1 
- 
- 
-    m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-    m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
+
 
 
     
