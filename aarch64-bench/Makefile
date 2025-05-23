@@ -2,7 +2,7 @@
 .PHONY: all clean
 
 # ==== 目標 ====
-BIN     := bench bench_divstepx20 bench_update_VS_mont bench_update_FG
+BIN     := bench bench_divstepx20 bench_update_VS_mont bench_update_FG bench_dummy
 
 # ==== Compiler / Linker ====
 CC ?= gcc
@@ -13,6 +13,7 @@ BENCH_SRC          := bench.c
 BENCH_DIVSTEP_SRC  := bench_divstepx20.c
 BENCH_UPDATE_VS_MONT_SRC  := bench_update_VS_mont.c
 BENCH_UPDATE_FG_SRC  := bench_update_FG.c
+BENCH_DUMMY_SRC  := bench_dummy.c
 
 COMMON_SRC := \
   hal/hal.c \
@@ -29,7 +30,8 @@ COMMON_SRC := \
   ../src/j_loop_final/j_loop_final.S \
   ../src/final_adjustment/final_adjustment.S \
   ../src/update_FG/update_FG.S \
-  ../src/update_VS/update_VS_mont.S
+  ../src/update_VS/update_VS_mont.S \
+  64cycl.S \
 
 # ==== 把 .c / .S 各自換成 .o ====
 OBJ_COMMON         := \
@@ -40,6 +42,7 @@ OBJ_BENCH          := $(patsubst %.c,%.o,$(BENCH_SRC))
 OBJ_BENCH_DIVSTEP  := $(patsubst %.c,%.o,$(BENCH_DIVSTEP_SRC))
 OBJ_BENCH_UPDATE_VS_MONT   := $(patsubst %.c,%.o,$(BENCH_UPDATE_VS_MONT_SRC))
 OBJ_BENCH_UPDATE_FG   := $(patsubst %.c,%.o,$(BENCH_UPDATE_FG_SRC))
+OBJ_BENCH_DUMMY   := $(patsubst %.c,%.o,$(BENCH_DUMMY_SRC))
 # ==== 編譯旗標 ====
 CFLAGS := -Wall -Wextra -Werror -Wshadow -Wpointer-arith \
           -Wredundant-decls -Wno-long-long -Wno-unknown-pragmas \
@@ -74,6 +77,10 @@ bench_update_VS_mont: $(OBJ_COMMON) $(OBJ_BENCH_UPDATE_VS_MONT)
 
 # bench_update_FG
 bench_update_FG: $(OBJ_COMMON) $(OBJ_BENCH_UPDATE_FG)
+	$(LD) $^ -o $@
+
+# bench_dummy
+bench_dummy: $(OBJ_COMMON) $(OBJ_BENCH_DUMMY)
 	$(LD) $^ -o $@
 
 # ==== 通用規則 ====
