@@ -684,7 +684,8 @@ prod_hi = prod_hi + tmp + carry
 
 prod_lo = prod_lo unsigned>> 20
 prod_hi = prod_hi << 44
-new_f = prod_lo | prod_hi
+#new_f = prod_lo | prod_hi
+new_f = prod_lo 
 
 
 
@@ -700,7 +701,8 @@ prod_hi = prod_hi + tmp + carry
 
 prod_lo = prod_lo unsigned>> 20
 prod_hi = prod_hi << 44
-new_g = prod_lo | prod_hi
+#new_g = prod_lo | prod_hi
+new_g = prod_lo 
 
 
 
@@ -932,4 +934,4 @@ with open("i_loop_deinterleave.q", "w") as f:
     f.write(code)
 
 import os
-os.system("qhasm-aarch64-align < i_loop_deinterleave.q > i_loop.S")
+os.system("qhasm-aarch64-align < i_loop_deinterleave.q > i_loop_deinterleave.S")
