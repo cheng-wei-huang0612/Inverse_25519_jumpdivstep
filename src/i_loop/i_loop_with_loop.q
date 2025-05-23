@@ -473,6 +473,22 @@ reg128 final_add_1
 2x vec_prod = vec_uu0_rr0_vv0_ss0[0] * vec_V0_V1_S0_S1[0/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_V0_V1_S0_S1[2/4]
 
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
 reg128 vec_l0
 4x vec_l0 = vec_prod * vec_M
 vec_l0 &= vec_2x_2p30m1
@@ -484,10 +500,38 @@ vec_l0 &= vec_2x_2p30m1
 2x vec_prod >>= 30
 
 
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_V0_V1_S0_S1[1/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_V0_V1_S0_S1[3/4]
 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_V0_V1_S0_S1[0/4]
 2x vec_prod += vec_uu1_rr1_vv1_ss1[1] * vec_V0_V1_S0_S1[2/4]
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
 
 reg128 vec_l1
 4x vec_l1 = vec_prod * vec_M
@@ -498,6 +542,21 @@ vec_l1 &= vec_2x_2p30m1
 2x final_add_1 = vec_l1[0] << 15
 
 2x vec_prod >>= 30
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
 
 
 
@@ -620,73 +679,6 @@ vec_buffer &= vec_2x_2p32m1
     
 
 
-
-    
-
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
-    m1 = m - 1 
- 
- 
-    m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-    m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
-
-
-    
-
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
-    m1 = m - 1 
- 
- 
-    m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-    m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
-
-
-    
-
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
-    m1 = m - 1 
- 
- 
-    m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-    m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
-
-
-    
-
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
-    m1 = m - 1 
- 
- 
-    m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-    m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
 
 
     
