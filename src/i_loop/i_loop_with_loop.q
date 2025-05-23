@@ -59,6 +59,14 @@ int64 f
 int64 g_hi
 int64 g
 
+int64 fuv
+int64 grs
+
+int64 g1
+int64 hh
+int64 h
+int64 m1
+
 int64 ITERATION
 ITERATION = 9
 
@@ -83,7 +91,13 @@ reg128 vec_4x_19
 4x vec_4x_19 = _19
 
 
+int64 2p41
+2p41 = 1
+2p41 = 2p41 << 41
 
+int64 2p62
+2p62 = 1
+2p62 = 2p62 << 62
 
 
 
@@ -204,6 +218,9 @@ vec_V8_V9_S8_S9[1/2] = S8S9
 uu, vv = mem128[pointer_uuvvrrss + 0]
 rr, ss = mem128[pointer_uuvvrrss + 16]
 
+int64 m
+m = mem64[pointer_delta]
+
 main_i_loop:
 int64 uu0
 int64 uu1
@@ -297,6 +314,34 @@ vec_F2_F3_G2_G3 = vec_buffer
 
 
 
+
+
+fuv = f & 1048575
+grs = g & 1048575
+fuv -= 2p41
+grs -= 2p62
+
+
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
+
+
+
+
+
+
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[1/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F4_F5_G4_G5[3/4]
 2x vec_prod += vec_uu1_rr1_vv1_ss1[0] * vec_F4_F5_G4_G5[0/4]
@@ -306,6 +351,20 @@ vec_buffer = vec_prod & vec_2x_2p30m1
 2x vec_buffer <<= 32
 vec_F2_F3_G2_G3 |= vec_buffer
 
+
+    g1 = grs & 1
+    hh = grs - fuv
+    h = grs + g1 * fuv
+    m1 = m - 1 
+ 
+ 
+    m1 & (grs >>> 1)
+    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
+    # else N = 0
+    m = m1 if N=0 else -m
+    fuv = fuv if N=0 else grs
+    grs = h if N=0 else hh
+    grs = grs signed>> 1
 
 
 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F6_F7_G6_G7[0/4]
@@ -355,8 +414,7 @@ vec_F8_F9_G8_G9 = vec_prod
 
 
 
-#reg128 vec_buffer
-#reg128 vec_prod
+
 reg128 final_add_0
 reg128 final_add_1
 
@@ -509,64 +567,17 @@ vec_buffer &= vec_2x_2p32m1
 
 
 
-int64 m
-m = mem64[pointer_delta]
 
 
 
-int64 2p41
-2p41 = 1
-2p41 = 2p41 << 41
-
-int64 2p62
-2p62 = 1
-2p62 = 2p62 << 62
-int64 fuv
-int64 grs
-
-int64 g1
-int64 hh
-int64 h
-int64 m1
-
-
-fuv = f & 1048575
-grs = g & 1048575
-fuv -= 2p41
-grs -= 2p62
 
 
 
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
-    m1 = m - 1 
- 
- 
-    m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-    m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
 
 
     
 
-    g1 = grs & 1
-    hh = grs - fuv
-    h = grs + g1 * fuv
-    m1 = m - 1 
- 
- 
-    m1 & (grs >>> 1)
-    # if m - 1 < 0 ang grs & 1 == 1 then N = 1
-    # else N = 0
-    m = m1 if N=0 else -m
-    fuv = fuv if N=0 else grs
-    grs = h if N=0 else hh
-    grs = grs signed>> 1
+
 
 
     
@@ -1741,7 +1752,6 @@ grs -= 2p62
 
 
     
-mem64[pointer_delta] = m
 
 # Extraction
 # int64 u
@@ -1799,6 +1809,7 @@ ss = new_ss
 ITERATION -= 1 !
 goto main_i_loop if unsigned>
 
+mem64[pointer_delta] = m
 mem128[pointer_uuvvrrss] = uu, vv
 mem128[pointer_uuvvrrss + 16] = rr, ss
 
