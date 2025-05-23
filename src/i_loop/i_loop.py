@@ -474,26 +474,17 @@ vec_buffer &= vec_2x_2p32m1
 code += """
 
 
-f_hi = vec_F0_F1_G0_G1[1/4]
-f = vec_F0_F1_G0_G1[0/4]
-g_hi = vec_F0_F1_G0_G1[3/4]
-g = vec_F0_F1_G0_G1[2/4]
-f = f + f_hi << 30
-g = g + g_hi << 30
+            f_hi = vec_F0_F1_G0_G1[1/4]
+            f = vec_F0_F1_G0_G1[0/4]
+            g_hi = vec_F0_F1_G0_G1[3/4]
+            g = vec_F0_F1_G0_G1[2/4]
+            f = f + f_hi << 30
+            g = g + g_hi << 30
 
-
-
-"""
-
-
-
-
-
-code += """
-fuv = f & 1048575
-grs = g & 1048575
-fuv -= 2p41
-grs -= 2p62
+            fuv = f & 1048575
+            grs = g & 1048575
+            fuv -= 2p41
+            grs -= 2p62
 
 """
 
@@ -501,18 +492,18 @@ grs -= 2p62
 for i in range(20):
     code += """
 
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
+            m1 = m - 1 
+            grs & 1
+            ff = fuv if Z=0 else 0
+            m1 & (grs >>> 1)
+            m = m1 if N=0 else -m
+            fuv = grs if N=1 else fuv
+            ff = ff if N=0 else -ff
+            grs = grs + ff
+            grs = grs signed>> 1
 
-    free m1
-    free ff
+            free m1
+            free ff
 
 
     """
