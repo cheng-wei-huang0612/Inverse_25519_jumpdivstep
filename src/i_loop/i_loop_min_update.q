@@ -112,50 +112,24 @@ int64 2p62
 
 # F, G Data Layout Configuration
 
-int64 F0F1
-int64 F2F3
-int64 F4F5
-int64 F6F7
-int64 F8F9
-
-F0F1, F2F3 = mem128[pointer_F]
-F4F5, F6F7 = mem128[pointer_F+16]
-F8F9 = mem32[pointer_F+32]
-
-int64 G0G1
-int64 G2G3
-int64 G4G5
-int64 G6G7
-int64 G8G9
-
-G0G1, G2G3 = mem128[pointer_G]
-G4G5, G6G7 = mem128[pointer_G+16]
-G8G9 = mem32[pointer_G+32]
 
 reg128 vec_F0_F1_G0_G1 
 
-vec_F0_F1_G0_G1[0/2] = F0F1 
-vec_F0_F1_G0_G1[1/2] = G0G1 
+
 
 reg128 vec_F2_F3_G2_G3 
 
-vec_F2_F3_G2_G3[0/2] = F2F3 
-vec_F2_F3_G2_G3[1/2] = G2G3 
 
 reg128 vec_F4_F5_G4_G5 
 
-vec_F4_F5_G4_G5[0/2] = F4F5 
-vec_F4_F5_G4_G5[1/2] = G4G5 
+
 
 reg128 vec_F6_F7_G6_G7 
 
-vec_F6_F7_G6_G7[0/2] = F6F7 
-vec_F6_F7_G6_G7[1/2] = G6G7 
+
 
 reg128 vec_F8_F9_G8_G9 
 
-vec_F8_F9_G8_G9[0/2] = F8F9 
-vec_F8_F9_G8_G9[1/2] = G8G9 
 
 
 # register initialization and specification
@@ -169,59 +143,6 @@ reg128 vec_V8_V9_S8_S9
 
 
 
-
-# V, S Data Layout Configuration
-
-int64 V0V1
-int64 V2V3
-int64 V4V5
-int64 V6V7
-int64 V8V9
-
-V0V1, V2V3 = mem128[pointer_V]
-V4V5, V6V7 = mem128[pointer_V+16]
-V8V9 = mem32[pointer_V+32]
-
-int64 S0S1
-int64 S2S3
-int64 S4S5
-int64 S6S7
-int64 S8S9
-
-S0S1, S2S3 = mem128[pointer_S]
-S4S5, S6S7 = mem128[pointer_S+16]
-S8S9 = mem32[pointer_S+32]
-
-
-vec_V0_V1_S0_S1[0/2] = V0V1 
-vec_V0_V1_S0_S1[1/2] = S0S1 
-
-
-vec_V2_V3_S2_S3[0/2] = V2V3 
-vec_V2_V3_S2_S3[1/2] = S2S3 
-
-
-vec_V4_V5_S4_S5[0/2] = V4V5 
-vec_V4_V5_S4_S5[1/2] = S4S5 
-
-
-vec_V6_V7_S6_S7[0/2] = V6V7 
-vec_V6_V7_S6_S7[1/2] = S6S7 
-
-
-vec_V8_V9_S8_S9[0/2] = V8V9 
-vec_V8_V9_S8_S9[1/2] = S8S9 
-
-
-
-
-uu, vv = mem128[pointer_uuvvrrss + 0]
-rr, ss = mem128[pointer_uuvvrrss + 16]
-
-int64 m
-m = mem64[pointer_delta]
-
-main_i_loop:
 int64 uu0
 int64 uu1
 uu0 = uu & ((1 << 30)-1)
@@ -1722,83 +1643,7 @@ vec_V0_V1_S0_S1 &= vec_4x_2p30m1
 4x vec_V2_V3_S2_S3 += vec_carry
 
 
-ITERATION -= 1 !
-goto main_i_loop if unsigned>
 
-
-
-# Now we store the results back to memory
-
-reg128 vec_F0_F1_F2_F3
-reg128 vec_G0_G1_G2_G3
-
-2x vec_F0_F1_F2_F3 zip= vec_F0_F1_G0_G1[0/2] vec_F2_F3_G2_G3[0/2]
-2x vec_G0_G1_G2_G3 zip= vec_F0_F1_G0_G1[1/2] vec_F2_F3_G2_G3[1/2]
-
-reg128 vec_F4_F5_F6_F7
-reg128 vec_G4_G5_G6_G7
-2x vec_F4_F5_F6_F7 zip= vec_F4_F5_G4_G5[0/2] vec_F6_F7_G6_G7[0/2]
-2x vec_G4_G5_G6_G7 zip= vec_F4_F5_G4_G5[1/2] vec_F6_F7_G6_G7[1/2]
-
-mem256[pointer_F] = vec_F0_F1_F2_F3, vec_F4_F5_F6_F7
-mem256[pointer_G] = vec_G0_G1_G2_G3, vec_G4_G5_G6_G7
-
-
-int64 F8
-F8 = vec_F8_F9_G8_G9[0/2]
-mem32[pointer_F+32] = F8
-int64 G8
-G8 = vec_F8_F9_G8_G9[1/2]
-mem32[pointer_G+32] = G8
-
-
-# Store the result
-
-
-
-reg128 vec_V0_V1_V2_V3
-reg128 vec_V4_V5_V6_V7
-reg128 vec_S0_S1_S2_S3
-reg128 vec_S4_S5_S6_S7
-
-
-
-
-
-2x vec_V0_V1_V2_V3 zip= vec_V0_V1_S0_S1[0/2] vec_V2_V3_S2_S3[0/2]
-2x vec_S0_S1_S2_S3 zip= vec_V0_V1_S0_S1[1/2] vec_V2_V3_S2_S3[1/2]
-
-2x vec_V4_V5_V6_V7 zip= vec_V4_V5_S4_S5[0/2] vec_V6_V7_S6_S7[0/2]
-2x vec_S4_S5_S6_S7 zip= vec_V4_V5_S4_S5[1/2] vec_V6_V7_S6_S7[1/2]
-
-
-
-mem256[pointer_V] = vec_V0_V1_V2_V3, vec_V4_V5_V6_V7
-mem256[pointer_S] = vec_S0_S1_S2_S3, vec_S4_S5_S6_S7
-
-
-
-int64 V8
-V8 = vec_V8_V9_S8_S9[0/2]
-mem32[pointer_V+32] = V8
-int64 S8
-S8 = vec_V8_V9_S8_S9[1/2]
-mem32[pointer_S+32] = S8
-
-
-mem128[pointer_uuvvrrss] = uu, vv
-mem128[pointer_uuvvrrss + 16] = rr, ss
-
-pop2x8b calleesaved_v14, calleesaved_v15
-pop2x8b calleesaved_v12, calleesaved_v13
-pop2x8b calleesaved_v10, calleesaved_v11
-pop2x8b calleesaved_v8, calleesaved_v9
-pop2xint64 calleesaved_x28, calleesaved_x29
-pop2xint64 calleesaved_x26, calleesaved_x27
-pop2xint64 calleesaved_x24, calleesaved_x25
-pop2xint64 calleesaved_x22, calleesaved_x23
-pop2xint64 calleesaved_x20, calleesaved_x21
-pop2xint64 calleesaved_x18, calleesaved_x19
 
 return
 
