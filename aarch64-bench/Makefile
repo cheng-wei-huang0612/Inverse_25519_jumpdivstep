@@ -14,7 +14,7 @@ BENCH_DIVSTEP_SRC  := bench_divstepx20.c
 BENCH_UPDATE_VS_MONT_SRC  := bench_update_VS_mont.c
 BENCH_UPDATE_FG_SRC  := bench_update_FG.c
 BENCH_DUMMY_SRC  := bench_dummy.c
-BENCH_I_LOOP_MIN_UPDATE := bench_i_loop_min_update.c
+BENCH_I_LOOP_MIN_UPDATE := bench_i_loop_min_update.c 
 
 COMMON_SRC := \
   hal/hal.c \
@@ -33,7 +33,7 @@ COMMON_SRC := \
   ../src/update_FG/update_FG.S \
   ../src/update_VS/update_VS_mont.S \
   dummy.S \
-  i_loop_min_update.S \
+
 
 # ==== 把 .c / .S 各自換成 .o ====
 OBJ_COMMON         := \

@@ -52,12 +52,17 @@ static void print_percentiles(const char *txt, uint64_t cyc[NTESTS])
 extern const int16_t zetas_layer12345[];
 extern const int16_t zetas_layer67[];
 // void ntt_asm(int16_t *, const int16_t *, const int16_t *);
-extern void i_loop_min_update();
+extern void i_loop(int64_t *delta, big30_t *F, big30_t *G, big30_t *V, big30_t *S, int64_t *uuvvrrss);
+
 
 static int bench(void)
 {
   // fe25519 a = {0};
   // uint256_t b = {0};
+  int64_t delta = 0;
+  big30_t F, G, V, S;
+  int64_t uuvvrrss[4];
+
   int i, j;
   uint64_t t0, t1;
   uint64_t cycles[NTESTS];
@@ -66,13 +71,15 @@ static int bench(void)
   {
     for (j = 0; j < NWARMUP; j++)
     {
-      i_loop_min_update();
+      i_loop(&delta, &F, &G, &V, &S, uuvvrrss);
+
     }
 
     t0 = get_cyclecounter();
     for (j = 0; j < NITERATIONS; j++)
     {
-      i_loop_min_update();
+      i_loop(&delta, &F, &G, &V, &S, uuvvrrss);
+
     }
     t1 = get_cyclecounter();
     cycles[i] = t1 - t0;

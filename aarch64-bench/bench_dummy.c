@@ -58,6 +58,9 @@ static int bench(void)
 {
   // big30_t V, S;
   // int64_t uuvvrrss[4] = {0, 0, 0, 0};
+  int64_t delta = 0;
+  big30_t F, G, V, S;
+  int64_t uuvvrrss[4];
   int i, j;
   uint64_t t0, t1;
   uint64_t cycles[NTESTS];
@@ -66,13 +69,13 @@ static int bench(void)
   {
     for (j = 0; j < NWARMUP; j++)
     {
-      dummy();
+      dummy(&delta, &F, &G, &V, &S, uuvvrrss);
     }
 
     t0 = get_cyclecounter();
     for (j = 0; j < NITERATIONS; j++)
     {
-      dummy();
+      dummy(&delta, &F, &G, &V, &S, uuvvrrss);
     }
     t1 = get_cyclecounter();
     cycles[i] = t1 - t0;
