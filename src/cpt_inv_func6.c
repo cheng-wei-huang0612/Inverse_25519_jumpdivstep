@@ -29,10 +29,10 @@ big30_t P = {{
 void cpt_inv(uint256_t *x, uint256_t *inv) {
     //printf("Hello from cpt_inv5\n");
 
-    big30_t F = {
+    big30_t F = {{
     0x3fffffed, 0x3fffffff, 0x3fffffff, 0x3fffffff,
     0x3fffffff, 0x3fffffff, 0x3fffffff, 0x3fffffff,
-    0x00007fff}; 
+    0x00007fff}}; 
     big30_t G = {0}, V = {0}, S = {0};
     //int64_t f, g;
     int64_t delta = 0;
