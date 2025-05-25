@@ -29,7 +29,7 @@ big30_t P = {{
 void cpt_inv(uint256_t *x, uint256_t *inv) {
     //printf("Hello from cpt_inv5\n");
 
-    big30_t F = {0}, G = {0}, V = {0}, S = {0};
+    big30_t F, G, V, S;
     //int64_t f, g;
     int64_t delta = 0;
     // int64_t fuv, grs;
@@ -40,6 +40,8 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
 
     for (size_t i = 0; i < 9; i++) {
         F.limb[i] = P.limb[i];
+        V.limb[i] = 0;
+        S.limb[i] = 0;
     }
     S.limb[0] = 1;
     int64_t f, g;
