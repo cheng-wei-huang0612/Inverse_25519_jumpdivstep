@@ -7,8 +7,9 @@ extern void j_loop_final(int64_t *delta, int64_t *f, int64_t *g, int64_t *uuvvrr
 
 extern void i_loop(int64_t *delta, big30_t *F, big30_t *G, big30_t *V, big30_t *S, int64_t *uuvvrrss);
 
-extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
-extern void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss);
+// extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
+// extern void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss);
+extern void update_FG_VS(big30_t *F, big30_t *G, big30_t *V, big30_t *S, int64_t *uuvvrrss);
 extern void final_adjustment(uint256_t *inv, big30_t *F, big30_t *V);
 /*extern void sign_adjustment(big30_t *inv30, big30_t *F, big30_t *V);*/
 
@@ -79,8 +80,9 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
     // }
     
     
-    update_FG(&F, &G, uuvvrrss);
-    update_VS_mont(&V, &S, uuvvrrss);
+    update_FG_VS(&F, &G, &V, &S, uuvvrrss);
+    // update_FG(&F, &G, uuvvrrss);
+    // update_VS_mont(&V, &S, uuvvrrss);
     
     
     // for (int j = 0; j < 9; j++) {
