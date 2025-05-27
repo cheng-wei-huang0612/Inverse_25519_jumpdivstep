@@ -14,8 +14,18 @@ SRC = $(wildcard ../src/cpt_inv_func6.c \
  	             ../src/update_FG/update_FG.S \
  	             ../src/update_VS/update_VS_mont.S \
  				 ../src/big30_and_uint256/big30_from_uint256.S \
- 				 ../src/final_adjustment/final_adjustment_ref.c \
+ 				 ../src/final_adjustment/final_adjustment.S \
                   ../src/common/*.c )
+
+# SRC = $(wildcard ../src/cpt_inv_func6.c \
+#  	  			 ../src/j_loop/j_loop.S \
+#  				 ../src/j_loop_final/j_loop_final.S \
+#  				 ../src/i_loop/i_loop_deinterleave.S \
+#  	             ../src/update_FG/update_FG.S \
+#  	             ../src/update_VS/update_VS_mont.S \
+#  				 ../src/big30_and_uint256/big30_from_uint256.S \
+#  				 ../src/final_adjustment/final_adjustment_ref.c \
+#                   ../src/common/*.c )
 
 
 # SRC = $(wildcard ../src/cpt_inv_func5.c \
