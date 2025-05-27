@@ -18,10 +18,6 @@ caller calleesaved_v12
 caller calleesaved_v13
 caller calleesaved_v14
 caller calleesaved_v15
-push2x8b calleesaved_v8, calleesaved_v9
-push2x8b calleesaved_v10, calleesaved_v11
-push2x8b calleesaved_v12, calleesaved_v13
-push2x8b calleesaved_v14, calleesaved_v15
 
 # register initialization and specification
 
@@ -297,9 +293,6 @@ vec_buffer &= vec_2x_2p32m1
 reg128 vec_4x_2p30m1
 4x vec_4x_2p30m1 = vec_2x_2p30m1[0/4] vec_2x_2p30m1[2/4] vec_2x_2p30m1[0/4] vec_2x_2p30m1[2/4]
 
-
-
-
 4x vec_carry = vec_V0_V1_S0_S1 >> 30
 2x vec_carry = vec_carry << 32
 4x vec_V0_V1_S0_S1 += vec_carry
@@ -342,8 +335,4 @@ int64 S8
 S8 = vec_V8_V9_S8_S9[1/2]
 mem32[pointer_S+32] = S8
 
-pop2x8b calleesaved_v14, calleesaved_v15
-pop2x8b calleesaved_v12, calleesaved_v13
-pop2x8b calleesaved_v10, calleesaved_v11
-pop2x8b calleesaved_v8, calleesaved_v9
 return
