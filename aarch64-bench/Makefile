@@ -31,6 +31,7 @@ COMMON_SRC := \
   ../src/j_loop_final/j_loop_final.S \
   ../src/final_adjustment/final_adjustment.S \
   ../src/update_FG/update_FG.S \
+  ../src/update_FG_VS/update_FG_VS.S \
   ../src/update_VS/update_VS_mont.S \
   dummy.S \
 
