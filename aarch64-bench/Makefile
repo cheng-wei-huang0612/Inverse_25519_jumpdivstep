@@ -22,7 +22,7 @@ COMMON_SRC := \
   ../external/sole_inv25519/fe25519_intmul.S \
   ../external/sole_inv25519/fe25519_intmul_nsquare.S \
   ../external/sole_inv25519/fe25519_intmul_square.S \
-  ../src/cpt_inv_func6.c \
+  ../src/cpt_inv_func7.c \
   ../src/i_loop/i_loop.S \
   ../src/divstepx20/divstepx20.S \
   ../src/big30_and_uint256/big30_from_uint256.S \
@@ -32,6 +32,7 @@ COMMON_SRC := \
   ../src/final_adjustment/final_adjustment.S \
   ../src/update_FG/update_FG.S \
   ../src/update_FG_VS/update_FG_VS.S \
+  ../src/final_update/final_update.S \
   ../src/update_VS/update_VS_mont.S \
   dummy.S \
 

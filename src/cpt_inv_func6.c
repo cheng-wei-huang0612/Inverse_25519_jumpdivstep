@@ -10,8 +10,8 @@ extern void i_loop(int64_t *delta, big30_t *F, big30_t *G, big30_t *V, big30_t *
 // extern void update_FG(big30_t *F, big30_t *G, int64_t *uuvvrrss);
 // extern void update_VS_mont(big30_t *V, big30_t *S, int64_t *uuvvrrss);
 extern void update_FG_VS(big30_t *F, big30_t *G, big30_t *V, big30_t *S, int64_t *uuvvrrss);
+
 extern void final_adjustment(uint256_t *inv, big30_t *F, big30_t *V);
-/*extern void sign_adjustment(big30_t *inv30, big30_t *F, big30_t *V);*/
 
 
 
@@ -48,13 +48,8 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
 
 
 
-
-
     int64_t f, g;
     int64_t uuvvrrss[4];
-
-
-
     
     f = (int64_t) F.limb[1];
     g = (int64_t) G.limb[1];
@@ -75,24 +70,16 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
     i_loop(&delta, &F, &G, &V, &S, uuvvrrss);
 
 
-    // for (int k = 0; k < 4; k++) {
-    //     printf("uuvvrrss[%d] = %lld\n", k, uuvvrrss[k]);
-    // }
-    
-    
-    update_FG_VS(&F, &G, &V, &S, uuvvrrss);
-    // update_FG(&F, &G, uuvvrrss);
-    // update_VS_mont(&V, &S, uuvvrrss);
-    
-    
     // for (int j = 0; j < 9; j++) {
     // printf("V.limb[%d] = %d\n", j, V.limb[j]);
     // }
+    // for (int k = 0; k < 4; k++) {
+    //     printf("uuvvrrss[%d] = %lld\n", k, uuvvrrss[k]);
+    // }
+
+        
+    update_FG_VS(&F, &G, &V, &S, uuvvrrss);
 
     final_adjustment(inv, &F, &V);
-    
-    // for (int j = 0; j < 4; j++) {
-    // printf("V.limb[%d] = %llu\n", j, inv->limb64[j]);
-    // }
 
 }
