@@ -1,7 +1,5 @@
-ldr x3, [x2]
-ldr x4, [x2, #8]
-ldr x5, [x2, #16]
-ldr x6, [x2, #24]
+ldp x3, x4, [x2]
+ldp x5, x6, [x2, #16]
 ldr w2, [x2, #32]
 and x7, x3, #0x3fffffff
 lsr x3, x3, #32
@@ -31,7 +29,7 @@ orr x6, x7, x6
 lsl x2, x2, #48
 orr x2,x6,x2
 ldrsw x1, [x1, #32]
-subs x1,x1,#0
+cmp x1,#0
 mvn x6, xzr
 lsr x6, x6, #1
 mov x7, #18
@@ -42,7 +40,5 @@ sub x6,x6,x2
 csel x2, x2, x6, pl
 and  x1, x7, x1
 sub x1,x3,x1
-str x1, [x0]
-str x4, [x0, #8]
-str x5, [x0, #16]
-str x2, [x0, #24]
+stp x1, x4, [x0]
+stp x5, x2, [x0, #16]

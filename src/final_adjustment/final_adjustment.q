@@ -16,10 +16,9 @@ int64 V4V5
 int64 V6V7
 int64 V8
 
-V0V1 = mem64[pointer_V]
-V2V3 = mem64[pointer_V + 8]
-V4V5 = mem64[pointer_V + 16]
-V6V7 = mem64[pointer_V + 24]
+
+V0V1, V2V3 = mem128[pointer_V]
+V4V5, V6V7 = mem128[pointer_V + 16]
 V8 = mem32[pointer_V + 32]
 
 int64 V0
@@ -76,7 +75,7 @@ inv3 |= tmp
 # sign_adjustment
 
 signF =signextend mem32[pointer_F+32]
-signF = signF - 0!
+signF - 0!
 
 int64 2p64m1
 int64 2p63m1
@@ -101,9 +100,8 @@ inv0 = inv0 - tmp
 
 
 
-mem64[pointer_inv] = inv0
-mem64[pointer_inv+8] = inv1
-mem64[pointer_inv+16] = inv2
-mem64[pointer_inv+24] = inv3
+mem128[pointer_inv] = inv0, inv1
+mem128[pointer_inv+16] = inv2, inv3
+
 
 return
