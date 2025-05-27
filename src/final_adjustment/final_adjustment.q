@@ -87,7 +87,7 @@ _18 = 18
 
 
 
-tmp = 2p64m1 - inv0
+
 
 inv0 = inv0 if N=0 else ~inv0
 inv1 = inv1 if N=0 else ~inv1
