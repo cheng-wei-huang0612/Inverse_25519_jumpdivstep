@@ -26,14 +26,14 @@ COMMON_SRC := \
   ../src/i_loop/i_loop.S \
   ../src/divstepx20/divstepx20.S \
   ../src/big30_and_uint256/big30_from_uint256.S \
+  ../src/big30_and_uint256/uint256_from_big30.S \
   ../src/j_loop/j_loop.S \
   ../src/j_loop_final/j_loop_final.S \
-  ../src/final_adjustment/final_adjustment_ref.c \
+  ../src/final_adjustment/final_adjustment.S \
   ../src/update_FG/update_FG.S \
   ../src/update_VS/update_VS_mont.S \
   dummy.S \
 
-  #../src/big30_and_uint256/uint256_from_big30.S \
 
 # ==== 把 .c / .S 各自換成 .o ====
 OBJ_COMMON         := \
