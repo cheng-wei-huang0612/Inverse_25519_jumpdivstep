@@ -113,13 +113,13 @@ static int bench(void)
 
   qsort(cycles, NTESTS, sizeof(uint64_t), cmp_uint64_t);
 
-  print_median("intmul_invert", cycles);
+  print_median("s2n inversion", cycles);
 
   printf("\n");
 
   print_percentile_legend();
 
-  print_percentiles("intmul_invert", cycles);
+  print_percentiles("s2n inversion", cycles);
 
   printf("\n\n\n\n");
 
