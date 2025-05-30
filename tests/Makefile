@@ -10,7 +10,7 @@ LDFLAGS = -lgmp
 SRC = $(wildcard ../src/cpt_inv_func7.c \
  				 ../src/big30_and_uint256/big30_from_uint256.S \
  	  			 ../src/j_loop/j_loop.S \
- 				 ../src/i_loop/i_loop.S \
+ 				 ../src/i_loop/i_loop_deinterleave.S \
  				 ../src/j_loop_final/j_loop_final.S \
 				 ../src/final_update/final_update.S \
                   ../src/common/*.c )

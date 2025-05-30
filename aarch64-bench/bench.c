@@ -10,6 +10,8 @@
 #include "hal.h"
 #include "fe25519.h"
 #include "big30.h"
+extern void bignum_inv_p25519(uint64_t z[static 4],const uint64_t x[static 4]);
+
 
 #define NWARMUP 50
 #define NITERATIONS 300
@@ -88,6 +90,36 @@ static int bench(void)
 
   print_percentiles("intmul_invert", cycles);
 
+  printf("\n\n\n\n");
+
+  uint64_t s2n_a[4];
+
+
+  for (i = 0; i < NTESTS; i++)
+  {
+    for (j = 0; j < NWARMUP; j++)
+    {
+      bignum_inv_p25519(s2n_a, s2n_a);
+    }
+
+    t0 = get_cyclecounter();
+    for (j = 0; j < NITERATIONS; j++)
+    {
+      bignum_inv_p25519(s2n_a, s2n_a);
+    }
+    t1 = get_cyclecounter();
+    cycles[i] = t1 - t0;
+  }
+
+  qsort(cycles, NTESTS, sizeof(uint64_t), cmp_uint64_t);
+
+  print_median("intmul_invert", cycles);
+
+  printf("\n");
+
+  print_percentile_legend();
+
+  print_percentiles("intmul_invert", cycles);
 
   printf("\n\n\n\n");
 
