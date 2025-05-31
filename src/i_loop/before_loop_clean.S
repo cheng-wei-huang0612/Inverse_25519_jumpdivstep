@@ -44,6 +44,14 @@ ins v14.d[0], x12
 ins v14.d[1], x17
 ins v15.d[0], x13
 ins v15.d[1], x18
-ldp x9, x10, [x5, #0]
-ldp x11, x12, [x5, #16]
-ldr x13, [x0]
+ldr x9, [x0]
+ldp x10, x11, [x5, #0]
+ldp x12, x13, [x5, #16]
+ldr q16,[x5,#0]
+ldr q17,[x5,#16]
+and v18.16b, v16.16b, v1.16b
+and v19.16b, v17.16b, v1.16b
+trn1 v18.4s,v18.4s,v19.4s
+sshr v19.2d, v16.2d, #30
+sshr v16.2d, v17.2d, #30
+trn1 v16.4s,v19.4s,v16.4s

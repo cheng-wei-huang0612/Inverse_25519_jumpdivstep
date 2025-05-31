@@ -1,4 +1,95 @@
-# CHUNK
+# qhasm: caller calleesaved_x18
+
+# qhasm: caller calleesaved_x19
+
+# qhasm: caller calleesaved_x20
+
+# qhasm: caller calleesaved_x21
+
+# qhasm: caller calleesaved_x22
+
+# qhasm: caller calleesaved_x23
+
+# qhasm: caller calleesaved_x24
+
+# qhasm: caller calleesaved_x25
+
+# qhasm: caller calleesaved_x26
+
+# qhasm: caller calleesaved_x27
+
+# qhasm: caller calleesaved_x28
+
+# qhasm: caller calleesaved_x29
+
+# qhasm: caller calleesaved_v8
+
+# qhasm: caller calleesaved_v9
+
+# qhasm: caller calleesaved_v10
+
+# qhasm: caller calleesaved_v11
+
+# qhasm: caller calleesaved_v12
+
+# qhasm: caller calleesaved_v13
+
+# qhasm: caller calleesaved_v14
+
+# qhasm: caller calleesaved_v15
+
+
+# qhasm: int64 pointer_G
+
+# qhasm: int64 pointer_V
+
+# qhasm: int64 pointer_S
+
+# qhasm: int64 pointer_uuvvrrss
+
+# qhasm: input pointer_delta
+
+# qhasm: input pointer_F
+
+# qhasm: input pointer_G
+
+# qhasm: input pointer_V
+
+# qhasm: input pointer_S
+
+# qhasm: input pointer_uuvvrrss
+
+# qhasm: int64 uu
+
+# qhasm: int64 vv
+
+# qhasm: int64 rr
+
+# qhasm: int64 ss
+
+# qhasm: int64 ff
+
+# qhasm: int64 f_hi
+
+# qhasm: int64 f
+
+# qhasm: int64 g_hi
+
+# qhasm: int64 g
+
+# qhasm: int64 fuv
+
+# qhasm: int64 grs
+
+# qhasm: int64 g1
+
+# qhasm: int64 hh
+
+# qhasm: int64 h
+
+# qhasm: int64 m1
+
+# qhasm: int64 ITERATION
 
 # qhasm: ITERATION = 9
 # asm 1: mov >ITERATION=int64#7, #9
@@ -35,9 +126,6 @@ uzp1 v3.4s, v1.4s, v1.4s
 
 # qhasm: int64 M
 
-# qhasm: M = 0
-# asm 1: mov >M=int64#8, #0
-# asm 2: mov >M=x7, #0
 
 
 # qhasm: M[0/4] = 51739
@@ -315,21 +403,91 @@ ins v15.d[0], x13
 # asm 2: ins <vec_V8_V9_S8_S9=v15.d[1], <S8S9=x18
 ins v15.d[1], x18
 
-# qhasm: uu, vv = mem128[pointer_uuvvrrss + 0]
-# asm 1: ldp >uu=int64#10, >vv=int64#11, [<pointer_uuvvrrss=int64#6, #0]
-# asm 2: ldp >uu=x9, >vv=x10, [<pointer_uuvvrrss=x5, #0]
-ldp x9, x10, [x5, #0]
-
-# qhasm: rr, ss = mem128[pointer_uuvvrrss + 16]
-# asm 1: ldp >rr=int64#12, >ss=int64#13, [<pointer_uuvvrrss=int64#6, #16]
-# asm 2: ldp >rr=x11, >ss=x12, [<pointer_uuvvrrss=x5, #16]
-ldp x11, x12, [x5, #16]
-
 # qhasm: int64 m
 
 # qhasm: m = mem64[pointer_delta]
-# asm 1: ldr >m=int64#14, [<pointer_delta=int64#1]
-# asm 2: ldr >m=x13, [<pointer_delta=x0]
-ldr x13, [x0]
+# asm 1: ldr >m=int64#10, [<pointer_delta=int64#1]
+# asm 2: ldr >m=x9, [<pointer_delta=x0]
+ldr x9, [x0]
 
-# CHUNK
+# qhasm: int64 uu0
+
+# qhasm: int64 uu1
+
+# qhasm: int64 vv0
+
+# qhasm: int64 vv1
+
+# qhasm: int64 rr0
+
+# qhasm: int64 rr1
+
+# qhasm: int64 ss0
+
+# qhasm: int64 ss1
+
+# qhasm: reg128 vec_uu0_rr0_vv0_ss0
+
+# qhasm: reg128 vec_uu1_rr1_vv1_ss1
+
+# qhasm: reg128 vec_uu_vv
+
+# qhasm: reg128 vec_uu0_vv0
+
+# qhasm: reg128 vec_uu1_vv1
+
+# qhasm: reg128 vec_rr_ss
+
+# qhasm: reg128 vec_rr0_ss0
+
+# qhasm: reg128 vec_rr1_ss1
+
+# qhasm: uu, vv = mem128[pointer_uuvvrrss + 0]
+# asm 1: ldp >uu=int64#11, >vv=int64#12, [<pointer_uuvvrrss=int64#6, #0]
+# asm 2: ldp >uu=x10, >vv=x11, [<pointer_uuvvrrss=x5, #0]
+ldp x10, x11, [x5, #0]
+
+# qhasm: rr, ss = mem128[pointer_uuvvrrss + 16]
+# asm 1: ldp >rr=int64#13, >ss=int64#14, [<pointer_uuvvrrss=int64#6, #16]
+# asm 2: ldp >rr=x12, >ss=x13, [<pointer_uuvvrrss=x5, #16]
+ldp x12, x13, [x5, #16]
+
+# qhasm: vec_uu_vv = mem128[pointer_uuvvrrss + 0]
+# asm 1: ldr >vec_uu_vv=reg128#17%qregname,[<pointer_uuvvrrss=int64#6,#0]
+# asm 2: ldr >vec_uu_vv=q16,[<pointer_uuvvrrss=x5,#0]
+ldr q16,[x5,#0]
+
+# qhasm: vec_rr_ss = mem128[pointer_uuvvrrss + 16]
+# asm 1: ldr >vec_rr_ss=reg128#18%qregname,[<pointer_uuvvrrss=int64#6,#16]
+# asm 2: ldr >vec_rr_ss=q17,[<pointer_uuvvrrss=x5,#16]
+ldr q17,[x5,#16]
+
+# qhasm: vec_uu0_vv0 = vec_uu_vv & vec_2x_2p30m1
+# asm 1: and >vec_uu0_vv0=reg128#19.16b, <vec_uu_vv=reg128#17.16b, <vec_2x_2p30m1=reg128#2.16b
+# asm 2: and >vec_uu0_vv0=v18.16b, <vec_uu_vv=v16.16b, <vec_2x_2p30m1=v1.16b
+and v18.16b, v16.16b, v1.16b
+
+# qhasm: vec_rr0_ss0 = vec_rr_ss & vec_2x_2p30m1
+# asm 1: and >vec_rr0_ss0=reg128#20.16b, <vec_rr_ss=reg128#18.16b, <vec_2x_2p30m1=reg128#2.16b
+# asm 2: and >vec_rr0_ss0=v19.16b, <vec_rr_ss=v17.16b, <vec_2x_2p30m1=v1.16b
+and v19.16b, v17.16b, v1.16b
+
+# qhasm: 4x vec_uu0_rr0_vv0_ss0 = vec_uu0_vv0[0/4] vec_rr0_ss0[0/4] vec_uu0_vv0[2/4] vec_rr0_ss0[2/4] 
+# asm 1: trn1 >vec_uu0_rr0_vv0_ss0=reg128#19.4s,<vec_uu0_vv0=reg128#19.4s,<vec_rr0_ss0=reg128#20.4s
+# asm 2: trn1 >vec_uu0_rr0_vv0_ss0=v18.4s,<vec_uu0_vv0=v18.4s,<vec_rr0_ss0=v19.4s
+trn1 v18.4s,v18.4s,v19.4s
+
+# qhasm: 2x vec_uu1_vv1 = vec_uu_vv >> 30
+# asm 1: sshr <vec_uu1_vv1=reg128#20.2d, <vec_uu_vv=reg128#17.2d, #30
+# asm 2: sshr <vec_uu1_vv1=v19.2d, <vec_uu_vv=v16.2d, #30
+sshr v19.2d, v16.2d, #30
+
+# qhasm: 2x vec_rr1_ss1 = vec_rr_ss >> 30
+# asm 1: sshr <vec_rr1_ss1=reg128#17.2d, <vec_rr_ss=reg128#18.2d, #30
+# asm 2: sshr <vec_rr1_ss1=v16.2d, <vec_rr_ss=v17.2d, #30
+sshr v16.2d, v17.2d, #30
+
+# qhasm: 4x vec_uu1_rr1_vv1_ss1 = vec_uu1_vv1[0/4] vec_rr1_ss1[0/4] vec_uu1_vv1[2/4] vec_rr1_ss1[2/4] 
+# asm 1: trn1 >vec_uu1_rr1_vv1_ss1=reg128#17.4s,<vec_uu1_vv1=reg128#20.4s,<vec_rr1_ss1=reg128#17.4s
+# asm 2: trn1 >vec_uu1_rr1_vv1_ss1=v16.4s,<vec_uu1_vv1=v19.4s,<vec_rr1_ss1=v16.4s
+trn1 v16.4s,v19.4s,v16.4s
