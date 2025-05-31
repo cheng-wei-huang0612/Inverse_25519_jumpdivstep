@@ -907,7 +907,8 @@ prod_hi = prod_hi << 44
 g = prod_lo | prod_hi
 f = new_f
 
-
+free prod_lo
+free prod_hi
 
 
 # The second j_loop
@@ -1278,16 +1279,16 @@ r = r signed>> 43
 # int64 new_rr
 # int64 new_ss
 prod_lo = u * f
-prod_hi = u signed* f (hi)
+#prod_hi = u signed* f (hi)
 
 tmp = v * g
 prod_lo += tmp !
 
-tmp = v signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
+#tmp = v signed* g (hi)
+#prod_hi = prod_hi + tmp + carry 
 
 prod_lo = prod_lo unsigned>> 20
-prod_hi = prod_hi << 44
+#prod_hi = prod_hi << 44
 #new_f = prod_lo | prod_hi
 new_f = prod_lo 
 
@@ -1295,16 +1296,16 @@ new_f = prod_lo
 
 
 prod_lo = r * f
-prod_hi = r signed* f (hi)
+#prod_hi = r signed* f (hi)
 
 tmp = s * g
 prod_lo += tmp !
 
-tmp = s signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
+#tmp = s signed* g (hi)
+#prod_hi = prod_hi + tmp + carry 
 
 prod_lo = prod_lo unsigned>> 20
-prod_hi = prod_hi << 44
+#prod_hi = prod_hi << 44
 #new_g = prod_lo | prod_hi
 new_g = prod_lo 
 
@@ -1653,18 +1654,18 @@ grs -= 2p62
 
     
 
-    m1 = m - 1 
-    grs & 1
-    ff = fuv if Z=0 else 0
-    m1 & (grs >>> 1)
-    m = m1 if N=0 else -m
-    fuv = grs if N=1 else fuv
-    ff = ff if N=0 else -ff
-    grs = grs + ff
-    grs = grs signed>> 1
-
-    free m1
-    free ff
+#    m1 = m - 1 
+#    grs & 1
+#    ff = fuv if Z=0 else 0
+#    m1 & (grs >>> 1)
+#    m = m1 if N=0 else -m
+#    fuv = grs if N=1 else fuv
+#    ff = ff if N=0 else -ff
+#    grs = grs + ff
+#    grs = grs signed>> 1
+#
+#    free m1
+#    free ff
 
 
     
@@ -1722,22 +1723,19 @@ ss = new_ss
 
 
 uu0 = uu & ((1 << 30)-1)
-uu1 = (uu >> 30) & ((1 << 32)-1)
-
 vv0 = vv & ((1 << 30)-1)
-vv1 = (vv >> 30) & ((1 << 32)-1)
-
 rr0 = rr & ((1 << 30)-1)
-rr1 = (rr >> 30) & ((1 << 32)-1)
-
 ss0 = ss & ((1 << 30)-1)
-ss1 = (ss >> 30) & ((1 << 32)-1)
-
 
 vec_uu0_rr0_vv0_ss0[0/4] = uu0
 vec_uu0_rr0_vv0_ss0[1/4] = rr0
 vec_uu0_rr0_vv0_ss0[2/4] = vv0
 vec_uu0_rr0_vv0_ss0[3/4] = ss0
+
+uu1 = (uu >> 30) & ((1 << 32)-1)
+vv1 = (vv >> 30) & ((1 << 32)-1)
+rr1 = (rr >> 30) & ((1 << 32)-1)
+ss1 = (ss >> 30) & ((1 << 32)-1)
 
 
 vec_uu1_rr1_vv1_ss1[0/4] = uu1
