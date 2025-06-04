@@ -74,12 +74,12 @@ ITERATION = 9
 
 reg128 vec_2x_2p30m1
 reg128 vec_2x_2p32m1
+reg128 vec_2x_2p15m1
 
 
 2x vec_2x_2p32m1 = 0xFFFFFFFF
 2x vec_2x_2p30m1 = vec_2x_2p32m1 unsigned>> 2
 
-reg128 vec_2x_2p15m1
 2x vec_2x_2p15m1 = vec_2x_2p30m1 >> 15
 
 reg128 vec_4x_2p30m1
@@ -88,17 +88,17 @@ reg128 vec_4x_2p30m1
 
 # M = 678152731
 int64 M
-M = 0
-M[0/4] = 51739
+#M = 0
+M[0/4] =(0) 51739
 M[1/4] = 10347
 reg128 vec_M
 4x vec_M = M
 # vec_M = [M, M, M, M]
 
-int64 _19
-_19 = 19
+#int64 _19
+#_19 = 19
 reg128 vec_4x_19
-4x vec_4x_19 = _19
+4x vec_4x_19 = 19
 
 int64 2p41
 2p41 = 1

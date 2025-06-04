@@ -25,6 +25,7 @@ extern big30_t P;
 
 
 
+
 void uint256_from_big30(uint256_t *rop, const big30_t *op);
 void big30_from_uint256(big30_t *rop, const uint256_t *op);
 void cpt_inv(uint256_t *x, uint256_t *inv);
