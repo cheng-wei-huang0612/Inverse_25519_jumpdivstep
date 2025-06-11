@@ -604,10 +604,8 @@ vec_V0_V1_S0_S1[1/2] = one
 
 
 for i in range(2,10,2):
-    # code += f"reg128 vec_V{i}_V{i+1}_S{i}_S{i+1} \n"
-    code += "\n"
-    code += f"vec_V{i}_V{i+1}_S{i}_S{i+1}[0/2] = zero\n"
-    code += f"vec_V{i}_V{i+1}_S{i}_S{i+1}[1/2] = zero\n"
+
+    code += f"2x vec_V{i}_V{i+1}_S{i}_S{i+1} = 0\n"
     code += "\n"
 
 

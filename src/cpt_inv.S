@@ -4122,45 +4122,25 @@ ins v10.d[0], x10
 # asm 2: ins <vec_V0_V1_S0_S1=v10.d[1], <one=x9
 ins v10.d[1], x9
 
-# qhasm: vec_V2_V3_S2_S3[0/2] = zero
-# asm 1: ins <vec_V2_V3_S2_S3=reg128#12.d[0], <zero=int64#11
-# asm 2: ins <vec_V2_V3_S2_S3=v11.d[0], <zero=x10
-ins v11.d[0], x10
+# qhasm: 2x vec_V2_V3_S2_S3 = 0
+# asm 1: movi <vec_V2_V3_S2_S3=reg128#12.2d, #0
+# asm 2: movi <vec_V2_V3_S2_S3=v11.2d, #0
+movi v11.2d, #0
 
-# qhasm: vec_V2_V3_S2_S3[1/2] = zero
-# asm 1: ins <vec_V2_V3_S2_S3=reg128#12.d[1], <zero=int64#11
-# asm 2: ins <vec_V2_V3_S2_S3=v11.d[1], <zero=x10
-ins v11.d[1], x10
+# qhasm: 2x vec_V4_V5_S4_S5 = 0
+# asm 1: movi <vec_V4_V5_S4_S5=reg128#14.2d, #0
+# asm 2: movi <vec_V4_V5_S4_S5=v13.2d, #0
+movi v13.2d, #0
 
-# qhasm: vec_V4_V5_S4_S5[0/2] = zero
-# asm 1: ins <vec_V4_V5_S4_S5=reg128#14.d[0], <zero=int64#11
-# asm 2: ins <vec_V4_V5_S4_S5=v13.d[0], <zero=x10
-ins v13.d[0], x10
+# qhasm: 2x vec_V6_V7_S6_S7 = 0
+# asm 1: movi <vec_V6_V7_S6_S7=reg128#15.2d, #0
+# asm 2: movi <vec_V6_V7_S6_S7=v14.2d, #0
+movi v14.2d, #0
 
-# qhasm: vec_V4_V5_S4_S5[1/2] = zero
-# asm 1: ins <vec_V4_V5_S4_S5=reg128#14.d[1], <zero=int64#11
-# asm 2: ins <vec_V4_V5_S4_S5=v13.d[1], <zero=x10
-ins v13.d[1], x10
-
-# qhasm: vec_V6_V7_S6_S7[0/2] = zero
-# asm 1: ins <vec_V6_V7_S6_S7=reg128#15.d[0], <zero=int64#11
-# asm 2: ins <vec_V6_V7_S6_S7=v14.d[0], <zero=x10
-ins v14.d[0], x10
-
-# qhasm: vec_V6_V7_S6_S7[1/2] = zero
-# asm 1: ins <vec_V6_V7_S6_S7=reg128#15.d[1], <zero=int64#11
-# asm 2: ins <vec_V6_V7_S6_S7=v14.d[1], <zero=x10
-ins v14.d[1], x10
-
-# qhasm: vec_V8_V9_S8_S9[0/2] = zero
-# asm 1: ins <vec_V8_V9_S8_S9=reg128#16.d[0], <zero=int64#11
-# asm 2: ins <vec_V8_V9_S8_S9=v15.d[0], <zero=x10
-ins v15.d[0], x10
-
-# qhasm: vec_V8_V9_S8_S9[1/2] = zero
-# asm 1: ins <vec_V8_V9_S8_S9=reg128#16.d[1], <zero=int64#11
-# asm 2: ins <vec_V8_V9_S8_S9=v15.d[1], <zero=x10
-ins v15.d[1], x10
+# qhasm: 2x vec_V8_V9_S8_S9 = 0
+# asm 1: movi <vec_V8_V9_S8_S9=reg128#16.2d, #0
+# asm 2: movi <vec_V8_V9_S8_S9=v15.2d, #0
+movi v15.2d, #0
 
 # qhasm: main_i_loop:
 ._main_i_loop:

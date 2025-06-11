@@ -1407,21 +1407,13 @@ vec_V0_V1_S0_S1[1/2] = one
 
 
 
+2x vec_V2_V3_S2_S3 = 0
 
-vec_V2_V3_S2_S3[0/2] = zero
-vec_V2_V3_S2_S3[1/2] = zero
+2x vec_V4_V5_S4_S5 = 0
 
+2x vec_V6_V7_S6_S7 = 0
 
-vec_V4_V5_S4_S5[0/2] = zero
-vec_V4_V5_S4_S5[1/2] = zero
-
-
-vec_V6_V7_S6_S7[0/2] = zero
-vec_V6_V7_S6_S7[1/2] = zero
-
-
-vec_V8_V9_S8_S9[0/2] = zero
-vec_V8_V9_S8_S9[1/2] = zero
+2x vec_V8_V9_S8_S9 = 0
 
 
 main_i_loop:
