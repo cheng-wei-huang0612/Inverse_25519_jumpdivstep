@@ -935,36 +935,36 @@ r = r signed>> 43
 # int64 new_rr
 # int64 new_ss
 
-# TODO: we dont need high part of the product
+
 prod_lo = u * f
-prod_hi = u signed* f (hi)
+#prod_hi = u signed* f (hi)
 
 tmp = v * g
 prod_lo += tmp !
 
-tmp = v signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
+#tmp = v signed* g (hi)
+#prod_hi = prod_hi + tmp + carry 
 
 prod_lo = prod_lo signed>> 20
-prod_hi = prod_hi << 44
-new_f = prod_lo | prod_hi
+#prod_hi = prod_hi << 44
+#new_f = prod_lo | prod_hi
 new_f = prod_lo 
 
 
 
 
 prod_lo = r * f
-prod_hi = r signed* f (hi)
+#prod_hi = r signed* f (hi)
 
 tmp = s * g
 prod_lo += tmp !
 
-tmp = s signed* g (hi)
-prod_hi = prod_hi + tmp + carry 
+#tmp = s signed* g (hi)
+#prod_hi = prod_hi + tmp + carry 
 
 prod_lo = prod_lo signed>> 20
-prod_hi = prod_hi << 44
-new_g = prod_lo | prod_hi
+#prod_hi = prod_hi << 44
+#new_g = prod_lo | prod_hi
 new_g = prod_lo 
 
 
@@ -2486,6 +2486,7 @@ r = r signed>> 43
 # int64 new_vv
 # int64 new_rr
 # int64 new_ss
+
 prod_lo = u * f
 #prod_hi = u signed* f (hi)
 
