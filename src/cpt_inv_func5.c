@@ -92,8 +92,38 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
     //     }
     // }
   }
+      printf("uuvvrrss: [%lld, %lld, %lld, %lld]\n", uuvvrrss[0], uuvvrrss[1], uuvvrrss[2], uuvvrrss[3]);
+    printf("uuvvrrss: [%llu, %llu, %llu, %llu]\n", (uint64_t)uuvvrrss[0], (uint64_t)uuvvrrss[1], (uint64_t)uuvvrrss[2], (uint64_t)uuvvrrss[3]);
+    
+    printf("V = ");
+    for (size_t i = 0; i < 9; i++) {
+        printf("%lld ", (long long)V.limb[i]);
+    }
+    printf("\n");
+
+    printf("S = ");
+    for (size_t i = 0; i < 9; i++) {
+        printf("%lld ", (long long)S.limb[i]);
+    }
+    printf("\n");
   
-  update_FG(&F, &G, uuvvrrss);
-  update_VS_mont(&V, &S, uuvvrrss);
+
+    update_FG(&F, &G, uuvvrrss);
+    update_VS_mont(&V, &S, uuvvrrss);
+
+
+    printf("After update_FG and update_VS_mont:\n");
+    printf("V = ");
+    for (size_t i = 0; i < 9; i++) {
+        printf("%lld ", (long long)V.limb[i]);
+    }
+    printf("\n");
+
+    printf("S = ");
+    for (size_t i = 0; i < 9; i++) {
+        printf("%lld ", (long long)S.limb[i]);
+    }
+    printf("\n");
+  
   final_adjustment(inv, &F, &V);
 }

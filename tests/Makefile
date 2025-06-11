@@ -7,18 +7,28 @@ LDFLAGS = -lgmp
 
 # 通用的 SRC (可以視需求篩選或增減)
 
-# SRC = $(wildcard ../src/cpt_inv.S \
-# 					standalon.c \
-#                    ../src/common/*.c )
+SRC = $(wildcard ../src/cpt_inv.S \
+					standalon.c \
+                   ../src/common/*.c )
 
-SRC = $(wildcard ../src/cpt_inv_func8.c \
- 				 ../src/big30_and_uint256/big30_from_uint256.S \
- 	  			 ../src/j_loop/j_loop.S \
- 				 ../src/i_loop/i_loop.S \
-				 ../src/ij_loop/ij_loop_ref.c \
- 				 ../src/j_loop_final/j_loop_final.S \
-				 ../src/final_update/final_update.S \
-                  ../src/common/*.c )
+# SRC = $(wildcard ../src/cpt_inv_func5.c \
+# 	  			 ../src/j_loop/j_loop.S \
+# 				 ../src/j_loop_final/j_loop_final.S \
+# 				 ../src/single_i_loop/i_loop.S \
+# 	             ../src/update_FG/update_FG.S \
+# 	             ../src/update_VS/update_VS_mont.S \
+# 				 ../src/big30_and_uint256/big30_from_uint256.S \
+# 				 ../src/final_adjustment/final_adjustment_ref.c \
+#                  ../src/common/*.c )
+
+# SRC = $(wildcard ../src/cpt_inv_func8.c \
+#  				 ../src/big30_and_uint256/big30_from_uint256.S \
+#  	  			 ../src/j_loop/j_loop.S \
+#  				 ../src/i_loop/i_loop.S \
+# 				 ../src/ij_loop/ij_loop_ref.c \
+#  				 ../src/j_loop_final/j_loop_final.S \
+# 				 ../src/final_update/final_update.S \
+#                   ../src/common/*.c )
 
 
 # SRC = $(wildcard ../src/cpt_inv_func7.c \
@@ -43,15 +53,6 @@ SRC = $(wildcard ../src/cpt_inv_func8.c \
 
 
 
-# SRC = $(wildcard ../src/cpt_inv_func5.c \
-# 	  			 ../src/j_loop/j_loop.S \
-# 				 ../src/j_loop_final/j_loop_final.S \
-# 				 ../src/single_i_loop/i_loop.S \
-# 	             ../src/update_FG/update_FG.S \
-# 	             ../src/update_VS/update_VS_mont.S \
-# 				 ../src/big30_and_uint256/big30_from_uint256.S \
-# 				 ../src/final_adjustment/final_adjustment_ref.c \
-#                  ../src/common/*.c )
 
 
 
@@ -72,7 +73,7 @@ SRC = $(wildcard ../src/cpt_inv_func8.c \
 # 				 ../src/big30_and_uint256/big30_from_uint256.S \
 # 				 ../src/big30_and_uint256/uint256_from_big30.S \
 # 				 ../src/final_adjustment/final_adjustment.S \
-# 				 ../src/divstepx20/divstepx20.S \
+# 				 ../src/divstepx20/divstepx20_2.S \
 # 				 ../src/extraction/extraction.S \
 # 				 ../src/inner_update/inner_update.S \
 # 				 ../src/sign_adjustment/sign_adjustment.S \

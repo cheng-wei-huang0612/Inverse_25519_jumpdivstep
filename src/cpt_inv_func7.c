@@ -35,6 +35,13 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
     
     
     big30_from_uint256(&G, x);
+
+    // CHECKED
+    // printf("G = ");
+    // for (size_t i = 0; i < 9; i++) {
+    //     printf("%lld ", (unsigned long long)G.limb[i]);
+    // }
+    // printf("\n");
     
     for (size_t i = 0; i < 9; i++) {
         F.limb[i] = P.limb[i];
@@ -57,16 +64,34 @@ void cpt_inv(uint256_t *x, uint256_t *inv) {
     f = f + (int64_t)F.limb[0];
     g = g + (int64_t)G.limb[0];
 
+    
     uuvvrrss[0] = 1;
     uuvvrrss[1] = 0;
     uuvvrrss[2] = 0;
     uuvvrrss[3] = 1;
+    
+    j_loop(&delta, &f, &g, uuvvrrss);
+    j_loop(&delta, &f, &g, uuvvrrss);
 
-    j_loop(&delta, &f, &g, uuvvrrss);
-    j_loop(&delta, &f, &g, uuvvrrss);
     j_loop_final(&delta, &f, &g, uuvvrrss);
 
+
+    
     i_loop(&delta, &F, &G, &V, &S, uuvvrrss);
+    printf("uuvvrrss: [%lld, %lld, %lld, %lld]\n", uuvvrrss[0], uuvvrrss[1], uuvvrrss[2], uuvvrrss[3]);
+    printf("uuvvrrss: [%llu, %llu, %llu, %llu]\n", (uint64_t)uuvvrrss[0], (uint64_t)uuvvrrss[1], (uint64_t)uuvvrrss[2], (uint64_t)uuvvrrss[3]);
+
+    printf("V = ");
+    for (size_t i = 0; i < 9; i++) {
+        printf("%lld ", (long long)V.limb[i]);
+    }
+    printf("\n");
+
+    printf("S = ");
+    for (size_t i = 0; i < 9; i++) {
+        printf("%lld ", (long long)S.limb[i]);
+    }
+    printf("\n");
     }
 
 

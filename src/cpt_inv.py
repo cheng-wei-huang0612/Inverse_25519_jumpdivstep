@@ -23,7 +23,7 @@ for i in range(4):
     code += f"int64 limb64_{i}\n"
     code += f"\nlimb64_{i} = mem64[input_x0 + {i*8}]\n"
 
-for i in range(9):
+for i in range(8):
     code += f"int64 G{i}\n"
 
 code += """
@@ -79,6 +79,7 @@ G4G5 = G4 + G5 << 32
 G6G7 = G6 + G7 << 32
 
 
+
 """
 
 for i in range(0,10,4):
@@ -108,6 +109,7 @@ _18 = 18
 4x vec_4x_19 = 19
 2x vec_2x_19 = vec_4x_19 >> 32
 
+4x vec_1x_18 = 0
 vec_1x_18[0/4] = _18
 
 2x vec_2x_2p32m1 = 0xFFFFFFFF
@@ -139,6 +141,8 @@ vec_F0_F1_F2_F3 = vec_4x_2p30m1
 vec_F4_F5_F6_F7 = vec_4x_2p30m1
 vec_F8_F9_F10_F11 = vec_2x_2p15m1
 
+
+
 """
 
 for i in range(0,10,2):
@@ -152,7 +156,11 @@ code += """
 2x vec_F4_F5_G4_G5 zip= vec_F4_F5_F6_F7[0/2] vec_G4_G5_G6_G7[0/2]
 2x vec_F6_F7_G6_G7 zip= vec_F4_F5_F6_F7[1/2] vec_G4_G5_G6_G7[1/2]
 
-2x vec_F8_F9_G8_G9 zip= vec_F8_F9_G8_G9[0/2] vec_G8_G9_G10_G11[0/2]
+2x vec_F8_F9_G8_G9 zip= vec_F8_F9_F10_F11[0/2] vec_G8_G9_G10_G11[0/2]
+
+
+
+
 
 """
 
@@ -185,7 +193,11 @@ m = 0
             fuv = fuv - _2p41
             grs -= 2p62
 
+            
 """
+
+
+
 
 
 for i in range(20):
@@ -204,6 +216,8 @@ for i in range(20):
             free m1
             free ff
     """
+
+
 
 
 code += """
@@ -283,6 +297,8 @@ f = new_f
 
 """
 
+
+
 # The second j_loop
 code += """
 # The second j_loop
@@ -356,6 +372,8 @@ code += """
 # int64 new_vv
 # int64 new_rr
 # int64 new_ss
+
+# TODO: we dont need high part of the product
 prod_lo = u * f
 prod_hi = u signed* f (hi)
 
@@ -365,9 +383,9 @@ prod_lo += tmp !
 tmp = v signed* g (hi)
 prod_hi = prod_hi + tmp + carry 
 
-prod_lo = prod_lo unsigned>> 20
+prod_lo = prod_lo signed>> 20
 prod_hi = prod_hi << 44
-#new_f = prod_lo | prod_hi
+new_f = prod_lo | prod_hi
 new_f = prod_lo 
 
 
@@ -382,9 +400,9 @@ prod_lo += tmp !
 tmp = s signed* g (hi)
 prod_hi = prod_hi + tmp + carry 
 
-prod_lo = prod_lo unsigned>> 20
+prod_lo = prod_lo signed>> 20
 prod_hi = prod_hi << 44
-#new_g = prod_lo | prod_hi
+new_g = prod_lo | prod_hi
 new_g = prod_lo 
 
 
@@ -418,6 +436,7 @@ ss = new_ss
 
 
 """
+
 
 
 
@@ -590,6 +609,7 @@ for i in range(2,10,2):
     code += f"vec_V{i}_V{i+1}_S{i}_S{i+1}[0/2] = zero\n"
     code += f"vec_V{i}_V{i+1}_S{i}_S{i+1}[1/2] = zero\n"
     code += "\n"
+
 
 
 
@@ -1091,7 +1111,7 @@ prod_lo += tmp !
 #tmp = v signed* g (hi)
 #prod_hi = prod_hi + tmp + carry 
 
-prod_lo = prod_lo unsigned>> 20
+prod_lo = prod_lo signed>> 20
 #prod_hi = prod_hi << 44
 #new_f = prod_lo | prod_hi
 new_f = prod_lo 
@@ -1108,7 +1128,7 @@ prod_lo += tmp !
 #tmp = s signed* g (hi)
 #prod_hi = prod_hi + tmp + carry 
 
-prod_lo = prod_lo unsigned>> 20
+prod_lo = prod_lo signed>> 20
 #prod_hi = prod_hi << 44
 #new_g = prod_lo | prod_hi
 new_g = prod_lo 
@@ -1240,6 +1260,24 @@ goto main_i_loop if unsigned>
 
 """
 
+for symbol in ["uu","vv","rr","ss"]:
+
+    #code += f"int64 {symbol}0\n"
+    #code += f"int64 {symbol}1\n"
+    code += f"{symbol}0 = {symbol} & ((1 << 30)-1)\n"
+    code += f"{symbol}1 = ({symbol} >> 30) & ((1 << 32)-1)\n"
+    code += "\n"
+
+
+for j in range(2):
+    #code += f"reg128 vec_uu{j}_rr{j}_vv{j}_ss{j}\n"
+    code += "\n"
+    for (i, symbol) in enumerate(["uu", "rr", "vv", "ss"]):
+        code += f"vec_uu{j}_rr{j}_vv{j}_ss{j}[{i}/4] = {symbol}{j}\n"
+
+    code += "\n"
+
+
 
 
 # update FG:
@@ -1279,6 +1317,7 @@ vec_buffer = vec_prod & vec_2x_2p30m1
 #2x vec_prod >>= 30
 2x vec_buffer <<= 32
 vec_F0_F1_G0_G1 |= vec_buffer
+
 
 
 # 2x vec_prod += vec_uu0_rr0_vv0_ss0[0] * vec_F4_F5_G4_G5[0/4]
@@ -1345,8 +1384,13 @@ vec_F0_F1_G0_G1 |= vec_buffer
 """
 
 
+
+
+
 # update VS:
 code += """
+
+
 
 #reg128 vec_buffer
 #reg128 vec_prod
@@ -1357,12 +1401,17 @@ code += """
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_V0_V1_S0_S1[2/4]
 
 #reg128 vec_l0
+
+
 4x vec_l0 = vec_prod * vec_M
 vec_l0 &= vec_2x_2p30m1
 4x vec_l0 = vec_l0[0/4] vec_l0[2/4] vec_l0[0/4] vec_l0[2/4]
 
 2x vec_prod -= vec_l0[0] * vec_4x_19[0]
 2x final_add_0 = vec_l0[0] << 15
+
+
+
 
 
 2x vec_prod >>= 30
@@ -1382,6 +1431,7 @@ vec_l1 &= vec_2x_2p30m1
 2x final_add_1 = vec_l1[0] << 15
 
 
+
 2x vec_prod >>= 30
 
 
@@ -1393,8 +1443,6 @@ vec_l1 &= vec_2x_2p30m1
 
 vec_V0_V1_S0_S1 = vec_prod & vec_2x_2p30m1
 2x vec_prod >>= 30
-
-
 
 
 
@@ -1484,17 +1532,40 @@ vec_V6_V7_S6_S7 |= vec_buffer
 #reg128 vec_carry
 2x vec_carry = vec_prod >> 15
 
-#4x vec_carry = vec_carry[0/4] vec_carry[2/4] vec_carry[0/4] vec_carry[2/4]
+4x vec_carry = vec_carry[0/4] vec_carry[2/4] vec_carry[0/4] vec_carry[2/4]
 #vec_V8_V9_S8_S9 = vec_prod 
+2x vec_2x_2p15m1 = vec_2x_2p30m1 >> 15
 vec_V8_V9_S8_S9 = vec_prod & vec_2x_2p15m1
-4x vec_buffer = vec_4x_19 * vec_carry
-vec_buffer &= vec_2x_2p32m1
 
-4x vec_V0_V1_S0_S1 += vec_buffer
+
+# int64 debug
+# debug = 0
+# debug = vec_V8_V9_S8_S9[0/4]
+
+# mem128[input_x1] = debug, zero
+# mem128[input_x1 + 16] = zero, zero
+
+
+
+2x vec_buffer = vec_4x_19[0] * vec_carry[0]
+#vec_buffer &= vec_2x_2p32m1
+
+reg128 vec_buffer_lo
+vec_buffer_lo = vec_buffer & vec_2x_2p30m1
+
+4x vec_V0_V1_S0_S1 += vec_buffer_lo
+
+2x vec_buffer = vec_buffer >> 30
+2x vec_buffer <<= 32
+2x vec_V0_V1_S0_S1 += vec_buffer
+
 
 
 """
 
+
+code += """
+"""
 
 # Carry propagation
 code += """
@@ -1508,7 +1579,14 @@ code += """
 vec_V0_V1_S0_S1 &= vec_4x_2p30m1
 
 4x vec_V2_V3_S2_S3 += vec_carry
+
+
+
+
 """
+
+
+
 
 
 
@@ -1516,6 +1594,9 @@ vec_V0_V1_S0_S1 &= vec_4x_2p30m1
 
 # Final adjustment
 code += """
+
+
+
 int64 V8
 int64 V0V1
 int64 V2V3
@@ -1579,6 +1660,8 @@ inv3 |= tmp
 
 
 
+
+
 # sign_adjustment
 int64 signF
 signF = vec_F0_F1_G0_G1[0/2]
@@ -1596,7 +1679,6 @@ _18 = 18
 
 
 
-
 inv0 = inv0 if N=0 else ~inv0
 inv1 = inv1 if N=0 else ~inv1
 inv2 = inv2 if N=0 else ~inv2
@@ -1606,7 +1688,7 @@ inv3 = inv3 if N=0 else tmp
 tmp = _18 & signF
 inv0 = inv0 - tmp
 
-
+#zero = 0
 
 
 mem128[input_x1] = inv0, inv1

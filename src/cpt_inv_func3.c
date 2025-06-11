@@ -29,7 +29,6 @@ big30_t P = {{
 
 
 void cpt_inv(uint256_t *x, uint256_t *inv){
-
     big30_t F, G, V, S;
     int64_t f, g;
     int64_t delta = 1;
@@ -58,6 +57,7 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
         g = (g << 30);
         f = f + (int64_t)F.limb[0];
         g = g + (int64_t)G.limb[0];
+        printf("f = %lld, g = %lld\n", f, g);
         
         uuvvrrss[0] = 1;
         uuvvrrss[1] = 0;
@@ -69,6 +69,9 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
             grs = (g & 0xFFFFF) - ( (int64_t) 1 << 62 );
 
             divstepx20(&delta, &fuv, &grs); 
+            printf("fuv = %lld, grs = %lld\n", fuv, grs);
+
+
 
 
 
@@ -169,6 +172,8 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
                     "memory","cc"
               );
 
+            printf("uu = %lld, vv = %lld, rr = %lld, ss = %lld\n", uuvvrrss[0], uuvvrrss[1], uuvvrrss[2], uuvvrrss[3]);
+
 
 
 
@@ -180,6 +185,15 @@ void cpt_inv(uint256_t *x, uint256_t *inv){
         // Update FG
 
         update_FG(&F, &G, uuvvrrss);
+        printf("F limbs: ");
+        for (int k = 0; k < 9; k++) {
+            printf("%lld ", (long long)F.limb[k]);
+        }
+        printf("\nG limbs: ");
+        for (int k = 0; k < 9; k++) {
+            printf("%lld ", (long long)G.limb[k]);
+        }
+        printf("\n");
 
         // Update VS
         update_VS_mont(&V, &S, uuvvrrss);
