@@ -11,8 +11,8 @@ for i in range(18, 29+1,1):
 for i in range(8, 15+1,1):
     code += f"caller calleesaved_v{i}\n"
 
-for i in range(18, 29+1,2):
-    code += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
+# for i in range(18, 29+1,2):
+#     code += f"push2xint64 calleesaved_x{i}, calleesaved_x{i+1}\n"
 
 for i in range(8, 15+1,2):
     code += f"push2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
@@ -1705,8 +1705,8 @@ mem128[input_x1+16] = inv2, inv3
 
 for i in range(15-1, 8-1,-2):
     code += f"pop2x8b calleesaved_v{i}, calleesaved_v{i+1}\n"
-for i in range(29, 18-1,-2):
-    code += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
+# for i in range(29, 18-1,-2):
+#     code += f"pop2xint64 calleesaved_x{i-1}, calleesaved_x{i}\n"
 
 
 
