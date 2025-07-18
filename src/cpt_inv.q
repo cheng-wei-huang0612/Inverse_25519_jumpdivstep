@@ -118,6 +118,11 @@ reg128 vec_2x_2p15m1
 reg128 vec_2x_2p30m1
 reg128 vec_2x_2p32m1
 reg128 vec_4x_2p30m1
+
+reg128 vec_buffer
+reg128 vec_prod
+
+
 reg128 vec_M
 reg128 vec_1x_18
 reg128 vec_2x_19
@@ -1452,8 +1457,7 @@ vec_uu1_rr1_vv1_ss1[2/4] = vv1
 vec_uu1_rr1_vv1_ss1[3/4] = ss1
 
 
-reg128 vec_buffer
-reg128 vec_prod
+
 
 2x vec_prod = vec_uu0_rr0_vv0_ss0[0] * vec_F0_F1_G0_G1[0/4]
 2x vec_prod += vec_uu0_rr0_vv0_ss0[1] * vec_F0_F1_G0_G1[2/4]
@@ -3090,7 +3094,11 @@ vec_V6_V7_S6_S7 |= vec_buffer
 
 4x vec_carry = vec_carry[0/4] vec_carry[2/4] vec_carry[0/4] vec_carry[2/4]
 #vec_V8_V9_S8_S9 = vec_prod 
+
+# CONSTANT PROBLEM
 2x vec_2x_2p15m1 = vec_2x_2p30m1 >> 15
+
+
 vec_V8_V9_S8_S9 = vec_prod & vec_2x_2p15m1
 
 

@@ -22,7 +22,7 @@ COMMON_SRC := \
   ../external/sole_inv25519/fe25519_intmul.S \
   ../external/sole_inv25519/fe25519_intmul_nsquare.S \
   ../external/sole_inv25519/fe25519_intmul_square.S \
-  ../external/from_s2nbignum/bignum_inv_p25519.S \
+  ../external/bignum_inv_p25519.S \
   ../src/cpt_inv.S \
   ../src/i_loop/i_loop.S \
   ../src/divstepx20/divstepx20.S \
